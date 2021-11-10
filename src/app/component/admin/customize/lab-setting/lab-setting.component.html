@@ -1,0 +1,193 @@
+<div class="container-fluid mt-3" style="background:#EFF4F8;">
+    <div class="row bg-white">
+        <div class="col-md-12">
+            <h3>Lab Settings</h3>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-md-6 mt-3 mb-3 ">
+            <form class="example" action="/action_page.php">
+                <input type="text" placeholder="Search.." name="search2">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label for="sel1" class="lable-style">Search Priority</label>
+            <select class="form-control" id="Status">
+                <option selected>Student ID, Scan Id</option>
+                <option>InActive</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="sel1" class="lable-style">Fiscal Year</label>
+            <input type="text" id="fyear">
+        </div>
+
+        <div class="form-group col-md-4">
+            <label for="sel1" class="lable-style">Components</label>
+            <select class="form-control" id="OrgType">
+                <option>SSS</option>
+                <option>VUB</option>
+                <option>MCN</option>
+                <option>TS</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label for="sel1" class="lable-style">Hide Options</label>
+            <input type="checkbox" >&nbsp; Hide Student List 
+            <br>
+            <input type="checkbox" >&nbsp; Hide Checkout Button In List 
+        </div>
+        <div class="form-group col-md-4">
+            <label for="sel1" class="lable-style">Wait Window Time</label>
+            <input type="text" id="fyear">
+        </div>
+
+        <div class="form-group col-md-4">
+            <label for="sel1" class="lable-style">Components</label>
+            <select class="form-control" id="OrgType">
+                <option>SSS</option>
+                <option>VUB</option>
+                <option>MCN</option>
+                <option>TS</option>
+            </select>
+        </div>
+    </div>
+    <div class="border-bot" style="margin-top: 2%;"></div>
+
+    <div class="table-responsive" style="border:1px solid #1366A0;">
+        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
+            <thead>
+                <tr style="background: #F5F6FA;">
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Selection Type</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">APR</th>
+                    <th scope="col">ORG Type</th>
+                    <th scope="col">ORG ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">0</th>
+                    <td>APR 17 | Gender</td>
+                    <td>Signle Selection</td>
+                    <td>Active</td>
+                    <td>Yes</td>
+                    <td>SSH, MCN, TS</td>
+                    <td>NA</td>
+                </tr>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Class</td>
+                    <td>Signle Selection</td>
+                    <td>Active</td>
+                    <td>NO</td>
+                    <td>SSH, MCN, TS</td>
+                    <td>001 </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 mt-3">
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pagination-sm justify-content-right">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Reset</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">New</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Edit</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Rename</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Move</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Merge</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Delete</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Print</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Submit</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Pulldown Name</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group ">
+                                    <label for="usr">Enter the Pulldown Number:</label>
+                                    <input type="text" class="form-control" id="serviceId">
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="usr">Enter the Pulldown Name:</label>
+                                    <input type="text" class="form-control" id="usr">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

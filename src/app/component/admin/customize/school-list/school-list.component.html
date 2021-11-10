@@ -1,0 +1,284 @@
+<div class="container-fluid mt-3" style="background:#EFF4F8;">
+    <div class="row bg-white">
+        <div class="col-md-12">
+            <h3>School Names List</h3>
+        </div>
+    </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="javascript:void(0)"
+                (click)="navigateToComponent('college-list')" role="tab" aria-controls="home"
+                aria-selected="true">College Names</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="javascript:void(0)"
+                (click)="navigateToComponent('school-list')" role="tab" aria-controls="profile"
+                aria-selected="false">School Names</a>
+        </li>
+    </ul>
+
+    <div class="row ">
+        <div class="col-md-6 mt-3 mb-3 ">
+            <form class="example" action="/action_page.php">
+                <input type="text" placeholder="Search.." name="search2">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+
+        <!-- <div class="col-md-6 mt-3 mb-3"><button type="button" class="btn btn-primary active float-end"
+                data-bs-toggle="modal" data-bs-target="#exampleModal">Staff Data Entry</button></div> -->
+    </div>
+
+
+
+    <div class="table-responsive" style="border:1px solid #1366A0;">
+        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
+            <thead>
+                <tr style="background: #F5F6FA;">
+                    <th scope="col">School Name</th>
+                    <th scope="col">In Pulldown</th>
+                    <th scope="col">NCES ID</th>
+                    <th scope="col">County Name</th>
+                    <th scope="col">Phone 1</th>
+                    <th scope="col">Phone 2</th>
+                    <th scope="col">Phone 3</th>
+                    <th scope="col">FAX</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">Barbara Jordan</th>
+                    <td>Yes</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row">Beck MS</th>
+                    <td>Yes</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row">Vivaan</th>
+                    <td>Yes</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row">Viren</th>
+                    <td>Yes</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row">BTW</th>
+                    <td>Yes</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 mt-3">
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pagination-sm justify-content-right">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Reset</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">New</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Edit</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Rename</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Move</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Merge</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Delete</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Print</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Submit</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">School Name</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                            <div class="col-md-12 flex">
+                                <div class="form-group col-md-6">
+                                    <label for="usr">Name:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <!-- <input type="checkbox" class="form-control" id="serviceId">In Pulldown List -->
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="usr">Codes:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group flex">
+                                <div class="form-group col-md-6">
+                                    <label for="usr">Title:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="usr">County:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group flex">
+                                <div class="form-group col-md-6">
+                                    <label for="usr">Address:</label>
+                                    <textarea type="text" class="form-control" id="serviceId"> </textarea>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="usr">FAFSA ID:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group flex">
+                                <div class="form-group col-md-6">
+                                    <label for="usr">City:</label>
+                                    <select class="form-control" id="CFN">
+                                        <option selected>Pune</option>
+                                        <option>Mumbai</option>
+                                    </select>
+                        
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="usr">State:</label>
+                                    <select class="form-control" id="CFN">
+                                        <option selected>Maharashtra</option>
+                                        <option>Goa</option>
+                                    </select>
+                        
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group flex">
+                                <div class="form-group col-md-6">
+                                    <label for="usr">Zip Code:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="usr">Fiscal Years:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group flex">
+                                <div class="form-group col-md-6">
+                                    <label for="usr">Phone 1:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="usr">Phone 2:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group flex">
+                                <div class="form-group col-md-6">
+                                    <label for="usr">Phone 3:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="usr">FAX:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group flex">
+                                <div class="form-group col-md-6">
+                                    <label for="usr">Web Site:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="usr">Email:</label>
+                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group flex">
+                                <div class="form-group">
+                                    <label for="usr">Notes:</label>
+                                    <textarea type="text" cols="100" rows="5" class="form-control" id="serviceId"> </textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
