@@ -28,6 +28,14 @@ export class NavigationComponent {
             this.router.navigate(['admin/grade-standing-list']);
         } else if (componentName === 'attendance-log') {
             this.router.navigate(['student/attendance-log'])
+        } else if (componentName === 'exams-logs') {
+            this.router.navigate(['student/exams-logs']);
+        } else if (componentName === 'notes-logs') {
+            this.router.navigate(['student/notes-logs']);
+        } else if (componentName === 'stipend-logs') {
+            this.router.navigate(['student/stipend-logs']);
+        } else if (componentName === 'text-message-logs') {
+            this.router.navigate(['student/text-message-logs']);
         }
     }
 }
