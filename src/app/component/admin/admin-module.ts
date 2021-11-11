@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { AdminRoutingModule } from './admin-routing.module';
 
 import { PulldownListComponent } from './customize/pulldown-list/pulldown-list.component';
 import { ServiceGroupListComponent } from './activity/service-group-list/service-group-list.component';
@@ -20,7 +21,9 @@ import { GradeStandingListComponent } from './customize/grade/standing/grade-sta
     GradeStandingGroupListComponent,
     GradeStandingListComponent
   ],
-  imports: [],
+  imports: [
+    AdminRoutingModule
+  ],
   providers: []
 })
 export class AdminModule { }

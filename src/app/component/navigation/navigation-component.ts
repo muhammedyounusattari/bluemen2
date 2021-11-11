@@ -26,6 +26,8 @@ export class NavigationComponent {
             this.router.navigate(['admin/grade-group-list']);
         } else if (componentName === 'grade-standing-list') {
             this.router.navigate(['admin/grade-standing-list']);
+        } else if (componentName === 'attendance-log') {
+            this.router.navigate(['student/attendance-log'])
         }
     }
 }

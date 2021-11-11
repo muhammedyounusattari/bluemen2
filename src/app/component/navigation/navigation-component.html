@@ -11,16 +11,33 @@
                 <li class="nav-item dropdown" id="myDropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"> STUDENT </a>
                     <ul class="dropdown-menu">
-                        <li> <a class="dropdown-item" href="#"> Dropdown item 1 </a></li>
-                        <li> <a class="dropdown-item" href="#"> Dropdown item 2 &raquo; </a>
-                            <ul class="submenu dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Submenu item 1</a></li>
-                                <li><a class="dropdown-item" href="#">Submenu item 2</a></li>
-                                <li><a class="dropdown-item" href="#">Submenu item 3 </a>
+                        <li> <a class="dropdown-item" href="#"> Home </a></li>
+                        <li> <a class="dropdown-item" href="#"> Data Entry &raquo; </a></li>
+                        <li> <a class="dropdown-item" href="#"> Contacts </a></li>
+                        <li> <a class="dropdown-item" href="javascript:void(0)"> Logs &raquo; </a>
+                            <ul class="submenu dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('attendance-log')">Attendance Log</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('college-list')">BOT Form Submission Log</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('custom-fields')">Exams Log</a></li>
+                                <li><a class="dropdown-item" href="#">Notes Log</a></li>
+                                <li><a class="dropdown-item" href="#">Stipend Log</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('pulldown-list')">Text Message Log </a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('pulldown-list')">Text Message Replies </a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('pulldown-list')">Wallet </a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">UTILITIES</a>
                 </li>
@@ -45,20 +62,20 @@
                 <li class="nav-item dropdown" id="adminDDL">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">ADMIN</a>
                     <ul class="dropdown-menu">
-                        <li> <a class="dropdown-item"  href="javascript:void(0)"
-                            (click)="navigateToComponent('grade-group-list')"> Home </a></li>
+                        <li> <a class="dropdown-item" href="javascript:void(0)"> Home </a></li>
                         <li> <a class="dropdown-item" href="javascript:void(0)"> Customize &raquo; </a>
                             <ul class="submenu dropdown-menu" style="z-index: 10001;">
                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                    (click)="navigateToComponent('service-group-list')">Activity Group / Service</a></li>
+                                        (click)="navigateToComponent('service-group-list')">Activity Group / Service</a>
+                                </li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                    (click)="navigateToComponent('college-list')">College / School Names</a></li>
+                                        (click)="navigateToComponent('college-list')">College / School Names</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                    (click)="navigateToComponent('custom-fields')">Custom Fields Values</a></li>
+                                        (click)="navigateToComponent('custom-fields')">Custom Fields Values</a></li>
                                 <li><a class="dropdown-item" href="#">Grade Standing / Group</a></li>
                                 <li><a class="dropdown-item" href="#">Lab Setting Preferences</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                    (click)="navigateToComponent('pulldown-list')">Pulldown List </a>
+                                        (click)="navigateToComponent('pulldown-list')">Pulldown List </a>
                                 </li>
                             </ul>
                         </li>
