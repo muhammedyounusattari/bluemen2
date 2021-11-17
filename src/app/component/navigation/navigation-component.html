@@ -12,7 +12,20 @@
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"> STUDENT </a>
                     <ul class="dropdown-menu">
                         <li> <a class="dropdown-item" href="#"> Home </a></li>
-                        <li> <a class="dropdown-item" href="#"> Data Entry &raquo; </a></li>
+                        <li> <a class="dropdown-item" href="#"> Data Entry &raquo; </a>
+                            <ul class="submenu dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('fiscal-year-financial-aid')">Fiscal Year And
+                                        Financial Aid</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('graduated')">Graduated</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('semester-courses')">Semester And Courses</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li> <a class="dropdown-item" href="#"> Contacts </a></li>
                         <li> <a class="dropdown-item" href="javascript:void(0)"> Logs &raquo; </a>
                             <ul class="submenu dropdown-menu" style="z-index: 10001;">
@@ -24,17 +37,17 @@
                                 <li><a class="dropdown-item" href="javascript:void(0)"
                                         (click)="navigateToComponent('exams-logs')">Exams Log</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                    (click)="navigateToComponent('notes-logs')">Notes Log</a></li>
+                                        (click)="navigateToComponent('notes-logs')">Notes Log</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                    (click)="navigateToComponent('stipend-logs')">Stipend Log</a></li>
+                                        (click)="navigateToComponent('stipend-logs')">Stipend Log</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
                                         (click)="navigateToComponent('text-message-logs')">Text Message Log </a>
                                 </li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                        (click)="navigateToComponent('pulldown-list')">Text Message Replies </a>
+                                        (click)="navigateToComponent('text-message-replies')">Text Message Replies </a>
                                 </li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                        (click)="navigateToComponent('pulldown-list')">Wallet </a>
+                                        (click)="navigateToComponent('wallet-logs')">Wallet </a>
                                 </li>
                             </ul>
                         </li>

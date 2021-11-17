@@ -36,6 +36,16 @@ export class NavigationComponent {
             this.router.navigate(['student/stipend-logs']);
         } else if (componentName === 'text-message-logs') {
             this.router.navigate(['student/text-message-logs']);
+        } else if (componentName === 'text-message-replies') {
+            this.router.navigate(['student/text-message-replies']);
+        } else if (componentName === 'wallet-logs') {
+            this.router.navigate(['student/wallet-logs']);
+        } else if (componentName === 'fiscal-year-financial-aid') {
+            this.router.navigate(['student/fiscal-year-financial-aid']);
+        } else if (componentName === 'graduated') {
+            this.router.navigate(['student/graduated']);
+        } else if (componentName === 'semester-courses') {
+            this.router.navigate(['student/semester-courses']);
         }
     }
 }
