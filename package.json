@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -28,7 +27,10 @@
     "ngx-bootstrap": "^7.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "@angular/cli": "^13.0.3",
+    "@angular/compiler-cli": "~13.0.2",
+    "typescript": "~4.4.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^13.0.1",
