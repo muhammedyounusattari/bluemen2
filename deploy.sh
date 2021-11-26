@@ -77,7 +77,7 @@ selectNodeVersion () {
       NODE_EXE=`cat "$DEPLOYMENT_TEMP/__nodeVersion.tmp"`
       exitWithMessageOnError "getting node version failed"
     fi
-    
+
     if [[ -e "$DEPLOYMENT_TEMP/__npmVersion.tmp" ]]; then
       NPM_JS_PATH=`cat "$DEPLOYMENT_TEMP/__npmVersion.tmp"`
       exitWithMessageOnError "getting npm version failed"
@@ -116,7 +116,7 @@ fi
 
 # 3. Angular Prod Build
 IF EXIST "%DEPLOYMENT_SOURCE%/.angular-cli.json" (
-echo Building App in %DEPLOYMENT_SOURCE%…
+echo Building App in %DEPLOYMENT_SOURCE%
 pushd "%DEPLOYMENT_SOURCE%"
 #call :ExecuteCmd !NPM_CMD! run build
 eval $NPM_CMD run build
