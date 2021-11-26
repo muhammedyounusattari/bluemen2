@@ -11,7 +11,7 @@
 exitWithMessageOnError () {
   if [ ! $? -eq 0 ]; then
     echo "An error has occurred during web site deployment."
-    echo $1
+    echo "$1"
     exit 1
   fi
 }
@@ -70,16 +70,16 @@ fi
 selectNodeVersion () {
   if [[ -n "$KUDU_SELECT_NODE_VERSION_CMD" ]]; then
     SELECT_NODE_VERSION="$KUDU_SELECT_NODE_VERSION_CMD \"$DEPLOYMENT_SOURCE\" \"$DEPLOYMENT_TARGET\" \"$DEPLOYMENT_TEMP\""
-    eval $SELECT_NODE_VERSION
+    eval "$SELECT_NODE_VERSION"
     exitWithMessageOnError "select node version failed"
 
     if [[ -e "$DEPLOYMENT_TEMP/__nodeVersion.tmp" ]]; then
-      NODE_EXE=`cat "$DEPLOYMENT_TEMP/__nodeVersion.tmp"`
+      NODE_EXE=$(cat "$DEPLOYMENT_TEMP/__nodeVersion.tmp")
       exitWithMessageOnError "getting node version failed"
     fi
 
     if [[ -e "$DEPLOYMENT_TEMP/__npmVersion.tmp" ]]; then
-      NPM_JS_PATH=`cat "$DEPLOYMENT_TEMP/__npmVersion.tmp"`
+      NPM_JS_PATH=$(cat "$DEPLOYMENT_TEMP/__npmVersion.tmp")
       exitWithMessageOnError "getting npm version failed"
     fi
 
@@ -107,24 +107,23 @@ selectNodeVersion
 
 # 3. Install npm packages
 if [ -e "$DEPLOYMENT_SOURCE/package.json" ]; then
-  cd "$DEPLOYMENT_SOURCE"
+  cd "$DEPLOYMENT_SOURCE" || exit
   echo "Running $NPM_CMD install --production"
   eval $NPM_CMD install --production
   exitWithMessageOnError "npm failed"
-  cd - > /dev/null
+  cd - > /dev/null || exit
 fi
 
 # 3. Angular Prod Build
-IF EXIST "%DEPLOYMENT_SOURCE%/.angular-cli.json" (
+if [ -e "$DEPLOYMENT_SOURCE/.angular-cli.json" ]; then
 echo Building App in %DEPLOYMENT_SOURCE%
-pushd "%DEPLOYMENT_SOURCE%"
+pushd "$DEPLOYMENT_SOURCE" || exit
 #call :ExecuteCmd !NPM_CMD! run build
 eval $NPM_CMD run build
 # If the above command fails comment above and uncomment below one
 # call ./node_modules/.bin/ng build –prod
-IF !ERRORLEVEL! NEQ 0 goto error
-popd
-)
+fi
+
 
 # 1. KuduSync
 if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then
