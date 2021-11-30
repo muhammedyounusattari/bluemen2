@@ -46,6 +46,26 @@ export class NavigationComponent {
             this.router.navigate(['student/graduated']);
         } else if (componentName === 'semester-courses') {
             this.router.navigate(['student/semester-courses']);
+        } else if (componentName === 'change-ssno') {
+            this.router.navigate(['utilities/change-ssno']);
+        } else if (componentName === 'nsch') {
+            this.router.navigate(['utilities/nsch']);
+        } else if (componentName === 'quick-change-wizard') {
+            this.router.navigate(['utilities/quick-change-wizard']);
+        } else if (componentName === 'semester-gpa-info') {
+            this.router.navigate(['utilities/semester-gpa-info']);
+        } else if (componentName === 'student-demographic-info') {
+            this.router.navigate(['utilities/student-demographic-info']);
+        } else if (componentName === 'yearly-financial-aid-info') {
+            this.router.navigate(['utilities/yearly-financial-aid-info']);
+        } else if (componentName === 'fiscal-year') {
+            this.router.navigate(['utilities/fiscal-year']);
+        } else if (componentName === 'graduated-list') {
+            this.router.navigate(['utilities/graduated-list']);
+        } else if (componentName === 'semester') {
+            this.router.navigate(['utilities/semester']);
+        } else if (componentName === 'gs-attendance-logs') {
+            this.router.navigate(['utilities/gs-attendance-logs']);
         }
     }
 }

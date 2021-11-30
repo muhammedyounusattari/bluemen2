@@ -53,8 +53,77 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">UTILITIES</a>
+                <li class="nav-item dropdown" id="myDropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">UTILITIES</a>
+                    <ul class="dropdown-menu">
+                        <li> <a class="dropdown-item" href="#"> Home </a>
+                            <ul class="submenu dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('change-ssno')">change ssno</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('nsch')">National student clearinghouse data
+                                        interface</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('quick-change-wizard')">Quick change wizard</a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li> <a class="dropdown-item" href="#"> Quick Edit &raquo; </a>
+                            <ul class="submenu dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)">Courses
+                                        information</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('semester-gpa-info')">Semester and GPA information</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('student-demographic-info')">Student demographic
+                                        information</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('yearly-financial-aid-info')">Yearly and financial aid
+                                        information</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <a class="dropdown-item" href="#"> ADD TO </a>
+                            <ul class="submenu dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('fiscal-year')">Fiscal Year</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('graduated-list')">Graduated List</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('semester')">Semester</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <a class="dropdown-item" href="javascript:void(0)"> Generate Simillar &raquo; </a>
+                            <ul class="submenu dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('gs-attendance-logs')">Attendance Log</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Custom Field Value</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Exams Log</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Notes Log</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Stipend Log</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Wallet </a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Yearly Information (Activities) </a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Yearly Information (End Status) </a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Yearly Information (Wallet) </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <a class="dropdown-item" href="#"> Generate Schedule </a></li>
+                        <li> <a class="dropdown-item" href="#"> Generate Contats </a></li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">REPORTS</a>

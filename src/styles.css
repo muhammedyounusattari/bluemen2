@@ -93,8 +93,8 @@ form.example button {
   float: left;
   width: 8%;
   padding: 4px;
-  background:#fff;
-  color:#777777;
+  background:#1672b7;
+  color:#fff;
   font-size: 17px;
   border: 1px solid #777777;
   border-left: none;
@@ -121,10 +121,11 @@ form.example::after {
   display: flex;
 }
 
-    .footer{
-      position:fixed;
+    footer{
       bottom:0;
       width:100%;
+      padding: 0 15px 0 15px;
+      background: #fff;
   }
   footer.page-footer .footer-copyright{
     background-color: transparent !important;

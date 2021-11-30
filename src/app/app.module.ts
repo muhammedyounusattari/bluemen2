@@ -12,6 +12,7 @@ import { FooterComponent } from './component/footer/footer-component';
 
 import { AdminModule } from './component/admin/admin-module';
 import { StudentModule } from './component/student/student.module';
+import { UtilitiesModule } from './component/utilities/utilities.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { StudentModule } from './component/student/student.module';
     AppRoutingModule,
     AdminModule,
     StudentModule,
+    UtilitiesModule,
     MDBBootstrapModule.forRoot(),
     ModalModule.forRoot()
   ],
