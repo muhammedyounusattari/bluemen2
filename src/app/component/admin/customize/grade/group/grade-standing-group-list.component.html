@@ -1,7 +1,7 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
     <div class="row bg-white">
         <div class="col-md-12">
-            <h3>Grade Standing / Group List</h3>
+            <h3>Grade/Standing Name</h3>
         </div>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -36,34 +36,20 @@
                 <tr style="background: #F5F6FA;">
                     <th scope="col">Group Id</th>
                     <th scope="col">Group Name</th>
+                    <th scope="col">APR Column</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>test</td>
+                <!-- <ng-template *ngIf="gradeGroupListData > 0"> -->
+                    <tr *ngFor="let gradeGroup of gradeGroupListData;">
+                        <td>{{gradeGroup.gradeGroupId}}</td>
+                        <td>{{gradeGroup.gradeGroupName}}</td>
+                        <td>{{gradeGroup.gradeGroupAprColumn}}</td>
+                    </tr>
+                <!-- </ng-template> -->
+                <tr *ngIf="gradeGroupListData.length === 0">
+                    No Records Found !
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>abc</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>efghijk</td>
-                </tr>
-                <tr>
-                    <th scope="row">4</th>
-                    <td>Lmnop</td>
-                </tr>
-                <tr>
-                    <th scope="row">5</th>
-                    <td>qrstuv</td>
-                </tr>
-                <tr>
-                    <th scope="row">6</th>
-                    <td>Small</td>
-                </tr>
-
             </tbody>
         </table>
     </div>
@@ -136,7 +122,7 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Customize Grade And Standing Group Names</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Customize Grade / Standing Names</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -145,19 +131,19 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group mt-3">
-                                    <label for="usr" class="lable-style">New Grade Or Standing List:</label>
-                                    <input type="text" class="form-control" id="usr">
+                                    <label for="usr" class="lable-style">Grade / Standing List:</label>
+                                    <input type="text" class="form-control" id="gradeGroupID" [(ngModel)]="_gradeGroupStandingList.gradeGroupId">
                                 </div>
 
                                 <div class="form-group mt-3">
-                                    <label for="usr" class="lable-style">Grade Or Standing Group Name:</label>
-                                    <textarea type="text" class="form-control" cols="100" rows="5" id="usr"></textarea>
+                                    <label for="usr" class="lable-style">Grade / Standing Name:</label>
+                                    <textarea type="text" class="form-control" cols="100" rows="5" id="gradeGroupName"  [(ngModel)]="_gradeGroupStandingList.gradeGroupName"></textarea>
                                 </div>
 
                                 
                                 <div class="form-group mt-3">
                                     <label for="usr" class="lable-style">Grade Or Standing Type:</label>
-                                    <select class="form-control" id="sel1">
+                                    <select class="form-control" id="grpType" [(ngModel)]="_gradeGroupStandingList.gradeGroupGradeType">
                                         <option selected>APR Column #1  | 1</option>
                                         <option selected>APR Column #2  | 2</option>
                                         <option selected>APR Column #3  | 3</option>
@@ -171,7 +157,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="addGradeGroup()">Save changes</button>
             </div>
         </div>
     </div>

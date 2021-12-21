@@ -1,0 +1,19 @@
+export class SchoolListEnum {
+    name: string = '';
+    codes: string = '';
+    title: string = '';
+    country: string = '';
+    address: string = '';
+    ncesId: string = '';
+    city: string = '';
+    state: string = '';
+    zipCode: string = '';
+    fiscalYears: string = '';
+    phone1: string = '';
+    phone2: string = '';
+    phone3: string = '';
+    fax: string = '';
+    website: string = '';
+    email: string = '';
+    notes: string = '';
+}

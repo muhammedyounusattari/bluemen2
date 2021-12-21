@@ -1,6 +1,8 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
+import { CollegeAndSchoolService } from '../../../../services/admin/college-school.service';
+import { CollegeListEnum } from '../../../../constants/enums/college-list.enum';
 
 @Component({
     selector: 'app-college-list',
@@ -8,7 +10,9 @@ import { Router } from '@angular/router';
     // styleUrls: ['./pulldown-list.component.css']
 })
 
-export class CollegeListComponent {
+export class CollegeListComponent implements OnInit{
+    collegeDataList: any = [];
+    collegeListEnum: CollegeListEnum = new CollegeListEnum();
     @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
     modalRef: BsModalRef;
     modalConfigSM = {
@@ -16,7 +20,18 @@ export class CollegeListComponent {
         ignoreBackdropClick: true,
         class: 'modal-lg'
     }
-    constructor(private modalService: BsModalService, private router: Router) { }
+    constructor(private modalService: BsModalService
+        , private router: Router
+        , private _collegeAndSchoolService: CollegeAndSchoolService) { }
+
+    ngOnInit() {
+        this.navigateToComponent('service-group-list');
+        this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
+            if (result) {
+                this.collegeDataList = result;
+            }
+        });
+    }
 
     addNewDropdown() {
         this.openModal(this.addDropDownValueRef);

@@ -1,0 +1,93 @@
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <div class="tab">
+            <button class="tablinks" onclick="openCity(event, 'Student')" id="defaultOpen"><i
+                    class="fa fa-graduation-cap"></i> Student Profile</button>
+            <button class="tablinks" onclick="openCity(event, 'Mark')"><i class="fa fa-gratipay"></i> Mark
+                Student</button>
+            <button class="tablinks" onclick="openCity(event, 'Semester')"><i class="fa fa-safari"></i>
+                Semester</button>
+            <button class="tablinks" onclick="openCity(event, 'Cources')"><i class="fa fa-certificate"></i>
+                Cources</button>
+            <button class="tablinks" onclick="openCity(event, 'Contact')"><i class="fa fa-crosshairs"></i> Contact
+                services</button>
+            <button class="tablinks" onclick="openCity(event, 'Notes')"><i class="fa fa-newspaper-o"></i>
+                Notes</button>
+            <button class="tablinks" onclick="openCity(event, 'Exam')"><i class="fa fa-lock"></i> Exam Log</button>
+            <button class="tablinks" onclick="openCity(event, 'Sub')"><i class="fa fa-location-arrow"></i> Sub
+                Exam</button>
+            <button class="tablinks" onclick="openCity(event, 'wallet')"><i class="fa fa-wpexplorer"></i>
+                wallet</button>
+            <button class="tablinks" onclick="openCity(event, 'Attendance')"><i class="fa fa-address-card"></i>
+                Attendance
+                Log</button>
+            <button class="tablinks" onclick="openCity(event, 'Stipped')"><i class="fa fa-certificate"></i>
+                Stipped</button>
+            <button class="tablinks" onclick="openCity(event, 'Schedule')"><i class="fa fa-location-arrow"></i>
+                Schedule
+                Classes</button>
+            <button class="tablinks" onclick="openCity(event, 'Graduated')"><i class="fa fa-wpexplorer"></i>
+                Graduated</button>
+            <button class="tablinks" onclick="openCity(event, 'Staff')"><i class="fa fa-crosshairs"></i>
+                Staff</button>
+            <button class="tablinks" onclick="openCity(event, 'CustomList')"><i class="fa fa-newspaper-o"></i>
+                Custom
+                Lists</button>
+            <button class="tablinks" onclick="openCity(event, 'Yearly')"><i class="fa fa-location-arrow"></i> Yearly
+                Information</button>
+            <button class="tablinks" onclick="openCity(event, 'Custom')"><i class="fa fa-location-arrow"></i> Custom
+                Fields</button>
+            <button class="tablinks" onclick="openCity(event, 'Text')"><i class="fa fa-location-arrow"></i>Text
+                Message</button>
+            <button class="tablinks" onclick="openCity(event, 'APR')"><i class="fa fa-location-arrow"></i> APR
+                Fields</button>
+        </div>
+
+        <app-mark-filter *ngIf='isVisible'></app-mark-filter>
+        <app-contact-filter *ngIf='isVisible'></app-contact-filter>
+        <app-cources-filter *ngIf='isVisible'></app-cources-filter>
+        <app-custom-fields-filter *ngIf='isVisible'></app-custom-fields-filter>
+        <app-custom-list-filter *ngIf='isVisible'></app-custom-list-filter>
+        <app-exam-filter *ngIf='isVisible'></app-exam-filter>
+        <app-graduated-filter *ngIf='isVisible'></app-graduated-filter>
+        <app-mark-filter *ngIf='isVisible'></app-mark-filter>
+        <app-notes-filter *ngIf='isVisible'></app-notes-filter>
+        <app-scheduleclasses-filter *ngIf='isVisible'></app-scheduleclasses-filter>
+        <app-semester-filter *ngIf='isVisible'></app-semester-filter>
+        <app-services-filter *ngIf='isVisible'></app-services-filter>
+        <app-staff-filter *ngIf='isVisible'></app-staff-filter>
+        <app-stipend-filter *ngIf='isVisible'></app-stipend-filter>
+        <app-student-filter *ngIf='isVisible'></app-student-filter>
+        <app-sub-filter *ngIf='isVisible'></app-sub-filter>
+        <app-textmessage-filter *ngIf='isVisible'></app-textmessage-filter>
+        <app-wallet-filter *ngIf='isVisible'></app-wallet-filter>
+        <app-yearly-filter *ngIf='isVisible'></app-yearly-filter>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="javascript:void(0);">Reset</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);">Submit</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="javascript:void(0);">Filter</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="javascript:void(0);">Ok To Continue</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="javascript:void(0);">Cancel</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

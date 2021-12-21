@@ -40,30 +40,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>English / Proficiency</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Reading</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Writing</td>
-                </tr>
-                <tr>
-                    <th scope="row">4</th>
-                    <td>Study Skills</td>
-                </tr>
-                <tr>
-                    <th scope="row">5</th>
-                    <td>Family Activities</td>
-                </tr>
-                <tr>
-                    <th scope="row">6</th>
-                    <td>Referrals</td>
+                <!-- <ng-template *ngIf="activityServiceData.length > 0"> -->
+                    <tr *ngFor="let serviceData of activityServiceData;">
+                        <td>{{serviceData.activityId}}</td>
+                        <td>{{serviceData.activityName}}</td>
+                    </tr>
+                <!-- </ng-template> -->
+                <tr *ngIf="activityServiceData.length === 0">
+                    No Records Found !
                 </tr>
             </tbody>
         </table>
@@ -106,17 +90,17 @@
                             <div class="col-md-12">
                                 <div class="form-group ">
                                     <label for="usr">Service or Activity ID:</label>
-                                    <input type="text" class="form-control" id="serviceId">
+                                    <input type="text" class="form-control" [(ngModel)]="activityServiceListEnum.activityId" id="serviceId">
                                 </div>
 
                                 <div class="form-group mt-3">
                                     <label for="usr">Service Or Activiy Name:</label>
-                                    <input type="text" class="form-control" id="usr">
+                                    <input type="text" class="form-control" [(ngModel)]="activityServiceListEnum.activityName" id="serviceName">
                                 </div>
 
                                 <div class="form-group mt-3">
                                     <label for="usr">Service Or Activity Group Name</label>
-                                    <select class="form-control" id="sel1">
+                                    <select class="form-control" id="serviceGrpName" [(ngModel)]="activityServiceListEnum.activityGroupName">
                                         <option selected>Tutoring</option>
                                         <option selected>Assisted Computer Labs</option>
                                         <option selected>Counseling</option>
@@ -126,7 +110,7 @@
                                 
                                 <div class="form-group mt-3">
                                     <label for="usr">Lab Service:</label>
-                                    <input type="checkbox" name="chkAG">&nbsp;
+                                    <input type="checkbox" name="labService" [(ngModel)]="activityServiceListEnum.lapService">&nbsp;
                                 </div>
                             </div>
                         </div>
@@ -135,7 +119,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="addNewServiceName()">Save changes</button>
             </div>
         </div>
     </div>

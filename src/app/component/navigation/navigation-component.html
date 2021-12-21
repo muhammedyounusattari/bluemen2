@@ -11,7 +11,29 @@
                 <li class="nav-item dropdown" id="myDropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"> STUDENT </a>
                     <ul class="dropdown-menu">
-                        <li> <a class="dropdown-item" href="#"> Home </a></li>
+                        <li> <a class="dropdown-item" href="#"> Home &raquo;</a>
+
+                            <ul class="submenu dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('fiscal-year-financial-aid')">Asset/Inventory Management</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('graduated')">Demographic Information</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('semester-courses')">Personalized Letters</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('semester-courses')">Send Bulk E-mails</a>
+                            </li>
+                            <li><a class="dropdown-item" href="javascript:void(0)"
+                                (click)="navigateToComponent('semester-courses')">Send Bulk Text Messages</a>
+                        </li>
+                        <li><a class="dropdown-item" href="javascript:void(0)"
+                            (click)="navigateToComponent('semester-courses')">Student Data</a>
+                    </li>
+                            </ul>
+                        </li>
                         <li> <a class="dropdown-item" href="#"> Data Entry &raquo; </a>
                             <ul class="submenu dropdown-menu" style="z-index: 10001;">
                                 <li><a class="dropdown-item" href="javascript:void(0)"
@@ -26,7 +48,33 @@
                                 </li>
                             </ul>
                         </li>
-                        <li> <a class="dropdown-item" href="#"> Contacts </a></li>
+                        <li> <a class="dropdown-item" href="javascript:void(0)"> Contacts &raquo;</a>
+                            <ul class="submenu dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('lab-contacts')">Lab Contact</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('counselor-contacts')">Counselor Contacts</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    teachers-contacts                                        (click)="navigateToComponent('staff-contacts')">Staff Contacts</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('teacher-contacts')">Teacher Contacts</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('tutor-contacts')">Tutor Contacts</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('display-counselor-contacts')">Display Counselor Contacts Reminder</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('display-tutor-contacts')">Display Tutor Contacts Reminder </a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('display-teacher-contacts')">Display Teacher Contacts Reminder </a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('display-staff-contacts')">Display Staff Contacts Reminder </a>
+                            </li>
+
+                            </ul></li>
                         <li> <a class="dropdown-item" href="javascript:void(0)"> Logs &raquo; </a>
                             <ul class="submenu dropdown-menu" style="z-index: 10001;">
                                 <li><a class="dropdown-item" href="javascript:void(0)"
@@ -56,7 +104,7 @@
                 <li class="nav-item dropdown" id="myDropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">UTILITIES</a>
                     <ul class="dropdown-menu">
-                        <li> <a class="dropdown-item" href="#"> Home </a>
+                        <li> <a class="dropdown-item" href="#"> Home &raquo;</a>
                             <ul class="submenu dropdown-menu" style="z-index: 10001;">
                                 <li><a class="dropdown-item" href="javascript:void(0)"
                                         (click)="navigateToComponent('change-ssno')">change ssno</a>
@@ -77,22 +125,24 @@
                                         information</a>
                                 </li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                        (click)="navigateToComponent('semester-gpa-info')">Semester and GPA information</a>
+                                        (click)="navigateToComponent('semester-gpa-info')">Semester and GPA
+                                        information</a>
                                 </li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
                                         (click)="navigateToComponent('student-demographic-info')">Student demographic
                                         information</a>
                                 </li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                        (click)="navigateToComponent('yearly-financial-aid-info')">Yearly and financial aid
+                                        (click)="navigateToComponent('yearly-financial-aid-info')">Yearly and financial
+                                        aid
                                         information</a>
                                 </li>
                             </ul>
                         </li>
-                        <li> <a class="dropdown-item" href="#"> ADD TO </a>
+                        <li> <a class="dropdown-item" href="#"> ADD TO &raquo;</a>
                             <ul class="submenu dropdown-menu" style="z-index: 10001;">
                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                    (click)="navigateToComponent('fiscal-year')">Fiscal Year</a>
+                                        (click)="navigateToComponent('fiscal-year')">Fiscal Year</a>
                                 </li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
                                         (click)="navigateToComponent('graduated-list')">Graduated List</a>
@@ -107,22 +157,25 @@
                                 <li><a class="dropdown-item" href="javascript:void(0)"
                                         (click)="navigateToComponent('gs-attendance-logs')">Attendance Log</a>
                                 </li>
-                                <li><a class="dropdown-item" href="javascript:void(0)">Custom Field Value</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('custom-field-value')">Custom Field Value</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)">Exams Log</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)">Notes Log</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)">Stipend Log</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)">Wallet </a>
                                 </li>
-                                <li><a class="dropdown-item" href="javascript:void(0)">Yearly Information (Activities) </a>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Yearly Information (Activities)
+                                    </a>
                                 </li>
-                                <li><a class="dropdown-item" href="javascript:void(0)">Yearly Information (End Status) </a>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Yearly Information (End Status)
+                                    </a>
                                 </li>
                                 <li><a class="dropdown-item" href="javascript:void(0)">Yearly Information (Wallet) </a>
                                 </li>
                             </ul>
                         </li>
-                        <li> <a class="dropdown-item" href="#"> Generate Schedule </a></li>
-                        <li> <a class="dropdown-item" href="#"> Generate Contats </a></li>
+                        <li> <a class="dropdown-item" href="#"> Generate Schedule &raquo;</a></li>
+                        <li> <a class="dropdown-item" href="#"> Generate Contats &raquo;</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -134,21 +187,92 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">COUNSELOR</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)">TUTOR</a>
+                <li class="nav-item dropdown" id="myDropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"> TUTOR </a>
+                    <ul class="dropdown-menu">
+                        <li> <a class="dropdown-item" href="#"> Home &raquo; </a>
+                            <ul class="submenu dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('assign-tutor-student-class')">Assign Student To Tutor
+                                        Classes</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)" >Tutor classes</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Tutor Contacts</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('tutors')">Tutors</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <a class="dropdown-item" href="#"> Reports </a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)">TEACHER</a>
+                <li class="nav-item dropdown" id="myDropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"> TEACHER </a>
+                    <ul class="dropdown-menu">
+                        <li> <a class="dropdown-item" href="#"> Home &raquo; </a>
+                            <ul class="submenu dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('assign-student-teacher-class')">Assign Student To Teacher
+                                        Classes</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Teacher classes</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Teacher Contacts</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('teachers')">Teachers</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <a class="dropdown-item" href="#"> Reports </a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)">STAFF</a>
+                <li class="nav-item dropdown" id="myDropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"> STAFF </a>
+                    <ul class="dropdown-menu">
+                        <li> <a class="dropdown-item" href="#"> Home &raquo; </a>
+                            <ul class="submenu-left dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)">Assign Student To Staff
+                                        Classes</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Staff classes</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Staff Contacts</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('staff-members')">Staff Members</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <a class="dropdown-item" href="#"> Reports </a></li>
+                    </ul>
                 </li>
                 <li class="nav-item dropdown" id="adminDDL">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">ADMIN</a>
                     <ul class="dropdown-menu">
-                        <li> <a class="dropdown-item" href="javascript:void(0)"> Home </a></li>
+                        <li> <a class="dropdown-item" href="javascript:void(0)"> Home  &raquo; </a>
+                            <ul class="submenu-left dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)">BOT Form Management</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('config-settings')">Config Settings</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">E-Mail Setup</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Roles</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('system-preferences')">System Preferences</a>
+                            </li>
+                            <li><a class="dropdown-item" href="javascript:void(0)"
+                                (click)="navigateToComponent('user-names-pwd')">User Names And Passwords</a>
+                        </li>
+                            </ul>
+                        </li>
                         <li> <a class="dropdown-item" href="javascript:void(0)"> Customize &raquo; </a>
-                            <ul class="submenu dropdown-menu" style="z-index: 10001;">
+                            <ul class="submenu-left dropdown-menu" style="z-index: 10001;">
                                 <li><a class="dropdown-item" href="javascript:void(0)"
                                         (click)="navigateToComponent('service-group-list')">Activity Group / Service</a>
                                 </li>
@@ -156,7 +280,8 @@
                                         (click)="navigateToComponent('college-list')">College / School Names</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
                                         (click)="navigateToComponent('custom-fields')">Custom Fields Values</a></li>
-                                <li><a class="dropdown-item" href="#">Grade Standing / Group</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('grade-group-list')">Grade/Standing List</a></li>
                                 <li><a class="dropdown-item" href="#">Lab Setting Preferences</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0)"
                                         (click)="navigateToComponent('pulldown-list')">Pulldown List </a>
@@ -164,10 +289,17 @@
                             </ul>
                         </li>
                         <li> <a class="dropdown-item" href="javascript:void(0)"> System Tools &raquo; </a>
-                            <ul class="submenu dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Submenu item 1</a></li>
-                                <li><a class="dropdown-item" href="#">Submenu item 2</a></li>
-                                <li><a class="dropdown-item" href="#">PULL DOWN LIST </a>
+                            <ul class="submenu-left dropdown-menu">
+                                <li><a class="dropdown-item" href="javascript:void(0)">Delete Students</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Recall Students</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('time-clock-manager')">Time Clock Manager </a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Update Age</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Update GPA'S </a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)">Upgrade Fiscal Year </a>
                                 </li>
                             </ul>
                         </li>

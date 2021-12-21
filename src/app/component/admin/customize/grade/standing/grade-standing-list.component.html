@@ -1,7 +1,7 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
     <div class="row bg-white">
         <div class="col-md-12">
-            <h3>Grade Standing / Group List</h3>
+            <h3>Grade/Standing Name</h3>
         </div>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -39,31 +39,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>test</td>
+                <!-- <ng-template *ngIf="gradeStandingListData > 0"> -->
+                    <tr *ngFor="let gradeStd of gradeStandingListData;">
+                        <td>{{gradeStd.gradeStandingId}}</td>
+                        <td>{{gradeStd.gradingName}}</td>
+                    </tr>
+                <!-- </ng-template> -->
+                <tr *ngIf="gradeStandingListData.length === 0">
+                    No Records Found !
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>abc</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>efghijk</td>
-                </tr>
-                <tr>
-                    <th scope="row">4</th>
-                    <td>Lmnop</td>
-                </tr>
-                <tr>
-                    <th scope="row">5</th>
-                    <td>qrstuv</td>
-                </tr>
-                <tr>
-                    <th scope="row">6</th>
-                    <td>Small</td>
-                </tr>
-
             </tbody>
         </table>
     </div>
@@ -136,7 +120,7 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Customize Grade And Standing List</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Customize Grade / Standing Names</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -145,19 +129,19 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group mt-3">
-                                    <label for="usr" class="lable-style">Grade Or Standing ID:</label>
-                                    <input type="text" class="form-control" id="usr">
+                                    <label for="usr" class="lable-style">Grade / Standing ID:</label>
+                                    <input type="text" class="form-control" id="stdId" [(ngModel)]="gradeGroupStandingList.gradeStandingId">
                                 </div>
 
                                 <div class="form-group mt-3">
                                     <label for="usr" class="lable-style">Grade Or Standing Name:</label>
-                                    <textarea type="text" class="form-control" cols="100" rows="5" id="usr"></textarea>
+                                    <textarea type="text" class="form-control" cols="100" rows="5" id="gradeStdName" [(ngModel)]="gradeGroupStandingList.gradingName"></textarea>
                                 </div>
 
                                 
                                 <div class="form-group mt-3">
                                     <label for="usr" class="lable-style">Grade Or Standing Group Name:</label>
-                                    <select class="form-control" id="sel1">
+                                    <select class="form-control" id="gradeStdGrpName" [(ngModel)]="gradeGroupStandingList.gradingGroupName">
                                         <option selected>APR Column #1  | 1</option>
                                         <option selected>APR Column #2  | 2</option>
                                         <option selected>APR Column #3  | 3</option>
@@ -167,7 +151,7 @@
                                 
                                 <div class="form-group mt-3">
                                     <label for="usr" class="lable-style">Grade Or Standing For Next Fiscal Year:</label>
-                                    <select class="form-control" id="sel1">
+                                    <select class="form-control" id="gradeFiscalYear" [(ngModel)]="gradeGroupStandingList.gradeStandingFiscalYear">
                                         <option selected>APR Column #1  | 1</option>
                                         <option selected>APR Column #2  | 2</option>
                                         <option selected>APR Column #3  | 3</option>
@@ -177,7 +161,7 @@
                                 
                                 <div class="form-group mt-3">
                                     <label for="usr" class="lable-style">Participant Status (for reporting period) For Next Fiscal Year:</label>
-                                    <select class="form-control" id="sel1">
+                                    <select class="form-control" id="gradeStdPStatus" [(ngModel)]="gradeGroupStandingList.gradingParticipantStatus">
                                         <option selected>APR Column #1  | 1</option>
                                         <option selected>APR Column #2  | 2</option>
                                         <option selected>APR Column #3  | 3</option>
@@ -187,7 +171,7 @@
                                 
                                 <div class="form-group mt-3">
                                     <label for="usr" class="lable-style">Yearly End Status For This Fiscal Year:</label>
-                                    <select class="form-control" id="sel1">
+                                    <select class="form-control" id="gradeStdYearEndStatus" [(ngModel)]="gradeGroupStandingList.gradingYearEnbStatus">
                                         <option selected>APR Column #1  | 1</option>
                                         <option selected>APR Column #2  | 2</option>
                                         <option selected>APR Column #3  | 3</option>
@@ -201,7 +185,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="addGradeStanding()">Save changes</button>
             </div>
         </div>
     </div>

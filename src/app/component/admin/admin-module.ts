@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
 
 import { PulldownListComponent } from './customize/pulldown-list/pulldown-list.component';
@@ -9,6 +11,14 @@ import { CustomFieldsComponent } from './customize/custom-fields/custom-fields.c
 import { SchoolListComponent } from './customize/school-list/school-list.component';
 import { GradeStandingGroupListComponent } from './customize/grade/group/grade-standing-group-list.component';
 import { GradeStandingListComponent } from './customize/grade/standing/grade-standing-list.component';
+import { ConfigSettingsComponent } from './home/config-settings/config-settings.component';
+import { UserNamesAndPasswordComponent } from './home/user-names-password/user-names-and-pwd.component';
+import { SystemPreferencesComponent } from './home/system-preferences/system-preferences.component';
+import { AssignStudentsToTutorClassesComponent } from '../tutor/home/assign-student-tutor-classes/assign-student-tutor-classes.component';
+import { HttpClientModule } from '@angular/common/http';
+import { TutorsComponent } from '../tutor/home/tutors/tutors.component';
+import { AssignStudentsToTeacherClassesComponent } from '../teacher/home/assign-student-teacher-classes/assign-student-teacher-classes.component';
+import { TeacherComponent } from '../teacher/home/teachers/teacher.component';
 
 @NgModule({
   declarations: [
@@ -19,10 +29,20 @@ import { GradeStandingListComponent } from './customize/grade/standing/grade-sta
     CustomFieldsComponent,
     SchoolListComponent,
     GradeStandingGroupListComponent,
-    GradeStandingListComponent
+    GradeStandingListComponent,
+    ConfigSettingsComponent,
+    UserNamesAndPasswordComponent,
+    SystemPreferencesComponent,
+    AssignStudentsToTutorClassesComponent,
+    TutorsComponent,
+    AssignStudentsToTeacherClassesComponent,
+    TeacherComponent
   ],
   imports: [
-    AdminRoutingModule
+    AdminRoutingModule,
+    HttpClientModule,
+    CommonModule,
+    FormsModule
   ],
   providers: []
 })

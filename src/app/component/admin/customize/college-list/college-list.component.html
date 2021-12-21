@@ -46,55 +46,13 @@
                   </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">001277</th>
-                    <td>Yes</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">001414</th>
-                    <td>Yes</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">001930</th>
-                    <td>Yes</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">002006</th>
-                    <td>Yes</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">002114</th>
-                    <td>Yes</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                <ng-template *ngIf="collegeDataList > 0">
+                    <tr *ngFor="let collegeData of collegeDataList;">
+                        {{collegeData}}
+                    </tr>
+                </ng-template>
+                <tr *ngIf="collegeDataList.length === 0">
+                    No Records Found !
                 </tr>
             </tbody>
         </table>
@@ -177,38 +135,38 @@
                             <div class="col-md-12 flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Name:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" [(ngModel)]="collegeListEnum.name" class="form-control" id="collegeName"> &nbsp;
                                     <!-- <input type="checkbox" class="form-control" id="serviceId">In Pulldown List -->
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">Codes:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" class="form-control" [(ngModel)]="collegeListEnum.codes" id="codes"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Title:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" class="form-control" [(ngModel)]="collegeListEnum.title" id="title"> &nbsp;
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">County:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" class="form-control" [(ngModel)]="collegeListEnum.country" id="country"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Address:</label>
-                                    <textarea type="text" class="form-control" id="serviceId"> </textarea>
+                                    <textarea type="text" class="form-control" id="address" [(ngModel)]="collegeListEnum.address"> </textarea>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">FAFSA ID:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" class="form-control" id="fafsaID" [(ngModel)]="collegeListEnum.fafsaID"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">City:</label>
-                                    <select class="form-control" id="CFN">
+                                    <select class="form-control" id="city" [(ngModel)]="collegeListEnum.city">
                                         <option selected>Pune</option>
                                         <option>Mumbai</option>
                                     </select>
@@ -216,57 +174,57 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">State:</label>
-                                    <select class="form-control" id="CFN">
+                                    <select class="form-control" id="state" [(ngModel)]="collegeListEnum.states">
                                         <option selected>Maharashtra</option>
                                         <option>Goa</option>
                                     </select>
-                        
+                         
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Zip Code:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" class="form-control" id="zipcode" [(ngModel)]="collegeListEnum.zipcode"> &nbsp;
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">Fiscal Years:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" class="form-control" id="fiscalYears" [(ngModel)]="collegeListEnum.fiscalYears"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Phone 1:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" class="form-control" id="phone1" [(ngModel)]="collegeListEnum.phone1"> &nbsp;
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">Phone 2:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" class="form-control" id="phone2" [(ngModel)]="collegeListEnum.phone2"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Phone 3:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" class="form-control" id="phone3" [(ngModel)]="collegeListEnum.phone3"> &nbsp;
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">FAX:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" class="form-control" id="fax" [(ngModel)]="collegeListEnum.fax"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Web Site:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" class="form-control" id="website" [(ngModel)]="collegeListEnum.website"> &nbsp;
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">Email:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
+                                    <input type="text" class="form-control" id="email" [(ngModel)]="collegeListEnum.email"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group">
                                     <label for="usr">Notes:</label>
-                                    <textarea type="text" cols="100" rows="5" class="form-control" id="serviceId"> </textarea>
+                                    <textarea type="text" cols="100" rows="5" class="form-control" id="notes" [(ngModel)]="collegeListEnum.notes"> </textarea>
                                 </div>
                             </div>
 

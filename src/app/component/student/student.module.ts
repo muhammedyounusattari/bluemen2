@@ -11,6 +11,7 @@ import { WalletLogsComponent } from './logs/wallet/wallet-logs.component';
 import { FiscalYearAndFinancialAidComponent } from './data-entry/fiscal-year/fiscal-year-financial-aid.component';
 import { GraduatedComponent } from './data-entry/graduated/graduated.component';
 import { SemesterAndCoursesComponent } from './data-entry/semester-courses/semester-courses.component';
+import { GlobalFilterModule } from '../global-filter/global-filter.module';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import { SemesterAndCoursesComponent } from './data-entry/semester-courses/semes
         SemesterAndCoursesComponent
     ],
     imports: [
-        StudentRoutingModule
+        StudentRoutingModule,
+        GlobalFilterModule
     ],
     providers: []
   })

@@ -66,6 +66,55 @@ export class NavigationComponent {
             this.router.navigate(['utilities/semester']);
         } else if (componentName === 'gs-attendance-logs') {
             this.router.navigate(['utilities/gs-attendance-logs']);
+        } else if (componentName === 'staff-members') {
+            this.router.navigate(['staff/staff-members']);
+        } else if (componentName === 'config-settings') {
+            this.router.navigate(['admin/config-settings']);
+        } else if (componentName === 'user-names-pwd') {
+            this.router.navigate(['admin/user-names-pwd']);
+        } else if (componentName === 'custom-field-value') {
+            this.router.navigate(['utilities/custom-field-value']);
+        } else if (componentName === 'system-preferences') {
+            this.router.navigate(['admin/system-preferences']);
+        } else if (componentName === 'assign-tutor-student-class') {
+            this.router.navigate(['tutor/assign-tutor-student-class']);
+        } else if (componentName === 'tutors') {
+            this.router.navigate(['tutor/tutors']);
+        } else if (componentName === 'assign-student-teacher-class') {
+            this.router.navigate(['teacher/assign-student-teacher-class']);
+        } else if (componentName === 'teachers') {
+            this.router.navigate(['teacher/teachers']);
         }
+         else if (componentName === 'lab-contacts'){
+            this.router.navigate(['student/lab-contacts'])
+          }
+          else if (componentName === 'staff-contacts'){
+          this.router.navigate(['student/staff-contacts'])
+        }
+        else if (componentName === 'teacher-contacts'){
+            this.router.navigate(['student/teacher-contacts'])
+          }
+
+          else if (componentName === 'tutor-contacts'){
+            this.router.navigate(['student/tutor-contacts'])
+          }
+          else if (componentName === 'counselor-contacts') {
+            this.router.navigate(['student/counselor-contacts'])
+        }
+          else if (componentName === 'display-counselor-contacts'){
+            this.router.navigate(['student/display-counselor-contacts'])
+          }
+          else if (componentName === 'display-tutor-contacts'){
+            this.router.navigate(['display-tutor-contacts'])
+          }
+          else if (componentName === 'display-teacher-contacts'){
+            this.router.navigate(['student/display-teacher-contacts'])
+          }
+          else if (componentName === 'display-staff-contacts'){
+            this.router.navigate(['student/display-staff-contacts'])
+          }
+            else if (componentName === 'personalized-letters'){
+            this.router.navigate(['personalized-letters'])
+          }
     }
 }

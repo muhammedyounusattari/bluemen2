@@ -42,42 +42,16 @@
                 </tr>
             </thead>
             <tbody>
-
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Tutoring</td>
-                    <td>Yes</td>
-                    <td>Yes</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Assisted Computer Labs</td>
-                    <td>Yes</td>
-                    <td>Yes</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Counseling</td>
-                    <td>Yes</td>
-                    <td>Yes</td>
-                </tr>
-                <tr>
-                    <th scope="row">4</th>
-                    <td>Mentoring</td>
-                    <td>Yes</td>
-                    <td>Yes</td>
-                </tr>
-                <tr>
-                    <th scope="row">5</th>
-                    <td>Family Activities</td>
-                    <td>Yes</td>
-                    <td>Yes</td>
-                </tr>
-                <tr>
-                    <th scope="row">6</th>
-                    <td>Referrals</td>
-                    <td>Yes</td>
-                    <td>Yes</td>
+                <!-- <ng-template *ngIf="activityGroupData.length > 0"> -->
+                    <tr *ngFor="let groupData of activityGroupData;">
+                        <td>{{groupData.activityGroupId}}</td>
+                        <td>{{groupData.activityGroupName}}</td>
+                        <td>{{groupData.activityReportActivityGroup}}</td>
+                        <td>{{groupData.activityCalculateHoursforActivityGroup}}</td>
+                    </tr>
+                <!-- </ng-template> -->
+                <tr *ngIf="activityGroupData.length === 0">
+                    No Records Found !
                 </tr>
             </tbody>
         </table>
@@ -119,27 +93,27 @@
                             <div class="col-md-12">
                                 <div class="form-group ">
                                     <label for="usr">Service or ActivityID:</label>
-                                    <input type="text" class="form-control" id="serviceId">
+                                    <input type="text" class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupId" id="groupId">
                                 </div>
 
                                 <div class="form-group mt-3">
                                     <label for="usr">Service Or Activiy Group Name:</label>
-                                    <input type="text" class="form-control" id="usr">
+                                    <input type="text" class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupName" id="groupName">
                                 </div>
 
                                 <div class="form-group mt-3">
                                     <label for="usr">Calculate Hours for Active Group:</label>
-                                    <input type="text" class="form-control" id="usr">
+                                    <input type="text" class="form-control" [(ngModel)]="activityGrpListEnum.activityCalculateHoursforActivityGroup" id="groupHours">
                                 </div>
 
                                 <div class="form-group mt-3">
                                     <label for="usr">Report Activity Group:</label>
-                                    <input type="text" class="form-control" id="usr">
+                                    <input type="text" class="form-control" [(ngModel)]="activityGrpListEnum.activityReportActivityGroup" id="groupReport">
                                 </div>
 
                                 <div class="form-group mt-3">
                                     <label for="usr">Activity Group Type</label>
-                                    <select class="form-control" id="sel1">
+                                    <select class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupTypeName" id="groupType">
                                         <option selected>Count All Contact on Same Day As One Event | 1</option>
                                         <option selected>Count All Contact on Same Day As Separate Sessions | 2</option>
                                     </select>
@@ -151,7 +125,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="addNewGroupName()">Save changes</button>
             </div>
         </div>
     </div>
@@ -174,7 +148,8 @@
                         data-bs-target="#exampleModal">New</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Edit</a>
+                    <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">Edit</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">Rename</a>
@@ -195,7 +170,6 @@
                     <a class="nav-link " href="#">Submit</a>
                 </li>
             </ul>
-
         </div>
     </div>
 </nav>
