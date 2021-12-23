@@ -41,7 +41,7 @@
             </thead>
             <tbody>
                 <!-- <ng-template *ngIf="activityServiceData.length > 0"> -->
-                    <tr *ngFor="let serviceData of activityServiceData;">
+                    <tr *ngFor="let serviceData of activityServiceData; let idx = index;" (click)="setSelectedRow(serviceData)">
                         <td>{{serviceData.activityId}}</td>
                         <td>{{serviceData.activityName}}</td>
                     </tr>
@@ -118,8 +118,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="addNewServiceName()">Save changes</button>
+                <button type="button" class="btn btn-s';econdary" data-bs-dismiss="modal" (click)="isEdit = false;">Close</button>
+                <button type="button" class="btn btn-v .primary" *ngIf="!isEdit" (click)="addNewServiceName()">Save changes</button>
+                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update Changes</button>
             </div>
         </div>
     </div>
@@ -139,10 +140,11 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">New</a>
+                        data-bs-target="#exampleModal" (click)="resetFields()">New</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Edit</a>
+                    <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">Rename</a>
@@ -154,7 +156,7 @@
                     <a class="nav-link " href="#">Merge</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Delete</a>
+                    <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">Print</a>

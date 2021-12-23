@@ -12,17 +12,17 @@
             </form>
         </div>
     </div>
-    <div class="row">
+    <form [formGroup]="pulldownListForm" class="row">
         <div class="form-group col-md-3">
             <label for="sel1" class="lable-style">Status</label>
-            <select class="form-control" id="Status">
+            <select formControlName="active" class="form-control" id="Status">
                 <option selected>Active</option>
                 <option>InActive</option>
             </select>
         </div>
         <div class="form-group col-md-3">
             <label for="sel1" class="lable-style">APR</label>
-            <select class="form-control" id="APR">
+            <select formControlName="apr" class="form-control" id="APR">
                 <option selected>Yes</option>
                 <option>No</option>
             </select>
@@ -30,7 +30,7 @@
 
         <div class="form-group col-md-3">
             <label for="sel1" class="lable-style">ORG Type</label>
-            <select class="form-control" id="OrgType">
+            <select formControlName="orgType" class="form-control" id="OrgType">
                 <option>SSS</option>
                 <option>VUB</option>
                 <option>MCN</option>
@@ -39,9 +39,9 @@
         </div>
         <div class="form-group col-md-3">
             <label for="sel1" class="lable-style">Org Id</label>
-            <input type="text" class="form-control" id="OrgId">
+            <input formControlName="orgId" type="text" class="form-control" id="OrgId">
         </div>
-    </div>
+    </form>
     <div class="border-bot" style="margin-top: 2%;"></div>
 
     <div class="table-responsive" style="border:1px solid #1366A0;">
@@ -58,23 +58,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">0</th>
-                    <td>APR 17 | Gender</td>
-                    <td>Signle Selection</td>
-                    <td>Active</td>
-                    <td>Yes</td>
-                    <td>SSH, MCN, TS</td>
-                    <td>NA</td>
-                </tr>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Class</td>
-                    <td>Signle Selection</td>
-                    <td>Active</td>
-                    <td>NO</td>
-                    <td>SSH, MCN, TS</td>
-                    <td>001 </td>
+                <tr *ngFor="let data of pulldownList; let i as index" (click)="getSelectedRow(data, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">
+                    <th scope="row">{{data.id}}</th>
+                    <td>{{data.name}}</td>
+                    <td>{{data.selectionType}}</td>
+                    <td>{{data.active}}</td>
+                    <td>{{data.apr}}</td>
+                    <td>{{data.orgType}}</td>
+                    <td>{{data.orgId}}</td>
                 </tr>
             </tbody>
         </table>
@@ -102,40 +93,38 @@
 </div>
 <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Reset</a>
+                    <a class="nav-link active" aria-current="page">Reset</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">New</a>
+                    <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal" data-bs-target="#exampleModal">New</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Edit</a>
+                    <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Rename</a>
+                    <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Move</a>
+                    <a class="nav-link" (click)="getSelectedOption('Move')">Move</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Merge</a>
+                    <a class="nav-link" (click)="getSelectedOption('Merge')">Merge</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Delete</a>
+                    <a class="nav-link" (click)="deletePullDownList()">Delete</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Print</a>
+                    <a class="nav-link" (click)="getSelectedOption('Print')">Print</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Submit</a>
+                    <a class="nav-link" (click)="getSelectedOption('Submit')">Submit</a>
                 </li>
             </ul>
 
@@ -144,35 +133,35 @@
 </nav>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" #addDropDownValue id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Pulldown Name</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <form [formGroup]="pulldownListModalForm" class="modal-body">
                 <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group ">
                                     <label for="usr">Enter the Pulldown Number:</label>
-                                    <input type="text" class="form-control" id="serviceId">
+                                    <input formControlName="id" type="text" class="form-control" id="pullDownNumber">
                                 </div>
 
                                 <div class="form-group mt-3">
                                     <label for="usr">Enter the Pulldown Name:</label>
-                                    <input type="text" class="form-control" id="usr">
+                                    <input formControlName="name" type="text" class="form-control" id="pullDownName">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="handleMethodToCall()">Save changes</button>
             </div>
         </div>
     </div>

@@ -43,7 +43,7 @@
             </thead>
             <tbody>
                 <!-- <ng-template *ngIf="activityGroupData.length > 0"> -->
-                    <tr *ngFor="let groupData of activityGroupData;">
+                    <tr *ngFor="let groupData of activityGroupData; let idx = index;" (click)="setSelectedRow(groupData)">
                         <td>{{groupData.activityGroupId}}</td>
                         <td>{{groupData.activityGroupName}}</td>
                         <td>{{groupData.activityReportActivityGroup}}</td>
@@ -124,8 +124,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="addNewGroupName()">Save changes</button>
+                <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewGroupName()">Save changes</button>
+                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update Changes</button>
             </div>
         </div>
     </div>
@@ -145,11 +146,11 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">New</a>
+                        data-bs-target="#exampleModal" (click)="resetFields()">New</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">Edit</a>
+                    data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">Rename</a>
@@ -161,7 +162,7 @@
                     <a class="nav-link " href="#">Merge</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Delete</a>
+                    <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">Print</a>

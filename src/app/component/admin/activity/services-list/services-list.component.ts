@@ -26,7 +26,8 @@ export class ServicesListComponent implements OnInit{
         ignoreBackdropClick: true,
         class: 'modal-lg'
     }
-
+    selectedRow: any = '';
+    isEdit: boolean = false;
     constructor(private modalService: BsModalService
         , private router: Router
         , private _activityGroupServicesService: ActivityGroupServicesService) { }
@@ -46,7 +47,12 @@ export class ServicesListComponent implements OnInit{
         this.requestData.lapService = this.activityServiceListEnum.lapService;
         this._activityGroupServicesService.postActivityServiceList(this.requestData).subscribe(result=>{
             if(result) {
-                alert('Saved !');
+                this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
+                    if (result) {
+                        document.getElementById('closePopup')?.click();
+                        this.activityServiceData = result;
+                    }
+                });
             }
         });
     }
@@ -63,6 +69,55 @@ export class ServicesListComponent implements OnInit{
         } else if (componentName === 'services-list') {
             this.router.navigate(['admin/services-list']);
         }
+    }
+    deleteSelectedRow() {
+        if(this.selectedRow) {
+            const data ={
+                activityId: this.selectedRow.activityId
+            }
+         
+            this._activityGroupServicesService.deleteActivityServiceList(data).subscribe(result => {
+                this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
+                    if (result) {
+                        this.activityServiceData = result;
+                    }
+                }); 
+            });
+        }
+    }
+    setSelectedRow(selectedRowItem: any) {
+        const data = this.activityServiceData.filter((item: any) => item.activityId === selectedRowItem.activityId);
+        if (data && data.length > 0) {
+            this.selectedRow = data[0];
+        }
+    }
+    setSelectedRowToUpdate() {
+        this.isEdit = true;
+        this.activityServiceListEnum.activityId = this.selectedRow.activityId;
+        this.activityServiceListEnum.activityGroupName = this.selectedRow.activityGroupName;
+        this.activityServiceListEnum.activityName = this.selectedRow.activityName;
+        this.activityServiceListEnum.lapService = this.selectedRow.lapService;
+    }
+    updateSelectedRow() {
+        if(this.selectedRow) {
+            this.requestData.activityId= Number(this.activityServiceListEnum.activityId);
+            this.requestData.activityName = this.activityServiceListEnum.activityName;
+            this.requestData.activityGroupName = this.activityServiceListEnum.activityGroupName;
+            this.requestData.lapService = this.activityServiceListEnum.lapService;
+            
+            this._activityGroupServicesService.updateActivityServiceList(this.requestData).subscribe(result => {
+                this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
+                    if (result) {
+                        document.getElementById('closePopup')?.click();
+                        this.activityServiceData = result;
+                        this.isEdit = false;
+                    }
+                });
+            });
+        }
+    }
+    resetFields() {
+        this.activityServiceListEnum = new ActivityServiceListEnum();
     }
 
 }

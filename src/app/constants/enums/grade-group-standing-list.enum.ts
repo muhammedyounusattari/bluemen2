@@ -5,7 +5,7 @@ export class GradeGroupStandingList {
     gradeGroupAprColumn: string = '';
     
     graduateList: boolean = true;
-    gradeStandingId: number = 0;
+    gradingId: number = 0;
     gradingName: string = '';
     gradingGroupName: string = '';
     gradingNewGrade: string = '';

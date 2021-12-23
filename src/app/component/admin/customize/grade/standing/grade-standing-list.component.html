@@ -40,8 +40,8 @@
             </thead>
             <tbody>
                 <!-- <ng-template *ngIf="gradeStandingListData > 0"> -->
-                    <tr *ngFor="let gradeStd of gradeStandingListData;">
-                        <td>{{gradeStd.gradeStandingId}}</td>
+                    <tr *ngFor="let gradeStd of gradeStandingListData; let idx = index;" (click)="setSelectedRow(gradeStd)">
+                        <td>{{gradeStd.gradingId}}</td>
                         <td>{{gradeStd.gradingName}}</td>
                     </tr>
                 <!-- </ng-template> -->
@@ -86,10 +86,11 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">New</a>
+                            data-bs-target="#exampleModal" (click)="resetFields()">New</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">Edit</a>
+                        <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="#">Rename</a>
@@ -101,7 +102,7 @@
                         <a class="nav-link " href="#">Merge</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">Delete</a>
+                        <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="#">Print</a>
@@ -127,10 +128,10 @@
                 <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12">  
                                 <div class="form-group mt-3">
                                     <label for="usr" class="lable-style">Grade / Standing ID:</label>
-                                    <input type="text" class="form-control" id="stdId" [(ngModel)]="gradeGroupStandingList.gradeStandingId">
+                                    <input type="text" class="form-control" id="stdId" [(ngModel)]="gradeGroupStandingList.gradingId">
                                 </div>
 
                                 <div class="form-group mt-3">
@@ -184,8 +185,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="addGradeStanding()">Save changes</button>
+                <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addGradeStanding()">Save changes</button>
+                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update Changes</button>
             </div>
         </div>
     </div>

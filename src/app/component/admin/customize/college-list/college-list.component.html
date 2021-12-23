@@ -38,7 +38,7 @@
                     <th scope="col">College Name</th>
                     <th scope="col">In Pulldown</th>
                     <th scope="col">FAFSA ID</th>
-                    <th scope="col">County Name</th>
+                    <th scope="col">Country Name</th>
                     <th scope="col">Phone 1</th>
                     <th scope="col">Phone 2</th>
                     <th scope="col">Phone 3</th>
@@ -46,11 +46,18 @@
                   </tr>
             </thead>
             <tbody>
-                <ng-template *ngIf="collegeDataList > 0">
-                    <tr *ngFor="let collegeData of collegeDataList;">
-                        {{collegeData}}
+                <!-- <ng-template *ngIf="collegeDataList > 0"> -->
+                    <tr *ngFor="let collegeData of collegeDataList; let idx = index;" (click)="setSelectedRow(collegeData)">
+                        <td>{{collegeData.name}}</td>
+                        <td>{{collegeData.orgType}}</td>
+                        <td>{{collegeData.fafsaID}}</td>
+                        <td>{{collegeData.country}}</td>
+                        <td>{{collegeData.phone1}}</td>
+                        <td>{{collegeData.phone2}}</td>
+                        <td>{{collegeData.phone3}}</td>
+                        <td>{{collegeData.fax}}</td>
                     </tr>
-                </ng-template>
+                <!-- </ng-template> -->
                 <tr *ngIf="collegeDataList.length === 0">
                     No Records Found !
                 </tr>
@@ -92,10 +99,11 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">New</a>
+                        data-bs-target="#exampleModal" (click)="resetFields()">New</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Edit</a>
+                    <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">Rename</a>
@@ -107,8 +115,9 @@
                     <a class="nav-link " href="#">Merge</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Delete</a>
+                    <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link " href="#">Print</a>
                 </li>
@@ -233,8 +242,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewCollegeName()">Save changes</button>
+                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update Changes</button>
             </div>
         </div>
     </div>

@@ -18,7 +18,7 @@ export class GradingGroupStandingService {
     }
 
     postGradingGroupList(request: any): Observable<any> {
-        return this.dataService.callPostService(ServiceUrls.POST_GRADING_GROUP_LIST, JSON.stringify(request));
+        return this.dataService.callPostService(ServiceUrls.POST_GRADING_GROUP_LIST, request);
     }
 
     updateGradingGroupList(request: any): Observable<any> {
@@ -38,11 +38,11 @@ export class GradingGroupStandingService {
     /** GRADING STANDING LIST API - START */
 
     getGradingStandingList(request: any): Observable<any> {
-        return this.dataService.callGetService(ServiceUrls.GET_GRADING_GROUP_LIST, request);
+        return this.dataService.callGetService(ServiceUrls.GET_GRADING_STANDING_LIST, request);
     }
 
     postGradingStandingList(request: any): Observable<any> {
-        return this.dataService.callPostService(ServiceUrls.POST_GRADING_GROUP_LIST, JSON.stringify(request));
+        return this.dataService.callPostService(ServiceUrls.POST_GRADING_GROUP_LIST, request);
     }
 
     updateGradingStandingList(request: any): Observable<any> {

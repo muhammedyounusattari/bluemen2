@@ -41,7 +41,7 @@
             </thead>
             <tbody>
                 <!-- <ng-template *ngIf="gradeGroupListData > 0"> -->
-                    <tr *ngFor="let gradeGroup of gradeGroupListData;">
+                    <tr *ngFor="let gradeGroup of gradeGroupListData; let idx = index;" (click)="setSelectedRow(gradeGroup)">
                         <td>{{gradeGroup.gradeGroupId}}</td>
                         <td>{{gradeGroup.gradeGroupName}}</td>
                         <td>{{gradeGroup.gradeGroupAprColumn}}</td>
@@ -88,10 +88,11 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">New</a>
+                            data-bs-target="#exampleModal" (click)="resetFields()">New</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">Edit</a>
+                        <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="#">Rename</a>
@@ -103,7 +104,7 @@
                         <a class="nav-link " href="#">Merge</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">Delete</a>
+                        <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="#">Print</a>
@@ -156,8 +157,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="addGradeGroup()">Save changes</button>
+                <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addGradeGroup()">Save changes</button>
+                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update Changes</button>
             </div>
         </div>
     </div>

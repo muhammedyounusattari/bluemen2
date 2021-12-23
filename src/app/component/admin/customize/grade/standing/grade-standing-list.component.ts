@@ -14,7 +14,7 @@ export class GradeStandingListComponent implements OnInit {
     gradeStandingListData: any = [];
     requestData = {
         graduateList: true,
-        gradeStandingId: 1,
+        gradingId: 1,
         gradingName: '',
         gradingGroupName: '',
         gradingNewGrade: '',
@@ -30,6 +30,8 @@ export class GradeStandingListComponent implements OnInit {
         ignoreBackdropClick: true,
         class: 'modal-lg'
     }
+    selectedRow: any = '';
+    isEdit: boolean = false;
     constructor(private modalService: BsModalService
         , private router: Router
         , private _gradingGroupStandingService: GradingGroupStandingService) { }
@@ -57,7 +59,7 @@ export class GradeStandingListComponent implements OnInit {
     }
     addGradeStanding() {
         this.requestData.graduateList = true;
-        this.requestData.gradeStandingId = this.gradeGroupStandingList.gradeStandingId;
+        this.requestData.gradingId = this.gradeGroupStandingList.gradingId;
         this.requestData.gradingName = this.gradeGroupStandingList.gradingName;
         this.requestData.gradingGroupName = this.gradeGroupStandingList.gradingGroupName;
         this.requestData.gradingNewGrade = '';
@@ -65,8 +67,68 @@ export class GradeStandingListComponent implements OnInit {
         this.requestData.gradingYearEnbStatus = this.gradeGroupStandingList.gradingYearEnbStatus;
         this._gradingGroupStandingService.postGradingStandingList(this.requestData).subscribe(result => {
             if (result) {
-                alert('saved');
+                document.getElementById('closePopup')?.click();
+                this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
+                    if (result) {
+                        this.gradeStandingListData = result;
+                    }
+                });
             }
         });
+    }
+    setSelectedRow(selectedRowItem: any) {
+        const data = this.gradeStandingListData.filter((item: any) => item.gradingId === selectedRowItem.gradingId);
+        if (data && data.length > 0) {
+            this.selectedRow = data[0];
+        }
+    }
+
+    deleteSelectedRow() {
+        if(this.selectedRow) {
+            const data ={
+                activityGroupId: this.selectedRow.activityGroupId
+            }
+         
+            this._gradingGroupStandingService.deleteGradingStandingList(data).subscribe(result => {
+                this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
+                    if (result) {
+                        this.gradeStandingListData = result;
+                    }
+                });
+            });
+        }
+    }
+    setSelectedRowToUpdate() {
+        this.isEdit = true;
+        this.gradeGroupStandingList.graduateList = true;
+        this.gradeGroupStandingList.gradingId = this.selectedRow.gradingId;
+        this.gradeGroupStandingList.gradingName = this.selectedRow.gradingName;
+        this.gradeGroupStandingList.gradingGroupName = this.selectedRow.gradingGroupName;
+        this.gradeGroupStandingList.gradingNewGrade = '';
+        this.gradeGroupStandingList.gradingParticipantStatus = this.selectedRow.gradingParticipantStatus;
+        this.gradeGroupStandingList.gradingYearEnbStatus = this.selectedRow.gradingYearEnbStatus;
+    }
+    updateSelectedRow() {
+        if(this.selectedRow) {
+            this.requestData.graduateList = true;
+            this.requestData.gradingId = this.gradeGroupStandingList.gradingId;
+            this.requestData.gradingName = this.gradeGroupStandingList.gradingName;
+            this.requestData.gradingGroupName = this.gradeGroupStandingList.gradingGroupName;
+            this.requestData.gradingNewGrade = '';
+            this.requestData.gradingParticipantStatus = this.gradeGroupStandingList.gradingParticipantStatus;
+            this.requestData.gradingYearEnbStatus = this.gradeGroupStandingList.gradingYearEnbStatus;
+            this._gradingGroupStandingService.updateGradingStandingList(this.requestData).subscribe(response => {
+                document.getElementById('closePopup')?.click();
+                this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
+                    if (result) {
+                         this.gradeStandingListData = result;
+                        this.isEdit = false;
+                    }
+                });
+            });
+        }
+    }
+    resetFields() {
+        this.gradeGroupStandingList = new GradeGroupStandingList();
     }
 }

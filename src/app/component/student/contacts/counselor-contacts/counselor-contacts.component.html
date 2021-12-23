@@ -8,7 +8,7 @@
     <div class="row ">
         <div class="col-md-6 mt-3 mb-3 ">
             <form class="example" action="/action_page.php">
-                <input type="text" placeholder="Search.." name="search2">
+                <input type="text" placeholder="Search.." required name="search2">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
@@ -143,7 +143,7 @@
                 <div class="row " style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
                         <label class="radio-inline"> Logged:
-                            <input type="radio" name="optradio" checked> Yes </label>
+                            <input type="radio" required name="optradio" checked> Yes </label>
                         <label class="radio-inline">
                             <input type="radio" name="optradio"> NO
                         </label>
@@ -591,6 +591,35 @@
                         </div>
                     </div>
                 </div>
+                <table id="table">
+                    <tr>
+                        <td>1 Ferrari F138</td>
+                        <td>1 000€</td>
+                        <td>1 200€</td>
+                        <td>Model monopostu stajne Scuderia Ferrari pre sezónu 2013</td>
+                        <td>1</td>
+                        <td>F138</td>
+                        <td>Klik pre detaily</td>
+                    </tr>
+                    <tr>
+                        <td>2 Ferrari F138</td>
+                        <td>1 000€</td>
+                        <td>1 200€</td>
+                        <td>Model monopostu stajne Scuderia Ferrari pre sezónu 2013</td>
+                        <td>1</td>
+                        <td>F138</td>
+                        <td>Klik pre detaily</td>
+                    </tr>
+                    <tr>
+                        <td>3 Ferrari F138</td>
+                        <td>1 000€</td>
+                        <td>1 200€</td>
+                        <td>Model monopostu stajne Scuderia Ferrari pre sezónu 2013</td>
+                        <td>1</td>
+                        <td>F138</td>
+                        <td>Klik pre detaily</td>
+                    </tr>
+                </table>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary">Save changes</button>
@@ -641,4 +670,12 @@
 
         </div>
     </div>
-</nav>
+</nav><script>$("#table tr").click(function(){
+    $(this).addClass('selected').siblings().removeClass('selected');    
+    var value=$(this).find('td:first').html();
+    alert(value);    
+ });
+ 
+ $('.ok').on('click', function(e){
+     alert($("#table tr.selected td:first").html());
+ });</script>

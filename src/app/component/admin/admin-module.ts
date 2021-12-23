@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
 
 import { PulldownListComponent } from './customize/pulldown-list/pulldown-list.component';
@@ -42,7 +42,8 @@ import { TeacherComponent } from '../teacher/home/teachers/teacher.component';
     AdminRoutingModule,
     HttpClientModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: []
 })

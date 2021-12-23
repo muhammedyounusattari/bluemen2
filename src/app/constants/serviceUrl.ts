@@ -36,4 +36,19 @@ export class ServiceUrls {
     public static DELETE_GRADING_STANDING_LIST = environment.apiUrl + '/blumen-api/customize/deleteGradingList/v1';
     public static UPDATE_GRADING_STANDING_LIST = environment.apiUrl + '/blumen-api/customize/updateGradingList/v1';
     public static POST_GRADING_STANDING_LIST = environment.apiUrl + '/blumen-api/customize/gradingList/v1';
+
+    // Custom Field API URL's
+    public static GET_CUSTOM_FIELD_NAME_TYPE = environment.apiUrl + '/blumen-api/customize/getCustomFieldsNameType/v1';
+    public static UPDATE_CUSTOM_FIELD_NAME_TYPE = environment.apiUrl + '/blumen-api/customize/updateCustomFieldsNameType/v1';
+    public static ADD_CUSTOM_FIELD_NAME_TYPE = environment.apiUrl + '/blumen-api/customize/customFieldsNameType/v1';
+    public static DELETE_CUSTOM_FIELD_NAME_TYPE = environment.apiUrl + '/blumen-api/customize/deleteCustomFieldsNameTypeList/v1';
+    public static FILTER_CUSTOM_FIELD_NAME_TYPE = environment.apiUrl + '/blumen-api/customize/filter/customFieldsNameType/v1';
+
+    // Custom Field API URL's
+    public static GET_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/getPullDownList/v1';
+    public static UPDATE_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/updatePullDownList/v1';
+    public static ADD_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/pullDownList/v1';
+    public static DELETE_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/deletePullDownList/v1';
+    public static FILTER_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/filter/filterPullDownList/v1';
+
 }

@@ -185,7 +185,8 @@
                     <a class="nav-link" href="#">APR</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">COUNSELOR</a>
+                    <a class="nav-link" href="javascript:void(0)"
+                    (click)="navigateToComponent('counselor-contacts')">COUNSELOR</a>
                 </li>
                 <li class="nav-item dropdown" id="myDropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"> TUTOR </a>
@@ -273,6 +274,77 @@
                         </li>
                         <li> <a class="dropdown-item" href="javascript:void(0)"> Customize &raquo; </a>
                             <ul class="submenu-left dropdown-menu" style="z-index: 10001;">
+                               
+                               
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('staff-contacts')">Staff Member</a>
+                            </li>
+                            <li><a class="dropdown-item" href="javascript:void(0)"
+                                (click)="navigateToComponent('lab-contacts')">Contacts</a>
+                                
+                             
+
+   <ul class="submenu-left dropdown-menu" style="z-index: 10001;">
+    <li><a class="dropdown-item" href="javascript:void(0)"
+        (click)="navigateToComponent('service-group-list')">Lab Contacts</a>
+</li>
+<li><a class="dropdown-item" href="javascript:void(0)"
+    (click)="navigateToComponent('counselor-contacts')">Counselor Contacts</a>
+</li>
+<li><a class="dropdown-item" href="javascript:void(0)"
+(click)="navigateToComponent('staff-contacts')">Staff Contacts</a>
+</li>
+<li><a class="dropdown-item" href="javascript:void(0)"
+(click)="navigateToComponent('teacher-contacts')">Teacher Contacts</a>
+</li>
+<li><a class="dropdown-item" href="javascript:void(0)"
+(click)="navigateToComponent('tutor-contacts')">Tutor Contacts</a>
+</li> </ul>
+                        </li>     
+                        
+                        <li><a class="dropdown-item" href="javascript:void(0)"
+                            (click)="navigateToComponent('service-group-list')">Classes</a>
+                            <ul class="submenu-left dropdown-menu" style="z-index: 10001;">
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('assign-tutor-student-class')">Assign Students</a>
+                                    <ul class="submenu-left dropdown-menu" style="z-index: 10001;">
+                                        <li><a class="dropdown-item" href="javascript:void(0)"
+                                            (click)="navigateToComponent('counselor-contacts')">Counselor Classes</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('staff-contacts')">Staff Classes</a>
+                                </li>
+                                <li><a class="dropdown-item" href="javascript:void(0)"
+                                    (click)="navigateToComponent('tutors')">Tutor Classes</a>
+                            </li>
+                            <li><a class="dropdown-item" href="javascript:void(0)"
+                                (click)="navigateToComponent('teachers')">Teacher Classes</a>
+                        </li></ul>
+                                    </li> 
+                                    <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="navigateToComponent('assign-student-teacher-class')">Manage Classes</a>
+                                       
+                                        <ul class="submenu-left dropdown-menu" style="z-index: 10001;">
+                                
+
+                                            <li><a class="dropdown-item" href="javascript:void(0)"
+                                                                    (click)="navigateToComponent('service-group-list')">Counselor Classes</a>
+                                                            </li>
+                                                            <li><a class="dropdown-item" href="javascript:void(0)"
+                                                                (click)="navigateToComponent('service-group-list')">Staff Classes</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)"
+                                                            (click)="navigateToComponent('service-group-list')">Tutor Classes</a>
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="javascript:void(0)"
+                                                        (click)="navigateToComponent('service-group-list')">Teacher Classes</a>
+                                                </li></ul>  
+                                    
+                                    </li> 
+                                </ul>  
+                    </li>
+                          
+                               
                                 <li><a class="dropdown-item" href="javascript:void(0)"
                                         (click)="navigateToComponent('service-group-list')">Activity Group / Service</a>
                                 </li>

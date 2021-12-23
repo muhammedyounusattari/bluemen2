@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +14,7 @@ import { AdminModule } from './component/admin/admin-module';
 import { StudentModule } from './component/student/student.module';
 import { UtilitiesModule } from './component/utilities/utilities.module';
 import { StaffModule } from './component/staff/staff.module.';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -30,9 +31,11 @@ import { StaffModule } from './component/staff/staff.module.';
     UtilitiesModule,
     StaffModule,
     MDBBootstrapModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class AppModule { }

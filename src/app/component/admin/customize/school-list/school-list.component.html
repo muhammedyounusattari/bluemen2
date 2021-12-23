@@ -7,8 +7,8 @@
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="javascript:void(0)"
-                (click)="navigateToComponent('college-list')" role="tab" aria-controls="home"
-                aria-selected="true">College Names</a>
+                (click)="navigateToComponent('school-list')" role="tab" aria-controls="home"
+                aria-selected="true">school Names</a>
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="javascript:void(0)"
@@ -46,11 +46,18 @@
                 </tr>
             </thead>
             <tbody>
-                <ng-template *ngIf="schoolDataList > 0">
-                    <tr *ngFor="let schoolData of schoolDataList;">
-                        {{schoolData}}
+                <!-- <ng-template *ngIf="schoolDataList > 0"> -->
+                    <tr *ngFor="let schoolData of schoolDataList; let idx = index;" (click)="setSelectedRow(schoolData)">
+                        <td>{{schoolData.name}}</td>
+                        <td>{{schoolData.orgType}}</td>
+                        <td>{{schoolData.ncesId}}</td>
+                        <td>{{schoolData.country}}</td>
+                        <td>{{schoolData.phone1}}</td>
+                        <td>{{schoolData.phone2}}</td>
+                        <td>{{schoolData.phone3}}</td>
+                        <td>{{schoolData.fax}}</td>
                     </tr>
-                </ng-template>
+                <!-- </ng-template> -->
                 <tr *ngIf="schoolDataList.length === 0">
                     No Records Found !
                 </tr>
@@ -92,10 +99,11 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">New</a>
+                        data-bs-target="#exampleModal" (click)="resetFields()">New</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Edit</a>
+                    <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">Rename</a>
@@ -107,7 +115,7 @@
                     <a class="nav-link " href="#">Merge</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Delete</a>
+                    <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">Print</a>
@@ -136,7 +144,7 @@
                             <div class="col-md-12 flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Name:</label>
-                                    <input type="text" [(ngModel)]="schoolListEnum.name" class="form-control" id="collegeName"> &nbsp;
+                                    <input type="text" [(ngModel)]="schoolListEnum.name" class="form-control" id="schoolName"> &nbsp;
                                     <!-- <input type="checkbox" class="form-control" id="serviceId">In Pulldown List -->
                                 </div>
                                 <div class="form-group col-md-6">
@@ -160,7 +168,7 @@
                                     <textarea type="text" class="form-control" id="address" [(ngModel)]="schoolListEnum.address"> </textarea>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="usr">FAFSA ID:</label>
+                                    <label for="usr">NCES ID:</label>
                                     <input type="text" class="form-control" id="fafsaID" [(ngModel)]="schoolListEnum.ncesId"> &nbsp;
                                 </div>
                             </div>
@@ -175,7 +183,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">State:</label>
-                                    <select class="form-control" id="state" [(ngModel)]="schoolListEnum.state">
+                                    <select class="form-control" id="state" [(ngModel)]="schoolListEnum.states">
                                         <option selected>Maharashtra</option>
                                         <option>Goa</option>
                                     </select>
@@ -185,7 +193,7 @@
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Zip Code:</label>
-                                    <input type="text" class="form-control" id="zipcode" [(ngModel)]="schoolListEnum.zipCode"> &nbsp;
+                                    <input type="text" class="form-control" id="zipcode" [(ngModel)]="schoolListEnum.zipcode"> &nbsp;
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">Fiscal Years:</label>
@@ -234,8 +242,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewSchoolName()">Save changes</button>
+                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update Changes</button>
+
             </div>
         </div>
     </div>

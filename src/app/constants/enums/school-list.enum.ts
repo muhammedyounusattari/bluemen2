@@ -1,4 +1,6 @@
 export class SchoolListEnum {
+    orgName: string = '';
+    orgType: string = '';
     name: string = '';
     codes: string = '';
     title: string = '';
@@ -6,8 +8,8 @@ export class SchoolListEnum {
     address: string = '';
     ncesId: string = '';
     city: string = '';
-    state: string = '';
-    zipCode: string = '';
+    states: string = '';
+    zipcode: string = '';
     fiscalYears: string = '';
     phone1: string = '';
     phone2: string = '';
