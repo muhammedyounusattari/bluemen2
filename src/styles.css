@@ -339,3 +339,5 @@ footer.page-footer .footer-copyright {
 
 
 /* ============ small devices .end// ============ */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
