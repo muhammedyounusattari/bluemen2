@@ -58,7 +58,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let data of pulldownList; let i as index" (click)="getSelectedRow(data, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">
+                <tr *ngFor="let data of pulldownList; let i as index" (click)="getSelectedRow(data, i)"
+                    [ngClass]="{'selected-row' : this.selectedRow == i}">
                     <th scope="row">{{data.id}}</th>
                     <td>{{data.name}}</td>
                     <td>{{data.selectionType}}</td>
@@ -93,7 +94,8 @@
 </div>
 <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
@@ -103,10 +105,12 @@
                     <a class="nav-link active" aria-current="page">Reset</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal" data-bs-target="#exampleModal">New</a>
+                    <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">New</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
+                    <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">Edit</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>
@@ -133,7 +137,8 @@
 </nav>
 
 <!-- Modal -->
-<div class="modal fade" #addDropDownValue id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" #addDropDownValue id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -154,6 +159,80 @@
                                     <label for="usr">Enter the Pulldown Name:</label>
                                     <input formControlName="name" type="text" class="form-control" id="pullDownName">
                                 </div>
+                                <div class="form-group col-md-3" style="display: flex;">
+                                    <label for="usr">Status
+                                    </label>
+                                    <div class="col-md-6">
+                                        <label class="radio-inline">
+                                            <input type="checkbox" name="optradio"> Active
+                                        </label> &nbsp;&nbsp;
+                                        <label class="radio-inline">
+                                            <input type="checkbox" name="optradio"> In-Active
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="sel1" class="lable-style">APR</label>
+                                    <select formControlName="apr" class="form-control" id="APR">
+                                        <option selected>Yes</option>
+                                        <option>No</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="sel1" class="lable-style">APR NAME</label>
+                                    <select formControlName="orgType" class="form-control" id="OrgType">
+                                        <option>SSS</option>
+                                        <option>VUB</option>
+                                        <option>MCN</option>
+                                        <option>TS</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="sel1" class="lable-style">Pull Down Type</label>
+                                    <select formControlName="orgType" class="form-control" id="OrgType">
+                                        <option>SSS</option>
+                                        <option>VUB</option>
+                                        <option>MCN</option>
+                                        <option>TS</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <div class="form-group mt-4">
+                                        <label for="usr">Status
+                                        </label>
+                                        <div class="row mt-3">
+                                            <div class="col-md-6">
+                                                <label class="radio-inline">
+                                                    <input type="checkbox" name="optradio"> SSS
+                                                </label>&nbsp;&nbsp;
+                                                <label class="radio-inline">
+                                                    <input type="checkbox" name="optradio"> VUB
+                                                </label>&nbsp;&nbsp;
+                                                <label class="radio-inline">
+                                                    <input type="checkbox" name="optradio"> UB
+                                                </label>&nbsp;&nbsp;
+
+                                                <label class="radio-inline">
+                                                    <input type="checkbox" name="optradio"> UB_MS
+                                                </label>&nbsp;&nbsp;
+
+                                                <label class="radio-inline">
+                                                    <input type="checkbox" name="optradio"> TS
+                                                </label>&nbsp;&nbsp;
+
+                                                <label class="radio-inline">
+                                                    <input type="checkbox" name="optradio"> RMN
+                                                </label>&nbsp;&nbsp;
+
+                                                <label class="radio-inline">
+                                                    <input type="checkbox" name="optradio"> EOC
+                                                </label>&nbsp;&nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -161,7 +240,8 @@
             </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="handleMethodToCall()">Save changes</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                    (click)="handleMethodToCall()">Save changes</button>
             </div>
         </div>
     </div>

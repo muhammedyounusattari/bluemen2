@@ -1,7 +1,7 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
     <div class="row bg-white">
         <div class="col-md-12">
-            <h3>Activity/Group/Service</h3>
+            <h3>Activity Group/Service</h3>
         </div>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -13,7 +13,7 @@
         <li class="nav-item active" role="presentation">
             <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="javascript:void(0)"
                 (click)="navigateToComponent('services-list')" role="tab" aria-controls="profile"
-                aria-selected="false">Activity Service List</a>
+                aria-selected="false">Activity Service Name</a>
         </li>
     </ul>
 
@@ -43,12 +43,12 @@
             </thead>
             <tbody>
                 <!-- <ng-template *ngIf="activityGroupData.length > 0"> -->
-                    <tr *ngFor="let groupData of activityGroupData; let idx = index;" (click)="setSelectedRow(groupData)">
-                        <td>{{groupData.activityGroupId}}</td>
-                        <td>{{groupData.activityGroupName}}</td>
-                        <td>{{groupData.activityReportActivityGroup}}</td>
-                        <td>{{groupData.activityCalculateHoursforActivityGroup}}</td>
-                    </tr>
+                <tr *ngFor="let groupData of activityGroupData; let idx = index;" (click)="setSelectedRow(groupData)">
+                    <td>{{groupData.activityGroupId}}</td>
+                    <td>{{groupData.activityGroupName}}</td>
+                    <td>{{groupData.activityReportActivityGroup}}</td>
+                    <td>{{groupData.activityCalculateHoursforActivityGroup}}</td>
+                </tr>
                 <!-- </ng-template> -->
                 <tr *ngIf="activityGroupData.length === 0">
                     No Records Found !
@@ -83,7 +83,7 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Activity/Service Group Name</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Customize Activity/Service Group</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -92,28 +92,49 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group ">
-                                    <label for="usr">Service or ActivityID:</label>
-                                    <input type="text" class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupId" id="groupId">
+                                    <label for="usr">Activity/Service ID:</label>
+                                    <input type="text" class="form-control"
+                                        [(ngModel)]="activityGrpListEnum.activityGroupId" id="groupId">
                                 </div>
 
                                 <div class="form-group mt-3">
-                                    <label for="usr">Service Or Activiy Group Name:</label>
-                                    <input type="text" class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupName" id="groupName">
+                                    <label for="usr">Activity/Service Group Name:</label>
+                                    <input type="text" class="form-control"
+                                        [(ngModel)]="activityGrpListEnum.activityGroupName" id="groupName">
                                 </div>
 
                                 <div class="form-group mt-3">
-                                    <label for="usr">Calculate Hours for Active Group:</label>
-                                    <input type="text" class="form-control" [(ngModel)]="activityGrpListEnum.activityCalculateHoursforActivityGroup" id="groupHours">
+                                    <label for="usr">Group Type</label>
+                                    <select class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupType"
+                                        id="groupType">
+                                        <option selected>Count All Contact on Same Day As One Event | 1</option>
+                                        <option selected>Count All Contact on Same Day As Separate Sessions | 2</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="form-group mt-3">
+                                    <div class="row mt-3">
+                                        <div class="col-md-12">
+                                            <label class="radio-inline">
+                                                <input type="checkbox"
+                                                    [(ngModel)]="activityGrpListEnum.activityCalculateHoursforActivityGroup"
+                                                    name="optradio"> Calculate Hours for Active Group
+                                            </label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="radio-inline">
+                                                <input type="checkbox" [(ngModel)]="activityGrpListEnum.activityReportActivityGroup" name="optradio"> Report Activity Group
+                                            </label>
+
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group mt-3">
-                                    <label for="usr">Report Activity Group:</label>
-                                    <input type="text" class="form-control" [(ngModel)]="activityGrpListEnum.activityReportActivityGroup" id="groupReport">
-                                </div>
-
-                                <div class="form-group mt-3">
-                                    <label for="usr">Activity Group Type</label>
-                                    <select class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupTypeName" id="groupType">
+                                    <label for="usr">Group Type Name</label>
+                                    <select class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupTypeName"
+                                        id="groupType">
                                         <option selected>Count All Contact on Same Day As One Event | 1</option>
                                         <option selected>Count All Contact on Same Day As Separate Sessions | 2</option>
                                     </select>
@@ -124,9 +145,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewGroupName()">Save changes</button>
-                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update Changes</button>
+                <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;"
+                    data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewGroupName()">Save</button>
+                <button type="button" class="btn btn-primary" *ngIf="isEdit"
+                    (click)="updateSelectedRow()">Update</button>
             </div>
         </div>
     </div>
@@ -142,18 +165,12 @@
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Reset</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" (click)="resetFields()">New</a>
+                    <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        (click)="resetFields()">New</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Rename</a>
+                        data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">Move</a>
@@ -166,9 +183,6 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">Print</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Submit</a>
                 </li>
             </ul>
         </div>

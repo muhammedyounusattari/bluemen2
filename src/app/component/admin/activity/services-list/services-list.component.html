@@ -1,7 +1,7 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
     <div class="row bg-white">
         <div class="col-md-12">
-            <h3>Activity/Group/Service</h3>
+            <h3>Activity Group/Service</h3>
         </div>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -13,7 +13,7 @@
         <li class="nav-item" role="presentation">
             <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="javascript:void(0)"
                 (click)="navigateToComponent('services-list')" role="tab" aria-controls="profile"
-                aria-selected="false">Activity Service List</a>
+                aria-selected="false">Activity Service Name</a>
         </li>
     </ul>
 
@@ -36,7 +36,9 @@
             <thead>
                 <tr style="background: #F5F6FA;">
                     <th scope="col">ID</th>
-                    <th scope="col">Service Or Activity Name</th>
+                    <th scope="col">Activity/Service Name</th>
+                    <th scope="col">Group</th>
+                    <th scope="col">BOLT Service</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +46,8 @@
                     <tr *ngFor="let serviceData of activityServiceData; let idx = index;" (click)="setSelectedRow(serviceData)">
                         <td>{{serviceData.activityId}}</td>
                         <td>{{serviceData.activityName}}</td>
+                        <td>{{serviceData.activityGroupName}}</td>
+                        <td>{{serviceData.lapService}}</td>
                     </tr>
                 <!-- </ng-template> -->
                 <tr *ngIf="activityServiceData.length === 0">
@@ -80,7 +84,7 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Activity/Service Group Name</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Customize Activity/Service</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -89,17 +93,17 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group ">
-                                    <label for="usr">Service or Activity ID:</label>
+                                    <label for="usr">Activity/Service ID:</label>
                                     <input type="text" class="form-control" [(ngModel)]="activityServiceListEnum.activityId" id="serviceId">
                                 </div>
 
                                 <div class="form-group mt-3">
-                                    <label for="usr">Service Or Activiy Name:</label>
+                                    <label for="usr">Activity/Service Name:</label>
                                     <input type="text" class="form-control" [(ngModel)]="activityServiceListEnum.activityName" id="serviceName">
                                 </div>
 
                                 <div class="form-group mt-3">
-                                    <label for="usr">Service Or Activity Group Name</label>
+                                    <label for="usr">Activity/Service Group</label>
                                     <select class="form-control" id="serviceGrpName" [(ngModel)]="activityServiceListEnum.activityGroupName">
                                         <option selected>Tutoring</option>
                                         <option selected>Assisted Computer Labs</option>
@@ -109,7 +113,7 @@
                                 </div>
                                 
                                 <div class="form-group mt-3">
-                                    <label for="usr">Lab Service:</label>
+                                    <label for="usr">BOLT Service:</label>
                                     <input type="checkbox" name="labService" [(ngModel)]="activityServiceListEnum.lapService">&nbsp;
                                 </div>
                             </div>
@@ -135,9 +139,7 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Reset</a>
-                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
                         data-bs-target="#exampleModal" (click)="resetFields()">New</a>
@@ -145,9 +147,6 @@
                 <li class="nav-item">
                     <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"
                     data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Rename</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">Move</a>
@@ -161,9 +160,7 @@
                 <li class="nav-item">
                     <a class="nav-link " href="#">Print</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Submit</a>
-                </li>
+                
             </ul>
 
         </div>

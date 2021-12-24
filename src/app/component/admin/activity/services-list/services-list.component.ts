@@ -18,6 +18,7 @@ export class ServicesListComponent implements OnInit{
         activityName: '',
         activityGroupName: '',
         lapService: '',
+        activityBoltService: ''
     };
     @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
     modalRef: BsModalRef;
@@ -45,6 +46,7 @@ export class ServicesListComponent implements OnInit{
         this.requestData.activityName = this.activityServiceListEnum.activityName;
         this.requestData.activityGroupName = this.activityServiceListEnum.activityGroupName;
         this.requestData.lapService = this.activityServiceListEnum.lapService;
+        this.requestData.activityBoltService = this.activityServiceListEnum.activityBoltService;
         this._activityGroupServicesService.postActivityServiceList(this.requestData).subscribe(result=>{
             if(result) {
                 this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {

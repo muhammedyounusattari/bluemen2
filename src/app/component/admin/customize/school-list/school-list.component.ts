@@ -70,7 +70,7 @@ export class SchoolListComponent implements OnInit{
         }
     }
     addNewSchoolName() {
-        this.requestData.orgName= this.schoolListEnum.orgName;
+        this.requestData.orgName= this.schoolListEnum.name;
         this.requestData.orgType = this.schoolListEnum.orgType;
         this.requestData.name = this.schoolListEnum.name;
         this.requestData.codes = this.schoolListEnum.codes;
@@ -104,7 +104,7 @@ export class SchoolListComponent implements OnInit{
 
     deleteSelectedRow() {
         if(this.selectedRow) {
-            this.requestData.orgName= this.selectedRow.orgName;
+            this.requestData.orgName= this.selectedRow.name;
             this.requestData.orgType = this.selectedRow.orgType;
             this.requestData.name = this.selectedRow.name;
             this.requestData.codes = this.selectedRow.codes;
@@ -141,7 +141,7 @@ export class SchoolListComponent implements OnInit{
     }
     setSelectedRowToUpdate() {
         this.isEdit = true;
-        this.schoolListEnum.orgName= this.selectedRow.orgName;
+        this.schoolListEnum.orgName= this.selectedRow.name;
         this.schoolListEnum.orgType = this.selectedRow.orgType;
         this.schoolListEnum.name = this.selectedRow.name;
         this.schoolListEnum.codes = this.selectedRow.codes;
@@ -163,7 +163,7 @@ export class SchoolListComponent implements OnInit{
     }
     updateSelectedRow() {
         if(this.selectedRow) {
-            this.requestData.orgName= this.schoolListEnum.orgName;
+            this.requestData.orgName= this.schoolListEnum.name;
             this.requestData.orgType = this.schoolListEnum.orgType;
             this.requestData.name = this.schoolListEnum.name;
             this.requestData.codes = this.schoolListEnum.codes;

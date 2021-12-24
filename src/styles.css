@@ -294,7 +294,14 @@ footer.page-footer .footer-copyright {
     background: #dde2e6;
 }
 
-
+.mat-control {
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
 /* ============ desktop view ============ */
 
 @media all and (min-width: 992px) {
@@ -339,5 +346,3 @@ footer.page-footer .footer-copyright {
 
 
 /* ============ small devices .end// ============ */
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

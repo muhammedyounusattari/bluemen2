@@ -19,6 +19,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { TutorsComponent } from '../tutor/home/tutors/tutors.component';
 import { AssignStudentsToTeacherClassesComponent } from '../teacher/home/assign-student-teacher-classes/assign-student-teacher-classes.component';
 import { TeacherComponent } from '../teacher/home/teachers/teacher.component';
+import { SharedComponentModule } from '../../shared/components/shared-components.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { LabSettingsPreferencesComponent } from './customize/lab-settings/lab-settings-preferences.component';
 
 @NgModule({
   declarations: [
@@ -36,15 +42,24 @@ import { TeacherComponent } from '../teacher/home/teachers/teacher.component';
     AssignStudentsToTutorClassesComponent,
     TutorsComponent,
     AssignStudentsToTeacherClassesComponent,
-    TeacherComponent
+    TeacherComponent,
+    LabSettingsPreferencesComponent
   ],
   imports: [
     AdminRoutingModule,
     HttpClientModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedComponentModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule
   ],
-  providers: []
+  providers: [
+    MatDatepickerModule,
+    MatNativeDateModule
+  ]
 })
 export class AdminModule { }

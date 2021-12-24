@@ -18,11 +18,11 @@ export class CollegeAndSchoolService {
     }
 
     postCollegeSchoolName(request: any): Observable<any> {
-        return this.dataService.callPostService(ServiceUrls.POST_COLLEGE_SCHOOL_NAME, JSON.stringify(request));
+        return this.dataService.callPostService(ServiceUrls.POST_COLLEGE_SCHOOL_NAME, request);
     }
 
     searchCollegeSchoolName(request: any): Observable<any> {
-        return this.dataService.callPostService(ServiceUrls.SEARCH_COLLEGE_SCHOOL_NAME, JSON.stringify(request));
+        return this.dataService.callPostService(ServiceUrls.SEARCH_COLLEGE_SCHOOL_NAME, request);
     }
 
 
@@ -47,7 +47,7 @@ export class CollegeAndSchoolService {
     }
 
     postStudentName(request: any): Observable<any> {
-        return this.dataService.callPostService(ServiceUrls.POST_ACTIVITY_GROUP_LIST, JSON.stringify(request));
+        return this.dataService.callPostService(ServiceUrls.POST_ACTIVITY_GROUP_LIST, request);
     }
 
     updateStudentName(request: any): Observable<any> {

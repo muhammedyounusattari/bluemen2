@@ -72,7 +72,7 @@ export class CollegeListComponent implements OnInit{
     }
 
     addNewCollegeName() {
-        this.requestData.orgName= this.collegeListEnum.orgName;
+        this.requestData.orgName= this.collegeListEnum.name;
         this.requestData.orgType = this.collegeListEnum.orgType;
         this.requestData.name = this.collegeListEnum.name;
         this.requestData.codes = this.collegeListEnum.codes;
@@ -106,7 +106,7 @@ export class CollegeListComponent implements OnInit{
 
     deleteSelectedRow() {
         if(this.selectedRow) {
-            this.requestData.orgName= this.selectedRow.orgName;
+            this.requestData.orgName= this.selectedRow.name;
             this.requestData.orgType = this.selectedRow.orgType;
             this.requestData.name = this.selectedRow.name;
             this.requestData.codes = this.selectedRow.codes;
@@ -143,7 +143,7 @@ export class CollegeListComponent implements OnInit{
     }
     setSelectedRowToUpdate() {
         this.isEdit = true;
-        this.collegeListEnum.orgName= this.selectedRow.orgName;
+        this.collegeListEnum.orgName= this.selectedRow.name;
         this.collegeListEnum.orgType = this.selectedRow.orgType;
         this.collegeListEnum.name = this.selectedRow.name;
         this.collegeListEnum.codes = this.selectedRow.codes;
@@ -165,7 +165,7 @@ export class CollegeListComponent implements OnInit{
     }
     updateSelectedRow() {
         if(this.selectedRow) {
-            this.requestData.orgName= this.collegeListEnum.orgName;
+            this.requestData.orgName= this.collegeListEnum.name;
             this.requestData.orgType = this.collegeListEnum.orgType;
             this.requestData.name = this.collegeListEnum.name;
             this.requestData.codes = this.collegeListEnum.codes;

@@ -10,11 +10,13 @@ import { CollegeListComponent } from './customize/college-list/college-list.comp
 import { CustomFieldsComponent } from './customize/custom-fields/custom-fields.component';
 import { GradeStandingGroupListComponent } from './customize/grade/group/grade-standing-group-list.component';
 import { GradeStandingListComponent } from './customize/grade/standing/grade-standing-list.component';
+import { LabSettingsPreferencesComponent } from './customize/lab-settings/lab-settings-preferences.component';
 import { PulldownListComponent } from './customize/pulldown-list/pulldown-list.component';
 import { SchoolListComponent } from './customize/school-list/school-list.component';
 import { ConfigSettingsComponent } from './home/config-settings/config-settings.component';
 import { SystemPreferencesComponent } from './home/system-preferences/system-preferences.component';
 import { UserNamesAndPasswordComponent } from './home/user-names-password/user-names-and-pwd.component';
+import { TimeClockManger } from './system-tools/time-clock-mgr/time-clock-manager.component';
 
 const routes: Routes = [
   {
@@ -76,6 +78,14 @@ const routes: Routes = [
   {
     path: 'teacher/teachers',
     component: TeacherComponent
+  },
+  {
+    path: 'admin/lab-settings',
+    component: LabSettingsPreferencesComponent
+  },
+  {
+    path: 'admin/time-clock-manager',
+    component: TimeClockManger
   }
   
 ];

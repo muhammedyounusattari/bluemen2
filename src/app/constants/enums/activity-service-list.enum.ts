@@ -3,4 +3,5 @@ export class ActivityServiceListEnum {
     activityName: string;
     activityGroupName:string;
     lapService: boolean;
+    activityBoltService: string;
 }

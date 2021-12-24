@@ -27,6 +27,8 @@ export class NavigationComponent {
       this.router.navigate(['admin/grade-group-list']);
     } else if (componentName === 'grade-standing-list') {
       this.router.navigate(['admin/grade-standing-list']);
+    } else if (componentName === 'lab-settings') {
+      this.router.navigate(['admin/lab-settings']);
     } else if (componentName === 'attendance-log') {
       this.router.navigate(['student/attendance-log'])
     } else if (componentName === 'exams-logs') {
@@ -105,6 +107,8 @@ export class NavigationComponent {
       this.router.navigate(['student/display-staff-contacts'])
     } else if (componentName === 'personalized-letters') {
       this.router.navigate(['personalized-letters'])
+    } else if (componentName === 'time-clock-manager') {
+      this.router.navigate(['admin/time-clock-manager'])
     }
   }
 }
