@@ -4,7 +4,6 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
     selector: 'app-lab-setting',
     templateUrl: './lab-setting.component.html'
-    // styleUrls: ['./pulldown-list.component.css']
 })
 
 export class LabSettingComponent {

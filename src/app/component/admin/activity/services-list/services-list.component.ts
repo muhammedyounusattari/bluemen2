@@ -9,7 +9,7 @@ import { ActivityServiceListEnum } from '../../../../constants/enums/activity-se
     // styleUrls: ['./pulldown-list.component.css']
 })
 
-export class ServicesListComponent implements OnInit{
+export class ServicesListComponent implements OnInit {
     activityServiceData: any = [];
     activityServiceListEnum: ActivityServiceListEnum = new ActivityServiceListEnum();
 
@@ -17,7 +17,7 @@ export class ServicesListComponent implements OnInit{
         activityId: '',
         activityName: '',
         activityGroupName: '',
-        lapService: '',
+        lapService: true,
         activityBoltService: ''
     };
     @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
@@ -29,12 +29,16 @@ export class ServicesListComponent implements OnInit{
     }
     selectedRow: any = '';
     isEdit: boolean = false;
+    myElement: any = null;
+
     constructor(private modalService: BsModalService
         , private router: Router
         , private _activityGroupServicesService: ActivityGroupServicesService) { }
 
     ngOnInit() {
+        this.myElement = window.document.getElementById('loading');
         this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
+            this.hideLoader();
             if (result) {
                 this.activityServiceData = result;
             }
@@ -42,16 +46,20 @@ export class ServicesListComponent implements OnInit{
     }
 
     addNewServiceName() {
-        this.requestData.activityId= Number(this.activityServiceListEnum.activityId);
+        this.showLoader();
+        this.requestData.activityId = Number(this.activityServiceListEnum.activityId);
         this.requestData.activityName = this.activityServiceListEnum.activityName;
         this.requestData.activityGroupName = this.activityServiceListEnum.activityGroupName;
         this.requestData.lapService = this.activityServiceListEnum.lapService;
         this.requestData.activityBoltService = this.activityServiceListEnum.activityBoltService;
-        this._activityGroupServicesService.postActivityServiceList(this.requestData).subscribe(result=>{
-            if(result) {
+        this._activityGroupServicesService.postActivityServiceList(this.requestData).subscribe(result => {
+            if (result) {
                 this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
-                        document.getElementById('closePopup')?.click();
+                        const closePopup = document.getElementById('closePopup');
+                        if (closePopup !== null)
+                        closePopup.click();
                         this.activityServiceData = result;
                     }
                 });
@@ -73,17 +81,18 @@ export class ServicesListComponent implements OnInit{
         }
     }
     deleteSelectedRow() {
-        if(this.selectedRow) {
-            const data ={
+        if (this.selectedRow) {
+            const data = {
                 activityId: this.selectedRow.activityId
             }
-         
+            this.showLoader();
             this._activityGroupServicesService.deleteActivityServiceList(data).subscribe(result => {
                 this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
                         this.activityServiceData = result;
                     }
-                }); 
+                });
             });
         }
     }
@@ -101,16 +110,21 @@ export class ServicesListComponent implements OnInit{
         this.activityServiceListEnum.lapService = this.selectedRow.lapService;
     }
     updateSelectedRow() {
-        if(this.selectedRow) {
-            this.requestData.activityId= Number(this.activityServiceListEnum.activityId);
+        if (this.selectedRow) {
+            this.showLoader();
+            this.requestData.activityId = Number(this.activityServiceListEnum.activityId);
             this.requestData.activityName = this.activityServiceListEnum.activityName;
             this.requestData.activityGroupName = this.activityServiceListEnum.activityGroupName;
             this.requestData.lapService = this.activityServiceListEnum.lapService;
-            
+
             this._activityGroupServicesService.updateActivityServiceList(this.requestData).subscribe(result => {
                 this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
-                        document.getElementById('closePopup')?.click();
+                        const closePopup = document.getElementById('closePopup');
+                        if (closePopup !== null)
+                        closePopup.click();
+
                         this.activityServiceData = result;
                         this.isEdit = false;
                     }
@@ -121,5 +135,15 @@ export class ServicesListComponent implements OnInit{
     resetFields() {
         this.activityServiceListEnum = new ActivityServiceListEnum();
     }
-
+    hideLoader() {
+        this.myElement = window.document.getElementById('loading');
+        if (this.myElement !== null) {
+            this.myElement.style.display = 'none';
+        }
+    }
+    showLoader() {
+        if (this.myElement !== null) {
+            this.myElement.style.display = 'block';
+        }
+    }
 }

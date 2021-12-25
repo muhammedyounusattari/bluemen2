@@ -56,15 +56,12 @@ export class DataService {
         }
     }
     callDeleteService(url: string, ...request: any): Observable<any> {
-        try {
-            const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-            headers.set("Accept", "application/json");
-            const response = this.http.delete(url, request ? request[0] : 0).pipe(tap(response => {
-            }, error => {
-            }));
-            return response;
-        } catch (error) {
-            return new Observable<any>();
-        }
+        const response = this.http.request('DELETE', url, {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+            }),
+            body: request[0]
+          });
+          return response;
     }
 }

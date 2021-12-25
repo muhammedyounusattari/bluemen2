@@ -4,8 +4,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
     selector: 'app-system-preferences',
-    templateUrl: './system-preferences.component.html',
-    // styleUrls: ['./config-settings.component.css']
+    templateUrl: './system-preferences.component.html'
 })
 
 export class SystemPreferencesComponent {

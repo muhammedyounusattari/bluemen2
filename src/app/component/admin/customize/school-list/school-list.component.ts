@@ -43,14 +43,17 @@ export class SchoolListComponent implements OnInit{
         ncesId: '',
         fiscalYears: ''
     };
+    myElement: any = null;
 
     constructor(private modalService: BsModalService
         , private router: Router
         , private _collegeAndSchoolService: CollegeAndSchoolService) { }
     
     ngOnInit() {
+        this.myElement = window.document.getElementById('loading');
         this.navigateToComponent('service-group-list');
         this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
+            this.hideLoader();
             if (result) {
                 this.schoolDataList = result;
             }
@@ -70,6 +73,7 @@ export class SchoolListComponent implements OnInit{
         }
     }
     addNewSchoolName() {
+        this.showLoader();
         this.requestData.orgName= this.schoolListEnum.name;
         this.requestData.orgType = this.schoolListEnum.orgType;
         this.requestData.name = this.schoolListEnum.name;
@@ -93,6 +97,7 @@ export class SchoolListComponent implements OnInit{
         this._collegeAndSchoolService.postCollegeSchoolName(this.requestData).subscribe(result=>{
             if(result) {
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
                         document.getElementById('closePopup')?.click();
                         this.schoolDataList = result;
@@ -104,6 +109,7 @@ export class SchoolListComponent implements OnInit{
 
     deleteSelectedRow() {
         if(this.selectedRow) {
+            this.showLoader();
             this.requestData.orgName= this.selectedRow.name;
             this.requestData.orgType = this.selectedRow.orgType;
             this.requestData.name = this.selectedRow.name;
@@ -126,6 +132,7 @@ export class SchoolListComponent implements OnInit{
              
             this._collegeAndSchoolService.deleteCollegeSchoolName(this.requestData).subscribe(result => {
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
                         this.schoolDataList = result;
                     }
@@ -163,6 +170,7 @@ export class SchoolListComponent implements OnInit{
     }
     updateSelectedRow() {
         if(this.selectedRow) {
+            this.showLoader();
             this.requestData.orgName= this.schoolListEnum.name;
             this.requestData.orgType = this.schoolListEnum.orgType;
             this.requestData.name = this.schoolListEnum.name;
@@ -185,6 +193,7 @@ export class SchoolListComponent implements OnInit{
            
             this._collegeAndSchoolService.updateCollegeSchoolName(this.requestData).subscribe(response => {
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
                         document.getElementById('closePopup')?.click();
                         this.schoolDataList = result;
@@ -196,5 +205,16 @@ export class SchoolListComponent implements OnInit{
     }
     resetFields() {
         this.schoolListEnum = new SchoolListEnum();
+    }
+    hideLoader() {
+        this.myElement = window.document.getElementById('loading');
+        if (this.myElement !== null) {
+            this.myElement.style.display = 'none';
+        }
+    }
+    showLoader() {
+        if (this.myElement !== null) {
+            this.myElement.style.display = 'block';
+        }
     }
 }

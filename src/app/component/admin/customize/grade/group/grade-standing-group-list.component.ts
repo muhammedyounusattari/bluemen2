@@ -16,7 +16,7 @@ export class GradeStandingGroupListComponent implements OnInit {
         gradeGroupId: 0,
         gradeGroupName: '',
         gradeGroupGradeType: '',
-        gradeGroupAprColumn:''
+        gradeGroupAprColumn: ''
     }
     _gradeGroupStandingList: GradeGroupStandingList = new GradeGroupStandingList();
 
@@ -29,12 +29,16 @@ export class GradeStandingGroupListComponent implements OnInit {
     }
     selectedRow: any = '';
     isEdit: boolean = false;
+    myElement: any = null;
+
     constructor(private modalService: BsModalService
         , private router: Router
         , private _gradingGroupStandingService: GradingGroupStandingService) { }
 
     ngOnInit() {
+        this.myElement = window.document.getElementById('loading');
         this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
+            this.hideLoader();
             if (result) {
                 this.gradeGroupListData = result;
             }
@@ -55,6 +59,7 @@ export class GradeStandingGroupListComponent implements OnInit {
         }
     }
     addGradeGroup() {
+        this.showLoader();
         this.requestData.gradeGroupId = this._gradeGroupStandingList.gradeGroupId;
         this.requestData.gradeGroupName = this._gradeGroupStandingList.gradeGroupName;
         this.requestData.gradeGroupGradeType = this._gradeGroupStandingList.gradeGroupGradeType;
@@ -63,6 +68,7 @@ export class GradeStandingGroupListComponent implements OnInit {
             if (result) {
                 document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
                         this.gradeGroupListData = result;
                     }
@@ -78,13 +84,14 @@ export class GradeStandingGroupListComponent implements OnInit {
     }
 
     deleteSelectedRow() {
-        if(this.selectedRow) {
-            const data ={
+        if (this.selectedRow) {
+            const data = {
                 activityGroupId: this.selectedRow.activityGroupId
             }
-         
+            this.showLoader();
             this._gradingGroupStandingService.deleteGradingGroupList(data).subscribe(result => {
                 this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
                         this.gradeGroupListData = result;
                     }
@@ -100,7 +107,8 @@ export class GradeStandingGroupListComponent implements OnInit {
         this._gradeGroupStandingList.gradeGroupAprColumn = '';
     }
     updateSelectedRow() {
-        if(this.selectedRow) {
+        if (this.selectedRow) {
+            this.showLoader();
             this.isEdit = true;
             this.requestData.gradeGroupId = this._gradeGroupStandingList.gradeGroupId;
             this.requestData.gradeGroupName = this._gradeGroupStandingList.gradeGroupName;
@@ -109,6 +117,7 @@ export class GradeStandingGroupListComponent implements OnInit {
             this._gradingGroupStandingService.updateGradingGroupList(this.requestData).subscribe(response => {
                 document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
                         this.gradeGroupListData = result;
                         this.isEdit = false;
@@ -119,5 +128,16 @@ export class GradeStandingGroupListComponent implements OnInit {
     }
     resetFields() {
         this._gradeGroupStandingList = new GradeGroupStandingList();
+    }
+    hideLoader() {
+        this.myElement = window.document.getElementById('loading');
+        if (this.myElement !== null) {
+            this.myElement.style.display = 'none';
+        }
+    }
+    showLoader() {
+        if (this.myElement !== null) {
+            this.myElement.style.display = 'block';
+        }
     }
 }

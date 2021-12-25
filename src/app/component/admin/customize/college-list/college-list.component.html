@@ -1,19 +1,21 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
+    <!-- spinnner element is defined with id loading -->
+    <div id="loading"></div>
     <div class="row bg-white">
         <div class="col-md-12">
-            <h3>College / School Names</h3>
+            <h3>College / School List</h3>
         </div>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="javascript:void(0)"
                 (click)="navigateToComponent('college-list')" role="tab" aria-controls="home"
-                aria-selected="true">College Names</a>
+                aria-selected="true">College List</a>
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="javascript:void(0)"
                 (click)="navigateToComponent('school-list')" role="tab" aria-controls="profile"
-                aria-selected="false">School Names</a>
+                aria-selected="false">School List</a>
         </li>
     </ul>
 
@@ -43,20 +45,20 @@
                     <th scope="col">Phone 2</th>
                     <th scope="col">Phone 3</th>
                     <th scope="col">FAX</th>
-                  </tr>
+                </tr>
             </thead>
             <tbody>
                 <!-- <ng-template *ngIf="collegeDataList > 0"> -->
-                    <tr *ngFor="let collegeData of collegeDataList; let idx = index;" (click)="setSelectedRow(collegeData)">
-                        <td>{{collegeData.name}}</td>
-                        <td>{{collegeData.orgType}}</td>
-                        <td>{{collegeData.fafsaID}}</td>
-                        <td>{{collegeData.country}}</td>
-                        <td>{{collegeData.phone1}}</td>
-                        <td>{{collegeData.phone2}}</td>
-                        <td>{{collegeData.phone3}}</td>
-                        <td>{{collegeData.fax}}</td>
-                    </tr>
+                <tr *ngFor="let collegeData of collegeDataList; let idx = index;" (click)="setSelectedRow(collegeData)">
+                    <td>{{collegeData.name}}</td>
+                    <td>{{collegeData.orgType}}</td>
+                    <td>{{collegeData.fafsaID}}</td>
+                    <td>{{collegeData.country}}</td>
+                    <td>{{collegeData.phone1}}</td>
+                    <td>{{collegeData.phone2}}</td>
+                    <td>{{collegeData.phone3}}</td>
+                    <td>{{collegeData.fax}}</td>
+                </tr>
                 <!-- </ng-template> -->
                 <tr *ngIf="collegeDataList.length === 0">
                     No Records Found !
@@ -95,19 +97,14 @@
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Reset</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" (click)="resetFields()">New</a>
+                    <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        (click)="resetFields()">New</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
+                        data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Rename</a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link " href="#">Move</a>
                 </li>
@@ -120,9 +117,6 @@
 
                 <li class="nav-item">
                     <a class="nav-link " href="#">Print</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Submit</a>
                 </li>
             </ul>
 
@@ -144,32 +138,38 @@
                             <div class="col-md-12 flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Name:</label>
-                                    <input type="text" [(ngModel)]="collegeListEnum.name" class="form-control" id="collegeName"> &nbsp;
+                                    <input type="text" [(ngModel)]="collegeListEnum.name" class="form-control"
+                                        id="collegeName"> &nbsp;
                                     <!-- <input type="checkbox" class="form-control" id="serviceId">In Pulldown List -->
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">Codes:</label>
-                                    <input type="text" class="form-control" [(ngModel)]="collegeListEnum.codes" id="codes"> &nbsp;
+                                    <input type="text" class="form-control" [(ngModel)]="collegeListEnum.codes"
+                                        id="codes"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Title:</label>
-                                    <input type="text" class="form-control" [(ngModel)]="collegeListEnum.title" id="title"> &nbsp;
+                                    <input type="text" class="form-control" [(ngModel)]="collegeListEnum.title"
+                                        id="title"> &nbsp;
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">County:</label>
-                                    <input type="text" class="form-control" [(ngModel)]="collegeListEnum.country" id="country"> &nbsp;
+                                    <input type="text" class="form-control" [(ngModel)]="collegeListEnum.country"
+                                        id="country"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Address:</label>
-                                    <textarea type="text" class="form-control" id="address" [(ngModel)]="collegeListEnum.address"> </textarea>
+                                    <textarea type="text" class="form-control" id="address"
+                                        [(ngModel)]="collegeListEnum.address"> </textarea>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">FAFSA ID:</label>
-                                    <input type="text" class="form-control" id="fafsaID" [(ngModel)]="collegeListEnum.fafsaID"> &nbsp;
+                                    <input type="text" class="form-control" id="fafsaID"
+                                        [(ngModel)]="collegeListEnum.fafsaID"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
@@ -179,7 +179,7 @@
                                         <option selected>Pune</option>
                                         <option>Mumbai</option>
                                     </select>
-                        
+
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">State:</label>
@@ -187,53 +187,62 @@
                                         <option selected>Maharashtra</option>
                                         <option>Goa</option>
                                     </select>
-                         
+
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Zip Code:</label>
-                                    <input type="text" class="form-control" id="zipcode" [(ngModel)]="collegeListEnum.zipcode"> &nbsp;
+                                    <input type="text" class="form-control" id="zipcode"
+                                        [(ngModel)]="collegeListEnum.zipcode"> &nbsp;
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">Fiscal Years:</label>
-                                    <input type="text" class="form-control" id="fiscalYears" [(ngModel)]="collegeListEnum.fiscalYears"> &nbsp;
+                                    <input type="text" class="form-control" id="fiscalYears"
+                                        [(ngModel)]="collegeListEnum.fiscalYears"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Phone 1:</label>
-                                    <input type="text" class="form-control" id="phone1" [(ngModel)]="collegeListEnum.phone1"> &nbsp;
+                                    <input type="text" class="form-control" id="phone1"
+                                        [(ngModel)]="collegeListEnum.phone1"> &nbsp;
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">Phone 2:</label>
-                                    <input type="text" class="form-control" id="phone2" [(ngModel)]="collegeListEnum.phone2"> &nbsp;
+                                    <input type="text" class="form-control" id="phone2"
+                                        [(ngModel)]="collegeListEnum.phone2"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Phone 3:</label>
-                                    <input type="text" class="form-control" id="phone3" [(ngModel)]="collegeListEnum.phone3"> &nbsp;
+                                    <input type="text" class="form-control" id="phone3"
+                                        [(ngModel)]="collegeListEnum.phone3"> &nbsp;
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">FAX:</label>
-                                    <input type="text" class="form-control" id="fax" [(ngModel)]="collegeListEnum.fax"> &nbsp;
+                                    <input type="text" class="form-control" id="fax" [(ngModel)]="collegeListEnum.fax">
+                                    &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group col-md-6">
                                     <label for="usr">Web Site:</label>
-                                    <input type="text" class="form-control" id="website" [(ngModel)]="collegeListEnum.website"> &nbsp;
+                                    <input type="text" class="form-control" id="website"
+                                        [(ngModel)]="collegeListEnum.website"> &nbsp;
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">Email:</label>
-                                    <input type="text" class="form-control" id="email" [(ngModel)]="collegeListEnum.email"> &nbsp;
+                                    <input type="text" class="form-control" id="email"
+                                        [(ngModel)]="collegeListEnum.email"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
                                 <div class="form-group">
                                     <label for="usr">Notes:</label>
-                                    <textarea type="text" cols="100" rows="5" class="form-control" id="notes" [(ngModel)]="collegeListEnum.notes"> </textarea>
+                                    <textarea type="text" cols="100" rows="5" class="form-control" id="notes"
+                                        [(ngModel)]="collegeListEnum.notes"> </textarea>
                                 </div>
                             </div>
 
@@ -242,9 +251,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewCollegeName()">Save changes</button>
-                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update Changes</button>
+                <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;"
+                    data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewCollegeName()">Save
+                    changes</button>
+                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update
+                    Changes</button>
             </div>
         </div>
     </div>

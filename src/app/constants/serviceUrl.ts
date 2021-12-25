@@ -51,4 +51,6 @@ export class ServiceUrls {
     public static DELETE_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/deletePullDownList/v1';
     public static FILTER_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/filter/filterPullDownList/v1';
 
+    // LAB SETTINGS PREFERENCES
+    public static POST_LAB_SETTINGS_PREFERENCES = environment.apiUrl + '/blumen-api/customize/labSettingPreferences/v1';
 }

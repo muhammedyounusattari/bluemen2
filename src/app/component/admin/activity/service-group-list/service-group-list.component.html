@@ -1,4 +1,6 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
+    <!-- spinnner element is defined with id loading -->
+    <div id="loading"></div>
     <div class="row bg-white">
         <div class="col-md-12">
             <h3>Activity Group/Service</h3>
@@ -46,7 +48,8 @@
                 <tr *ngFor="let groupData of activityGroupData; let idx = index;" (click)="setSelectedRow(groupData)">
                     <td>{{groupData.activityGroupId}}</td>
                     <td>{{groupData.activityGroupName}}</td>
-                    <td>{{groupData.activityReportActivityGroup}}</td>
+                    <td *ngIf="groupData.activityReportActivityGroup">YES</td>
+                    <td *ngIf="!groupData.activityReportActivityGroup">NO</td>
                     <td>{{groupData.activityCalculateHoursforActivityGroup}}</td>
                 </tr>
                 <!-- </ng-template> -->
@@ -124,7 +127,9 @@
                                         </div>
                                         <div class="col-md-12">
                                             <label class="radio-inline">
-                                                <input type="checkbox" [(ngModel)]="activityGrpListEnum.activityReportActivityGroup" name="optradio"> Report Activity Group
+                                                <input type="checkbox"
+                                                    [(ngModel)]="activityGrpListEnum.activityReportActivityGroup"
+                                                    name="optradio"> Report Activity Group
                                             </label>
 
                                         </div>

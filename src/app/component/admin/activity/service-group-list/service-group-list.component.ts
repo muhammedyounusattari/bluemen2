@@ -16,8 +16,8 @@ export class ServiceGroupListComponent implements OnInit {
     requestData: any = {
         activityGroupId: '',
         activityGroupName: '',
-        activityCalculateHoursforActivityGroup: '',
-        activityReportActivityGroup: '',
+        activityCalculateHoursforActivityGroup: true,
+        activityReportActivityGroup: true,
         activityGroupTypeName: '',
         activityGroupType: '',
         activityAdd: '',
@@ -33,13 +33,17 @@ export class ServiceGroupListComponent implements OnInit {
     }
     selectedRow: any = '';
     isEdit: boolean = false;
+    myElement : any = null;
+
     constructor(private modalService: BsModalService
         , private router: Router
         , private _activityGroupServicesService: ActivityGroupServicesService) { }
 
     ngOnInit() {
+        this.myElement = window.document.getElementById('loading');
         this.navigateToComponent('service-group-list');
         this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
+            this.hideLoader();
             if (result) {
                 this.activityGroupData = result;
             }
@@ -53,10 +57,11 @@ export class ServiceGroupListComponent implements OnInit {
     }
 
     addNewGroupName() {
+        this.showLoader();
         this.requestData.activityGroupId = this.activityGrpListEnum.activityGroupId;
         this.requestData.activityGroupName = this.activityGrpListEnum.activityGroupName;
-        this.requestData.activityCalculateHoursforActivityGroup = true;
-        this.requestData.activityReportActivityGroup = true;
+        this.requestData.activityCalculateHoursforActivityGroup = this.activityGrpListEnum.activityCalculateHoursforActivityGroup;
+        this.requestData.activityReportActivityGroup = this.activityGrpListEnum.activityReportActivityGroup;
         this.requestData.activityGroupTypeName = this.activityGrpListEnum.activityGroupTypeName;
         this.requestData.activityGroupType = this.activityGrpListEnum.activityGroupTypeName;
         this.requestData.activityAdd = '';
@@ -65,6 +70,7 @@ export class ServiceGroupListComponent implements OnInit {
             if (result) {
                 document.getElementById('closePopup')?.click();
                 this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
                         this.activityGroupData = result;
                     }
@@ -92,9 +98,10 @@ export class ServiceGroupListComponent implements OnInit {
             const data ={
                 activityGroupId: this.selectedRow.activityGroupId
             }
-         
+            this.showLoader();
             this._activityGroupServicesService.deleteActivityGroupList(data).subscribe(result => {
                 this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
                         this.activityGroupData = result;
                     }
@@ -113,10 +120,11 @@ export class ServiceGroupListComponent implements OnInit {
     }
     updateSelectedRow() {
         if(this.selectedRow) {
+            this.showLoader();
             this.requestData.activityGroupId = this.activityGrpListEnum.activityGroupId;
             this.requestData.activityGroupName = this.activityGrpListEnum.activityGroupName;
-            this.requestData.activityCalculateHoursforActivityGroup = true;
-            this.requestData.activityReportActivityGroup = true;
+            this.requestData.activityCalculateHoursforActivityGroup = this.activityGrpListEnum.activityCalculateHoursforActivityGroup;
+            this.requestData.activityReportActivityGroup = this.activityGrpListEnum.activityReportActivityGroup;
             this.requestData.activityGroupTypeName = this.activityGrpListEnum.activityGroupTypeName;
             this.requestData.activityGroupType = this.activityGrpListEnum.activityGroupTypeName;
             this.requestData.activityAdd = '';
@@ -124,6 +132,7 @@ export class ServiceGroupListComponent implements OnInit {
             this._activityGroupServicesService.updateActivityGroupList(this.requestData).subscribe(response => {
                 document.getElementById('closePopup')?.click();
                 this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
                          this.activityGroupData = result;
                         this.isEdit = false;
@@ -134,5 +143,16 @@ export class ServiceGroupListComponent implements OnInit {
     }
     resetFields() {
         this.activityGrpListEnum = new ActivityGroupListEnum();
+    }
+    hideLoader() {
+        this.myElement = window.document.getElementById('loading');
+        if(this.myElement !== null) {
+            this.myElement.style.display = 'none';
+        }
+    }
+    showLoader() {
+        if(this.myElement !== null) {
+            this.myElement.style.display = 'block';
+        }
     }
 }

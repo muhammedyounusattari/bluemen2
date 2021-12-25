@@ -1,4 +1,6 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
+    <!-- spinnner element is defined with id loading -->
+    <div id="loading"></div>
     <div class="row bg-white">
         <div class="col-md-12">
             <h3>Grade/Standing List</h3>
@@ -34,18 +36,19 @@
         <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
             <thead>
                 <tr style="background: #F5F6FA;">
-                    <th scope="col">Group Id</th>
-                    <th scope="col">Group Name</th>
+                    <th scope="col">Grade/Standing Group ID</th>
+                    <th scope="col">Grade/Standing Group Name</th>
                     <th scope="col">APR Column</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- <ng-template *ngIf="gradeGroupListData > 0"> -->
-                    <tr *ngFor="let gradeGroup of gradeGroupListData; let idx = index;" (click)="setSelectedRow(gradeGroup)">
-                        <td>{{gradeGroup.gradeGroupId}}</td>
-                        <td>{{gradeGroup.gradeGroupName}}</td>
-                        <td>{{gradeGroup.gradeGroupAprColumn}}</td>
-                    </tr>
+                <tr *ngFor="let gradeGroup of gradeGroupListData; let idx = index;"
+                    (click)="setSelectedRow(gradeGroup)">
+                    <td>{{gradeGroup.gradeGroupId}}</td>
+                    <td>{{gradeGroup.gradeGroupName}}</td>
+                    <td>{{gradeGroup.gradeGroupAprColumn}}</td>
+                </tr>
                 <!-- </ng-template> -->
                 <tr *ngIf="gradeGroupListData.length === 0">
                     No Records Found !
@@ -83,19 +86,14 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Reset</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
                             data-bs-target="#exampleModal" (click)="resetFields()">New</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#">Rename</a>
+                            data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="#">Move</a>
@@ -109,9 +107,7 @@
                     <li class="nav-item">
                         <a class="nav-link " href="#">Print</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#">Submit</a>
-                    </li>
+
                 </ul>
 
             </div>
@@ -123,7 +119,7 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Customize Grade Names</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Customize Grade/Standing Group</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -132,23 +128,26 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group mt-3">
-                                    <label for="usr" class="lable-style">Grade / Standing List:</label>
-                                    <input type="text" class="form-control" id="gradeGroupID" [(ngModel)]="_gradeGroupStandingList.gradeGroupId">
+                                    <label for="usr" class="lable-style">Grade/Standing Group ID:</label>
+                                    <input type="text" class="form-control" id="gradeGroupID"
+                                        [(ngModel)]="_gradeGroupStandingList.gradeGroupId">
                                 </div>
 
                                 <div class="form-group mt-3">
-                                    <label for="usr" class="lable-style">Grade / Standing Name:</label>
-                                    <textarea type="text" class="form-control" cols="100" rows="5" id="gradeGroupName"  [(ngModel)]="_gradeGroupStandingList.gradeGroupName"></textarea>
+                                    <label for="usr" class="lable-style">Grade/Standing Group Name:</label>
+                                    <textarea type="text" class="form-control" cols="100" rows="5" id="gradeGroupName"
+                                        [(ngModel)]="_gradeGroupStandingList.gradeGroupName"></textarea>
                                 </div>
 
-                                
+
                                 <div class="form-group mt-3">
-                                    <label for="usr" class="lable-style">Grade Or Standing Type:</label>
-                                    <select class="form-control" id="grpType" [(ngModel)]="_gradeGroupStandingList.gradeGroupGradeType">
-                                        <option selected>APR Column #1  | 1</option>
-                                        <option selected>APR Column #2  | 2</option>
-                                        <option selected>APR Column #3  | 3</option>
-                                        <option selected>APR Column #4  | 4</option>
+                                    <label for="usr" class="lable-style">Group Type:</label>
+                                    <select class="form-control" id="grpType"
+                                        [(ngModel)]="_gradeGroupStandingList.gradeGroupGradeType">
+                                        <option selected>APR Column #1 | 1</option>
+                                        <option selected>APR Column #2 | 2</option>
+                                        <option selected>APR Column #3 | 3</option>
+                                        <option selected>APR Column #4 | 4</option>
                                     </select>
                                 </div>
                             </div>
@@ -157,9 +156,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addGradeGroup()">Save changes</button>
-                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update Changes</button>
+                <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;"
+                    data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addGradeGroup()">Add
+                    Grade/Standing</button>
+                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update
+                    Grade/Standing</button>
             </div>
         </div>
     </div>

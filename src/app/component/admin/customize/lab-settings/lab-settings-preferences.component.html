@@ -1,0 +1,211 @@
+<div class="container-fluid mt-3" style="background:#EFF4F8;">
+    <div class="row bg-white">
+        <div class="col-md-12">
+            <h3>Lab Settings</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="usr">Search Priority</label>
+                <span class="form-group">
+                    <select class="form-control" [(ngModel)] = "lLabSettingsEnum.lapSearchPriority">
+                        <option>Student ID, Scan ID, System Serial Number</option>
+                        <option>Student ID, System Serial Number, Scan ID</option>
+                        <option>Scan ID, Student ID, System Serial Number</option>
+                        <option>Scan ID, System Serial Number, Student ID,</option>
+                        <option>System Serial Number, Student ID, Scan ID</option>
+                        <option>System Serial Number, Scan ID, Student ID</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="usr">Fiscal Year</label>
+                <input type="text" [(ngModel)] = "lLabSettingsEnum.labFiscalYear" value="2021"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="usr">Component</label>
+                <span class="form-group">
+                    <select name="sel3" class="form-control" [(ngModel)] = "lLabSettingsEnum.labComponents" id="sel4">
+                        <option>Academic</option>
+                        <option>Both</option>
+                        <option>Not Applicable</option>
+                        <option>Summer</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="usr">Hide Options
+                </label>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label class="radio-inline">
+                            <input type="checkbox" [(ngModel)] = "lLabSettingsEnum.labHideStudentList" name="optradio"> Hide Student List
+                        </label>
+                        <label class="radio-inline">
+                            <input type="checkbox" [(ngModel)] = "lLabSettingsEnum.labHideCheckOutList" name="optradio"> Hide Check Out Button in list
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="form23">Wait Window Time:</label>
+            <input type="text"  [(ngModel)] = "lLabSettingsEnum.labWaitWindowTime" value="30"/>    
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="form23">Automatically Check In/Out</label>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table width="100%" class="table-responsive" border="1px solid" cellpadding="15px">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span style="float: left;">
+                                            <input type="checkbox" [(ngModel)] = "lLabSettingsEnum.labAutomaticallyCheckInCheckOut" name="optradio">
+                                            &nbsp; If Automatically Check-In/out Box is checked, the
+                                            following options will not display at Check-In/Out.</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style="float: left;">Lab Services:</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style="float: left;"><input id="ctl00_head_chkLab1"  [(ngModel)] = "lLabSettingsEnum.labServicesVisibile" type="checkbox"
+                                                name="ctl00$head$chkLab1"></span>
+                                        <span>Yes, Lab service is visible</span>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="aspNetDisabled" style="float: left;"><input id="ctl00_head_chkLab2"
+                                            [(ngModel)] = "lLabSettingsEnum.labServicerRequired" type="checkbox" name="ctl00$head$chkLab2" disabled="disabled"></span>
+                                        <span>Yes, Lab service is a required input</span>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Default Lab Service:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>
+                                                            <select name="sel3" class="form-control" [(ngModel)] = "lLabSettingsEnum.labDefaultService" id="sel4">
+                                                                <option>Academic</option>
+                                                                <option>Both</option>
+                                                                <option>Not Applicable</option>
+                                                                <option>Summer</option>
+                                                            </select>
+                                        
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <input type="hidden">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+
+                                        <span style="float: left; margin: 4px 0 0 0;">
+                                            <input id="ctl00_head_chkLab2"
+                                            [(ngModel)] = "lLabSettingsEnum.labStudentsCanChooseMultipleService" type="checkbox" name="ctl00$head$chkLab2">
+                                            Students can choose multiple lab
+                                            services</span>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: Arial Black; font-size: small; padding-left: 0px;">
+                                        <br>
+                                        <span style="float: left; margin: 0px 0 0 0;">
+                                            <input id="ctl00_head_chkLab2"
+                                            [(ngModel)] = "lLabSettingsEnum.labStudentsCanChooseMultipleService" type="checkbox" name="ctl00$head$chkLab2">
+                                                Reason for Visit:</span>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <span style="float: left;"><input id="ctl00_head_chkVisit" type="checkbox"
+                                                name="ctl00$head$chkVisit" [(ngModel)] = "lLabSettingsEnum.labReasonForVisitOptionVisible"></span>
+                                        <span style="float: left; margin: 4px 0 0 0;">Yes, this option is visible</span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="font-family: Arial Black; font-size: small; padding-left: 0px;">
+                                        <br>
+                                        <span style="float: left; margin: 0px 0 0 0;">Staff Member: </span>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style="float: left;"><input id="ctl00_head_chkstfmem" type="checkbox"
+                                            [(ngModel)] = "lLabSettingsEnum.labStaffMemberOptionVisible"   name="ctl00$head$chkstfmem"></span>
+                                        <span style="float: left; margin: 4px 0 0 0;">Yes, this option is visible</span>
+
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="usr">
+                    Maximum Checkout Time</label>
+                <input type="text" id=start class="form-control" [(ngModel)] = "lLabSettingsEnum.labMaxCheckoutTime" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="usr">Forced Time Spent</label>
+                <span class="form-group">
+                    <input type="text" id=start class="form-control" [(ngModel)] = "lLabSettingsEnum.labForcedTimeSpent" required>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="addLabSettingsPreferences()">Save</button>
+
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="addLabSettingsPreferences()">Save & Close</button>
+        <button type="button" class="btn btn-primary">Cancel</button>
+
+    </div>
+
+</div>

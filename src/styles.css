@@ -302,6 +302,26 @@ footer.page-footer .footer-copyright {
     font-weight: 400;
     line-height: 1.5;
 }
+#loading{    
+    background-color: #0000001f;
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    display: grid;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}  
+@keyframes animatebottom { 
+    from{ bottom:-100px; opacity:0 } 
+    to{ bottom:0; opacity:1 }
+}
 /* ============ desktop view ============ */
 
 @media all and (min-width: 992px) {

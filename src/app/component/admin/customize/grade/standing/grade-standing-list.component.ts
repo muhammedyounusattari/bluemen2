@@ -18,7 +18,7 @@ export class GradeStandingListComponent implements OnInit {
         gradingName: '',
         gradingGroupName: '',
         gradingNewGrade: '',
-        gradingParticipantStatus:'',
+        gradingParticipantStatus: '',
         gradingYearEnbStatus: ''
     }
     gradeGroupStandingList: GradeGroupStandingList = new GradeGroupStandingList();
@@ -32,12 +32,16 @@ export class GradeStandingListComponent implements OnInit {
     }
     selectedRow: any = '';
     isEdit: boolean = false;
+    myElement: any = null;
+
     constructor(private modalService: BsModalService
         , private router: Router
         , private _gradingGroupStandingService: GradingGroupStandingService) { }
 
     ngOnInit() {
+        this.myElement = window.document.getElementById('loading');
         this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
+            this.hideLoader();
             if (result) {
                 this.gradeStandingListData = result;
             }
@@ -58,6 +62,7 @@ export class GradeStandingListComponent implements OnInit {
         }
     }
     addGradeStanding() {
+        this.showLoader();
         this.requestData.graduateList = true;
         this.requestData.gradingId = this.gradeGroupStandingList.gradingId;
         this.requestData.gradingName = this.gradeGroupStandingList.gradingName;
@@ -69,6 +74,7 @@ export class GradeStandingListComponent implements OnInit {
             if (result) {
                 document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
                         this.gradeStandingListData = result;
                     }
@@ -84,13 +90,14 @@ export class GradeStandingListComponent implements OnInit {
     }
 
     deleteSelectedRow() {
-        if(this.selectedRow) {
-            const data ={
-                activityGroupId: this.selectedRow.activityGroupId
+        if (this.selectedRow) {
+            const data = {
+                gradingId: this.selectedRow.gradingId
             }
-         
+            this.showLoader();
             this._gradingGroupStandingService.deleteGradingStandingList(data).subscribe(result => {
                 this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
                         this.gradeStandingListData = result;
                     }
@@ -109,7 +116,8 @@ export class GradeStandingListComponent implements OnInit {
         this.gradeGroupStandingList.gradingYearEnbStatus = this.selectedRow.gradingYearEnbStatus;
     }
     updateSelectedRow() {
-        if(this.selectedRow) {
+        if (this.selectedRow) {
+            this.showLoader();
             this.requestData.graduateList = true;
             this.requestData.gradingId = this.gradeGroupStandingList.gradingId;
             this.requestData.gradingName = this.gradeGroupStandingList.gradingName;
@@ -120,8 +128,9 @@ export class GradeStandingListComponent implements OnInit {
             this._gradingGroupStandingService.updateGradingStandingList(this.requestData).subscribe(response => {
                 document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
+                    this.hideLoader();
                     if (result) {
-                         this.gradeStandingListData = result;
+                        this.gradeStandingListData = result;
                         this.isEdit = false;
                     }
                 });
@@ -130,5 +139,16 @@ export class GradeStandingListComponent implements OnInit {
     }
     resetFields() {
         this.gradeGroupStandingList = new GradeGroupStandingList();
+    }
+    hideLoader() {
+        this.myElement = window.document.getElementById('loading');
+        if (this.myElement !== null) {
+            this.myElement.style.display = 'none';
+        }
+    }
+    showLoader() {
+        if (this.myElement !== null) {
+            this.myElement.style.display = 'block';
+        }
     }
 }
