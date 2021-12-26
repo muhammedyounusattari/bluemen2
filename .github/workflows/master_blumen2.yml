@@ -53,4 +53,4 @@ jobs:
           app-name: 'blumen2'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4A19C6A741824E7E983BBAB9DF95B90F }}
-          package: ./dist/BlueMen
+          package: ./dist/BluMen
