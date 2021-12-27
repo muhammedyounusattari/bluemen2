@@ -109,6 +109,10 @@ export class NavigationComponent {
       this.router.navigate(['personalized-letters'])
     } else if (componentName === 'time-clock-manager') {
       this.router.navigate(['admin/time-clock-manager'])
+    } else if (componentName === 'counselors') {
+      this.router.navigate(['counselor/counselors'])
+    } else if (componentName === 'recall-students') {
+      this.router.navigate(['admin/recall-students'])
     }
   }
 }

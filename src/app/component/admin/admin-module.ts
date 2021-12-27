@@ -25,7 +25,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { LabSettingsPreferencesComponent } from './customize/lab-settings/lab-settings-preferences.component';
+import { TimeClockManagerComponent } from './system-tools/time-clock-mgr/time-clock-manager.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RecallStudentsComponent } from './system-tools/recall-students/recall-students.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     TutorsComponent,
     AssignStudentsToTeacherClassesComponent,
     TeacherComponent,
-    LabSettingsPreferencesComponent
+    LabSettingsPreferencesComponent,
+    TimeClockManagerComponent,
+    RecallStudentsComponent
   ],
   imports: [
     AdminRoutingModule,

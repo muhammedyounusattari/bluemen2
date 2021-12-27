@@ -16,7 +16,7 @@ export class DataService {
             const response = this.http.get(url , request ? request[0] : '').pipe(tap(response => {
                 const res: any = response;
             }, error => {
-                
+
             }));
             return response;
         } catch (error) {

@@ -16,7 +16,8 @@ import { SchoolListComponent } from './customize/school-list/school-list.compone
 import { ConfigSettingsComponent } from './home/config-settings/config-settings.component';
 import { SystemPreferencesComponent } from './home/system-preferences/system-preferences.component';
 import { UserNamesAndPasswordComponent } from './home/user-names-password/user-names-and-pwd.component';
-import { TimeClockManger } from './system-tools/time-clock-mgr/time-clock-manager.component';
+import { RecallStudentsComponent } from './system-tools/recall-students/recall-students.component';
+import { TimeClockManagerComponent } from './system-tools/time-clock-mgr/time-clock-manager.component';
 
 const routes: Routes = [
   {
@@ -85,9 +86,13 @@ const routes: Routes = [
   },
   {
     path: 'admin/time-clock-manager',
-    component: TimeClockManger
+    component: TimeClockManagerComponent
+  },
+  {
+    path: 'admin/recall-students',
+    component: RecallStudentsComponent
   }
-  
+
 ];
 
 @NgModule({

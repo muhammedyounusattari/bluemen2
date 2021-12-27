@@ -15,6 +15,7 @@ import { StudentModule } from './component/student/student.module';
 import { UtilitiesModule } from './component/utilities/utilities.module';
 import { StaffModule } from './component/staff/staff.module.';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CounselorModule } from './component/counselor/counselor.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     StaffModule,
     MDBBootstrapModule.forRoot(),
     ModalModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CounselorModule
   ],
   providers: [],
   bootstrap: [AppComponent],

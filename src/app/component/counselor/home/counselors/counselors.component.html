@@ -31,90 +31,28 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                </tr>
+                <ng-container *ngIf="!spinner">
+                    <tr *ngFor="let data of counselorsList; let i = index" (click)="getSelectedRow(data, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">
+                        <th scope="row">{{data.staffId}}</th>
+                        <td>{{data.staffName}}</td>
+                        <td>{{data.staffTitle}}</td>
+                        <td>{{data.staffActive}}</td>
+                        <th scope="row">{{data.staffCounselor}}</th>
+                        <td>{{data.staffTutor ? 'YES' : 'NO'}}</td>
+                        <th scope="row">{{data.staffTeacher}}</th>
+                        <td>{{data.staffLab}}</td>
+                        <td>{{data.staffSSNO}}</td>
+                        <td>{{data.staffHireDate}}</td>
+                    </tr>
+                </ng-container>
+                <div class="no-record">
+                    <div *ngIf="spinner" class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div *ngIf="counselorsList.length == 0">
+                        <span>No Data Found</span>
+                    </div>
+                </div>
             </tbody>
         </table>
     </div>
@@ -139,9 +77,9 @@
 </div>
 
 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important; margin-bottom: 50px;">
-    <div class="col-md-12">
+    <form [formGroup]="counselorsForm" class="col-md-12">
         <div class="bg-white" style="padding: 20px;">
-            <div  role="tabpanel" aria-labelledby="home-tab">
+            <div role="tabpanel" aria-labelledby="home-tab">
                 <div class="d-flex">
                     <div class="col-md-12 ">
                         <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>
@@ -152,23 +90,23 @@
                     <div class="col-md-6 flex">
                         <div class="form-group">
                             <label for="sel1">Hire Date From: </label>
-                            <input type="text" class="form-control" id="usr">
+                            <input formControlName="hireDateFrom" type="date" class="form-control" id="usr">
                         </div>&nbsp;&nbsp;&nbsp;
                         <div class="form-group">
                             <label for="sel1">To: </label>
-                            <input type="text" class="form-control" id="usr">
+                            <input formControlName="hireDateTo" type="date" class="form-control" id="usr">
                         </div>
                     </div>
                 </div>
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
                         <label class="radio-inline"> Active:
-                            <input type="radio" name="optradio" checked> Yes </label>
+                            <input formControlName="active" value="Yes" type="radio" checked> Yes </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> NO
+                            <input formControlName="active" value="No" type="radio"type="radio"> NO
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> All
+                            <input formControlName="active" value="All" type="radio"> All
                         </label>
                     </div>
                 </div>
@@ -176,11 +114,11 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="sel1">Codes:</label>
-                            <select class="form-control" id="sel1">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
+                            <select formControlName="codes" class="form-control" id="sel1">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
                             </select>
                         </div>
                     </div>
@@ -189,55 +127,53 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="sel1">Zip Code:</label>
-                            <select class="form-control" id="sel1">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
+                            <select formControlName="zipCode" class="form-control" id="sel1">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
                             </select>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Reset</a>
+                    <a class="nav-link active" aria-current="page">Reset</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">New</a>
+                    <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal" data-bs-target="#exampleModal">New</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Edit</a>
+                    <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Rename</a>
+                    <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Move</a>
+                    <a class="nav-link" (click)="getSelectedOption('Move')">Move</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Merge</a>
+                    <a class="nav-link" (click)="getSelectedOption('Merge')">Merge</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Delete</a>
+                    <a class="nav-link" (click)="deleteCounselors()">Delete</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Print</a>
+                    <a class="nav-link" (click)="getSelectedOption('Print')">Print</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Submit</a>
+                    <a class="nav-link" (click)="getSelectedOption('Submit')">Submit</a>
                 </li>
             </ul>
 
@@ -253,24 +189,24 @@
                 <h5 class="modal-title" id="exampleModalLabel">Add Counselor</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <form [formGroup]="counselorModalForm" class="modal-body">
                 <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="sel1">Enter the counselor name: </label>
-                                    <input type="text" class="form-control" id="usr">
-                                </div>                          
+                                    <input formControlName="name" type="text" class="form-control" id="usr">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary" (click)=handleMethodToCall() data-bs-dismiss="modal">Save changes</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>

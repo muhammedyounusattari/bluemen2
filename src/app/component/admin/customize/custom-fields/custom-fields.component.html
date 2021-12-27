@@ -33,10 +33,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of customFields; let i as index" (click)="getSelectedRow(item, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">
-                    <th scope="row">{{item.customId}}</th>
-                    <td>{{item.pullDownName}}</td>
-                </tr>
+                <ng-container *ngIf="!spinner">
+                    <tr *ngFor="let item of customFields; let i = index" (click)="getSelectedRow(item, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">
+                        <th scope="row">{{item.customId}}</th>
+                        <td>{{item.pullDownName}}</td>
+                    </tr>
+                </ng-container>
+                <div class="no-record">
+                    <div *ngIf="spinner" class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div *ngIf="customFields.length == 0">
+                        <span>No Data Found</span>
+                    </div>
+                </div>
             </tbody>
         </table>
     </div>

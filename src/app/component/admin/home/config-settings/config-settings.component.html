@@ -30,49 +30,22 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                </tr>
-
+                <ng-container *ngIf="!spinner">
+                    <tr *ngFor="let data of configSettingsList">
+                        <th scope="row">{{data.id}}</th>
+                        <td>{{data.configType}}</td>
+                        <td>{{data.configValue}}</td>
+                        <td>{{data.description}}</td>
+                    </tr>
+                </ng-container>
+                <div class="no-record">
+                    <div *ngIf="spinner" class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div *ngIf="configSettingsList.length == 0">
+                        <span>No Data Found</span>
+                    </div>
+                </div>
             </tbody>
         </table>
     </div>
@@ -98,17 +71,16 @@
 
 <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Edit</a>
+                    <a class="nav-link active" aria-current="page">Edit</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Close</a>
+                    <a class="nav-link ">Close</a>
                 </li>
             </ul>
 

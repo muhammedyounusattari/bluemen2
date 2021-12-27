@@ -33,7 +33,7 @@ export class CustomFieldService {
    * @param request
    */
   public deleteCustomFieldsNameType(request: any): Observable<any> {
-    return this.dataService.callPutService(
+    return this.dataService.callDeleteService(
       ServiceUrls.DELETE_CUSTOM_FIELD_NAME_TYPE,
       request
     );

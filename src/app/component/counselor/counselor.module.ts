@@ -3,21 +3,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { StaffMemberComponent } from './home/staff-member/staff-member.component.';
-import { StaffRoutingModule } from './staff-routing.module';
+import { CounselorRoutingModule } from './counselor-routing.module';
+import { CounselorsComponent } from './home/counselors/counselors.component';
+
 @NgModule({
     declarations: [
-        StaffMemberComponent
+      CounselorsComponent
     ],
     imports: [
-        StaffRoutingModule,
-        HttpClientModule,
-        BrowserModule,
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule
+      CounselorRoutingModule,
+      HttpClientModule,
+      BrowserModule,
+      CommonModule,
+      FormsModule,
+      ReactiveFormsModule
     ],
     providers: []
   })
 
-  export class StaffModule { }
+  export class CounselorModule { }

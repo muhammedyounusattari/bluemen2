@@ -42,7 +42,7 @@ a {
 
 .navbar-expand-lg {
     bottom: 17px;
-    position: absolute;
+    position: sticky;
     width: 100%;
 }
 
@@ -302,7 +302,8 @@ footer.page-footer .footer-copyright {
     font-weight: 400;
     line-height: 1.5;
 }
-#loading{    
+
+#loading {
     background-color: #0000001f;
     position: absolute;
     width: 100%;
@@ -315,13 +316,26 @@ footer.page-footer .footer-copyright {
 }
 
 @-webkit-keyframes spin {
-    0% { -webkit-transform: rotate(0deg); }
-    100% { -webkit-transform: rotate(360deg); }
-}  
-@keyframes animatebottom { 
-    from{ bottom:-100px; opacity:0 } 
-    to{ bottom:0; opacity:1 }
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
 }
+
+@keyframes animatebottom {
+    from {
+        bottom: -100px;
+        opacity: 0
+    }
+    to {
+        bottom: 0;
+        opacity: 1
+    }
+}
+
+
 /* ============ desktop view ============ */
 
 @media all and (min-width: 992px) {
@@ -366,3 +380,11 @@ footer.page-footer .footer-copyright {
 
 
 /* ============ small devices .end// ============ */
+
+.no-record {
+    position: relative;
+    float: right;
+    font-size: 1.25rem;
+    left: 75%;
+    padding: 1rem;
+}

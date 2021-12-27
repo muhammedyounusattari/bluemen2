@@ -1,0 +1,333 @@
+<div class="container-fluid mt-3" style="background:#EFF4F8;">
+
+    <div class="row bg-white">
+        <div class="col-md-12">
+            <h3>Staff Data Filter</h3>
+        </div>
+    </div>
+
+    <div class="row ">
+        <div class="col-md-6 mt-3 mb-3 ">
+            <form class="example" action="/action_page.php">
+                <input type="text" placeholder="Search.." name="search2">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+        <div class="col-md-6 mt-3 mb-3"><button type="button" class="btn btn-primary active float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">Staff Data Entry</button></div>
+    </div>
+
+    <div class="table-responsive" style="border:1px solid #1366A0;">
+        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
+            <thead>
+                <tr style="background: #F5F6FA;">
+                    <th scope="col">Staff Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Active</th>
+                    <th scope="col">Councelor</th>
+                    <th scope="col">Tutor</th>
+                    <th scope="col">Teacher</th>
+                    <th scope="col">Lab</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Hire Date</th>
+                </tr>
+            </thead>
+            <!-- <div class="no-record">
+                <div *ngIf="spinner" class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div *ngIf="recallStudentsList.length == 0 && !spinner">
+                    <span>No Data Found</span>
+                </div>
+            </div> -->
+            <tbody>
+                <ng-container *ngIf="!spinner">
+                    <tr *ngFor="let data of recallStudentsList; let i = index" (click)="getSelectedRow(data, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">
+                        <th scope="row">{{data.staffId}}</th>
+                        <td>{{data.staffName}}</td>
+                        <td>{{data.staffTitle}}</td>
+                        <td>{{data.staffActive}}</td>
+                        <th scope="row">{{data.staffCounselor}}</th>
+                        <td>{{data.staffTutor ? 'YES' : 'NO'}}</td>
+                        <th scope="row">{{data.staffTeacher}}</th>
+                        <td>{{data.staffLab}}</td>
+                        <td>{{data.staffSSNO}}</td>
+                        <td>{{data.staffHireDate}}</td>
+                    </tr>
+                </ng-container>
+                <tr class="no-record">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <!-- <div *ngIf="recallStudentsList.length == 0 && !spinner">
+                        <span>No Data Found</span>
+                    </div> -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 mt-3">
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pagination-sm justify-content-right">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</div>
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page">Reset</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal" data-bs-target="#exampleModal">New</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="getSelectedOption('Move')">Move</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="getSelectedOption('Merge')">Merge</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="deleteRecallStaffMembers()">Delete</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="getSelectedOption('Print')">Print</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="getSelectedOption('Submit')">Submit</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Staff Data Entry</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Staff</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Councilor</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Tutor</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Teacher</a>
+                    </li>
+                </ul>
+                <form [formGroup]="recallStudentsModalForm" class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="form-group ">
+                                    <label for="usr">Name:</label>
+                                    <input formControlName="staffName" type="text" class="form-control" id="usr">
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="usr">Title</label>
+                                    <input formControlName="staffTitle" type="text" class="form-control" id="usr">
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="usr">SS.No</label>
+                                    <input formControlName="staffSSNO" type="text" class="form-control" id="usr">
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="usr">Codes</label>
+                                    <input formControlName="staffCodes" type="text" class="form-control" id="usr">
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="usr">Spouse Name</label>
+                                    <input formControlName="staffSpouseName" type="text" class="form-control" id="usr">
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="usr">Driver License</label>
+                                    <input formControlName="staffDriverLicense" type="text" class="form-control" id="usr">
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="usr">Custom Field 1</label>
+                                    <select formControlName="staffCustomFieldOne" class="form-control" id="sel1">
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="usr">Custom Field 2</label>
+                                    <select formControlName="staffCustomFieldTwo" class="form-control" id="sel1">
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="usr">Notes</label>
+                                    <input formControlName="staffNotes" type="text" class="form-control" id="usr">
+                                </div>
+
+
+
+
+                            </div>
+
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="sel1">Staff Id</label>
+                                    <select formControlName="staffId" class="form-control" id="sel1">
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="sel1">Date Of Birth</label>
+                                    <input formControlName="staffDOB" type="date" class="form-control" />
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="sel1">Standing</label>
+                                    <select formControlName="standing" class="form-control" id="sel1">
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-3">
+                                <div class="form-group">
+                                    <label for="sel1">Counselor</label>
+                                    <select formControlName="staffCounselor" class="form-control" id="sel1">
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="sel1">School</label>
+                                    <select formControlName="staffSchool" class="form-control" id="sel1">
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="sel1">Eligibility </label>
+                                    <select formControlName="staffEligibility" class="form-control" id="sel1">
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="usr">Custom Field 3</label>
+                                    <select formControlName="staffCustomFieldThree" class="form-control" id="sel1">
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="usr">Custom Field 4</label>
+                                    <select formControlName="staffCustomFieldFour" class="form-control" id="sel1">
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                    </select>
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <div class="container">
+                                    <div class="col-md-12 text-center"><img src="images/photo.png"></div>
+                                    <div class="col-md-12 text-center">
+                                        <input type="submit" value="Upload Files" class="btn btn-sm btn-primary text-center mt-3" />
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">sdfdsafdsaf</div>
+                    <div>
+
+                    </div>
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="handleMethodToCall()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

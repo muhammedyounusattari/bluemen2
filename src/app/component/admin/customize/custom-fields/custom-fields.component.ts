@@ -21,6 +21,7 @@ export class CustomFieldsComponent implements OnInit {
   public selectedOption: any;
   public selectedRow: any = null;
   public customID: any = 1;
+  public spinner: boolean = true;
 
   constructor(
     private modalService: BsModalService,
@@ -79,6 +80,7 @@ export class CustomFieldsComponent implements OnInit {
   public getCustomFieldNameType() {
     this.customFieldService.getCustomFieldsNameType().subscribe((result) => {
       if (result) {
+        this.spinner = false;
         this.customFields = result;
       }
     });

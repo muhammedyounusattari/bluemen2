@@ -58,16 +58,25 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let data of pulldownList; let i as index" (click)="getSelectedRow(data, i)"
-                    [ngClass]="{'selected-row' : this.selectedRow == i}">
-                    <th scope="row">{{data.id}}</th>
-                    <td>{{data.name}}</td>
-                    <td>{{data.selectionType}}</td>
-                    <td>{{data.active}}</td>
-                    <td>{{data.apr}}</td>
-                    <td>{{data.orgType}}</td>
-                    <td>{{data.orgId}}</td>
-                </tr>
+                <ng-container *ngIf="!spinner">
+                    <tr *ngFor="let data of pulldownList; let i = index" (click)="getSelectedRow(data, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">
+                        <th scope="row">{{data.id}}</th>
+                        <td>{{data.name}}</td>
+                        <td>{{data.selectionType}}</td>
+                        <td>{{data.active}}</td>
+                        <td>{{data.apr}}</td>
+                        <td>{{data.orgType}}</td>
+                        <td>{{data.orgId}}</td>
+                    </tr>
+                </ng-container>
+                <div class="no-record">
+                    <div *ngIf="spinner" class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div *ngIf="pulldownList.length == 0">
+                        <span>No Data Found</span>
+                    </div>
+                </div>
             </tbody>
         </table>
     </div>
@@ -94,8 +103,7 @@
 </div>
 <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
@@ -105,12 +113,10 @@
                     <a class="nav-link active" aria-current="page">Reset</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">New</a>
+                    <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal" data-bs-target="#exampleModal">New</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">Edit</a>
+                    <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>
@@ -137,8 +143,7 @@
 </nav>
 
 <!-- Modal -->
-<div class="modal fade" #addDropDownValue id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" #addDropDownValue id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -240,8 +245,7 @@
             </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                    (click)="handleMethodToCall()">Save changes</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="handleMethodToCall()">Save changes</button>
             </div>
         </div>
     </div>

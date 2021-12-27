@@ -21,6 +21,7 @@ export class PulldownListComponent {
   public pulldownList: any;
   public selectedOption: string = '';
   public selectedRow: any = null;
+  public spinner: boolean = true;
 
   constructor(
     private modalService: BsModalService,
@@ -47,7 +48,11 @@ export class PulldownListComponent {
 
     this.pulldownListModalForm = this.fb.group({
       id: [1],
-      name: ['']
+      name: [''],
+      apr: ['1'],
+      orgId: [''],
+      active: [''],
+      orgType: ['']
     });
   }
 
@@ -93,6 +98,7 @@ export class PulldownListComponent {
   public getPullDownList() {
     this.pullDownListService.getPullDownList().subscribe((result) => {
       if (result) {
+        this.spinner = false;
         this.pulldownList = result;
       }
     });
@@ -117,8 +123,8 @@ export class PulldownListComponent {
   public filterPullDownList() {
     this.pullDownListService
       .filterPullDownList(this.requestPayload())
-      .subscribe((result) => {
-        if (result && result.lenght > 0) {
+      .subscribe((result: any) => {
+        if (result && result.length > 0) {
           result.forEach((data: any) => {
             data.orgType = data.orgType.toString();
           });
