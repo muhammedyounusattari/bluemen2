@@ -1,21 +1,21 @@
-<div class="container-fluid mt-3" style="background:#EFF4F8;">
+    <div class="container-fluid mt-3" style="background:#EFF4F8;">
     <!-- spinnner element is defined with id loading -->
     <div id="loading"></div>
     <div class="row bg-white">
         <div class="col-md-12">
-            <h3>Activity Group/Service</h3>
+            <h3>Activity/Service List</h3>
         </div>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
+        <li class="nav-item" id="Group_Name" role="presentation">
             <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="javascript:void(0)"
                 (click)="navigateToComponent('service-group-list')" role="tab" aria-controls="home"
-                aria-selected="true">Activity Group Name</a>
+                aria-selected="true">Activity/Service Group List</a>
         </li>
         <li class="nav-item active" role="presentation">
             <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="javascript:void(0)"
                 (click)="navigateToComponent('services-list')" role="tab" aria-controls="profile"
-                aria-selected="false">Activity Service Name</a>
+                aria-selected="false">Activity/Service List</a>
         </li>
     </ul>
 
@@ -144,11 +144,8 @@
 
                                 <div class="form-group mt-3">
                                     <label for="usr">Group Type Name</label>
-                                    <select class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupTypeName"
-                                        id="groupType">
-                                        <option selected>Count All Contact on Same Day As One Event | 1</option>
-                                        <option selected>Count All Contact on Same Day As Separate Sessions | 2</option>
-                                    </select>
+                                    <input type="text" class="form-control"
+                                    [(ngModel)]="activityGrpListEnum.activityGroupTypeName" id="groupName">
                                 </div>
                             </div>
                         </div>

@@ -6,7 +6,7 @@ export class CollegeListEnum {
     title: string = '';
     country: string = '';
     address: string = '';
-    fafsaID: string = '';
+    fafsaId: string = '';
     city: string = '';
     states: string = '';
     zipcode: string = '';
@@ -18,4 +18,5 @@ export class CollegeListEnum {
     website: string = '';
     email: string = '';
     notes: string = '';
+    ncesId: any = null;
 }

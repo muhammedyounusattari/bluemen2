@@ -28,6 +28,7 @@ import { LabSettingsPreferencesComponent } from './customize/lab-settings/lab-se
 import { TimeClockManagerComponent } from './system-tools/time-clock-mgr/time-clock-manager.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RecallStudentsComponent } from './system-tools/recall-students/recall-students.component';
+import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { RecallStudentsComponent } from './system-tools/recall-students/recall-s
     TeacherComponent,
     LabSettingsPreferencesComponent,
     TimeClockManagerComponent,
-    RecallStudentsComponent
+    RecallStudentsComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     AdminRoutingModule,

@@ -3,6 +3,8 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { CollegeAndSchoolService } from '../../../../services/admin/college-school.service';
 import { SchoolListEnum } from '../../../../constants/enums/school-list.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
 
 @Component({
     selector: 'app-school-list',
@@ -41,14 +43,17 @@ export class SchoolListComponent implements OnInit{
         website: '',
         zipcode: '',
         ncesId: '',
-        fiscalYears: ''
+        fiscalYears: '',
+        fafsaId: null
     };
     myElement: any = null;
     public spinner: boolean = true;
     selectedRowIndex: number;
+    isDisabled: boolean = false;
 
     constructor(private modalService: BsModalService
         , private router: Router
+        , private dialog: MatDialog
         , private _collegeAndSchoolService: CollegeAndSchoolService) { }
     
     ngOnInit() {
@@ -56,8 +61,12 @@ export class SchoolListComponent implements OnInit{
         this.navigateToComponent('service-group-list');
         this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
             this.hideLoader();
+            let domElement = window.document.getElementById('SCHOOL_LIST');
+            if (domElement) {
+                domElement.style.borderBottom = "thick solid #0000FF";
+            }
             if (result) {
-                this.schoolDataList = result;
+                this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
             }
         });
     }
@@ -76,6 +85,16 @@ export class SchoolListComponent implements OnInit{
     }
     addNewSchoolName() {
         this.showLoader();
+        if (this.schoolListEnum.ncesId) {
+            if (this.schoolDataList && this.schoolDataList.length > 0) {
+                const isFound = this.schoolDataList.filter((item: any) => item.fafsaId === this.schoolListEnum.ncesId);
+                if (isFound && isFound.length > 0) {
+                    return alert('Entered NCESID is alreay exist, to add this organization name please change entered NCESID.');
+                }
+            }
+        } else {
+            return alert('Please enter NCESID.');
+        }
         this.requestData.orgName= this.schoolListEnum.name;
         this.requestData.orgType = this.schoolListEnum.orgType;
         this.requestData.name = this.schoolListEnum.name;
@@ -95,6 +114,7 @@ export class SchoolListComponent implements OnInit{
         this.requestData.website = this.schoolListEnum.website;
         this.requestData.email= this.schoolListEnum.email;
         this.requestData.notes = this.schoolListEnum.notes;
+        this.requestData.fafsaId = null;
 
         this._collegeAndSchoolService.postCollegeSchoolName(this.requestData).subscribe(result=>{
             if(result) {
@@ -102,7 +122,7 @@ export class SchoolListComponent implements OnInit{
                     this.hideLoader();
                     if (result) {
                         document.getElementById('closePopup')?.click();
-                        this.schoolDataList = result;
+                        this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
                     }
                 });
             }
@@ -119,7 +139,7 @@ export class SchoolListComponent implements OnInit{
             this.requestData.title = this.selectedRow.title;
             this.requestData.country = this.selectedRow.country;
             this.requestData.address = this.selectedRow.address;
-            this.requestData.fafsaID= this.selectedRow.fafsaID;
+            this.requestData.ncesId= this.selectedRow.ncesId;
             this.requestData.city = this.selectedRow.city;
             this.requestData.states = this.selectedRow.states;
             this.requestData.zipcode = this.selectedRow.zipcode;
@@ -131,26 +151,38 @@ export class SchoolListComponent implements OnInit{
             this.requestData.website = this.selectedRow.website;
             this.requestData.email= this.selectedRow.email;
             this.requestData.notes = this.selectedRow.notes;
-             
-            this._collegeAndSchoolService.deleteCollegeSchoolName(this.requestData).subscribe(result => {
-                this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
-                    this.hideLoader();
-                    if (result) {
-                        this.schoolDataList = result;
-                    }
-                }); 
+
+            const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+                data: {
+                    title: 'Confirm Remove Record',
+                    message: 'Are you sure, you want to remove this School: ' + this.selectedRow.orgName
+                }
             });
-        }
+            confirmDialog.afterClosed().subscribe(result => {
+                if (result === true) {
+                    this._collegeAndSchoolService.deleteCollegeSchoolName(this.requestData).subscribe(result => {
+                        this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
+                            this.hideLoader();
+                            if (result) {
+                                this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
+                            }
+                        }); 
+                    });
+        
+                }
+            });
+         }
     }
     setSelectedRow(selectedRowItem: any, index: number) {
         this.selectedRowIndex = index;
-        const data = this.schoolDataList.filter((item: any) => item.activityId === selectedRowItem.activityId);
+        const data = this.schoolDataList.filter((item: any) => item.ncesId === selectedRowItem.ncesId);
         if (data && data.length > 0) {
             this.selectedRow = data[0];
         }
     }
     setSelectedRowToUpdate() {
         this.isEdit = true;
+        this.isDisabled = true;
         this.schoolListEnum.orgName= this.selectedRow.name;
         this.schoolListEnum.orgType = this.selectedRow.orgType;
         this.schoolListEnum.name = this.selectedRow.name;
@@ -193,13 +225,14 @@ export class SchoolListComponent implements OnInit{
             this.requestData.website = this.schoolListEnum.website;
             this.requestData.email= this.schoolListEnum.email;
             this.requestData.notes = this.schoolListEnum.notes; 
+            this.requestData.fafsaId = null;
            
             this._collegeAndSchoolService.updateCollegeSchoolName(this.requestData).subscribe(response => {
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
                     this.hideLoader();
                     if (result) {
                         document.getElementById('closePopup')?.click();
-                        this.schoolDataList = result;
+                        this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
                         this.isEdit = false;
                     }
                 });
@@ -208,6 +241,7 @@ export class SchoolListComponent implements OnInit{
     }
     resetFields() {
         this.schoolListEnum = new SchoolListEnum();
+        this.isDisabled = false;
     }
     hideLoader() {
         this.myElement = window.document.getElementById('loading');

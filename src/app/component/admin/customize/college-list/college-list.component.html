@@ -7,7 +7,7 @@
         </div>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
+        <li class="nav-item" id="COLLEGE_LIST" role="presentation">
             <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="javascript:void(0)"
                 (click)="navigateToComponent('college-list')" role="tab" aria-controls="home"
                 aria-selected="true">College List</a>
@@ -54,7 +54,7 @@
                         [ngClass]="{'selected-row' : this.selectedRowIndex == idx}">
                         <td>{{collegeData.name}}</td>
                         <td>{{collegeData.orgType}}</td>
-                        <td>{{collegeData.fafsaID}}</td>
+                        <td>{{collegeData.fafsaId}}</td>
                         <td>{{collegeData.country}}</td>
                         <td>{{collegeData.phone1}}</td>
                         <td>{{collegeData.phone2}}</td>
@@ -146,7 +146,7 @@
                                 <div class="form-group col-md-6">
                                     <label for="usr">Name:</label>
                                     <input type="text" [(ngModel)]="collegeListEnum.name" class="form-control"
-                                        id="collegeName"> &nbsp;
+                                        id="collegeName" [readonly]="isDisabled"> &nbsp;
                                     <!-- <input type="checkbox" class="form-control" id="serviceId">In Pulldown List -->
                                 </div>
                                 <div class="form-group col-md-6">
@@ -175,8 +175,8 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">FAFSA ID:</label>
-                                    <input type="text" class="form-control" id="fafsaID"
-                                        [(ngModel)]="collegeListEnum.fafsaID"> &nbsp;
+                                    <input type="text" class="form-control" id="fafsaId"
+                                        [(ngModel)]="collegeListEnum.fafsaId" [readonly]="isDisabled"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">

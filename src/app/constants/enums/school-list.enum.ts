@@ -18,4 +18,5 @@ export class SchoolListEnum {
     website: string = '';
     email: string = '';
     notes: string = '';
+    fafsaId: any = null;
 }

@@ -3,6 +3,9 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { ActivityGroupServicesService } from '../../../../services/admin/activity-group-services.service';
 import { ActivityServiceListEnum } from '../../../../constants/enums/activity-service-list.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
+
 @Component({
     selector: 'app-services-list',
     templateUrl: './services-list.component.html'
@@ -35,12 +38,17 @@ export class ServicesListComponent implements OnInit {
 
     constructor(private modalService: BsModalService
         , private router: Router
+        , private dialog: MatDialog
         , private _activityGroupServicesService: ActivityGroupServicesService) { }
 
     ngOnInit() {
         this.myElement = window.document.getElementById('loading');
         this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
             this.hideLoader();
+            let domElement = window.document.getElementById('Service_Name');
+            if (domElement) {
+                domElement.style.borderBottom = "thick solid #0000FF";
+            }
             if (result) {
                 this.activityServiceData = result;
             }
@@ -86,13 +94,25 @@ export class ServicesListComponent implements OnInit {
                 activityId: this.selectedRow.activityId
             }
             this.showLoader();
-            this._activityGroupServicesService.deleteActivityServiceList(data).subscribe(result => {
-                this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
+            const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+                data: {
+                    title: 'Confirm Remove Record',
+                    message: 'Are you sure, you want to remove this record: ' + this.selectedRow.activityName
+                }
+            });
+            confirmDialog.afterClosed().subscribe(result => {
+                if (result === true) {
+                    this._activityGroupServicesService.deleteActivityServiceList(data).subscribe(result => {
+                        this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
+                            this.hideLoader();
+                            if (result) {
+                                this.activityServiceData = result;
+                            }
+                        });
+                    });
+                } else {
                     this.hideLoader();
-                    if (result) {
-                        this.activityServiceData = result;
-                    }
-                });
+                }
             });
         }
     }

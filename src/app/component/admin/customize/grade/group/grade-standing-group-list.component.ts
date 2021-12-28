@@ -3,6 +3,8 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { GradingGroupStandingService } from '../../../../../services/admin/grading-group-standing.service';
 import { GradeGroupStandingList } from '../../../../../constants/enums/grade-group-standing-list.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
 
 @Component({
     selector: 'app-grade-standing-group-list',
@@ -35,12 +37,17 @@ export class GradeStandingGroupListComponent implements OnInit {
 
     constructor(private modalService: BsModalService
         , private router: Router
+        , private dialog: MatDialog
         , private _gradingGroupStandingService: GradingGroupStandingService) { }
 
     ngOnInit() {
         this.myElement = window.document.getElementById('loading');
         this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
             this.hideLoader();
+            let domElement = window.document.getElementById('GRADE_GROUP');
+            if (domElement) {
+                domElement.style.borderBottom = "thick solid #0000FF";
+            }
             if (result) {
                 this.gradeGroupListData = result;
             }
@@ -92,13 +99,25 @@ export class GradeStandingGroupListComponent implements OnInit {
                 activityGroupId: this.selectedRow.activityGroupId
             }
             this.showLoader();
-            this._gradingGroupStandingService.deleteGradingGroupList(data).subscribe(result => {
-                this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
+            const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+                data: {
+                    title: 'Confirm Remove Record',
+                    message: 'Are you sure, you want to remove this record: ' + this.selectedRow.gradeGroupName
+                }
+            });
+            confirmDialog.afterClosed().subscribe(result => {
+                if (result === true) {
+                    this._gradingGroupStandingService.deleteGradingGroupList(data).subscribe(result => {
+                        this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
+                            this.hideLoader();
+                            if (result) {
+                                this.gradeGroupListData = result;
+                            }
+                        });
+                    });
+                } else {
                     this.hideLoader();
-                    if (result) {
-                        this.gradeGroupListData = result;
-                    }
-                });
+                }
             });
         }
     }

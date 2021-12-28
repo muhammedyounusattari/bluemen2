@@ -1,4 +1,6 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
+    <!-- spinnner element is defined with id loading -->
+    <div id="loading"></div>
     <div class="row bg-white">
         <div class="col-md-12">
             <h3>College / School Names</h3>
@@ -10,7 +12,7 @@
                 (click)="navigateToComponent('college-list')" role="tab" aria-controls="home"
                 aria-selected="true">College Names</a>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item" id="SCHOOL_LIST" role="presentation">
             <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="javascript:void(0)"
                 (click)="navigateToComponent('school-list')" role="tab" aria-controls="profile"
                 aria-selected="false">School Names</a>
@@ -143,7 +145,7 @@
                                 <div class="form-group col-md-6">
                                     <label for="usr">Name:</label>
                                     <input type="text" [(ngModel)]="schoolListEnum.name" class="form-control"
-                                        id="schoolName"> &nbsp;
+                                        id="schoolName" [readonly]="isDisabled"> &nbsp;
                                     <!-- <input type="checkbox" class="form-control" id="serviceId">In Pulldown List -->
                                 </div>
                                 <div class="form-group col-md-6">
@@ -172,8 +174,8 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">NCES ID:</label>
-                                    <input type="text" class="form-control" id="fafsaID"
-                                        [(ngModel)]="schoolListEnum.ncesId"> &nbsp;
+                                    <input type="text" class="form-control" id="ncesId"
+                                        [(ngModel)]="schoolListEnum.ncesId" [readonly]="isDisabled"> &nbsp;
                                 </div>
                             </div>
                             <div class="col-md-12 form-group flex">
@@ -257,8 +259,10 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;"
                     data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewSchoolName()">Save & Close</button>
-                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update & Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewSchoolName()">Save &
+                    Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update &
+                    Close</button>
 
             </div>
         </div>

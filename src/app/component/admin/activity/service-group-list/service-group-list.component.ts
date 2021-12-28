@@ -3,6 +3,8 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { ActivityGroupServicesService } from '../../../../services/admin/activity-group-services.service';
 import { ActivityGroupListEnum } from '../../../../constants/enums/activity-group-list.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
 
 @Component({
     selector: 'app-service-group-list',
@@ -33,12 +35,13 @@ export class ServiceGroupListComponent implements OnInit {
     }
     selectedRow: any = '';
     isEdit: boolean = false;
-    myElement : any = null;
+    myElement: any = null;
     public spinner: boolean = true;
     selectedRowIndex: number;
-    
+
     constructor(private modalService: BsModalService
         , private router: Router
+        , private dialog: MatDialog
         , private _activityGroupServicesService: ActivityGroupServicesService) { }
 
     ngOnInit() {
@@ -46,6 +49,10 @@ export class ServiceGroupListComponent implements OnInit {
         this.navigateToComponent('service-group-list');
         this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
             this.hideLoader();
+            let domElement = window.document.getElementById('Group_Name');
+            if (domElement) {
+                domElement.style.borderBottom = "thick solid #0000FF";
+            }
             if (result) {
                 this.activityGroupData = result;
             }
@@ -97,18 +104,30 @@ export class ServiceGroupListComponent implements OnInit {
         }
     }
     deleteSelectedRow() {
-        if(this.selectedRow) {
-            const data ={
+        if (this.selectedRow) {
+            const data = {
                 activityGroupId: this.selectedRow.activityGroupId
             }
             this.showLoader();
-            this._activityGroupServicesService.deleteActivityGroupList(data).subscribe(result => {
-                this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
+            const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+                data: {
+                    title: 'Cofirm remove record',
+                    message: 'Are you sure, you want to remove this record: ' + this.selectedRow.activityGroupName
+                }
+            });
+            confirmDialog.afterClosed().subscribe(result => {
+                if (result === true) {
+                    this._activityGroupServicesService.deleteActivityGroupList(data).subscribe(result => {
+                        this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
+                            this.hideLoader();
+                            if (result) {
+                                this.activityGroupData = result;
+                            }
+                        });
+                    });
+                } else {
                     this.hideLoader();
-                    if (result) {
-                        this.activityGroupData = result;
-                    }
-                });
+                }
             });
         }
     }
@@ -122,7 +141,7 @@ export class ServiceGroupListComponent implements OnInit {
         this.activityGrpListEnum.activityGroupType = this.selectedRow.activityGroupType;
     }
     updateSelectedRow() {
-        if(this.selectedRow) {
+        if (this.selectedRow) {
             this.showLoader();
             this.requestData.activityGroupId = this.activityGrpListEnum.activityGroupId;
             this.requestData.activityGroupName = this.activityGrpListEnum.activityGroupName;
@@ -137,7 +156,7 @@ export class ServiceGroupListComponent implements OnInit {
                 this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
                     this.hideLoader();
                     if (result) {
-                         this.activityGroupData = result;
+                        this.activityGroupData = result;
                         this.isEdit = false;
                     }
                 });
@@ -149,13 +168,13 @@ export class ServiceGroupListComponent implements OnInit {
     }
     hideLoader() {
         this.myElement = window.document.getElementById('loading');
-        if(this.myElement !== null) {
+        if (this.myElement !== null) {
             this.spinner = false;
             this.myElement.style.display = 'none';
         }
     }
     showLoader() {
-        if(this.myElement !== null) {
+        if (this.myElement !== null) {
             this.spinner = true;
             this.myElement.style.display = 'block';
         }
