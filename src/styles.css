@@ -27,14 +27,15 @@ a {
 }
 
 .navbar-dark .navbar-nav .nav-link {
-    color: #000!important;
-    border-right: 1px solid #BCBCBC;
-    padding: 0px 24px 0px 24px;
-    height: 50px;
-    font-weight: bold;
-    line-height: 50px;
-    font-size: 14px;
+    color: #000!important; 
+  border-right: 1px solid #BCBCBC!important;  
+  padding: 0px 60px 0px 60px;
+  height: 50px; 
+  font-weight: bold;
+  line-height: 50px; font-size: 14px;
 }
+
+.navbar-nav:first-child{border-left: 1px solid #BCBCBC!important;  }
 
 .navbar-nav {
     margin: 0 auto;
