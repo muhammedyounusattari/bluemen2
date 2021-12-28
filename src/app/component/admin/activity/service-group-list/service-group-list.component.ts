@@ -34,7 +34,9 @@ export class ServiceGroupListComponent implements OnInit {
     selectedRow: any = '';
     isEdit: boolean = false;
     myElement : any = null;
-
+    public spinner: boolean = true;
+    selectedRowIndex: number;
+    
     constructor(private modalService: BsModalService
         , private router: Router
         , private _activityGroupServicesService: ActivityGroupServicesService) { }
@@ -79,7 +81,8 @@ export class ServiceGroupListComponent implements OnInit {
         })
     }
 
-    setSelectedRow(selectedRowItem: any) {
+    setSelectedRow(selectedRowItem: any, index: number) {
+        this.selectedRowIndex = index;
         const data = this.activityGroupData.filter((item: any) => item.activityGroupId === selectedRowItem.activityGroupId);
         if (data && data.length > 0) {
             this.selectedRow = data[0];
@@ -147,11 +150,13 @@ export class ServiceGroupListComponent implements OnInit {
     hideLoader() {
         this.myElement = window.document.getElementById('loading');
         if(this.myElement !== null) {
+            this.spinner = false;
             this.myElement.style.display = 'none';
         }
     }
     showLoader() {
         if(this.myElement !== null) {
+            this.spinner = true;
             this.myElement.style.display = 'block';
         }
     }

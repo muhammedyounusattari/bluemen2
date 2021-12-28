@@ -30,6 +30,8 @@ export class GradeStandingGroupListComponent implements OnInit {
     selectedRow: any = '';
     isEdit: boolean = false;
     myElement: any = null;
+    public spinner: boolean = true;
+    selectedRowIndex: number;
 
     constructor(private modalService: BsModalService
         , private router: Router
@@ -76,7 +78,8 @@ export class GradeStandingGroupListComponent implements OnInit {
             }
         });
     }
-    setSelectedRow(selectedRowItem: any) {
+    setSelectedRow(selectedRowItem: any, index: number) {
+        this.selectedRowIndex = index;
         const data = this.gradeGroupListData.filter((item: any) => item.gradeGroupId === selectedRowItem.gradeGroupId);
         if (data && data.length > 0) {
             this.selectedRow = data[0];
@@ -132,11 +135,13 @@ export class GradeStandingGroupListComponent implements OnInit {
     hideLoader() {
         this.myElement = window.document.getElementById('loading');
         if (this.myElement !== null) {
+            this.spinner = false;
             this.myElement.style.display = 'none';
         }
     }
     showLoader() {
         if (this.myElement !== null) {
+            this.spinner = true;
             this.myElement.style.display = 'block';
         }
     }

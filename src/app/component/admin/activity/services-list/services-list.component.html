@@ -44,19 +44,26 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- <ng-template *ngIf="activityServiceData.length > 0"> -->
-                <tr *ngFor="let serviceData of activityServiceData; let idx = index;"
-                    (click)="setSelectedRow(serviceData)">
-                    <td>{{serviceData.activityId}}</td>
-                    <td>{{serviceData.activityName}}</td>
-                    <td>{{serviceData.activityGroupName}}</td>
-                    <td *ngIf="serviceData.lapService">YES</td>
-                    <td *ngIf="!serviceData.lapService">NO</td>
-                </tr>
-                <!-- </ng-template> -->
-                <tr *ngIf="activityServiceData.length === 0">
-                    No Records Found !
-                </tr>
+                <ng-container *ngIf="!spinner">
+                    <tr *ngFor="let serviceData of activityServiceData; let idx = index;"
+                        (click)="setSelectedRow(serviceData, idx)"
+                        [ngClass]="{'selected-row' : this.selectedRowIndex == idx}">
+                        <td>{{serviceData.activityId}}</td>
+                        <td>{{serviceData.activityName}}</td>
+                        <td>{{serviceData.activityGroupName}}</td>
+                        <td *ngIf="serviceData.lapService">YES</td>
+                        <td *ngIf="!serviceData.lapService">NO</td>
+                    </tr>
+                </ng-container>
+                <div class="no-record">
+                    <div *ngIf="spinner" class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div *ngIf="activityServiceData.length == 0">
+                        <span>No Data Found</span>
+                    </div>
+                </div>
+
             </tbody>
         </table>
     </div>
@@ -130,12 +137,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-s';econdary" data-bs-dismiss="modal"
-                    (click)="isEdit = false;">Close</button>
-                <button type="button" class="btn btn-v .primary" *ngIf="!isEdit" (click)="addNewServiceName()">Save
-                    changes</button>
-                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update
-                    Changes</button>
+                <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;"
+                    data-bs-dismiss="modal">Close</button>
+
+                <button type="button" class="btn btn-v .primary" *ngIf="!isEdit" (click)="addNewServiceName()">Save & Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update & Close</button>
             </div>
         </div>
     </div>
@@ -201,7 +207,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="usr" class="lable-style">Service Or Activiy Name:</label>
+                            <label for="usr" class="lable-style">Service Or Activity Name:</label>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -236,7 +242,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" id="closePopup" class="btn btn-secondary" data-bs-dismiss="modal" (click)="modalRef.hide()">Close</button>
+        <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;"
+            data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Save changes</button>
     </div>
 </ng-template>

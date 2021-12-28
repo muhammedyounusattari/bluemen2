@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core'; 
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -21,10 +21,6 @@ export class TutorsComponent {
         this.openModal(this.addDropDownValueRef);
     }
     openModal(template : TemplateRef<any>) {
-      debugger;
        this.modalRef = this.modalService.show(template, this.modalConfigSM)
-    }
-  saveTutor(){
-      alert();
     }
 }

@@ -42,17 +42,24 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- <ng-template *ngIf="gradeGroupListData > 0"> -->
-                <tr *ngFor="let gradeGroup of gradeGroupListData; let idx = index;"
-                    (click)="setSelectedRow(gradeGroup)">
-                    <td>{{gradeGroup.gradeGroupId}}</td>
-                    <td>{{gradeGroup.gradeGroupName}}</td>
-                    <td>{{gradeGroup.gradeGroupAprColumn}}</td>
-                </tr>
-                <!-- </ng-template> -->
-                <tr *ngIf="gradeGroupListData.length === 0">
-                    No Records Found !
-                </tr>
+                <ng-container *ngIf="!spinner">
+                    <tr *ngFor="let gradeGroup of gradeGroupListData; let idx = index;"
+                        (click)="setSelectedRow(gradeGroup, idx)"
+                        [ngClass]="{'selected-row' : this.selectedRowIndex == idx}">
+
+                        <td>{{gradeGroup.gradeGroupId}}</td>
+                        <td>{{gradeGroup.gradeGroupName}}</td>
+                        <td>{{gradeGroup.gradeGroupAprColumn}}</td>
+                    </tr>
+                </ng-container>
+                <div class="no-record">
+                    <div *ngIf="spinner" class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div *ngIf="gradeGroupListData.length == 0">
+                        <span>No Data Found</span>
+                    </div>
+                </div>
             </tbody>
         </table>
     </div>

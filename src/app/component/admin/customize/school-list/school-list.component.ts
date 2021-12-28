@@ -44,6 +44,8 @@ export class SchoolListComponent implements OnInit{
         fiscalYears: ''
     };
     myElement: any = null;
+    public spinner: boolean = true;
+    selectedRowIndex: number;
 
     constructor(private modalService: BsModalService
         , private router: Router
@@ -140,7 +142,8 @@ export class SchoolListComponent implements OnInit{
             });
         }
     }
-    setSelectedRow(selectedRowItem: any) {
+    setSelectedRow(selectedRowItem: any, index: number) {
+        this.selectedRowIndex = index;
         const data = this.schoolDataList.filter((item: any) => item.activityId === selectedRowItem.activityId);
         if (data && data.length > 0) {
             this.selectedRow = data[0];
@@ -209,11 +212,13 @@ export class SchoolListComponent implements OnInit{
     hideLoader() {
         this.myElement = window.document.getElementById('loading');
         if (this.myElement !== null) {
+            this.spinner = false;
             this.myElement.style.display = 'none';
         }
     }
     showLoader() {
         if (this.myElement !== null) {
+            this.spinner = true;
             this.myElement.style.display = 'block';
         }
     }

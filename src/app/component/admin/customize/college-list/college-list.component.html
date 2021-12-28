@@ -48,21 +48,28 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- <ng-template *ngIf="collegeDataList > 0"> -->
-                <tr *ngFor="let collegeData of collegeDataList; let idx = index;" (click)="setSelectedRow(collegeData)">
-                    <td>{{collegeData.name}}</td>
-                    <td>{{collegeData.orgType}}</td>
-                    <td>{{collegeData.fafsaID}}</td>
-                    <td>{{collegeData.country}}</td>
-                    <td>{{collegeData.phone1}}</td>
-                    <td>{{collegeData.phone2}}</td>
-                    <td>{{collegeData.phone3}}</td>
-                    <td>{{collegeData.fax}}</td>
-                </tr>
-                <!-- </ng-template> -->
-                <tr *ngIf="collegeDataList.length === 0">
-                    No Records Found !
-                </tr>
+                <ng-container *ngIf="!spinner">
+                    <tr *ngFor="let collegeData of collegeDataList; let idx = index;"
+                        (click)="setSelectedRow(collegeData, idx)"
+                        [ngClass]="{'selected-row' : this.selectedRowIndex == idx}">
+                        <td>{{collegeData.name}}</td>
+                        <td>{{collegeData.orgType}}</td>
+                        <td>{{collegeData.fafsaID}}</td>
+                        <td>{{collegeData.country}}</td>
+                        <td>{{collegeData.phone1}}</td>
+                        <td>{{collegeData.phone2}}</td>
+                        <td>{{collegeData.phone3}}</td>
+                        <td>{{collegeData.fax}}</td>
+                    </tr>
+                </ng-container>
+                <div class="no-record">
+                    <div *ngIf="spinner" class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div *ngIf="collegeDataList.length == 0">
+                        <span>No Data Found</span>
+                    </div>
+                </div>
             </tbody>
         </table>
     </div>
@@ -254,9 +261,9 @@
                 <button type="button" class="btn btn-secondary" id="closePopup" (click)="isEdit = false;"
                     data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewCollegeName()">Save
-                    changes</button>
+                    & Close</button>
                 <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update
-                    Changes</button>
+                    & Close</button>
             </div>
         </div>
     </div>
