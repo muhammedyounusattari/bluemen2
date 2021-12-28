@@ -21,7 +21,7 @@ export class CounselorsComponent {
 
   public counselorsForm: FormGroup;
   public counselorModalForm: FormGroup;
-  public counselorsList: any;
+  public counselorsList: any = [];
   public selectedOption: string = '';
   public selectedRow: any = null;
   public selectedRowData: any = null;
@@ -80,8 +80,12 @@ export class CounselorsComponent {
    * @method editCounselors
    */
   public editCounselors() {
+    let request: any = this.requestPayload();
+    if (request['id'] == undefined) {
+      request['id'] = this.selectedRowData.id
+    }
     this.counselorsService
-      .editCounselors(this.requestPayload())
+      .editCounselors(request)
       .subscribe((result: any) => {
         if (result) {
           this.getCounselors();
@@ -93,6 +97,7 @@ export class CounselorsComponent {
    * @method getCounselors
    */
   public getCounselors() {
+    this.spinner = true;
     this.counselorsService.getCounselors().subscribe((result: any) => {
       if (result) {
         this.spinner = false;
@@ -106,7 +111,7 @@ export class CounselorsComponent {
    */
   public deleteCounselors() {
     this.counselorsService
-      .deleteCounselors({ staffCounselor: this.counselorModalForm.value.name })
+      .deleteCounselors(this.selectedRowData.id)
       .subscribe((result: any) => {
         if (result) {
           this.getCounselors();
@@ -133,6 +138,12 @@ export class CounselorsComponent {
    */
   public getSelectedOption(selectedOption: string) {
     this.selectedOption = selectedOption;
+      this.counselorModalForm.reset();
+      this.counselorModalForm.updateValueAndValidity();
+    if(this.selectedOption === 'Edit') {
+      this.counselorModalForm.get('name')?.setValue(this.selectedRowData.staffCounselor);
+      this.counselorModalForm.updateValueAndValidity();
+    }
   }
 
   /**
@@ -177,7 +188,6 @@ export class CounselorsComponent {
   public requestPayload() {
     return {
       address: null,
-      id: 1,
       staffActive: true,
       staffCodes: 2,
       staffCounselor: this.counselorModalForm.value.name,

@@ -21,7 +21,7 @@ export class StaffMemberComponent {
     }
     public staffMembersForm: FormGroup;
     public staffMembersModalForm: FormGroup;
-    public staffMembersList: any;
+    public staffMembersList: any = [];
     public selectedOption: string = '';
     public selectedRow: any = null;
     public selectedRowData: any = null;
@@ -80,8 +80,12 @@ export class StaffMemberComponent {
      * @method editStaffMembers
      */
     public editStaffMembers() {
+      let request: any = this.requestPayload();
+      if (request['id'] == undefined) {
+        request['id'] = this.selectedRowData.id
+      }
       this.staffMembersService
-        .editStaffMembers(this.requestPayload())
+        .editStaffMembers(request)
         .subscribe((result: any) => {
           if (result) {
             this.getStaffMembers();
@@ -93,6 +97,7 @@ export class StaffMemberComponent {
      * @method getStaffMembers
      */
     public getStaffMembers() {
+      this.spinner = true;
       this.staffMembersService.getStaffMembers().subscribe((result: any) => {
         if (result) {
           this.spinner = false;
@@ -106,7 +111,7 @@ export class StaffMemberComponent {
      */
     public deleteStaffMembers() {
       this.staffMembersService
-        .deleteStaffMembers({ staffName: this.staffMembersModalForm.value.name })
+        .deleteStaffMembers({ id: this.selectedRowData.id })
         .subscribe((result: any) => {
           if (result) {
             this.getStaffMembers();
@@ -133,6 +138,12 @@ export class StaffMemberComponent {
      */
     public getSelectedOption(selectedOption: string) {
       this.selectedOption = selectedOption;
+      this.staffMembersModalForm.reset();
+      this.staffMembersModalForm.updateValueAndValidity();
+    if(this.selectedOption === 'Edit') {
+      this.staffMembersModalForm.get('name')?.setValue(this.selectedRowData.staffName);
+      this.staffMembersModalForm.updateValueAndValidity();
+    }
     }
 
     /**
@@ -177,7 +188,6 @@ export class StaffMemberComponent {
     public requestPayload() {
       return {
         address: null,
-        id: 1,
         staffActive: true,
         staffCodes: 2,
         staffCounselor: 'Morris',
@@ -200,14 +210,5 @@ export class StaffMemberComponent {
         staffTitle: 'Test',
         staffTutor: false,
       };
-
-      // return {
-      //   hireDateFrom: this.staffMembersForm.value.hireDateFrom,
-      //   hireDateTo: this.staffMembersForm.value.hireDateTo,
-      //   active: this.staffMembersForm.value.active,
-      //   codes: this.staffMembersForm.value.codes,
-      //   zipCode: this.staffMembersForm.value.zipCode,
-      //   name: this.staffMembersModalForm.value.name
-      // }
     }
   }

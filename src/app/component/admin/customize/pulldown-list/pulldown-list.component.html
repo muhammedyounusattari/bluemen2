@@ -73,7 +73,7 @@
                     <div *ngIf="spinner" class="spinner-border" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
-                    <div *ngIf="pulldownList.length == 0">
+                    <div *ngIf="!spinner && pulldownList?.length == 0">
                         <span>No Data Found</span>
                     </div>
                 </div>
@@ -155,85 +155,50 @@
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group ">
-                                    <label for="usr">Enter the Pulldown Number:</label>
-                                    <input formControlName="id" type="text" class="form-control" id="pullDownNumber">
-                                </div>
-
                                 <div class="form-group mt-3">
                                     <label for="usr">Enter the Pulldown Name:</label>
                                     <input formControlName="name" type="text" class="form-control" id="pullDownName">
                                 </div>
-                                <div class="form-group col-md-3" style="display: flex;">
-                                    <label for="usr">Status
+                                <div class="form-group">
+                                    <label for="sel1" class="lable-style">Status</label>
+                                    <label class="radio-inline">
+                                        <input class="ml-2" formControlName="active" value="Active" type="radio"> Active </label>
+                                    <label class="radio-inline">
+                                        <input class="ml-2" formControlName="active" value="InActive" type="radio"> InActive
                                     </label>
-                                    <div class="col-md-6">
-                                        <label class="radio-inline">
-                                            <input type="checkbox" name="optradio"> Active
-                                        </label> &nbsp;&nbsp;
-                                        <label class="radio-inline">
-                                            <input type="checkbox" name="optradio"> In-Active
-                                        </label>
-                                    </div>
-
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group">
                                     <label for="sel1" class="lable-style">APR</label>
                                     <select formControlName="apr" class="form-control" id="APR">
                                         <option selected>Yes</option>
                                         <option>No</option>
                                     </select>
                                 </div>
-
-                                <div class="form-group col-md-3">
-                                    <label for="sel1" class="lable-style">APR NAME</label>
-                                    <select formControlName="orgType" class="form-control" id="OrgType">
-                                        <option>SSS</option>
-                                        <option>VUB</option>
-                                        <option>MCN</option>
-                                        <option>TS</option>
-                                    </select>
+                                <div class="form-group ">
+                                    <label for="usr">APR Name</label>
+                                    <input formControlName="aprName" type="text" class="form-control" id="pullDownNumber">
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group">
                                     <label for="sel1" class="lable-style">Pull Down Type</label>
-                                    <select formControlName="orgType" class="form-control" id="OrgType">
-                                        <option>SSS</option>
-                                        <option>VUB</option>
-                                        <option>MCN</option>
-                                        <option>TS</option>
-                                    </select>
+                                    <select formControlName="selectionType" class="form-control" id="APR">
+                                    <option selected>Multi Selection</option>
+                                    <option>Single Selection</option>
+                                </select>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group ">
+                                    <label for="usr">ORG ID</label>
+                                    <input formControlName="orgId" type="text" class="form-control" id="orgId">
+                                </div>
+                                <div class="form-group">
                                     <div class="form-group mt-4">
-                                        <label for="usr">Status
+                                        <label for="usr">ORG Type
                                         </label>
                                         <div class="row mt-3">
-                                            <div class="col-md-6">
-                                                <label class="radio-inline">
-                                                    <input type="checkbox" name="optradio"> SSS
-                                                </label>&nbsp;&nbsp;
-                                                <label class="radio-inline">
-                                                    <input type="checkbox" name="optradio"> VUB
-                                                </label>&nbsp;&nbsp;
-                                                <label class="radio-inline">
-                                                    <input type="checkbox" name="optradio"> UB
-                                                </label>&nbsp;&nbsp;
-
-                                                <label class="radio-inline">
-                                                    <input type="checkbox" name="optradio"> UB_MS
-                                                </label>&nbsp;&nbsp;
-
-                                                <label class="radio-inline">
-                                                    <input type="checkbox" name="optradio"> TS
-                                                </label>&nbsp;&nbsp;
-
-                                                <label class="radio-inline">
-                                                    <input type="checkbox" name="optradio"> RMN
-                                                </label>&nbsp;&nbsp;
-
-                                                <label class="radio-inline">
-                                                    <input type="checkbox" name="optradio"> EOC
-                                                </label>&nbsp;&nbsp;
+                                            <div formArrayName="orgType" class="col-md-12">
+                                                <label class="radio-inline" *ngFor="let item of orgTypeFormArray.controls; let i = index">
+                                                  <input type="checkbox" [formControlName]="i">
+                                                  {{orgTypes[i].name}} &nbsp;&nbsp;
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
@@ -245,7 +210,7 @@
             </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="handleMethodToCall()">Save changes</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="handleMethodToCall()">{{selectedOption === 'Edit' ? 'Update & Close' : 'Save & Close'}}</button>
             </div>
         </div>
     </div>

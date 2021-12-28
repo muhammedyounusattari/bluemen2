@@ -22,6 +22,7 @@ export class CustomFieldsComponent implements OnInit {
   public selectedRow: any = null;
   public customID: any = 1;
   public spinner: boolean = true;
+  public selectedRowData: any;
 
   constructor(
     private modalService: BsModalService,
@@ -67,7 +68,11 @@ export class CustomFieldsComponent implements OnInit {
    * @method editCustomFieldNameType
    */
   public editCustomFieldNameType() {
-    this.customFieldService.editCustomFieldsNameType(this.requestPayload()).subscribe((result) => {
+    let request: any = this.requestPayload();
+    if (request['id'] == undefined) {
+      request['id'] = this.selectedRowData.id
+    }
+    this.customFieldService.editCustomFieldsNameType(request).subscribe((result) => {
       if (result) {
         this.getCustomFieldNameType();
       }
@@ -78,6 +83,7 @@ export class CustomFieldsComponent implements OnInit {
    * @method getCustomFieldNameType
    */
   public getCustomFieldNameType() {
+    this.spinner = true;
     this.customFieldService.getCustomFieldsNameType().subscribe((result) => {
       if (result) {
         this.spinner = false;
@@ -90,7 +96,7 @@ export class CustomFieldsComponent implements OnInit {
    * @method deleteCustomFieldNameType
    */
   public deleteCustomFieldNameType() {
-    this.customFieldService.deleteCustomFieldsNameType({customId: this.customID}).subscribe((result) => {
+    this.customFieldService.deleteCustomFieldsNameType({customId: this.selectedRowData.customId}).subscribe((result) => {
       if (result) {
         this.getCustomFieldNameType();
       }
@@ -114,6 +120,13 @@ export class CustomFieldsComponent implements OnInit {
    */
   public getSelectedOption(selectedOption: string) {
     this.selectedOption = selectedOption;
+    if (selectedOption === 'Edit') {
+      this.customFieldsForm.get('customId')?.setValue(this.selectedRowData.customId);
+      this.customFieldsForm.get('pullDownName')?.setValue(this.selectedRowData.pullDownName);
+    } else {
+      this.customFieldsForm.reset();
+      this.customFieldsForm.updateValueAndValidity();
+    }
   }
 
   /**
@@ -122,8 +135,7 @@ export class CustomFieldsComponent implements OnInit {
    */
    public getSelectedRow(data: any, index: number) {
     this.selectedRow = index;
-    this.customFieldsForm.get('customId')?.setValue(data.customId);
-    this.customFieldsForm.get('pullDownName')?.setValue(data.pullDownName);
+    this.selectedRowData = data;
   }
 
   /**
@@ -160,10 +172,7 @@ export class CustomFieldsComponent implements OnInit {
    * @description create request payload for API
    */
   public requestPayload() {
-    this.customFieldsForm.get('customId')?.setValue(this.customID);
-    this.customFieldsForm.updateValueAndValidity();
     return {
-      customId: this.customFieldsForm.value.customId,
       pullDownName: this.customFieldsForm.value.pullDownName
     }
   }

@@ -33,11 +33,11 @@
             <tbody>
                 <ng-container *ngIf="!spinner">
                     <tr *ngFor="let data of staffMembersList; let i = index" (click)="getSelectedRow(data, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">
-                        <th scope="row">{{data.staffId}}</th>
-                        <td>{{data.staffName}}</td>
+                        <th scope="row">{{data.id}}</th>
+                        <td scope="row">{{data.staffName}}</td>
                         <td>{{data.staffTitle}}</td>
                         <td>{{data.staffActive}}</td>
-                        <th scope="row">{{data.staffCounselor}}</th>
+                        <th>{{data.staffCounselor}}</th>
                         <td>{{data.staffTutor ? 'YES' : 'NO'}}</td>
                         <th scope="row">{{data.staffTeacher}}</th>
                         <td>{{data.staffLab}}</td>
@@ -50,7 +50,7 @@
                     <div *ngIf="spinner" class="spinner-border" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
-                    <div *ngIf="staffMembersList.length == 0">
+                    <div *ngIf="!spinner && staffMembersList.length == 0">
                         <span>No Data Found</span>
                     </div>
                 </div>

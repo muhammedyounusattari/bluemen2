@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
 
@@ -18,10 +18,20 @@ export class PulldownListComponent {
   public pulldownListModalForm: FormGroup;
   public pulldownListForm: FormGroup;
   public formValues: any;
-  public pulldownList: any;
+  public pulldownList: any = [];
   public selectedOption: string = '';
   public selectedRow: any = null;
   public spinner: boolean = true;
+  public orgTypes = [
+    { id: 1, name: 'SSS'},
+    { id: 2, name: 'VUB'},
+    { id: 3, name: 'UB'},
+    { id: 4, name: 'UB_MS'},
+    { id: 5, name: 'TS'},
+    { id: 6, name: 'RMN'},
+    { id: 7, name: 'EOC'}
+  ];
+  public selectedData: any;
 
   constructor(
     private modalService: BsModalService,
@@ -47,13 +57,20 @@ export class PulldownListComponent {
     });
 
     this.pulldownListModalForm = this.fb.group({
-      id: [1],
       name: [''],
-      apr: ['1'],
-      orgId: [''],
+      id: [''],
+      apr: [''],
+      aprName: [''],
       active: [''],
-      orgType: ['']
+      orgId: [''],
+      selectionType: [''],
+      orgType: new FormArray([])
     });
+    this.orgTypes.forEach(() => this.orgTypeFormArray.push(new FormControl(false)));
+  }
+
+  get orgTypeFormArray() {
+    return this.pulldownListModalForm.controls.orgType as FormArray;
   }
 
   /**
@@ -83,8 +100,12 @@ export class PulldownListComponent {
    * @method editPullDownList
    */
   public editPullDownList() {
+    let request: any = this.requestPayload();
+    if (request['id'] == undefined) {
+      request['id'] = this.selectedData.id
+    }
     this.pullDownListService
-      .editPullDownList(this.requestPayload())
+      .editPullDownList(request)
       .subscribe((result) => {
         if (result) {
           this.getPullDownList();
@@ -96,6 +117,7 @@ export class PulldownListComponent {
    * @method getPullDownList
    */
   public getPullDownList() {
+    this.spinner = true;
     this.pullDownListService.getPullDownList().subscribe((result) => {
       if (result) {
         this.spinner = false;
@@ -109,7 +131,7 @@ export class PulldownListComponent {
    */
   public deletePullDownList() {
     this.pullDownListService
-      .deletePullDownList({id: Number(this.pulldownListModalForm.value.id)})
+      .deletePullDownList({id: Number(this.selectedData.id)})
       .subscribe((result) => {
         if (result) {
           this.getPullDownList();
@@ -139,6 +161,23 @@ export class PulldownListComponent {
    */
   public getSelectedOption(selectedOption: string) {
     this.selectedOption = selectedOption;
+    this.pulldownListModalForm.reset();
+    this.pulldownListModalForm.updateValueAndValidity();
+    if(this.selectedOption === 'Edit') {
+      this.pulldownListModalForm.get('apr')?.setValue(this.selectedData.apr);
+      this.pulldownListModalForm.get('orgId')?.setValue(this.selectedData.orgId);
+      this.pulldownListModalForm.get('active')?.setValue(this.selectedData.active);
+      this.pulldownListModalForm.get('selectionType')?.setValue(this.selectedData.selectionType);
+      this.pulldownListModalForm.get('id')?.setValue(this.selectedData.id);
+      this.pulldownListModalForm.get('name')?.setValue(this.selectedData.name);
+      this.pulldownListModalForm.value.orgType.forEach((item: any, index: any) => {
+        this.selectedData.orgType.forEach((element: any) => {
+          if (element === this.orgTypes[index].name) {
+            this.orgTypeFormArray.controls[index].setValue(true);
+          }
+        });
+      });
+    }
   }
 
 
@@ -148,12 +187,7 @@ export class PulldownListComponent {
    */
   public getSelectedRow(data: any, index: number) {
     this.selectedRow = index;
-    this.pulldownListForm.get('apr')?.setValue(data.apr);
-    this.pulldownListForm.get('orgId')?.setValue(data.orgId);
-    this.pulldownListForm.get('active')?.setValue(data.active);
-    this.pulldownListForm.get('orgType')?.setValue(data.orgType.toString());
-    this.pulldownListModalForm.get('id')?.setValue(data.id);
-    this.pulldownListModalForm.get('name')?.setValue(data.name);
+    this.selectedData = data;
   }
 
   /**
@@ -162,9 +196,6 @@ export class PulldownListComponent {
   public handleMethodToCall() {
     switch (this.selectedOption) {
       case 'New':
-        this.pulldownListModalForm.get('id')?.setValue('');
-        this.pulldownListModalForm.get('name')?.setValue('');
-        this.pulldownListModalForm.updateValueAndValidity();
         this.addPullDownList();
         break;
       case 'Edit':
@@ -190,14 +221,20 @@ export class PulldownListComponent {
    * @description create the request payload for API's
    */
   public requestPayload() {
+    let data: any = [];
+    this.pulldownListModalForm.value.orgType.filter((item: any, index: any) => {
+      if (item) {
+        data.push(this.orgTypes[index].name);
+      }
+    });
     return {
-      apr: this.pulldownListForm.value.apr,
-      orgId: this.pulldownListForm.value.orgId,
-      active: this.pulldownListForm.value.active,
-      orgType: [this.pulldownListForm.value.orgType],
-      id: this.pulldownListModalForm.value.id,
+      apr: this.pulldownListModalForm.value.apr,
+      aprName: this.pulldownListModalForm.value.aprName,
+      orgId: this.pulldownListModalForm.value.orgId,
+      active: this.pulldownListModalForm.value.active,
+      orgType: data,
       name: this.pulldownListModalForm.value.name,
-      selectionType: 'Signle Selection'
+      selectionType: this.pulldownListModalForm.value.selectionType
     }
   }
 }

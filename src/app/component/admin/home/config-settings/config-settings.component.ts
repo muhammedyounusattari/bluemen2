@@ -17,7 +17,7 @@ export class ConfigSettingsComponent {
         ignoreBackdropClick: true,
         class: 'modal-lg'
     }
-    public configSettingsList: any;
+    public configSettingsList: any = [];
     public selectedOption: string = '';
     public selectedRow: any = null;
     public selectedRowData: any = null;
@@ -39,6 +39,7 @@ export class ConfigSettingsComponent {
      * @method getConfigSettings
      */
     public getConfigSettings() {
+      this.spinner = true;
       this.configSettingsService.getConfigSettings().subscribe((result: any) => {
         if (result) {
           this.spinner = false;

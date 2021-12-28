@@ -18,7 +18,7 @@ export class TimeClockManagerComponent {
   };
   public timeClockManagerForm: FormGroup;
   public timeClockManagerModalForm: FormGroup;
-  public timeClockManagerList: any;
+  public timeClockManagerList: any = [];
   public selectedOption: string = '';
   public selectedRow: any = null;
   public selectedData: any;
@@ -82,8 +82,12 @@ export class TimeClockManagerComponent {
    * @method editTimeClockManager
    */
   public editTimeClockManager() {
+    let request: any = this.requestPayloadForAddEdit();
+    if (request['id'] == undefined) {
+      request['id'] = this.selectedData.id
+    }
     this.timeClockManagerService
-      .editTimeClockManager(this.requestPayloadForAddEdit())
+      .editTimeClockManager(request)
       .subscribe((result: any) => {
         if (result) {
           this.getTimeClockManager();
@@ -95,6 +99,7 @@ export class TimeClockManagerComponent {
    * @method getTimeClockManager
    */
   public getTimeClockManager() {
+    this.spinner = true;
     this.timeClockManagerService.getTimeClockManager().subscribe((result: any) => {
       if (result) {
         result.forEach((element: any) => {
@@ -112,7 +117,7 @@ export class TimeClockManagerComponent {
    */
   public deleteTimeClockManager() {
     this.timeClockManagerService
-      .deleteTimeClockManager(this.selectedData.staffName)
+      .deleteTimeClockManager({id: this.selectedData.id})
       .subscribe((result: any) => {
         if (result) {
           this.getTimeClockManager();
@@ -139,9 +144,11 @@ export class TimeClockManagerComponent {
    */
   public getSelectedOption(selectedOption: string) {
     this.selectedOption = selectedOption;
+    this.timeClockManagerModalForm.reset();
+    this.timeClockManagerModalForm.updateValueAndValidity();
     if(this.selectedOption === 'Edit') {
-      this.timeClockManagerModalForm.get('checkInTime')?.setValue(moment(this.selectedData.checkInTime).format('DD/MM/yyyy h:mm:ss'));
-      this.timeClockManagerModalForm.get('checkInOut')?.setValue(moment(this.selectedData.checkInOut).format('DD/MM/yyyy h:mm:ss'));
+      this.timeClockManagerModalForm.get('checkInTime')?.setValue(new Date(this.selectedData.checkInTime).toISOString().slice(0, 16));
+      this.timeClockManagerModalForm.get('checkOutTime')?.setValue(new Date(this.selectedData.checkOutTime).toISOString().slice(0, 16));
       this.timeClockManagerModalForm.get('staffName')?.setValue(this.selectedData.staffName);
       this.timeClockManagerModalForm.updateValueAndValidity();
     }
@@ -210,7 +217,6 @@ export class TimeClockManagerComponent {
       checkInTime: new Date(this.timeClockManagerModalForm.value.checkInTime).toISOString(),
       checkOutTime: new Date(this.timeClockManagerModalForm.value.checkOutTime).toISOString(),
       duration: checkOut.diff(checkIn, 'days') + ' days ' + checkOut.diff(checkIn, 'days') + ' hours',
-      id: 0,
       staffName: this.timeClockManagerModalForm.value.staffName
     }
   }

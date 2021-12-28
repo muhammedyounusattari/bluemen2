@@ -37,7 +37,7 @@
                     <div *ngIf="spinner" class="spinner-border" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
-                    <div *ngIf="timeClockManagerList.length == 0">
+                    <div *ngIf="!spinner && timeClockManagerList.length == 0">
                         <span>No Data Found</span>
                     </div>
                 </div>
@@ -217,13 +217,13 @@
                             <div class="col-md-10">
                                 <div class="form-group">
                                     <label for="sel1">Check In Time</label>
-                                    <input formControlName="checkInTime" type="datetime-local" class="form-control" id="usr">
+                                    <input formControlName="checkInTime" type="datetime-local" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-10">
                                 <div class="form-group">
                                     <label for="sel1">Check Out Time</label>
-                                    <input formControlName="checkOutTime" type="datetime-local" class="form-control" id="usr">
+                                    <input formControlName="checkOutTime" type="datetime-local" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -231,8 +231,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="handleMethodToCall()">Save
-            changes</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="handleMethodToCall()">{{selectedOption === 'Edit' ? 'Update & Close' : 'Save & Close'}}</button>
                 </div>
             </form>
         </div>
