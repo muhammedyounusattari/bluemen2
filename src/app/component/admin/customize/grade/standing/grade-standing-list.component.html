@@ -51,7 +51,7 @@
                         <td>{{gradeStd.gradingId}}</td>
                         <td>{{gradeStd.gradingName}}</td>
                         <td>{{gradeStd.gradingGroupName}}</td>
-                        <td>{{gradeStd.gradeStandingFiscalYear}}</td>
+                        <td>{{gradeStd.gradingYearEnbStatus}}</td>
 
                     </tr>
                 </ng-container>
@@ -141,7 +141,7 @@
                                 <div class="form-group mt-3">
                                     <label for="usr" class="lable-style">Grade/Standing ID:</label>
                                     <input type="text" class="form-control" id="stdId"
-                                        [(ngModel)]="gradeGroupStandingList.gradingId">
+                                        [(ngModel)]="gradeGroupStandingList.gradingId" readonly>
                                 </div>
 
                                 <div class="form-group mt-3">
@@ -155,10 +155,11 @@
                                     <label for="usr" class="lable-style">Group Name:</label>
                                     <select class="form-control" id="gradeStdGrpName"
                                         [(ngModel)]="gradeGroupStandingList.gradingGroupName">
-                                        <option selected>APR Column #1 | 1</option>
-                                        <option selected>APR Column #2 | 2</option>
-                                        <option selected>APR Column #3 | 3</option>
-                                        <option selected>APR Column #4 | 4</option>
+                                        <option selected>Freshman | 1</option>
+                                        <option selected>Junior | 2</option>
+                                        <option selected>Senior | 3</option>
+                                        <option selected>Sophomore | 4</option>
+                                        <option selected>test | 5</option>
                                     </select>
                                 </div>
 
@@ -167,10 +168,11 @@
                                         Year:</label>
                                     <select class="form-control" id="gradeFiscalYear"
                                         [(ngModel)]="gradeGroupStandingList.gradeStandingFiscalYear">
-                                        <option selected>APR Column #1 | 1</option>
-                                        <option selected>APR Column #2 | 2</option>
-                                        <option selected>APR Column #3 | 3</option>
-                                        <option selected>APR Column #4 | 4</option>
+                                        <option selected>Freshman | 1</option>
+                                        <option selected>Junior | 2</option>
+                                        <option selected>Senior | 3</option>
+                                        <option selected>Sophomore | 4</option>
+                                        <option selected>test | 5</option>
                                     </select>
                                 </div>
 
@@ -179,10 +181,11 @@
                                         Year:</label>
                                     <select class="form-control" id="gradeStdPStatus"
                                         [(ngModel)]="gradeGroupStandingList.gradingParticipantStatus">
-                                        <option selected>APR Column #1 | 1</option>
-                                        <option selected>APR Column #2 | 2</option>
-                                        <option selected>APR Column #3 | 3</option>
-                                        <option selected>APR Column #4 | 4</option>
+                                        <option selected>Continuing Participant</option>
+                                        <option selected>New Participant</option>
+                                        <option selected>New Summer Participant</option>
+                                        <option selected>No Response / Unknown</option>
+                                        <option selected>Prior Year Participant</option>
                                     </select>
                                 </div>
 
@@ -190,10 +193,10 @@
                                     <label for="usr" class="lable-style">End Status for current Fiscal Year:</label>
                                     <select class="form-control" id="gradeStdYearEndStatus"
                                         [(ngModel)]="gradeGroupStandingList.gradingYearEnbStatus">
-                                        <option selected>APR Column #1 | 1</option>
-                                        <option selected>APR Column #2 | 2</option>
-                                        <option selected>APR Column #3 | 3</option>
-                                        <option selected>APR Column #4 | 4</option>
+                                        <option selected>No Reponse</option>
+                                        <option selected>Academic Dismissal</option>
+                                        <option selected>Continuing Student</option>
+                                        <option selected>Graduated</option>
                                     </select>
                                 </div>
                             </div>

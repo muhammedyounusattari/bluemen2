@@ -1,5 +1,5 @@
 export class ActivityServiceListEnum {
-    activityId: string;
+    activityId: string = '1';
     activityName: string;
     activityGroupName:string;
     lapService: boolean;

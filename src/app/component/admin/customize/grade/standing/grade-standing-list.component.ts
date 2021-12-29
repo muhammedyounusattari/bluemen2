@@ -161,6 +161,11 @@ export class GradeStandingListComponent implements OnInit {
     }
     resetFields() {
         this.gradeGroupStandingList = new GradeGroupStandingList();
+        this._gradingGroupStandingService.getGradingStandingMaxId().subscribe(result => {
+            if (result) {
+                this.gradeGroupStandingList.gradingId = result + 1;
+            }
+        });
     }
     hideLoader() {
         this.myElement = window.document.getElementById('loading');

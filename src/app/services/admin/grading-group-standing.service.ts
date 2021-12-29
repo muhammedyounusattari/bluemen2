@@ -33,6 +33,9 @@ export class GradingGroupStandingService {
         return this.dataService.callDeleteService(ServiceUrls.DELETE_GRADING_GROUP_LIST, request);
     }
 
+    getGradingGroupMaxId() {
+        return this.dataService.callGetService(ServiceUrls.GET_GRADING_GROUP_MAX_ID, '');
+    }
     /** GRADING GROUP LIST API - END */
 
     /** GRADING STANDING LIST API - START */
@@ -42,21 +45,24 @@ export class GradingGroupStandingService {
     }
 
     postGradingStandingList(request: any): Observable<any> {
-        return this.dataService.callPostService(ServiceUrls.POST_GRADING_GROUP_LIST, request);
+        return this.dataService.callPostService(ServiceUrls.POST_GRADING_STANDING_LIST, request);
     }
 
     updateGradingStandingList(request: any): Observable<any> {
-        return this.dataService.callPutService(ServiceUrls.UPDATE_GRADING_GROUP_LIST, request);
+        return this.dataService.callPutService(ServiceUrls.UPDATE_GRADING_STANDING_LIST , request);
     }
 
     filterGradingStandingList(request: any): Observable<any> {
-        return this.dataService.callGetService(ServiceUrls.FILTER_GRADING_GROUP_LIST, request);
+        return this.dataService.callGetService(ServiceUrls.FILTER_GRADING_STANDING_LIST, request);
     }
 
     deleteGradingStandingList(request: any): Observable<any> {
-        return this.dataService.callDeleteService(ServiceUrls.DELETE_GRADING_GROUP_LIST, request);
+        return this.dataService.callDeleteService(ServiceUrls.DELETE_GRADING_STANDING_LIST, request);
     }
 
+    getGradingStandingMaxId() {
+        return this.dataService.callGetService(ServiceUrls.GET_GRADING_STANDING_MAX_ID, '');
+    }
     /** GRADING STANDING LIST API - END */
 
 }

@@ -152,6 +152,11 @@ export class ServicesListComponent implements OnInit {
     }
     resetFields() {
         this.activityServiceListEnum = new ActivityServiceListEnum();
+        this._activityGroupServicesService.getActivityServiceMaxId().subscribe(result => {
+            if(result) {
+                this.activityServiceListEnum.activityId = result + 1;
+            }
+        });
     }
     hideLoader() {
         this.myElement = window.document.getElementById('loading');

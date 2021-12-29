@@ -33,6 +33,9 @@ export class ActivityGroupServicesService {
         return this.dataService.callDeleteService(ServiceUrls.DELETE_ACTIVITY_GROUP_LIST, request);
     }
 
+    getActivityGroupMaxId() {
+        return this.dataService.callGetService(ServiceUrls.GET_ACTIVITY_GROUP_MAX_ID, '');
+    }
     /** ACTIVITY GROUP LIST - END */
 
     /** ACTIVITY SERVICE LIST - START */
@@ -55,6 +58,10 @@ export class ActivityGroupServicesService {
 
     deleteActivityServiceList(request: any): Observable<any> {
         return this.dataService.callDeleteService(ServiceUrls.DELETE_ACTIVITY_SERVICE_LIST, request);
+    }
+
+    getActivityServiceMaxId() {
+        return this.dataService.callGetService(ServiceUrls.GET_ACTIVITY_SERVICE_MAX_ID, '');
     }
 
     /** ACTIVITY SERVICE LIST - END */

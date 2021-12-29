@@ -72,7 +72,7 @@ export class GradeStandingGroupListComponent implements OnInit {
         this.requestData.gradeGroupId = this._gradeGroupStandingList.gradeGroupId;
         this.requestData.gradeGroupName = this._gradeGroupStandingList.gradeGroupName;
         this.requestData.gradeGroupGradeType = this._gradeGroupStandingList.gradeGroupGradeType;
-        this.requestData.gradeGroupAprColumn = '';
+        this.requestData.gradeGroupAprColumn = this._gradeGroupStandingList.gradeGroupGradeType;
         this._gradingGroupStandingService.postGradingGroupList(this.requestData).subscribe(result => {
             if (result) {
                 document.getElementById('closePopup')?.click();
@@ -126,7 +126,7 @@ export class GradeStandingGroupListComponent implements OnInit {
         this._gradeGroupStandingList.gradeGroupId = this.selectedRow.gradeGroupId;
         this._gradeGroupStandingList.gradeGroupName = this.selectedRow.gradeGroupName;
         this._gradeGroupStandingList.gradeGroupGradeType = this.selectedRow.gradeGroupGradeType;
-        this._gradeGroupStandingList.gradeGroupAprColumn = '';
+        this._gradeGroupStandingList.gradeGroupAprColumn = this.selectedRow.gradeGroupGradeType;
     }
     updateSelectedRow() {
         if (this.selectedRow) {
@@ -150,6 +150,11 @@ export class GradeStandingGroupListComponent implements OnInit {
     }
     resetFields() {
         this._gradeGroupStandingList = new GradeGroupStandingList();
+        this._gradingGroupStandingService.getGradingGroupMaxId().subscribe(result => {
+            if (result) {
+                this._gradeGroupStandingList.gradeGroupId = result + 1;
+            }
+        });
     }
     hideLoader() {
         this.myElement = window.document.getElementById('loading');

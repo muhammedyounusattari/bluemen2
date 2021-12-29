@@ -1,11 +1,11 @@
 export class GradeGroupStandingList {
-    gradeGroupId: number = 0;
+    gradeGroupId: number = 1;
     gradeGroupName: string = '';
     gradeGroupGradeType: string = '';
     gradeGroupAprColumn: string = '';
     
     graduateList: boolean = true;
-    gradingId: number = 0;
+    gradingId: number = 1;
     gradingName: string = '';
     gradingGroupName: string = '';
     gradingNewGrade: string = '';

@@ -173,8 +173,8 @@ export class CustomFieldsComponent implements OnInit {
    */
   public requestPayload() {
     return {
+      customId: this.selectedRowData.customId,
       pullDownName: this.customFieldsForm.value.pullDownName
     }
   }
-
 }

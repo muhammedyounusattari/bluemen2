@@ -72,7 +72,7 @@ export class ServiceGroupListComponent implements OnInit {
         this.requestData.activityCalculateHoursforActivityGroup = this.activityGrpListEnum.activityCalculateHoursforActivityGroup;
         this.requestData.activityReportActivityGroup = this.activityGrpListEnum.activityReportActivityGroup;
         this.requestData.activityGroupTypeName = this.activityGrpListEnum.activityGroupTypeName;
-        this.requestData.activityGroupType = this.activityGrpListEnum.activityGroupTypeName;
+        this.requestData.activityGroupType = this.activityGrpListEnum.activityGroupType;
         this.requestData.activityAdd = '';
         this.requestData.activityBoltService = '';
         this._activityGroupServicesService.postActivityGroupList(this.requestData).subscribe(result => {
@@ -148,7 +148,7 @@ export class ServiceGroupListComponent implements OnInit {
             this.requestData.activityCalculateHoursforActivityGroup = this.activityGrpListEnum.activityCalculateHoursforActivityGroup;
             this.requestData.activityReportActivityGroup = this.activityGrpListEnum.activityReportActivityGroup;
             this.requestData.activityGroupTypeName = this.activityGrpListEnum.activityGroupTypeName;
-            this.requestData.activityGroupType = this.activityGrpListEnum.activityGroupTypeName;
+            this.requestData.activityGroupType = this.activityGrpListEnum.activityGroupType;
             this.requestData.activityAdd = '';
             this.requestData.activityBoltService = '';
             this._activityGroupServicesService.updateActivityGroupList(this.requestData).subscribe(response => {
@@ -165,6 +165,11 @@ export class ServiceGroupListComponent implements OnInit {
     }
     resetFields() {
         this.activityGrpListEnum = new ActivityGroupListEnum();
+        this._activityGroupServicesService.getActivityGroupMaxId().subscribe(result => {
+            if(result) {
+                this.activityGrpListEnum.activityGroupId = result + 1;
+            }
+        });
     }
     hideLoader() {
         this.myElement = window.document.getElementById('loading');
