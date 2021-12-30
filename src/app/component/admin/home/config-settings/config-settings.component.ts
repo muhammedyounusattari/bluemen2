@@ -75,7 +75,9 @@ export class ConfigSettingsComponent {
     this.spinner = true;
     let payload = {
       id:this.id,
-      configValue:this.configValue
+      configValue:this.configValue,
+      configType:this.configType,
+      description:this.description
     }
 
     this.configSettingsService.saveConfigSettings(payload).subscribe((result: any) => {
