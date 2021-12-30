@@ -86,4 +86,15 @@ export class ServiceUrls {
 
     // Recall Students API URL's
     public static GET_RECALL_STUDENTS_LIST = environment.apiUrl + '/blumen-api/admin/systemtools/recallStudentList/v1';
+
+    // Teacher
+    public static GET_TEACHER_LIST = environment.apiUrl + '/blumen-api/teacher/getTeacherList/v1';
+    public static POST_TEACHER = environment.apiUrl + '/blumen-api/teacher/teacherList/v1';
+    public static DELETE_TEACHER = environment.apiUrl + '/blumen-api/teacher/deleteTeacherList/v1';
+
+    // Tutors
+    public static GET_TUTORS_LIST = environment.apiUrl + '/blumen-api/tutor/getTutorList/v1';
+    public static POST_TUTORS = environment.apiUrl + '/blumen-api/tutor/tutorList/v1';
+    public static DELETE_TUTORS = environment.apiUrl + '/blumen-api/tutor/deleteTutorList/v1';
+
 }
