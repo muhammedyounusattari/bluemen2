@@ -43,7 +43,7 @@
                     <div *ngIf="spinner" class="spinner-border" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
-                    <div *ngIf="(customFields && customFields.length?customFields.length:0) == 0">
+                    <div *ngIf="customFields.length == 0">
                         <span>No Data Found</span>
                     </div>
                 </div>

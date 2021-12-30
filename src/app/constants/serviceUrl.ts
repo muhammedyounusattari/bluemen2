@@ -8,7 +8,7 @@ export class ServiceUrls {
     public static UPDATE_ACTIVITY_GROUP_LIST = environment.apiUrl + '/blumen-api/customize/updateActivityGroupList/v1';
     public static POST_ACTIVITY_GROUP_LIST = environment.apiUrl + '/blumen-api/customize/activityGroupList/v1';
     public static GET_ACTIVITY_GROUP_MAX_ID = environment.apiUrl + '/blumen-api/customize/getMaxActivityGroupId/v1';
-    
+
     // ACTIVITY SERVICE LIST API URL's
     public static FILTER_ACTIVITY_SERVICE_LIST = environment.apiUrl + '/blumen-api/customize/filter/activityList/v1';
     public static GET_ACTIVITY_SERVICE_LIST = environment.apiUrl + '/blumen-api/customize/getActivityList/v1';
@@ -79,6 +79,8 @@ export class ServiceUrls {
 
     // Config setting API URL's
     public static GET_CONFIG_SETTINGS = environment.apiUrl + '/blumen-api/admin/getConfigSettingList/v1';
+    public static POST_CONFIG_SETTINGS = environment.apiUrl + '/blumen-api/admin/postConfigSettingList/v1';
+
     // LAB SETTINGS PREFERENCES
     public static POST_LAB_SETTINGS_PREFERENCES = environment.apiUrl + '/blumen-api/customize/labSettingPreferences/v1';
 
