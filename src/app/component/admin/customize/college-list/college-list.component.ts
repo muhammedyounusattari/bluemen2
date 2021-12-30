@@ -48,7 +48,7 @@ export class CollegeListComponent implements OnInit {
     };
     myElement: any = null;
     public spinner: boolean = true;
-    selectedRowIndex: number;
+    selectedRowIndex: any;
     isDisabled: boolean = false;
     
     constructor(private modalService: BsModalService
@@ -121,6 +121,7 @@ export class CollegeListComponent implements OnInit {
             if (result) {
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
                     this.hideLoader();
+                    this.selectedRowIndex = null;
                     if (result) {
                         document.getElementById('closePopup')?.click();
                         this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
@@ -163,6 +164,7 @@ export class CollegeListComponent implements OnInit {
                     this._collegeAndSchoolService.deleteCollegeSchoolName(this.requestData).subscribe(result => {
                         this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
                             this.hideLoader();
+                            this.selectedRowIndex = null;
                             if (result) {
                                 this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
                             }
@@ -231,6 +233,7 @@ export class CollegeListComponent implements OnInit {
             this._collegeAndSchoolService.updateCollegeSchoolName(this.requestData).subscribe(response => {
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
                     this.hideLoader();
+                    this.selectedRowIndex = null;
                     if (result) {
                         document.getElementById('closePopup')?.click();
                         this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
@@ -241,6 +244,7 @@ export class CollegeListComponent implements OnInit {
         }
     }
     resetFields() {
+        this.isEdit = false;
         this.collegeListEnum = new CollegeListEnum();
         this.isDisabled = false;
     }

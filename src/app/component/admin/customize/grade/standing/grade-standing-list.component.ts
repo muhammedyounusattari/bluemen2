@@ -36,7 +36,7 @@ export class GradeStandingListComponent implements OnInit {
     isEdit: boolean = false;
     myElement: any = null;
     public spinner: boolean = true;
-    selectedRowIndex: number;
+    selectedRowIndex: any;
 
     constructor(private modalService: BsModalService
         , private router: Router
@@ -84,6 +84,7 @@ export class GradeStandingListComponent implements OnInit {
                 document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
                     this.hideLoader();
+                    this.selectedRowIndex = null;
                     if (result) {
                         this.gradeStandingListData = result;
                     }
@@ -116,6 +117,7 @@ export class GradeStandingListComponent implements OnInit {
                     this._gradingGroupStandingService.deleteGradingStandingList(data).subscribe(result => {
                         this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
                             this.hideLoader();
+                            this.selectedRowIndex = null;
                             if (result) {
                                 this.gradeStandingListData = result;
                             }
@@ -151,6 +153,7 @@ export class GradeStandingListComponent implements OnInit {
                 document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
                     this.hideLoader();
+                    this.selectedRowIndex = null;
                     if (result) {
                         this.gradeStandingListData = result;
                         this.isEdit = false;
@@ -160,6 +163,7 @@ export class GradeStandingListComponent implements OnInit {
         }
     }
     resetFields() {
+        this.isEdit = false;
         this.gradeGroupStandingList = new GradeGroupStandingList();
         this._gradingGroupStandingService.getGradingStandingMaxId().subscribe(result => {
             if (result) {

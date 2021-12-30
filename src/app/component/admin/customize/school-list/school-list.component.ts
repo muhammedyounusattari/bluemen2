@@ -48,7 +48,7 @@ export class SchoolListComponent implements OnInit{
     };
     myElement: any = null;
     public spinner: boolean = true;
-    selectedRowIndex: number;
+    selectedRowIndex: any;
     isDisabled: boolean = false;
 
     constructor(private modalService: BsModalService
@@ -116,10 +116,11 @@ export class SchoolListComponent implements OnInit{
         this.requestData.notes = this.schoolListEnum.notes;
         this.requestData.fafsaId = null;
 
-        this._collegeAndSchoolService.postCollegeSchoolName(this.requestData).subscribe(result=>{
+        this._collegeAndSchoolService.postStudentName(this.requestData).subscribe(result=>{
             if(result) {
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
                     this.hideLoader();
+                    this.selectedRowIndex = null;
                     if (result) {
                         document.getElementById('closePopup')?.click();
                         this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
@@ -163,12 +164,14 @@ export class SchoolListComponent implements OnInit{
                     this._collegeAndSchoolService.deleteCollegeSchoolName(this.requestData).subscribe(result => {
                         this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
                             this.hideLoader();
+                            this.selectedRowIndex = null;
                             if (result) {
                                 this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
                             }
                         }); 
-                    });
-        
+                    });        
+                } else {
+                    this.hideLoader();
                 }
             });
          }
@@ -230,6 +233,7 @@ export class SchoolListComponent implements OnInit{
             this._collegeAndSchoolService.updateCollegeSchoolName(this.requestData).subscribe(response => {
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
                     this.hideLoader();
+                    this.selectedRowIndex = null;
                     if (result) {
                         document.getElementById('closePopup')?.click();
                         this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
@@ -240,6 +244,7 @@ export class SchoolListComponent implements OnInit{
         }
     }
     resetFields() {
+        this.isEdit = false;
         this.schoolListEnum = new SchoolListEnum();
         this.isDisabled = false;
     }

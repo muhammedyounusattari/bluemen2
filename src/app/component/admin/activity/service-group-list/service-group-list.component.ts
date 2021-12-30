@@ -37,7 +37,7 @@ export class ServiceGroupListComponent implements OnInit {
     isEdit: boolean = false;
     myElement: any = null;
     public spinner: boolean = true;
-    selectedRowIndex: number;
+    selectedRowIndex: any;
 
     constructor(private modalService: BsModalService
         , private router: Router
@@ -80,6 +80,7 @@ export class ServiceGroupListComponent implements OnInit {
                 document.getElementById('closePopup')?.click();
                 this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
                     this.hideLoader();
+                    this.selectedRowIndex = null;
                     if (result) {
                         this.activityGroupData = result;
                     }
@@ -111,7 +112,7 @@ export class ServiceGroupListComponent implements OnInit {
             this.showLoader();
             const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
                 data: {
-                    title: 'Cofirm remove record',
+                    title: 'Confirm remove record',
                     message: 'Are you sure, you want to remove this record: ' + this.selectedRow.activityGroupName
                 }
             });
@@ -120,6 +121,7 @@ export class ServiceGroupListComponent implements OnInit {
                     this._activityGroupServicesService.deleteActivityGroupList(data).subscribe(result => {
                         this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
                             this.hideLoader();
+                            this.selectedRowIndex = null;
                             if (result) {
                                 this.activityGroupData = result;
                             }
@@ -155,6 +157,7 @@ export class ServiceGroupListComponent implements OnInit {
                 document.getElementById('closePopup')?.click();
                 this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
                     this.hideLoader();
+                    this.selectedRowIndex = null;
                     if (result) {
                         this.activityGroupData = result;
                         this.isEdit = false;
@@ -164,6 +167,7 @@ export class ServiceGroupListComponent implements OnInit {
         }
     }
     resetFields() {
+        this.isEdit = false;
         this.activityGrpListEnum = new ActivityGroupListEnum();
         this._activityGroupServicesService.getActivityGroupMaxId().subscribe(result => {
             if(result) {

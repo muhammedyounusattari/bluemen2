@@ -18,7 +18,7 @@ export class CollegeAndSchoolService {
     }
 
     postCollegeSchoolName(request: any): Observable<any> {
-        return this.dataService.callPostService(ServiceUrls.POST_COLLEGE_SCHOOL_NAME, request);
+        return this.dataService.callPostService(ServiceUrls.POST_COLLEGE_NAME, request);
     }
 
     searchCollegeSchoolName(request: any): Observable<any> {
@@ -42,24 +42,8 @@ export class CollegeAndSchoolService {
 
     /** STUDENT API - START */
 
-    getStudentNames(request: any): Observable<any> {
-        return this.dataService.callGetService(ServiceUrls.GET_ACTIVITY_GROUP_LIST, request);
-    }
-
     postStudentName(request: any): Observable<any> {
-        return this.dataService.callPostService(ServiceUrls.POST_ACTIVITY_GROUP_LIST, request);
-    }
-
-    updateStudentName(request: any): Observable<any> {
-        return this.dataService.callPutService(ServiceUrls.UPDATE_ACTIVITY_GROUP_LIST, request);
-    }
-
-    filterStudentList(request: any): Observable<any> {
-        return this.dataService.callGetService(ServiceUrls.FILTER_ACTIVITY_GROUP_LIST, request);
-    }
-
-    deleteStudentName(request: any): Observable<any> {
-        return this.dataService.callDeleteService(ServiceUrls.DELETE_ACTIVITY_GROUP_LIST, request);
+        return this.dataService.callPostService(ServiceUrls.POST_SCHOOL_NAME, request);
     }
 
     /** STUDENT API - END */

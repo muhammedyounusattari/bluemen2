@@ -33,7 +33,7 @@ export class GradeStandingGroupListComponent implements OnInit {
     isEdit: boolean = false;
     myElement: any = null;
     public spinner: boolean = true;
-    selectedRowIndex: number;
+    selectedRowIndex: any;
 
     constructor(private modalService: BsModalService
         , private router: Router
@@ -78,6 +78,7 @@ export class GradeStandingGroupListComponent implements OnInit {
                 document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
                     this.hideLoader();
+                    this.selectedRowIndex = null;
                     if (result) {
                         this.gradeGroupListData = result;
                     }
@@ -110,6 +111,7 @@ export class GradeStandingGroupListComponent implements OnInit {
                     this._gradingGroupStandingService.deleteGradingGroupList(data).subscribe(result => {
                         this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
                             this.hideLoader();
+                            this.selectedRowIndex = null;
                             if (result) {
                                 this.gradeGroupListData = result;
                             }
@@ -135,11 +137,12 @@ export class GradeStandingGroupListComponent implements OnInit {
             this.requestData.gradeGroupId = this._gradeGroupStandingList.gradeGroupId;
             this.requestData.gradeGroupName = this._gradeGroupStandingList.gradeGroupName;
             this.requestData.gradeGroupGradeType = this._gradeGroupStandingList.gradeGroupGradeType;
-            this.requestData.gradeGroupAprColumn = '';
+            this.requestData.gradeGroupAprColumn = this._gradeGroupStandingList.gradeGroupGradeType;
             this._gradingGroupStandingService.updateGradingGroupList(this.requestData).subscribe(response => {
                 document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
                     this.hideLoader();
+                    this.selectedRowIndex = null;
                     if (result) {
                         this.gradeGroupListData = result;
                         this.isEdit = false;
@@ -149,7 +152,9 @@ export class GradeStandingGroupListComponent implements OnInit {
         }
     }
     resetFields() {
+        this.isEdit = false;
         this._gradeGroupStandingList = new GradeGroupStandingList();
+        this.selectedRowIndex = null;
         this._gradingGroupStandingService.getGradingGroupMaxId().subscribe(result => {
             if (result) {
                 this._gradeGroupStandingList.gradeGroupId = result + 1;

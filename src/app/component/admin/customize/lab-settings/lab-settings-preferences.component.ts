@@ -55,8 +55,7 @@ export class LabSettingsPreferencesComponent {
      this._labSettingsPreferencesService.postLabSettingsPreferences(this.requestBody).subscribe(result => {
          if(result) {
              alert('Record Saved Successfully !');
-             this.lLabSettingsEnum = new LabSettingsEnum();
          }
-     })
+     });
     }
 }

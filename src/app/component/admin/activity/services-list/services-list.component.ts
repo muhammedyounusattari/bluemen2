@@ -34,7 +34,7 @@ export class ServicesListComponent implements OnInit {
     isEdit: boolean = false;
     myElement: any = null;
     public spinner: boolean = true;
-    selectedRowIndex: number;
+    selectedRowIndex: any;
 
     constructor(private modalService: BsModalService
         , private router: Router
@@ -67,6 +67,7 @@ export class ServicesListComponent implements OnInit {
             if (result) {
                 this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
                     this.hideLoader();
+                    this.selectedRowIndex = null;
                     if (result) {
                         this.activityServiceData = result;
                     }
@@ -105,6 +106,7 @@ export class ServicesListComponent implements OnInit {
                     this._activityGroupServicesService.deleteActivityServiceList(data).subscribe(result => {
                         this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
                             this.hideLoader();
+                            this.selectedRowIndex = null;
                             if (result) {
                                 this.activityServiceData = result;
                             }
@@ -142,6 +144,7 @@ export class ServicesListComponent implements OnInit {
                 this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
                     document.getElementById('closePopup')?.click();
                     this.hideLoader();
+                    this.selectedRowIndex = null;
                     if (result) {
                         this.activityServiceData = result;
                         this.isEdit = false;
@@ -151,6 +154,7 @@ export class ServicesListComponent implements OnInit {
         }
     }
     resetFields() {
+        this.isEdit = false;
         this.activityServiceListEnum = new ActivityServiceListEnum();
         this._activityGroupServicesService.getActivityServiceMaxId().subscribe(result => {
             if(result) {
