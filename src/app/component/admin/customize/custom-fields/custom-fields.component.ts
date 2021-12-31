@@ -173,7 +173,7 @@ export class CustomFieldsComponent implements OnInit {
    */
   public requestPayload() {
     return {
-      customId: this.selectedRowData.customId,
+      customId: (this.selectedRowData &&this.selectedRowData.customId)?this.selectedRowData.customId:0,
       pullDownName: this.customFieldsForm.value.pullDownName
     }
   }
