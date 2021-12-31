@@ -5,6 +5,9 @@ import { ActivityGroupServicesService } from '../../../../services/admin/activit
 import { ActivityServiceListEnum } from '../../../../constants/enums/activity-service-list.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'app-services-list',
@@ -23,7 +26,7 @@ export class ServicesListComponent implements OnInit {
         lapService: true,
         activityBoltService: ''
     };
-    @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
+    @ViewChild('activityServiceListPopup') activityServiceListPopupRef: TemplateRef<any>;
     modalRef: BsModalRef;
     modalConfigSM = {
         backdrop: true,
@@ -35,6 +38,16 @@ export class ServicesListComponent implements OnInit {
     myElement: any = null;
     public spinner: boolean = true;
     selectedRowIndex: any;
+    columnsToDisplay: string[] = ['activityId', 'activityName', 'activityGroupName', 'lapService'];
+    dataSource: MatTableDataSource<any>;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort) set matSort(sort: MatSort) {
+        if (this.dataSource && !this.dataSource.sort) {
+            this.dataSource.sort = sort;
+        }
+    }
+    public isLoading: boolean = true;
 
     constructor(private modalService: BsModalService
         , private router: Router
@@ -50,9 +63,78 @@ export class ServicesListComponent implements OnInit {
                 domElement.style.borderBottom = "thick solid #0000FF";
             }
             if (result) {
-                this.activityServiceData = result;
+                this.dataSource = new MatTableDataSource(result);
+                this.selectedRowIndex = null;
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
             }
         });
+    }
+
+    navigateToComponent(componentName: string) {
+        if (componentName === 'service-group-list') {
+            this.router.navigate(['admin/service-group-list']);
+        } else if (componentName === 'services-list') {
+            this.router.navigate(['admin/services-list']);
+        }
+    }
+
+    applyFilter(filterValue: any) {
+        this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
+
+    setValuesToUpdate() {
+        if (this.selectedRow) {
+            this.isEdit = true;
+            this.activityServiceListEnum.activityId = this.selectedRow.activityId;
+            this.activityServiceListEnum.activityGroupName = this.selectedRow.activityGroupName;
+            this.activityServiceListEnum.activityName = this.selectedRow.activityName;
+            this.activityServiceListEnum.lapService = this.selectedRow.lapService;
+            this.openModal(this.activityServiceListPopupRef);
+        } else {
+            alert('Please select a row to update.')
+        }
+    }
+
+    openModal(template: TemplateRef<any>) {
+        this.modalRef = this.modalService.show(template, this.modalConfigSM)
+    }
+
+    setSelectedRow(selectedRowItem: any, index: number) {
+        this.selectedRowIndex = index;
+        this.selectedRow = selectedRowItem;
+    }
+
+    resetFields() {
+        this.isEdit = false;
+        this.activityServiceListEnum = new ActivityServiceListEnum();
+        this._activityGroupServicesService.getActivityServiceMaxId().subscribe(result => {
+            if (result) {
+                this.activityServiceListEnum.activityId = result + 1;
+            }
+            this.openModal(this.activityServiceListPopupRef);
+        });
+    }
+
+    hideLoader() {
+        this.myElement = window.document.getElementById('loading');
+        if (this.myElement !== null) {
+            this.spinner = false;
+            this.isLoading = false;
+            this.myElement.style.display = 'none';
+        }
+    }
+
+    showLoader() {
+        this.myElement = window.document.getElementById('loading');
+        if (this.myElement !== null) {
+            this.spinner = true;
+            this.isLoading = true;
+            this.myElement.style.display = 'block';
+        }
     }
 
     addNewServiceName() {
@@ -69,26 +151,15 @@ export class ServicesListComponent implements OnInit {
                     this.hideLoader();
                     this.selectedRowIndex = null;
                     if (result) {
-                        this.activityServiceData = result;
+                        this.dataSource = new MatTableDataSource(result);
+                        this.dataSource.paginator = this.paginator;
+                        this.dataSource.sort = this.sort;
                     }
                 });
             }
         });
     }
 
-    addNewDropdown() {
-        this.openModal(this.addDropDownValueRef);
-    }
-    openModal(template: TemplateRef<any>) {
-        this.modalRef = this.modalService.show(template, this.modalConfigSM)
-    }
-    navigateToComponent(componentName: string) {
-        if (componentName === 'service-group-list') {
-            this.router.navigate(['admin/service-group-list']);
-        } else if (componentName === 'services-list') {
-            this.router.navigate(['admin/services-list']);
-        }
-    }
     deleteSelectedRow() {
         if (this.selectedRow) {
             const data = {
@@ -108,7 +179,9 @@ export class ServicesListComponent implements OnInit {
                             this.hideLoader();
                             this.selectedRowIndex = null;
                             if (result) {
-                                this.activityServiceData = result;
+                                this.dataSource = new MatTableDataSource(result);
+                                this.dataSource.paginator = this.paginator;
+                                this.dataSource.sort = this.sort;
                             }
                         });
                     });
@@ -116,22 +189,11 @@ export class ServicesListComponent implements OnInit {
                     this.hideLoader();
                 }
             });
+        } else {
+            alert('Please select a row to delete.')
         }
     }
-    setSelectedRow(selectedRowItem: any, index: number) {
-        this.selectedRowIndex = index;
-        const data = this.activityServiceData.filter((item: any) => item.activityId === selectedRowItem.activityId);
-        if (data && data.length > 0) {
-            this.selectedRow = data[0];
-        }
-    }
-    setSelectedRowToUpdate() {
-        this.isEdit = true;
-        this.activityServiceListEnum.activityId = this.selectedRow.activityId;
-        this.activityServiceListEnum.activityGroupName = this.selectedRow.activityGroupName;
-        this.activityServiceListEnum.activityName = this.selectedRow.activityName;
-        this.activityServiceListEnum.lapService = this.selectedRow.lapService;
-    }
+
     updateSelectedRow() {
         if (this.selectedRow) {
             this.showLoader();
@@ -146,34 +208,13 @@ export class ServicesListComponent implements OnInit {
                     this.hideLoader();
                     this.selectedRowIndex = null;
                     if (result) {
-                        this.activityServiceData = result;
+                        this.dataSource = new MatTableDataSource(result);
+                        this.dataSource.paginator = this.paginator;
+                        this.dataSource.sort = this.sort;
                         this.isEdit = false;
                     }
                 });
             });
-        }
-    }
-    resetFields() {
-        this.isEdit = false;
-        this.activityServiceListEnum = new ActivityServiceListEnum();
-        this._activityGroupServicesService.getActivityServiceMaxId().subscribe(result => {
-            if(result) {
-                this.activityServiceListEnum.activityId = result + 1;
-            }
-        });
-    }
-    hideLoader() {
-        this.myElement = window.document.getElementById('loading');
-        if (this.myElement !== null) {
-            this.spinner = false;
-            this.myElement.style.display = 'none';
-        }
-    }
-    showLoader() {
-        this.myElement = window.document.getElementById('loading');
-        if (this.myElement !== null) {
-            this.spinner = true;
-            this.myElement.style.display = 'block';
         }
     }
 }

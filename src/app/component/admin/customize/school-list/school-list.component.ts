@@ -43,7 +43,7 @@ export class SchoolListComponent implements OnInit{
         website: '',
         zipcode: '',
         ncesId: '',
-        fiscalYears: '',
+        fiscalYear: '',
         fafsaId: null
     };
     myElement: any = null;
@@ -106,7 +106,7 @@ export class SchoolListComponent implements OnInit{
         this.requestData.city = this.schoolListEnum.city;
         this.requestData.states = this.schoolListEnum.states;
         this.requestData.zipcode = this.schoolListEnum.zipcode;
-        this.requestData.fiscalYears = this.schoolListEnum.fiscalYears;
+        this.requestData.fiscalYear = this.schoolListEnum.fiscalYear;
         this.requestData.phone1 = this.schoolListEnum.phone1;
         this.requestData.phone2 = this.schoolListEnum.phone2;
         this.requestData.phone3 = this.schoolListEnum.phone3;
@@ -144,7 +144,7 @@ export class SchoolListComponent implements OnInit{
             this.requestData.city = this.selectedRow.city;
             this.requestData.states = this.selectedRow.states;
             this.requestData.zipcode = this.selectedRow.zipcode;
-            this.requestData.fiscalYears = this.selectedRow.fiscalYears;
+            this.requestData.fiscalYear = this.selectedRow.fiscalYear;
             this.requestData.phone1 = this.selectedRow.phone1;
             this.requestData.phone2 = this.selectedRow.phone2;
             this.requestData.phone3 = this.selectedRow.phone3;
@@ -197,7 +197,7 @@ export class SchoolListComponent implements OnInit{
         this.schoolListEnum.city = this.selectedRow.city;
         this.schoolListEnum.states = this.selectedRow.states;
         this.schoolListEnum.zipcode = this.selectedRow.zipcode;
-        this.schoolListEnum.fiscalYears = this.selectedRow.fiscalYears;
+        this.schoolListEnum.fiscalYear = this.selectedRow.fiscalYear;
         this.schoolListEnum.phone1 = this.selectedRow.phone1;
         this.schoolListEnum.phone2 = this.selectedRow.phone2;
         this.schoolListEnum.phone3 = this.selectedRow.phone3;
@@ -220,7 +220,7 @@ export class SchoolListComponent implements OnInit{
             this.requestData.city = this.schoolListEnum.city;
             this.requestData.states = this.schoolListEnum.states;
             this.requestData.zipcode = this.schoolListEnum.zipcode;
-            this.requestData.fiscalYears = this.schoolListEnum.fiscalYears;
+            this.requestData.fiscalYear = this.schoolListEnum.fiscalYear;
             this.requestData.phone1 = this.schoolListEnum.phone1;
             this.requestData.phone2 = this.schoolListEnum.phone2;
             this.requestData.phone3 = this.schoolListEnum.phone3;

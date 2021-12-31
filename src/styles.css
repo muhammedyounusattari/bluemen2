@@ -161,7 +161,40 @@ form.example::after {
   clear: both;
   display: table;
 }
+
 .table{overflow: hidden!important;}
+
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 50%;
+}
+
+.mat-column-position {
+  max-width: 100px;
+}
+
+.mat-column-name {
+  max-width: 100px;
+}
+
+.popHeader {
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+}
+.popHeaderBG{
+  background-color: #1672B7;
+}
+
+th.mat-header-cell {
+    font-weight: bold;
+    font-size: 14px;
+}
+
 .table tr.clicked {
   background-color: #000!important;
 }

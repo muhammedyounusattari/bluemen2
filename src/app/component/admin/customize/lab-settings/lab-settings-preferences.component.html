@@ -1,15 +1,15 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
-  <div class="row bg-white">
-    <div class="col-md-12">
-      <h3>Lab Settings</h3>
+    <div class="row bg-white">
+        <div class="col-md-12">
+            <h3>Lab Settings</h3>
+        </div>
     </div>
-  </div>
-  <div class="container">
+    <div class="container">
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group mt-4">
-          <label for="usr">Search Priority</label>
-          <span class="form-group">
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="usr">Search Priority</label>
+                <span class="form-group">
                     <select class="form-control" [(ngModel)] = "lLabSettingsEnum.lapSearchPriority">
                         <option>Student ID, Scan ID, System Serial Number</option>
                         <option>Student ID, System Serial Number, Scan ID</option>
@@ -19,21 +19,21 @@
                         <option>System Serial Number, Scan ID, Student ID</option>
                     </select>
                 </span>
+            </div>
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group mt-4">
-          <label for="usr">Fiscal Year</label>
-          <span class="form-group"> <input class="form-control" type="text" [(ngModel)] = "lLabSettingsEnum.labFiscalYear" value="2021"/> </span>
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="usr">Fiscal Year</label>
+                <span class="form-group"> <input class="form-control" type="text" [(ngModel)] = "lLabSettingsEnum.labFiscalYear" value="2021"/> </span>
+            </div>
         </div>
-      </div>
     </div>
 
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group mt-4">
-          <label for="usr">Component</label>
-          <span class="form-group">
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="usr">Component</label>
+                <span class="form-group">
                     <select name="sel3" class="form-control" [(ngModel)] = "lLabSettingsEnum.labComponents" id="sel4">
                         <option>Academic</option>
                         <option>Both</option>
@@ -41,180 +41,180 @@
                         <option>Summer</option>
                     </select>
                 </span>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group mt-4">
-          <label for="usr">Hide Options
-          </label>
-          <div class="row mt-3">
-            <div class="col-md-6">
-              <label class="radio-inline">
-                <input type="checkbox" [(ngModel)] = "lLabSettingsEnum.labHideStudentList" name="optradio"> Hide Student List
-              </label>
-              <label class="radio-inline">
-                <input type="checkbox" [(ngModel)] = "lLabSettingsEnum.labHideCheckOutList" name="optradio"> Hide Check Out Button in list
-              </label>
             </div>
-          </div>
         </div>
-      </div>
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="usr">Hide Options
+                </label>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label class="radio-inline">
+                            <input type="checkbox" [(ngModel)] = "lLabSettingsEnum.labHideStudentList" name="optradio"> Hide Student List
+                        </label>
+                        <label class="radio-inline">
+                            <input type="checkbox" [(ngModel)] = "lLabSettingsEnum.labHideCheckOutList" name="optradio"> Hide Check Out Button in list
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
-      <div class="col-md-6">
-        <label for="form23">Wait Window Time:</label>
-        <input class="form-control" type="text"  [(ngModel)] = "lLabSettingsEnum.labWaitWindowTime" value="30"/>
-      </div>
+        <div class="col-md-6">
+            <label for="form23">Wait Window Time:</label>
+            <input class="form-control" type="text"  [(ngModel)] = "lLabSettingsEnum.labWaitWindowTime" value="30"/>
+        </div>
     </div>
     <div class="row">
-      <div class="col-md-6"></div>
-      <div class="col-md-6">
-        <div class="form-group mt-4">
-          <label for="form23"><strong>Automatically Check In/Out</strong> </label>
-          <div class="row">
-            <div class="col-md-12 mb-3">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="form23"><strong>Automatically Check In/Out</strong> </label>
+           <div class="row">
+<div class="col-md-12 mb-3">
     <span style="float: left;">
         <input type="checkbox" [(ngModel)] = "lLabSettingsEnum.labAutomaticallyCheckInCheckOut" name="optradio">
         &nbsp; Yes, Student will be automatically checked in/out when ID is scanned</span>
 
-            </div>
+</div>
 
-          </div>
+           </div>
 
-          <div class="row">
-            <div class="col-md-12">
-              <table width="100%"  class="table-responsive td-border" border="1px solid" cellpadding="15px">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table width="100%"  class="table-responsive td-border" border="1px solid" cellpadding="15px">
 
 
-                <tr><td style="font-weight: 500;  color: brown; "> If Automatically Check-In/out Box is checked, the
-                  following options will not display at Check-In/Out.</td></tr>
-                <tr>
-                  <td style="border: 0px;">
-                    <span style="float: left;"><strong>Lab Services</strong></span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="border: 0px;">
+                                <tr><td style="font-weight: 500;  color: brown; "> If Automatically Check-In/out Box is checked, the
+                                    following options will not display at Check-In/Out.</td></tr>
+                                <tr>
+                                    <td style="border: 0px;">
+                                        <span style="float: left;"><strong>Lab Services</strong></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 0px;">
                                         <span style="float: left;">&nbsp;&nbsp;&nbsp;&nbsp;<input id="ctl00_head_chkLab1"  [(ngModel)] = "lLabSettingsEnum.labServicesVisibile" type="checkbox"
-                                                                                                  name="ctl00$head$chkLab1"></span>
-                    <span>  &nbsp;Yes, Lab service is visible</span>
+                                                name="ctl00$head$chkLab1"></span>
+                                        <span>  &nbsp;Yes, Lab service is visible</span>
 
-                  </td>
-                </tr>
-                <tr>
-                  <td >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td >
                                         <span class="aspNetDisabled" style="float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="ctl00_head_chkLab2"
-                                                                                                                                                 [(ngModel)] = "lLabSettingsEnum.labServicerRequired" type="checkbox" name="ctl00$head$chkLab2" disabled="disabled"></span>
-                    <span>  &nbsp;Yes, Lab service is a required input</span>
+                                            [(ngModel)] = "lLabSettingsEnum.labServicerRequired" type="checkbox" name="ctl00$head$chkLab2" disabled="disabled"></span>
+                                        <span>  &nbsp;Yes, Lab service is a required input</span>
 
-                  </td>
-                </tr>
-                <tr>
-                  <td><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default Lab Service</strong>
-                  </td>
-                </tr>
-                <tr>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default Lab Service</strong>
+                                    </td>
+                                </tr>
+                                <tr>
 
-                  <td style="margin-right: 10px;" >
+                                    <td style="margin-right: 10px;" >
 
-                    <select class="form-control"  name="sel3" class="form-control" [(ngModel)] = "lLabSettingsEnum.labDefaultService" id="sel4">
-                      <option>Academic</option>
-                      <option>Both</option>
-                      <option>Not Applicable</option>
-                      <option>Summer</option>
-                    </select>
+                                                            <select class="form-control"  name="sel3" class="form-control" [(ngModel)] = "lLabSettingsEnum.labDefaultService" id="sel4">
+                                                                <option>Academic</option>
+                                                                <option>Both</option>
+                                                                <option>Not Applicable</option>
+                                                                <option>Summer</option>
+                                                            </select>
 
-                  </td>
+                                                        </td>
 
 
-                  <input type="hidden">
+                                            <input type="hidden">
 
-                </tr>
-                <tr>
-                  <td>
+                                </tr>
+                                <tr>
+                                    <td>
 
                                         <span style="float: left; font-size: 12px;">
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="ctl00_head_chkLab2"
-                                                                                                   [(ngModel)] = "lLabSettingsEnum.labStudentsCanChooseMultipleService" style="float: left; font-size: 11px; margin-left: 10px;" type="checkbox" name="ctl00$head$chkLab2">
+                                            [(ngModel)] = "lLabSettingsEnum.labStudentsCanChooseMultipleService" style="float: left; font-size: 11px; margin-left: 10px;" type="checkbox" name="ctl00$head$chkLab2">
                                              <span style="float: left; font-size: 11px; margin-left: 10px;">Students can choose multiple lab services</span></span>
 
-                  </td>
-                </tr>
-                <tr>
-                  <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <span style="float: left;">
                                             <!-- <input id="ctl00_head_chkLab2"
                                             [(ngModel)] = "lLabSettingsEnum.labStudentsCanChooseMultipleService" type="checkbox" name="ctl00$head$chkLab2">!--></span>
-                    <span><strong>Reason for Visit</strong></span>
+                                               <span><strong>Reason for Visit</strong></span>
 
-                  </td>
-                </tr>
+                                    </td>
+                                </tr>
 
-                <tr>
-                  <td>
+                                <tr>
+                                    <td>
                                         <span style="float: left;"><input id="ctl00_head_chkVisit" type="checkbox"
-                                                                          name="ctl00$head$chkVisit" [(ngModel)] = "lLabSettingsEnum.labReasonForVisitOptionVisible"></span>
-                    <span style="float: left; margin: 0px 0 0 0;">&nbsp; Yes, this option is visible</span>
-                  </td>
-                </tr>
+                                                name="ctl00$head$chkVisit" [(ngModel)] = "lLabSettingsEnum.labReasonForVisitOptionVisible"></span>
+                                        <span style="float: left; margin: 0px 0 0 0;">&nbsp; Yes, this option is visible</span>
+                                    </td>
+                                </tr>
 
-                <tr>
-                  <td>
+                                <tr>
+                                    <td>
 
-                    <span style="float: left; margin: 0px 0 0 0;"><strong>Staff Member</strong></span>
+                                        <span style="float: left; margin: 0px 0 0 0;"><strong>Staff Member</strong></span>
 
-                  </td>
-                </tr>
-                <tr>
-                  <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <span style="float: left;"><input id="ctl00_head_chkstfmem" type="checkbox"
-                                                                          [(ngModel)] = "lLabSettingsEnum.labStaffMemberOptionVisible"   name="ctl00$head$chkstfmem"></span>
-                    <span style="float: left; margin: 0px 0 0 0;"> &nbsp; Yes, this option is visible</span>
+                                            [(ngModel)] = "lLabSettingsEnum.labStaffMemberOptionVisible"   name="ctl00$head$chkstfmem"></span>
+                                        <span style="float: left; margin: 0px 0 0 0;"> &nbsp; Yes, this option is visible</span>
 
-                  </td>
-                </tr>
+                                    </td>
+                                </tr>
 
 
-              </table>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group mt-4">
-          <label for="usr">
-            Maximum Checkout Time</label>
-          <input type="text" id=start class="form-control" [(ngModel)] = "lLabSettingsEnum.labMaxCheckoutTime" required>
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="usr">
+                    Maximum Checkout Time</label>
+                <input type="text" id=start class="form-control" [(ngModel)] = "lLabSettingsEnum.labMaxCheckoutTime" required>
+            </div>
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group mt-4">
-          <label for="usr">Forced Time Spent</label>
-          <span class="form-group">
+        <div class="col-md-6">
+            <div class="form-group mt-4">
+                <label for="usr">Forced Time Spent</label>
+                <span class="form-group">
                     <input type="text" id=start class="form-control" [(ngModel)] = "lLabSettingsEnum.labForcedTimeSpent" required>
                 </span>
+            </div>
         </div>
-      </div>
     </div>
-    <div class="row">
-      <div class="col-md-12">
+<div class="row">
+<div class="col-md-12">
 
-        <input id="ctl00_head_chkacknowledge" type="checkbox" name="ctl00$head$chkacknowledge"><label for="ctl00_head_chkacknowledge"> &nbsp; <span style="font-weight: 500;"> acknowledge and understand the settings and have made the appropriate changes for my program.</span></label>
+           <input id="ctl00_head_chkacknowledge" type="checkbox" name="ctl00$head$chkacknowledge"><label for="ctl00_head_chkacknowledge"> &nbsp; <span style="font-weight: 500;"> acknowledge and understand the settings and have made the appropriate changes for my program.</span></label>
 
 
-      </div>
+</div>
 
-    </div>
+</div>
 
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="addLabSettingsPreferences()">Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="addLabSettingsPreferences()">Save</button>
 
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="addLabSettingsPreferences()">Save & Close</button>
-      <button type="button" class="btn btn-primary">Cancel</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="addLabSettingsPreferences()">Save & Close</button>
+        <button type="button" class="btn btn-primary">Cancel</button>
 
     </div>
 
-  </div></div>
+</div></div>

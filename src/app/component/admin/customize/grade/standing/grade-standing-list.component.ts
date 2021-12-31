@@ -5,6 +5,9 @@ import { GradingGroupStandingService } from '../../../../../services/admin/gradi
 import { GradeGroupStandingList } from '../../../../../constants/enums/grade-group-standing-list.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'app-grade-standing-list',
@@ -21,11 +24,12 @@ export class GradeStandingListComponent implements OnInit {
         gradingGroupName: '',
         gradingNewGrade: '',
         gradingParticipantStatus: '',
-        gradingYearEnbStatus: ''
+        gradingYearEnbStatus: '',
+        gradingFiscalYear: ''
     }
     gradeGroupStandingList: GradeGroupStandingList = new GradeGroupStandingList();
 
-    @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
+    @ViewChild('gradeStandingListPopup') gradeStandingListPopupRef: TemplateRef<any>;
     modalRef: BsModalRef;
     modalConfigSM = {
         backdrop: true,
@@ -37,6 +41,16 @@ export class GradeStandingListComponent implements OnInit {
     myElement: any = null;
     public spinner: boolean = true;
     selectedRowIndex: any;
+    columnsToDisplay: string[] = ['gradingId', 'gradingName', 'gradingGroupName', 'gradingFiscalYear'];
+    dataSource: MatTableDataSource<any>;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort) set matSort(sort: MatSort) {
+        if (this.dataSource && !this.dataSource.sort) {
+            this.dataSource.sort = sort;
+        }
+    }
+    isLoading: boolean = true;
 
     constructor(private modalService: BsModalService
         , private router: Router
@@ -52,17 +66,14 @@ export class GradeStandingListComponent implements OnInit {
                 domElement.style.borderBottom = "thick solid #0000FF";
             }
             if (result) {
-                this.gradeStandingListData = result;
+                this.dataSource = new MatTableDataSource(result);
+                this.dataSource.paginator = this.paginator;
+                this.selectedRowIndex = null;
+                this.dataSource.sort = this.sort;
             }
         });
     }
 
-    addNewDropdown() {
-        this.openModal(this.addDropDownValueRef);
-    }
-    openModal(template: TemplateRef<any>) {
-        this.modalRef = this.modalService.show(template, this.modalConfigSM)
-    }
     navigateToComponent(componentName: string) {
         if (componentName === 'grade-group-list') {
             this.router.navigate(['admin/grade-group-list']);
@@ -70,6 +81,68 @@ export class GradeStandingListComponent implements OnInit {
             this.router.navigate(['admin/grade-standing-list']);
         }
     }
+
+    applyFilter(filterValue: any) {
+        this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
+
+    setValuesToUpdate() {
+        if (this.selectedRow) {
+            this.isEdit = true;
+            this.gradeGroupStandingList.graduateList = true;
+            this.gradeGroupStandingList.gradingId = this.selectedRow.gradingId;
+            this.gradeGroupStandingList.gradingName = this.selectedRow.gradingName;
+            this.gradeGroupStandingList.gradingGroupName = this.selectedRow.gradingGroupName;
+            this.gradeGroupStandingList.gradingNewGrade = '';
+            this.gradeGroupStandingList.gradingParticipantStatus = this.selectedRow.gradingParticipantStatus;
+            this.gradeGroupStandingList.gradingYearEnbStatus = this.selectedRow.gradingYearEnbStatus;
+            this.gradeGroupStandingList.gradingFiscalYear = this.selectedRow.gradingFiscalYear;
+            this.openModal(this.gradeStandingListPopupRef);
+        } else {
+            alert('Please select a row to update.')
+        }
+    }
+
+    openModal(template: TemplateRef<any>) {
+        this.modalRef = this.modalService.show(template, this.modalConfigSM)
+    }
+
+    resetFields() {
+        this.isEdit = false;
+        this.gradeGroupStandingList = new GradeGroupStandingList();
+        this._gradingGroupStandingService.getGradingStandingMaxId().subscribe(result => {
+            if (result) {
+                this.gradeGroupStandingList.gradingId = result + 1;
+            }
+            this.openModal(this.gradeStandingListPopupRef);
+        });
+    }
+
+    hideLoader() {
+        this.myElement = window.document.getElementById('loading');
+        if (this.myElement !== null) {
+            this.spinner = false;
+            this.isLoading = false;
+            this.myElement.style.display = 'none';
+        }
+    }
+
+    showLoader() {
+        if (this.myElement !== null) {
+            this.spinner = true;
+            this.isLoading = true;
+            this.myElement.style.display = 'block';
+        }
+    }
+
+    setSelectedRow(selectedRowItem: any, index: number) {
+        this.selectedRowIndex = index;
+        this.selectedRow = selectedRowItem;
+    }
+
     addGradeStanding() {
         this.showLoader();
         this.requestData.graduateList = true;
@@ -79,6 +152,7 @@ export class GradeStandingListComponent implements OnInit {
         this.requestData.gradingNewGrade = '';
         this.requestData.gradingParticipantStatus = this.gradeGroupStandingList.gradingParticipantStatus;
         this.requestData.gradingYearEnbStatus = this.gradeGroupStandingList.gradingYearEnbStatus;
+        this.requestData.gradingFiscalYear = this.gradeGroupStandingList.gradingFiscalYear;
         this._gradingGroupStandingService.postGradingStandingList(this.requestData).subscribe(result => {
             if (result) {
                 document.getElementById('closePopup')?.click();
@@ -86,18 +160,14 @@ export class GradeStandingListComponent implements OnInit {
                     this.hideLoader();
                     this.selectedRowIndex = null;
                     if (result) {
-                        this.gradeStandingListData = result;
+                        this.dataSource = new MatTableDataSource(result);
+                        this.dataSource.paginator = this.paginator;
+                        this.selectedRowIndex = null;
+                        this.dataSource.sort = this.sort;
                     }
                 });
             }
         });
-    }
-    setSelectedRow(selectedRowItem: any, index: number) {
-        this.selectedRowIndex = index;
-        const data = this.gradeStandingListData.filter((item: any) => item.gradingId === selectedRowItem.gradingId);
-        if (data && data.length > 0) {
-            this.selectedRow = data[0];
-        }
     }
 
     deleteSelectedRow() {
@@ -119,7 +189,10 @@ export class GradeStandingListComponent implements OnInit {
                             this.hideLoader();
                             this.selectedRowIndex = null;
                             if (result) {
-                                this.gradeStandingListData = result;
+                                this.dataSource = new MatTableDataSource(result);
+                                this.dataSource.paginator = this.paginator;
+                                this.selectedRowIndex = null;
+                                this.dataSource.sort = this.sort;
                             }
                         });
                     });
@@ -127,17 +200,9 @@ export class GradeStandingListComponent implements OnInit {
                     this.hideLoader();
                 }
             });
+        } else {
+            alert('Please select a row to delete.')
         }
-    }
-    setSelectedRowToUpdate() {
-        this.isEdit = true;
-        this.gradeGroupStandingList.graduateList = true;
-        this.gradeGroupStandingList.gradingId = this.selectedRow.gradingId;
-        this.gradeGroupStandingList.gradingName = this.selectedRow.gradingName;
-        this.gradeGroupStandingList.gradingGroupName = this.selectedRow.gradingGroupName;
-        this.gradeGroupStandingList.gradingNewGrade = '';
-        this.gradeGroupStandingList.gradingParticipantStatus = this.selectedRow.gradingParticipantStatus;
-        this.gradeGroupStandingList.gradingYearEnbStatus = this.selectedRow.gradingYearEnbStatus;
     }
     updateSelectedRow() {
         if (this.selectedRow) {
@@ -149,39 +214,21 @@ export class GradeStandingListComponent implements OnInit {
             this.requestData.gradingNewGrade = '';
             this.requestData.gradingParticipantStatus = this.gradeGroupStandingList.gradingParticipantStatus;
             this.requestData.gradingYearEnbStatus = this.gradeGroupStandingList.gradingYearEnbStatus;
+            this.requestData.gradingFiscalYear = this.gradeGroupStandingList.gradingFiscalYear;
             this._gradingGroupStandingService.updateGradingStandingList(this.requestData).subscribe(response => {
                 document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
                     this.hideLoader();
                     this.selectedRowIndex = null;
                     if (result) {
-                        this.gradeStandingListData = result;
+                        this.dataSource = new MatTableDataSource(result);
+                        this.dataSource.paginator = this.paginator;
+                        this.selectedRowIndex = null;
+                        this.dataSource.sort = this.sort;
                         this.isEdit = false;
                     }
                 });
             });
-        }
-    }
-    resetFields() {
-        this.isEdit = false;
-        this.gradeGroupStandingList = new GradeGroupStandingList();
-        this._gradingGroupStandingService.getGradingStandingMaxId().subscribe(result => {
-            if (result) {
-                this.gradeGroupStandingList.gradingId = result + 1;
-            }
-        });
-    }
-    hideLoader() {
-        this.myElement = window.document.getElementById('loading');
-        if (this.myElement !== null) {
-            this.spinner = false;
-            this.myElement.style.display = 'none';
-        }
-    }
-    showLoader() {
-        if (this.myElement !== null) {
-            this.spinner = true;
-            this.myElement.style.display = 'block';
         }
     }
 }

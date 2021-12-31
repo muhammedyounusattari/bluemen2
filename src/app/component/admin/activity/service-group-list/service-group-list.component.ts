@@ -5,6 +5,9 @@ import { ActivityGroupServicesService } from '../../../../services/admin/activit
 import { ActivityGroupListEnum } from '../../../../constants/enums/activity-group-list.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'app-service-group-list',
@@ -26,7 +29,7 @@ export class ServiceGroupListComponent implements OnInit {
         activityBoltService: ''
 
     };
-    @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
+    @ViewChild('activityServiceGroupListPopup') activityServiceGroupListPopupRef: TemplateRef<any>;
     modalRef: BsModalRef;
     modalConfigSM = {
         backdrop: true,
@@ -38,6 +41,17 @@ export class ServiceGroupListComponent implements OnInit {
     myElement: any = null;
     public spinner: boolean = true;
     selectedRowIndex: any;
+
+    columnsToDisplay: string[] = ['activityGroupId', 'activityGroupName', 'activityReportActivityGroup', 'activityCalculateHoursforActivityGroup'];
+    dataSource: MatTableDataSource<any>;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort) set matSort(sort: MatSort) {
+        if (this.dataSource && !this.dataSource.sort) {
+            this.dataSource.sort = sort;
+        }
+    }
+    isLoading: boolean = true;
 
     constructor(private modalService: BsModalService
         , private router: Router
@@ -54,15 +68,79 @@ export class ServiceGroupListComponent implements OnInit {
                 domElement.style.borderBottom = "thick solid #0000FF";
             }
             if (result) {
-                this.activityGroupData = result;
+                this.dataSource = new MatTableDataSource(result);
+                this.dataSource.paginator = this.paginator;
+                this.selectedRowIndex = null;
+                this.dataSource.sort = this.sort;
             }
         });
     }
-    addNewDropdown() {
-        this.openModal(this.addDropDownValueRef);
+
+    navigateToComponent(componentName: string) {
+        if (componentName === 'service-group-list') {
+            this.router.navigate(['admin/service-group-list']);
+        } else if (componentName === 'services-list') {
+            this.router.navigate(['admin/services-list']);
+        }
     }
+    
+    applyFilter(filterValue: any) {
+        this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
+
+    setValuesToUpdate() {
+        if (this.selectedRow) {
+            this.isEdit = true;
+            this.activityGrpListEnum.activityGroupId = this.selectedRow.activityGroupId;
+            this.activityGrpListEnum.activityGroupName = this.selectedRow.activityGroupName;
+            this.activityGrpListEnum.activityCalculateHoursforActivityGroup = this.selectedRow.activityCalculateHoursforActivityGroup;
+            this.activityGrpListEnum.activityReportActivityGroup = this.selectedRow.activityReportActivityGroup;
+            this.activityGrpListEnum.activityGroupTypeName = this.selectedRow.activityGroupTypeName;
+            this.activityGrpListEnum.activityGroupType = this.selectedRow.activityGroupType;
+            this.openModal(this.activityServiceGroupListPopupRef);
+        } else {
+            alert('Please select a row to update.')
+        }
+    }
+
     openModal(template: TemplateRef<any>) {
         this.modalRef = this.modalService.show(template, this.modalConfigSM)
+    }
+
+    resetFields() {
+        this.isEdit = false;
+        this.activityGrpListEnum = new ActivityGroupListEnum();
+        this._activityGroupServicesService.getActivityGroupMaxId().subscribe(result => {
+            if (result) {
+                this.activityGrpListEnum.activityGroupId = result + 1;
+            }
+            this.openModal(this.activityServiceGroupListPopupRef);
+        });
+    }
+
+    hideLoader() {
+        this.myElement = window.document.getElementById('loading');
+        if (this.myElement !== null) {
+            this.spinner = false;
+            this.isLoading = false;
+            this.myElement.style.display = 'none';
+        }
+    }
+
+    showLoader() {
+        if (this.myElement !== null) {
+            this.spinner = true;
+            this.isLoading = true;
+            this.myElement.style.display = 'block';
+        }
+    }
+
+    setSelectedRow(selectedRowItem: any, index: Number) {
+        this.selectedRowIndex = index;
+        this.selectedRow = selectedRowItem;
     }
 
     addNewGroupName() {
@@ -80,30 +158,17 @@ export class ServiceGroupListComponent implements OnInit {
                 document.getElementById('closePopup')?.click();
                 this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
                     this.hideLoader();
-                    this.selectedRowIndex = null;
                     if (result) {
-                        this.activityGroupData = result;
+                        this.dataSource = new MatTableDataSource(result);
+                        this.dataSource.paginator = this.paginator;
+                        this.dataSource.sort = this.sort;
+                        this.selectedRowIndex = null;
                     }
                 });
             }
         })
     }
 
-    setSelectedRow(selectedRowItem: any, index: number) {
-        this.selectedRowIndex = index;
-        const data = this.activityGroupData.filter((item: any) => item.activityGroupId === selectedRowItem.activityGroupId);
-        if (data && data.length > 0) {
-            this.selectedRow = data[0];
-        }
-    }
-
-    navigateToComponent(componentName: string) {
-        if (componentName === 'service-group-list') {
-            this.router.navigate(['admin/service-group-list']);
-        } else if (componentName === 'services-list') {
-            this.router.navigate(['admin/services-list']);
-        }
-    }
     deleteSelectedRow() {
         if (this.selectedRow) {
             const data = {
@@ -121,9 +186,11 @@ export class ServiceGroupListComponent implements OnInit {
                     this._activityGroupServicesService.deleteActivityGroupList(data).subscribe(result => {
                         this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
                             this.hideLoader();
-                            this.selectedRowIndex = null;
                             if (result) {
-                                this.activityGroupData = result;
+                                this.dataSource = new MatTableDataSource(result);
+                                this.dataSource.paginator = this.paginator;
+                                this.dataSource.sort = this.sort;
+                                this.selectedRowIndex = null;
                             }
                         });
                     });
@@ -131,17 +198,11 @@ export class ServiceGroupListComponent implements OnInit {
                     this.hideLoader();
                 }
             });
+        } else {
+            alert('Please select a row to delete.')
         }
     }
-    setSelectedRowToUpdate() {
-        this.isEdit = true;
-        this.activityGrpListEnum.activityGroupId = this.selectedRow.activityGroupId;
-        this.activityGrpListEnum.activityGroupName = this.selectedRow.activityGroupName;
-        this.activityGrpListEnum.activityCalculateHoursforActivityGroup = this.selectedRow.activityCalculateHoursforActivityGroup;
-        this.activityGrpListEnum.activityReportActivityGroup = this.selectedRow.activityReportActivityGroup;
-        this.activityGrpListEnum.activityGroupTypeName = this.selectedRow.activityGroupTypeName;
-        this.activityGrpListEnum.activityGroupType = this.selectedRow.activityGroupType;
-    }
+
     updateSelectedRow() {
         if (this.selectedRow) {
             this.showLoader();
@@ -157,35 +218,15 @@ export class ServiceGroupListComponent implements OnInit {
                 document.getElementById('closePopup')?.click();
                 this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
                     this.hideLoader();
-                    this.selectedRowIndex = null;
                     if (result) {
-                        this.activityGroupData = result;
+                        this.dataSource = new MatTableDataSource(result);
+                        this.dataSource.paginator = this.paginator;
+                        this.dataSource.sort = this.sort;
+                        this.selectedRowIndex = null;
                         this.isEdit = false;
                     }
                 });
             });
-        }
-    }
-    resetFields() {
-        this.isEdit = false;
-        this.activityGrpListEnum = new ActivityGroupListEnum();
-        this._activityGroupServicesService.getActivityGroupMaxId().subscribe(result => {
-            if(result) {
-                this.activityGrpListEnum.activityGroupId = result + 1;
-            }
-        });
-    }
-    hideLoader() {
-        this.myElement = window.document.getElementById('loading');
-        if (this.myElement !== null) {
-            this.spinner = false;
-            this.myElement.style.display = 'none';
-        }
-    }
-    showLoader() {
-        if (this.myElement !== null) {
-            this.spinner = true;
-            this.myElement.style.display = 'block';
         }
     }
 }

@@ -9,6 +9,7 @@ export class GradeGroupStandingList {
     gradingName: string = '';
     gradingGroupName: string = '';
     gradingNewGrade: string = '';
+    gradingFiscalYear: string = '';
     gradeStandingFiscalYear: string = '';
     gradingParticipantStatus: string = '';
     gradingYearEnbStatus: string ='';

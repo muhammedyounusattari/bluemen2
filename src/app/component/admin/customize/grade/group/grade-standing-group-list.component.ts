@@ -5,6 +5,9 @@ import { GradingGroupStandingService } from '../../../../../services/admin/gradi
 import { GradeGroupStandingList } from '../../../../../constants/enums/grade-group-standing-list.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'app-grade-standing-group-list',
@@ -22,7 +25,7 @@ export class GradeStandingGroupListComponent implements OnInit {
     }
     _gradeGroupStandingList: GradeGroupStandingList = new GradeGroupStandingList();
 
-    @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
+    @ViewChild('gradeGroupListPopup') gradeGroupListPopupRef: TemplateRef<any>;
     modalRef: BsModalRef;
     modalConfigSM = {
         backdrop: true,
@@ -34,6 +37,16 @@ export class GradeStandingGroupListComponent implements OnInit {
     myElement: any = null;
     public spinner: boolean = true;
     selectedRowIndex: any;
+    columnsToDisplay: string[] = ['gradeGroupId', 'gradeGroupName', 'gradeGroupAprColumn'];
+    dataSource: MatTableDataSource<any>;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort) set matSort(sort: MatSort) {
+        if (this.dataSource && !this.dataSource.sort) {
+            this.dataSource.sort = sort;
+        }
+    }
+    isLoading: boolean = true;
 
     constructor(private modalService: BsModalService
         , private router: Router
@@ -49,17 +62,14 @@ export class GradeStandingGroupListComponent implements OnInit {
                 domElement.style.borderBottom = "thick solid #0000FF";
             }
             if (result) {
-                this.gradeGroupListData = result;
+                this.dataSource = new MatTableDataSource(result);
+                this.dataSource.paginator = this.paginator;
+                this.selectedRowIndex = null;
+                this.dataSource.sort = this.sort;
             }
         });
     }
 
-    addNewDropdown() {
-        this.openModal(this.addDropDownValueRef);
-    }
-    openModal(template: TemplateRef<any>) {
-        this.modalRef = this.modalService.show(template, this.modalConfigSM)
-    }
     navigateToComponent(componentName: string) {
         if (componentName === 'grade-group-list') {
             this.router.navigate(['admin/grade-group-list']);
@@ -67,6 +77,65 @@ export class GradeStandingGroupListComponent implements OnInit {
             this.router.navigate(['admin/grade-standing-list']);
         }
     }
+
+    applyFilter(filterValue: any) {
+        this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
+
+    setValuesToUpdate() {
+        if (this.selectedRow) {
+            this.isEdit = true;
+            this._gradeGroupStandingList.gradeGroupId = this.selectedRow.gradeGroupId;
+            this._gradeGroupStandingList.gradeGroupName = this.selectedRow.gradeGroupName;
+            this._gradeGroupStandingList.gradeGroupGradeType = this.selectedRow.gradeGroupGradeType;
+            this._gradeGroupStandingList.gradeGroupAprColumn = this.selectedRow.gradeGroupGradeType;
+            this.openModal(this.gradeGroupListPopupRef);
+        } else {
+            alert('Please select a row to update.')
+        }
+    }
+
+    openModal(template: TemplateRef<any>) {
+        this.modalRef = this.modalService.show(template, this.modalConfigSM)
+    }
+
+    resetFields() {
+        this.isEdit = false;
+        this._gradeGroupStandingList = new GradeGroupStandingList();
+        this.selectedRowIndex = null;
+        this._gradingGroupStandingService.getGradingGroupMaxId().subscribe(result => {
+            if (result) {
+                this._gradeGroupStandingList.gradeGroupId = result + 1;
+            }
+            this.openModal(this.gradeGroupListPopupRef);
+        });
+    }
+
+    hideLoader() {
+        this.myElement = window.document.getElementById('loading');
+        if (this.myElement !== null) {
+            this.spinner = false;
+            this.isLoading = false;
+            this.myElement.style.display = 'none';
+        }
+    }
+
+    showLoader() {
+        if (this.myElement !== null) {
+            this.spinner = true;
+            this.isLoading = true;
+            this.myElement.style.display = 'block';
+        }
+    }
+
+    setSelectedRow(selectedRowItem: any, index: number) {
+        this.selectedRowIndex = index;
+        this.selectedRow = selectedRowItem;
+    }
+
     addGradeGroup() {
         this.showLoader();
         this.requestData.gradeGroupId = this._gradeGroupStandingList.gradeGroupId;
@@ -80,24 +149,20 @@ export class GradeStandingGroupListComponent implements OnInit {
                     this.hideLoader();
                     this.selectedRowIndex = null;
                     if (result) {
-                        this.gradeGroupListData = result;
+                        this.dataSource = new MatTableDataSource(result);
+                        this.dataSource.paginator = this.paginator;
+                        this.selectedRowIndex = null;
+                        this.dataSource.sort = this.sort;
                     }
                 });
             }
         });
     }
-    setSelectedRow(selectedRowItem: any, index: number) {
-        this.selectedRowIndex = index;
-        const data = this.gradeGroupListData.filter((item: any) => item.gradeGroupId === selectedRowItem.gradeGroupId);
-        if (data && data.length > 0) {
-            this.selectedRow = data[0];
-        }
-    }
 
-    deleteSelectedRow() {
+    deleteSelectedRow() {   
         if (this.selectedRow) {
             const data = {
-                activityGroupId: this.selectedRow.activityGroupId
+                gradeGroupId: this.selectedRow.gradeGroupId
             }
             this.showLoader();
             const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -113,7 +178,10 @@ export class GradeStandingGroupListComponent implements OnInit {
                             this.hideLoader();
                             this.selectedRowIndex = null;
                             if (result) {
-                                this.gradeGroupListData = result;
+                                this.dataSource = new MatTableDataSource(result);
+                                this.dataSource.paginator = this.paginator;
+                                this.selectedRowIndex = null;
+                                this.dataSource.sort = this.sort;
                             }
                         });
                     });
@@ -121,15 +189,11 @@ export class GradeStandingGroupListComponent implements OnInit {
                     this.hideLoader();
                 }
             });
+        } else {
+            alert('Please select a row to delete.')
         }
     }
-    setSelectedRowToUpdate() {
-        this.isEdit = true;
-        this._gradeGroupStandingList.gradeGroupId = this.selectedRow.gradeGroupId;
-        this._gradeGroupStandingList.gradeGroupName = this.selectedRow.gradeGroupName;
-        this._gradeGroupStandingList.gradeGroupGradeType = this.selectedRow.gradeGroupGradeType;
-        this._gradeGroupStandingList.gradeGroupAprColumn = this.selectedRow.gradeGroupGradeType;
-    }
+
     updateSelectedRow() {
         if (this.selectedRow) {
             this.showLoader();
@@ -144,34 +208,14 @@ export class GradeStandingGroupListComponent implements OnInit {
                     this.hideLoader();
                     this.selectedRowIndex = null;
                     if (result) {
-                        this.gradeGroupListData = result;
+                        this.dataSource = new MatTableDataSource(result);
+                        this.dataSource.paginator = this.paginator;
+                        this.selectedRowIndex = null;
+                        this.dataSource.sort = this.sort;
                         this.isEdit = false;
                     }
                 });
             });
-        }
-    }
-    resetFields() {
-        this.isEdit = false;
-        this._gradeGroupStandingList = new GradeGroupStandingList();
-        this.selectedRowIndex = null;
-        this._gradingGroupStandingService.getGradingGroupMaxId().subscribe(result => {
-            if (result) {
-                this._gradeGroupStandingList.gradeGroupId = result + 1;
-            }
-        });
-    }
-    hideLoader() {
-        this.myElement = window.document.getElementById('loading');
-        if (this.myElement !== null) {
-            this.spinner = false;
-            this.myElement.style.display = 'none';
-        }
-    }
-    showLoader() {
-        if (this.myElement !== null) {
-            this.spinner = true;
-            this.myElement.style.display = 'block';
         }
     }
 }

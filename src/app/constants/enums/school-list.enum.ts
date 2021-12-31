@@ -10,7 +10,7 @@ export class SchoolListEnum {
     city: string = '';
     states: string = '';
     zipcode: string = '';
-    fiscalYears: string = '';
+    fiscalYear: string = '';
     phone1: string = '';
     phone2: string = '';
     phone3: string = '';

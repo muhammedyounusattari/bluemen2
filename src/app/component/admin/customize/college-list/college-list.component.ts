@@ -5,6 +5,9 @@ import { CollegeAndSchoolService } from '../../../../services/admin/college-scho
 import { CollegeListEnum } from '../../../../constants/enums/college-list.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'app-college-list',
@@ -15,7 +18,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
 export class CollegeListComponent implements OnInit {
     collegeDataList: any = [];
     collegeListEnum: CollegeListEnum = new CollegeListEnum();
-    @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
+    @ViewChild('collegeNamePopup') collegeNamePopupRef: TemplateRef<any>;
     modalRef: BsModalRef;
     modalConfigSM = {
         backdrop: true,
@@ -43,14 +46,24 @@ export class CollegeListComponent implements OnInit {
         website: '',
         zipcode: '',
         fafsaId: '',
-        fiscalYears: '',
+        fiscalYear: '',
         ncesId: null
     };
     myElement: any = null;
     public spinner: boolean = true;
     selectedRowIndex: any;
     isDisabled: boolean = false;
-    
+    columnsToDisplay: string[] = ['name', 'orgType', 'fafsaId', 'country', 'phone1', 'phone2', 'phone3', 'fax'];
+    dataSource: MatTableDataSource<any>;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort) set matSort(sort: MatSort) {
+        if (this.dataSource && !this.dataSource.sort) {
+            this.dataSource.sort = sort;
+        }
+    }
+    isLoading: boolean = true;    
+
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog
@@ -66,17 +79,15 @@ export class CollegeListComponent implements OnInit {
                 domElement.style.borderBottom = "thick solid #0000FF";
             }
             if (result) {
+                this.dataSource = new MatTableDataSource(result.filter((item: any) => item.ncesId === null || item.ncesId === undefined));
+                this.dataSource.paginator = this.paginator;
+                this.selectedRowIndex = null;
+                this.dataSource.sort = this.sort;
                 this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
             }
         });
     }
 
-    addNewDropdown() {
-        this.openModal(this.addDropDownValueRef);
-    }
-    openModal(template: TemplateRef<any>) {
-        this.modalRef = this.modalService.show(template, this.modalConfigSM)
-    }
     navigateToComponent(componentName: string) {
         if (componentName === 'college-list') {
             this.router.navigate(['admin/college-list']);
@@ -85,16 +96,87 @@ export class CollegeListComponent implements OnInit {
         }
     }
 
+    applyFilter(filterValue: any) {
+        this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
+
+    setValuesToUpdate() {
+        if (this.selectedRow) {
+            this.isEdit = true;
+            this.isDisabled = true;
+            this.collegeListEnum.orgName = this.selectedRow.name;
+            this.collegeListEnum.orgType = this.selectedRow.orgType;
+            this.collegeListEnum.name = this.selectedRow.name;
+            this.collegeListEnum.codes = this.selectedRow.codes;
+            this.collegeListEnum.title = this.selectedRow.title;
+            this.collegeListEnum.country = this.selectedRow.country;
+            this.collegeListEnum.address = this.selectedRow.address;
+            this.collegeListEnum.fafsaId = this.selectedRow.fafsaId;
+            this.collegeListEnum.city = this.selectedRow.city;
+            this.collegeListEnum.states = this.selectedRow.states;
+            this.collegeListEnum.zipcode = this.selectedRow.zipcode;
+            this.collegeListEnum.fiscalYear = this.selectedRow.fiscalYear;
+            this.collegeListEnum.phone1 = this.selectedRow.phone1;
+            this.collegeListEnum.phone2 = this.selectedRow.phone2;
+            this.collegeListEnum.phone3 = this.selectedRow.phone3;
+            this.collegeListEnum.fax = this.selectedRow.fax;
+            this.collegeListEnum.website = this.selectedRow.website;
+            this.collegeListEnum.email = this.selectedRow.email;
+            this.collegeListEnum.notes = this.selectedRow.notes;
+            this.openModal(this.collegeNamePopupRef);
+        } else {
+            alert('Please select a row to update.')
+        }
+    }
+
+    openModal(template: TemplateRef<any>) {
+        this.modalRef = this.modalService.show(template, this.modalConfigSM)
+    }
+    
+    resetFields() {
+        this.isEdit = false;
+        this.collegeListEnum = new CollegeListEnum();
+        this.isDisabled = false;
+        this.openModal(this.collegeNamePopupRef);
+    }
+
+    hideLoader() {
+        this.myElement = window.document.getElementById('loading');
+        if (this.myElement !== null) {
+            this.spinner = false;
+            this.isLoading = false;
+            this.myElement.style.display = 'none';
+        }
+    }
+
+    showLoader() {
+        if (this.myElement !== null) {
+            this.spinner = true;
+            this.isLoading = true;
+            this.myElement.style.display = 'block';
+        }
+    }
+
+    setSelectedRow(selectedRowItem: any, index: number) {
+        this.selectedRowIndex = index;
+        this.selectedRow = selectedRowItem;
+    } 
+
     addNewCollegeName() {
         this.showLoader();
         if (this.collegeListEnum.fafsaId) {
             if (this.collegeDataList && this.collegeDataList.length > 0) {
                 const isFound = this.collegeDataList.filter((item: any) => item.fafsaId === this.collegeListEnum.fafsaId);
                 if (isFound && isFound.length > 0) {
+                    this.hideLoader();
                     return alert('Entered FAFSAID is alreay exist, to add this organization name please change entered FAFSAID.');
                 }
             }
         } else {
+            this.hideLoader();
             return alert('Please enter FAFSAID.');
         }
         this.requestData.orgName = this.collegeListEnum.name;
@@ -108,7 +190,7 @@ export class CollegeListComponent implements OnInit {
         this.requestData.city = this.collegeListEnum.city;
         this.requestData.states = this.collegeListEnum.states;
         this.requestData.zipcode = this.collegeListEnum.zipcode;
-        this.requestData.fiscalYears = this.collegeListEnum.fiscalYears;
+        this.requestData.fiscalYear = this.collegeListEnum.fiscalYear;
         this.requestData.phone1 = this.collegeListEnum.phone1;
         this.requestData.phone2 = this.collegeListEnum.phone2;
         this.requestData.phone3 = this.collegeListEnum.phone3;
@@ -124,6 +206,10 @@ export class CollegeListComponent implements OnInit {
                     this.selectedRowIndex = null;
                     if (result) {
                         document.getElementById('closePopup')?.click();
+                        this.dataSource = new MatTableDataSource(result.filter((item: any) => item.ncesId === null || item.ncesId === undefined));
+                        this.dataSource.paginator = this.paginator;
+                        this.selectedRowIndex = null;
+                        this.dataSource.sort = this.sort;
                         this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
                     }
                 });
@@ -144,7 +230,7 @@ export class CollegeListComponent implements OnInit {
             this.requestData.city = this.selectedRow.city;
             this.requestData.states = this.selectedRow.states;
             this.requestData.zipcode = this.selectedRow.zipcode;
-            this.requestData.fiscalYears = this.selectedRow.fiscalYears;
+            this.requestData.fiscalYear = this.selectedRow.fiscalYear;
             this.requestData.phone1 = this.selectedRow.phone1;
             this.requestData.phone2 = this.selectedRow.phone2;
             this.requestData.phone3 = this.selectedRow.phone3;
@@ -166,6 +252,10 @@ export class CollegeListComponent implements OnInit {
                             this.hideLoader();
                             this.selectedRowIndex = null;
                             if (result) {
+                                this.dataSource = new MatTableDataSource(result.filter((item: any) => item.ncesId === null || item.ncesId === undefined));
+                                this.dataSource.paginator = this.paginator;
+                                this.selectedRowIndex = null;
+                                this.dataSource.sort = this.sort;
                                 this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
                             }
                         });
@@ -174,38 +264,11 @@ export class CollegeListComponent implements OnInit {
                     this.hideLoader();
                 }
             });
+        } else {
+            alert('Please select a row to update.')
         }
     }
-    setSelectedRow(selectedRowItem: any, index: number) {
-        this.selectedRowIndex = index;
-        const data = this.collegeDataList.filter((item: any) => item.fafsaId === selectedRowItem.fafsaId);
-        if (data && data.length > 0) {
-            this.selectedRow = data[0];
-        }
-    }
-    setSelectedRowToUpdate() {
-        this.isEdit = true;
-        this.isDisabled = true;
-        this.collegeListEnum.orgName = this.selectedRow.name;
-        this.collegeListEnum.orgType = this.selectedRow.orgType;
-        this.collegeListEnum.name = this.selectedRow.name;
-        this.collegeListEnum.codes = this.selectedRow.codes;
-        this.collegeListEnum.title = this.selectedRow.title;
-        this.collegeListEnum.country = this.selectedRow.country;
-        this.collegeListEnum.address = this.selectedRow.address;
-        this.collegeListEnum.fafsaId = this.selectedRow.fafsaId;
-        this.collegeListEnum.city = this.selectedRow.city;
-        this.collegeListEnum.states = this.selectedRow.states;
-        this.collegeListEnum.zipcode = this.selectedRow.zipcode;
-        this.collegeListEnum.fiscalYears = this.selectedRow.fiscalYears;
-        this.collegeListEnum.phone1 = this.selectedRow.phone1;
-        this.collegeListEnum.phone2 = this.selectedRow.phone2;
-        this.collegeListEnum.phone3 = this.selectedRow.phone3;
-        this.collegeListEnum.fax = this.selectedRow.fax;
-        this.collegeListEnum.website = this.selectedRow.website;
-        this.collegeListEnum.email = this.selectedRow.email;
-        this.collegeListEnum.notes = this.selectedRow.notes;
-    }
+
     updateSelectedRow() {
         if (this.selectedRow) {
             this.showLoader();
@@ -220,7 +283,7 @@ export class CollegeListComponent implements OnInit {
             this.requestData.city = this.collegeListEnum.city;
             this.requestData.states = this.collegeListEnum.states;
             this.requestData.zipcode = this.collegeListEnum.zipcode;
-            this.requestData.fiscalYears = this.collegeListEnum.fiscalYears;
+            this.requestData.fiscalYear = this.collegeListEnum.fiscalYear;
             this.requestData.phone1 = this.collegeListEnum.phone1;
             this.requestData.phone2 = this.collegeListEnum.phone2;
             this.requestData.phone3 = this.collegeListEnum.phone3;
@@ -236,29 +299,15 @@ export class CollegeListComponent implements OnInit {
                     this.selectedRowIndex = null;
                     if (result) {
                         document.getElementById('closePopup')?.click();
+                        this.dataSource = new MatTableDataSource(result.filter((item: any) => item.ncesId === null || item.ncesId === undefined));
+                        this.dataSource.paginator = this.paginator;
+                        this.selectedRowIndex = null;
+                        this.dataSource.sort = this.sort;
                         this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
                         this.isEdit = false;
                     }
                 });
             });
-        }
-    }
-    resetFields() {
-        this.isEdit = false;
-        this.collegeListEnum = new CollegeListEnum();
-        this.isDisabled = false;
-    }
-    hideLoader() {
-        this.myElement = window.document.getElementById('loading');
-        if (this.myElement !== null) {
-            this.spinner = false;
-            this.myElement.style.display = 'none';
-        }
-    }
-    showLoader() {
-        if (this.myElement !== null) {
-            this.spinner = true;
-            this.myElement.style.display = 'block';
         }
     }
 }

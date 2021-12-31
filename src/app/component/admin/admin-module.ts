@@ -29,6 +29,10 @@ import { TimeClockManagerComponent } from './system-tools/time-clock-mgr/time-cl
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RecallStudentsComponent } from './system-tools/recall-students/recall-students.component';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -60,10 +64,14 @@ import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog-b
     ReactiveFormsModule,
     SharedComponentModule,
     MatDatepickerModule,
-    MatFormFieldModule,
     MatInputModule,
     MatNativeDateModule,
-    MatProgressSpinnerModule
+    MatFormFieldModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatSortModule,
+    MatDialogModule
   ],
   providers: [
     MatDatepickerModule,
