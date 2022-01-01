@@ -201,6 +201,7 @@ export class CollegeListComponent implements OnInit {
         this.requestData.ncesId = null;
         this._collegeAndSchoolService.postCollegeSchoolName(this.requestData).subscribe(result => {
             if (result) {
+                this.modalRef.hide();
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
                     this.hideLoader();
                     this.selectedRowIndex = null;
@@ -265,7 +266,7 @@ export class CollegeListComponent implements OnInit {
                 }
             });
         } else {
-            alert('Please select a row to update.')
+            alert('Please select a row to delete.')
         }
     }
 
@@ -294,6 +295,7 @@ export class CollegeListComponent implements OnInit {
             this.requestData.ncesId = null;
 
             this._collegeAndSchoolService.updateCollegeSchoolName(this.requestData).subscribe(response => {
+                this.modalRef.hide();
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
                     this.hideLoader();
                     this.selectedRowIndex = null;

@@ -44,7 +44,7 @@ a {
 
 .navbar-expand-lg {
   bottom: 17px;
-  position: sticky;
+  position: fixed;
   width: 100%;
 }
 
@@ -181,6 +181,12 @@ table {
   max-width: 100px;
 }
 
+.data-table-height{
+    height: 296px !important;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
 .popHeader {
     color: white;
     font-weight: 500;
@@ -190,6 +196,10 @@ table {
   background-color: #1672B7;
 }
 
+.inpulldownChk{
+  margin-left: -5px;
+  margin-top: 4%;
+}
 th.mat-header-cell {
     font-weight: bold;
     font-size: 14px;

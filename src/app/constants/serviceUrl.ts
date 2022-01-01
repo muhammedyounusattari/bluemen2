@@ -83,6 +83,7 @@ export class ServiceUrls {
 
     // LAB SETTINGS PREFERENCES
     public static POST_LAB_SETTINGS_PREFERENCES = environment.apiUrl + '/blumen-api/customize/labSettingPreferences/v1';
+    public static GET_LAB_SETTINGS_PREFERENCES = environment.apiUrl + '/blumen-api/customize/getLabSettingPreferences/v1';
 
     // Recall Students API URL's
     public static GET_RECALL_STUDENTS_LIST = environment.apiUrl + '/blumen-api/admin/systemtools/recallStudentList/v1';

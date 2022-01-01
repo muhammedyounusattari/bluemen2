@@ -1,4 +1,5 @@
 export class LabSettingsEnum {
+    id: string;
     labAcknowledgement: boolean = true;
     labAutomaticallyCheckInCheckOut: boolean = true;
     labComponents: string = '';

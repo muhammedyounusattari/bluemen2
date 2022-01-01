@@ -5,6 +5,9 @@ import { CollegeAndSchoolService } from '../../../../services/admin/college-scho
 import { SchoolListEnum } from '../../../../constants/enums/school-list.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'app-school-list',
@@ -12,10 +15,10 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
     // styleUrls: ['./pulldown-list.component.css']
 })
 
-export class SchoolListComponent implements OnInit{
+export class SchoolListComponent implements OnInit {
     schoolDataList: any = [];
     schoolListEnum: SchoolListEnum = new SchoolListEnum();
-    @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
+    @ViewChild('schoolNamePopup') schoolNamePopupRef: TemplateRef<any>;
     modalRef: BsModalRef;
     modalConfigSM = {
         backdrop: true,
@@ -50,12 +53,22 @@ export class SchoolListComponent implements OnInit{
     public spinner: boolean = true;
     selectedRowIndex: any;
     isDisabled: boolean = false;
+    columnsToDisplay: string[] = ['name', 'orgType', 'ncesId', 'country', 'phone1', 'phone2', 'phone3', 'fax'];
+    dataSource: MatTableDataSource<any>;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort) set matSort(sort: MatSort) {
+        if (this.dataSource && !this.dataSource.sort) {
+            this.dataSource.sort = sort;
+        }
+    }
+    isLoading: boolean = true;
 
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog
         , private _collegeAndSchoolService: CollegeAndSchoolService) { }
-    
+
     ngOnInit() {
         this.myElement = window.document.getElementById('loading');
         this.navigateToComponent('service-group-list');
@@ -66,16 +79,15 @@ export class SchoolListComponent implements OnInit{
                 domElement.style.borderBottom = "thick solid #0000FF";
             }
             if (result) {
+                this.dataSource = new MatTableDataSource(result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined));
+                this.dataSource.paginator = this.paginator;
+                this.selectedRowIndex = null;
+                this.dataSource.sort = this.sort;
                 this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
             }
         });
     }
-    addNewDropdown() {
-        this.openModal(this.addDropDownValueRef);
-    }
-    openModal(template: TemplateRef<any>) {
-        this.modalRef = this.modalService.show(template, this.modalConfigSM)
-    }
+
     navigateToComponent(componentName: string) {
         if (componentName === 'college-list') {
             this.router.navigate(['admin/college-list']);
@@ -83,26 +95,98 @@ export class SchoolListComponent implements OnInit{
             this.router.navigate(['admin/school-list']);
         }
     }
+
+    applyFilter(filterValue: any) {
+        this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
+
+    setValuesToUpdate() {
+        if (this.selectedRow) {
+            this.isEdit = true;
+            this.isDisabled = true;
+            this.schoolListEnum.orgName = this.selectedRow.name;
+            this.schoolListEnum.orgType = this.selectedRow.orgType;
+            this.schoolListEnum.name = this.selectedRow.name;
+            this.schoolListEnum.codes = this.selectedRow.codes;
+            this.schoolListEnum.title = this.selectedRow.title;
+            this.schoolListEnum.country = this.selectedRow.country;
+            this.schoolListEnum.address = this.selectedRow.address;
+            this.schoolListEnum.ncesId = this.selectedRow.ncesId;
+            this.schoolListEnum.city = this.selectedRow.city;
+            this.schoolListEnum.states = this.selectedRow.states;
+            this.schoolListEnum.zipcode = this.selectedRow.zipcode;
+            this.schoolListEnum.fiscalYear = this.selectedRow.fiscalYear;
+            this.schoolListEnum.phone1 = this.selectedRow.phone1;
+            this.schoolListEnum.phone2 = this.selectedRow.phone2;
+            this.schoolListEnum.phone3 = this.selectedRow.phone3;
+            this.schoolListEnum.fax = this.selectedRow.fax;
+            this.schoolListEnum.website = this.selectedRow.website;
+            this.schoolListEnum.email = this.selectedRow.email;
+            this.schoolListEnum.notes = this.selectedRow.notes;
+            this.openModal(this.schoolNamePopupRef);
+        } else {
+            alert('Please select a row to update.')
+        }
+    }
+
+    openModal(template: TemplateRef<any>) {
+        this.modalRef = this.modalService.show(template, this.modalConfigSM)
+    }
+
+    resetFields() {
+        this.isEdit = false;
+        this.schoolListEnum = new SchoolListEnum();
+        this.isDisabled = false;
+        this.openModal(this.schoolNamePopupRef);
+    }
+
+    hideLoader() {
+        this.myElement = window.document.getElementById('loading');
+        if (this.myElement !== null) {
+            this.spinner = false;
+            this.isLoading = false;
+            this.myElement.style.display = 'none';
+        }
+    }
+
+    showLoader() {
+        if (this.myElement !== null) {
+            this.spinner = true;
+            this.isLoading = true;
+            this.myElement.style.display = 'block';
+        }
+    }
+
+    setSelectedRow(selectedRowItem: any, index: number) {
+        this.selectedRowIndex = index;
+        this.selectedRow = selectedRowItem;
+    }
+
     addNewSchoolName() {
         this.showLoader();
         if (this.schoolListEnum.ncesId) {
             if (this.schoolDataList && this.schoolDataList.length > 0) {
                 const isFound = this.schoolDataList.filter((item: any) => item.fafsaId === this.schoolListEnum.ncesId);
                 if (isFound && isFound.length > 0) {
+                    this.hideLoader();
                     return alert('Entered NCESID is alreay exist, to add this organization name please change entered NCESID.');
                 }
             }
         } else {
+            this.hideLoader();
             return alert('Please enter NCESID.');
         }
-        this.requestData.orgName= this.schoolListEnum.name;
+        this.requestData.orgName = this.schoolListEnum.name;
         this.requestData.orgType = this.schoolListEnum.orgType;
         this.requestData.name = this.schoolListEnum.name;
         this.requestData.codes = this.schoolListEnum.codes;
         this.requestData.title = this.schoolListEnum.title;
         this.requestData.country = this.schoolListEnum.country;
         this.requestData.address = this.schoolListEnum.address;
-        this.requestData.ncesId= this.schoolListEnum.ncesId;
+        this.requestData.ncesId = this.schoolListEnum.ncesId;
         this.requestData.city = this.schoolListEnum.city;
         this.requestData.states = this.schoolListEnum.states;
         this.requestData.zipcode = this.schoolListEnum.zipcode;
@@ -112,16 +196,21 @@ export class SchoolListComponent implements OnInit{
         this.requestData.phone3 = this.schoolListEnum.phone3;
         this.requestData.fax = this.schoolListEnum.fax;
         this.requestData.website = this.schoolListEnum.website;
-        this.requestData.email= this.schoolListEnum.email;
+        this.requestData.email = this.schoolListEnum.email;
         this.requestData.notes = this.schoolListEnum.notes;
         this.requestData.fafsaId = null;
 
-        this._collegeAndSchoolService.postStudentName(this.requestData).subscribe(result=>{
-            if(result) {
+        this._collegeAndSchoolService.postStudentName(this.requestData).subscribe(result => {
+            if (result) {
+                this.modalRef.hide();
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
                     this.hideLoader();
                     this.selectedRowIndex = null;
                     if (result) {
+                        this.dataSource = new MatTableDataSource(result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined));
+                        this.dataSource.paginator = this.paginator;
+                        this.selectedRowIndex = null;
+                        this.dataSource.sort = this.sort;
                         document.getElementById('closePopup')?.click();
                         this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
                     }
@@ -131,16 +220,16 @@ export class SchoolListComponent implements OnInit{
     }
 
     deleteSelectedRow() {
-        if(this.selectedRow) {
+        if (this.selectedRow) {
             this.showLoader();
-            this.requestData.orgName= this.selectedRow.name;
+            this.requestData.orgName = this.selectedRow.name;
             this.requestData.orgType = this.selectedRow.orgType;
             this.requestData.name = this.selectedRow.name;
             this.requestData.codes = this.selectedRow.codes;
             this.requestData.title = this.selectedRow.title;
             this.requestData.country = this.selectedRow.country;
             this.requestData.address = this.selectedRow.address;
-            this.requestData.ncesId= this.selectedRow.ncesId;
+            this.requestData.ncesId = this.selectedRow.ncesId;
             this.requestData.city = this.selectedRow.city;
             this.requestData.states = this.selectedRow.states;
             this.requestData.zipcode = this.selectedRow.zipcode;
@@ -150,7 +239,7 @@ export class SchoolListComponent implements OnInit{
             this.requestData.phone3 = this.selectedRow.phone3;
             this.requestData.fax = this.selectedRow.fax;
             this.requestData.website = this.selectedRow.website;
-            this.requestData.email= this.selectedRow.email;
+            this.requestData.email = this.selectedRow.email;
             this.requestData.notes = this.selectedRow.notes;
 
             const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -166,57 +255,34 @@ export class SchoolListComponent implements OnInit{
                             this.hideLoader();
                             this.selectedRowIndex = null;
                             if (result) {
+                                this.dataSource = new MatTableDataSource(result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined));
+                                this.dataSource.paginator = this.paginator;
+                                this.selectedRowIndex = null;
+                                this.dataSource.sort = this.sort;
                                 this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
                             }
-                        }); 
-                    });        
+                        });
+                    });
                 } else {
                     this.hideLoader();
                 }
             });
-         }
-    }
-    setSelectedRow(selectedRowItem: any, index: number) {
-        this.selectedRowIndex = index;
-        const data = this.schoolDataList.filter((item: any) => item.ncesId === selectedRowItem.ncesId);
-        if (data && data.length > 0) {
-            this.selectedRow = data[0];
+        } else {
+            alert('Please select a row to delete.')
         }
     }
-    setSelectedRowToUpdate() {
-        this.isEdit = true;
-        this.isDisabled = true;
-        this.schoolListEnum.orgName= this.selectedRow.name;
-        this.schoolListEnum.orgType = this.selectedRow.orgType;
-        this.schoolListEnum.name = this.selectedRow.name;
-        this.schoolListEnum.codes = this.selectedRow.codes;
-        this.schoolListEnum.title = this.selectedRow.title;
-        this.schoolListEnum.country = this.selectedRow.country;
-        this.schoolListEnum.address = this.selectedRow.address;
-        this.schoolListEnum.ncesId= this.selectedRow.ncesId;
-        this.schoolListEnum.city = this.selectedRow.city;
-        this.schoolListEnum.states = this.selectedRow.states;
-        this.schoolListEnum.zipcode = this.selectedRow.zipcode;
-        this.schoolListEnum.fiscalYear = this.selectedRow.fiscalYear;
-        this.schoolListEnum.phone1 = this.selectedRow.phone1;
-        this.schoolListEnum.phone2 = this.selectedRow.phone2;
-        this.schoolListEnum.phone3 = this.selectedRow.phone3;
-        this.schoolListEnum.fax = this.selectedRow.fax;
-        this.schoolListEnum.website = this.selectedRow.website;
-        this.schoolListEnum.email= this.selectedRow.email;
-        this.schoolListEnum.notes = this.selectedRow.notes;
-    }
+
     updateSelectedRow() {
-        if(this.selectedRow) {
+        if (this.selectedRow) {
             this.showLoader();
-            this.requestData.orgName= this.schoolListEnum.name;
+            this.requestData.orgName = this.schoolListEnum.name;
             this.requestData.orgType = this.schoolListEnum.orgType;
             this.requestData.name = this.schoolListEnum.name;
             this.requestData.codes = this.schoolListEnum.codes;
             this.requestData.title = this.schoolListEnum.title;
             this.requestData.country = this.schoolListEnum.country;
             this.requestData.address = this.schoolListEnum.address;
-            this.requestData.ncesId= this.schoolListEnum.ncesId;
+            this.requestData.ncesId = this.schoolListEnum.ncesId;
             this.requestData.city = this.schoolListEnum.city;
             this.requestData.states = this.schoolListEnum.states;
             this.requestData.zipcode = this.schoolListEnum.zipcode;
@@ -226,39 +292,26 @@ export class SchoolListComponent implements OnInit{
             this.requestData.phone3 = this.schoolListEnum.phone3;
             this.requestData.fax = this.schoolListEnum.fax;
             this.requestData.website = this.schoolListEnum.website;
-            this.requestData.email= this.schoolListEnum.email;
-            this.requestData.notes = this.schoolListEnum.notes; 
+            this.requestData.email = this.schoolListEnum.email;
+            this.requestData.notes = this.schoolListEnum.notes;
             this.requestData.fafsaId = null;
-           
+
             this._collegeAndSchoolService.updateCollegeSchoolName(this.requestData).subscribe(response => {
+                this.modalRef.hide();
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
                     this.hideLoader();
                     this.selectedRowIndex = null;
                     if (result) {
+                        this.dataSource = new MatTableDataSource(result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined));
+                        this.dataSource.paginator = this.paginator;
+                        this.selectedRowIndex = null;
+                        this.dataSource.sort = this.sort;
                         document.getElementById('closePopup')?.click();
                         this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
                         this.isEdit = false;
                     }
                 });
             });
-        }
-    }
-    resetFields() {
-        this.isEdit = false;
-        this.schoolListEnum = new SchoolListEnum();
-        this.isDisabled = false;
-    }
-    hideLoader() {
-        this.myElement = window.document.getElementById('loading');
-        if (this.myElement !== null) {
-            this.spinner = false;
-            this.myElement.style.display = 'none';
-        }
-    }
-    showLoader() {
-        if (this.myElement !== null) {
-            this.spinner = true;
-            this.myElement.style.display = 'block';
         }
     }
 }

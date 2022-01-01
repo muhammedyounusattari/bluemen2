@@ -43,7 +43,7 @@
     <!-- Spinner End-->
 
     <!-- Data Table Start-->
-    <div class="mat-elevation-z8" *ngIf="!isLoading">
+    <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
             <ng-container matColumnDef="activityGroupId">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Group Id </th>
@@ -64,15 +64,15 @@
                 <td mat-cell *matCellDef="let groupObj; let row = dataIndex;">
                     {{groupObj.activityCalculateHoursforActivityGroup ? 'YES' : 'NO'}} </td>
             </ng-container>
-            <ng-container *ngIf="dataSource.data.length === 0">
-                No records found!
-            </ng-container>
+            <ng-template [ngIf]="dataSource.data.length === 0">
+                <tr mat-footer-row *matFooterRowDef="['noRecord']"></tr>
+            </ng-template>
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
             <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
                 [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
             </tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
     </div>
     <!-- Data Table End-->
 

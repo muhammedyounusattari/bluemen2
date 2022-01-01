@@ -24,7 +24,6 @@
                 aria-selected="false">School List</a>
         </li>
     </ul>
-
     <!-- Two Tabs Start-->
 
     <!-- Search Box Start-->
@@ -44,7 +43,7 @@
     <!-- Spinner End-->
 
     <!-- Data Table Start-->
-    <div class="mat-elevation-z8" *ngIf="!isLoading">
+    <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> College Name </th>
@@ -79,9 +78,9 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> FAX </th>
                 <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.fax}} </td>
             </ng-container>
-            <ng-container *ngIf="dataSource.data.length === 0">
-                No records found!
-            </ng-container>
+            <ng-template [ngIf]="dataSource.data.length === 0">
+                <tr mat-footer-row *matFooterRowDef="['noRecord']"></tr>
+            </ng-template>
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
             <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
                 [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
@@ -190,7 +189,7 @@
 <!-- Buttons End-->
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -207,7 +206,9 @@
                                     <label for="usr">Name:</label>
                                     <input type="text" [(ngModel)]="collegeListEnum.name" class="form-control"
                                         id="collegeName" [readonly]="isDisabled"> &nbsp;
-                                    <!-- <input type="checkbox" class="form-control" id="serviceId">In Pulldown List -->
+                                        <label class="radio-inline">
+                                            <input type="checkbox" name="optradio"> In Pulldown List
+                                        </label>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="usr">Codes:</label>
@@ -327,7 +328,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- Modal Start-->
 <ng-template #collegeNamePopup>
@@ -346,7 +347,9 @@
                             <label for="usr">Name:</label>
                             <input type="text" [(ngModel)]="collegeListEnum.name" class="form-control" id="collegeName"
                                 [readonly]="isDisabled"> &nbsp;
-                            <!-- <input type="checkbox" class="form-control" id="serviceId">In Pulldown List -->
+                                <label class="radio-inline inpulldownChk">
+                                    <input type="checkbox" name="optradio"> In Pulldown List
+                                </label>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="usr">Codes:</label>
