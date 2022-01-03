@@ -60,12 +60,7 @@ export class ConfigSettingsComponent implements OnInit {
     this.myElement = window.document.getElementById('loading');
 
     this.configSettingsService.getConfigSettings().subscribe((result: any) => {
-
       this.hideLoader();
-      let domElement = window.document.getElementById('Group_Name');
-      if (domElement) {
-        domElement.style.borderBottom = "thick solid #0000FF";
-      }
       if (result) {
         this.dataSource = new MatTableDataSource(result);
         this.dataSource.paginator = this.paginator;

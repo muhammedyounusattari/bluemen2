@@ -1,4 +1,9 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
+
+  <!-- Full Screen Loader Start -->
+  <div id="loading"></div>
+  <!-- Full Screen Loader End -->
+
     <div class="row bg-white">
         <div class="col-md-12">
             <h3>Custom Fields</h3>
@@ -24,93 +29,185 @@
             </select>
         </div>
     </div>
-    <div class="table-responsive" style="border:1px solid #1366A0;">
-        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-            <thead>
-                <tr style="background: #F5F6FA;">
-                    <th scope="col">Id</th>
-                    <th scope="col">Pulldown Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngIf="!spinner">
-                    <tr *ngFor="let item of customFields; let i = index" (click)="getSelectedRow(item, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">
-                        <th scope="row">{{item.customId}}</th>
-                        <td>{{item.pullDownName}}</td>
-                    </tr>
-                </ng-container>
-                <div class="no-record">
-                    <div *ngIf="spinner" class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div *ngIf="customFields.length == 0">
-                        <span>No Data Found</span>
-                    </div>
-                </div>
-            </tbody>
-        </table>
+<!--    <div class="table-responsive" style="border:1px solid #1366A0;">-->
+<!--        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">-->
+<!--            <thead>-->
+<!--                <tr style="background: #F5F6FA;">-->
+<!--                    <th scope="col">Id</th>-->
+<!--                    <th scope="col">Pulldown Name</th>-->
+<!--                </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--                <ng-container *ngIf="!spinner">-->
+<!--                    <tr *ngFor="let item of customFields; let i = index" (click)="getSelectedRow(item, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">-->
+<!--                        <th scope="row">{{item.customId}}</th>-->
+<!--                        <td>{{item.pullDownName}}</td>-->
+<!--                    </tr>-->
+<!--                </ng-container>-->
+<!--                <div class="no-record">-->
+<!--                    <div *ngIf="spinner" class="spinner-border" role="status">-->
+<!--                        <span class="visually-hidden">Loading...</span>-->
+<!--                    </div>-->
+<!--                    <div *ngIf="customFields.length == 0">-->
+<!--                        <span>No Data Found</span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+
+  <div class="row ">
+    <div class="col-md-6 mt-3 mb-3 ">
+      <form class="example">
+        <input type="text" matInput (keyup)="applyFilter($event)" placeholder="Search.." />
+      </form>
     </div>
+  </div>
 
+  <!-- Spinner Start-->
+  <div class="spinner-container" *ngIf="isLoading">
+    <mat-spinner id="spinner"></mat-spinner>
+  </div>
+  <!-- Spinner End-->
 
-    <div class="row">
-        <div class="col-md-12 mt-3">
+  <!-- Data Table Start-->
+  <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+      <ng-container matColumnDef="customId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.customId}} </td>
+      </ng-container>
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination pagination-sm justify-content-right">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</div>
-<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
+      <ng-container matColumnDef="pullDownName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Pulldown Name</th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.pullDownName}} </td>
+      </ng-container>
+
+      <ng-template [ngIf]="dataSource.data.length === 0">
+        <tr mat-footer-row *matFooterRowDef="['noRecord']"></tr>
+      </ng-template>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
+          [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
+      </tr>
+    </table>
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+  </div>
+
+  <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page">Reset</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal" data-bs-target="#exampleModal">New</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Move')">Move</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Merge')">Merge</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="deleteCustomFieldNameType()">Delete</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Print')">Print</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Submit')">Submit</a>
-                </li>
-            </ul>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page">Reset</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal" data-bs-target="#exampleModal">New</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="getSelectedOption('Move')">Move</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="getSelectedOption('Merge')">Merge</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="deleteCustomFieldNameType()">Delete</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="getSelectedOption('Print')">Print</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="getSelectedOption('Submit')">Submit</a>
+          </li>
+        </ul>
 
-        </div>
+<!--       -->
+<!--       -->
+<!--       -->
+<!--        <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"-->
+<!--               data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link ">Close</a>-->
+<!--          </li>-->
+<!--        </ul>-->
+
+      </div>
     </div>
-</nav>
+  </nav>
+
+
+  <!--    <div class="row">-->
+<!--        <div class="col-md-12 mt-3">-->
+
+<!--            <nav aria-label="Page navigation example">-->
+<!--                <ul class="pagination pagination-sm justify-content-right">-->
+<!--                    <li class="page-item disabled">-->
+<!--                        <a class="page-link" href="#" tabindex="-1">Previous</a>-->
+<!--                    </li>-->
+<!--                    <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                    <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--                    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                    <li class="page-item">-->
+<!--                        <a class="page-link" href="#">Next</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">-->
+<!--    <div class="container-fluid">-->
+<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+<!--        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">-->
+
+<!--            <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link active" aria-current="page">Reset</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal" data-bs-target="#exampleModal">New</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" (click)="getSelectedOption('Move')">Move</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" (click)="getSelectedOption('Merge')">Merge</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" (click)="deleteCustomFieldNameType()">Delete</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" (click)="getSelectedOption('Print')">Print</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" (click)="getSelectedOption('Submit')">Submit</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
