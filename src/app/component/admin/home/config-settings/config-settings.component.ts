@@ -1,6 +1,12 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { ConfigSettingsService } from 'src/app/services/admin/config-settings.service';
+import {Component, TemplateRef, ViewChild, OnInit} from '@angular/core';
+import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
+import {ConfigSettingsService} from 'src/app/services/admin/config-settings.service';
+
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogComponent} from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-config-settings',
@@ -8,16 +14,30 @@ import { ConfigSettingsService } from 'src/app/services/admin/config-settings.se
   styleUrls: ['./config-settings.component.css']
 })
 
-export class ConfigSettingsComponent {
+export class ConfigSettingsComponent implements OnInit {
   @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
   isVisible: boolean = false;
   modalRef: BsModalRef;
-  selectedRowIndex: number;
+  selectedRowIndex: any;
   isEdit: boolean = false;
-  description:string;
-  id:string;
-  configValue:string;
-  configType:string;
+  myElement: any = null;
+  isLoading: boolean = true;
+  description: string;
+  id: string;
+  configValue: string;
+  configType: string;
+
+
+  columnsToDisplay: string[] = ['id', 'configType', 'configValue', 'description'];
+  dataSource: MatTableDataSource<any>;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+  @ViewChild(MatSort) set matSort(sort: MatSort) {
+    if (this.dataSource && !this.dataSource.sort) {
+      this.dataSource.sort = sort;
+    }
+  }
 
   modalConfigSM = {
     backdrop: true,
@@ -29,15 +49,36 @@ export class ConfigSettingsComponent {
   public selectedRow: any = null;
   public selectedRowData: any = null;
   public spinner: boolean = true;
+
   constructor(private modalService: BsModalService,
               private configSettingsService: ConfigSettingsService
   ) {
     this.getConfigSettings();
   }
 
+  ngOnInit() {
+    this.myElement = window.document.getElementById('loading');
+
+    this.configSettingsService.getConfigSettings().subscribe((result: any) => {
+
+      this.hideLoader();
+      let domElement = window.document.getElementById('Group_Name');
+      if (domElement) {
+        domElement.style.borderBottom = "thick solid #0000FF";
+      }
+      if (result) {
+        this.dataSource = new MatTableDataSource(result);
+        this.dataSource.paginator = this.paginator;
+        this.selectedRowIndex = null;
+        this.dataSource.sort = this.sort;
+      }
+    });
+  }
+
   addNewDropdown() {
     this.openModal(this.addDropDownValueRef);
   }
+
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, this.modalConfigSM)
   }
@@ -47,12 +88,7 @@ export class ConfigSettingsComponent {
    */
   public getConfigSettings() {
     this.spinner = true;
-    this.configSettingsService.getConfigSettings().subscribe((result: any) => {
-      if (result) {
-        this.spinner = false;
-        this.configSettingsList = result;
-      }
-    });
+
   }
 
   setSelectedRow(selectedRowItem: any, index: number) {
@@ -65,19 +101,39 @@ export class ConfigSettingsComponent {
 
   setSelectedRowToUpdate() {
     this.isEdit = true;
-    this.id = this.selectedRow.id;
-    this.configValue = this.selectedRow.configValue;
-    this.configType = this.selectedRow.configType;
-    this.description = this.selectedRow.description;
+    if (this.dataSource.data[0]) {
+      this.id = this.dataSource.data[0].id
+      this.configValue = this.dataSource.data[0].configValue;
+      this.configType = this.dataSource.data[0].configType;
+      this.description = this.dataSource.data[0].description;
+    }
 
   }
-  updateSelectedRow(){
+
+  hideLoader() {
+    this.myElement = window.document.getElementById('loading');
+    if (this.myElement !== null) {
+      this.spinner = false;
+      this.isLoading = false;
+      this.myElement.style.display = 'none';
+    }
+  }
+
+  showLoader() {
+    if (this.myElement !== null) {
+      this.spinner = true;
+      this.isLoading = true;
+      this.myElement.style.display = 'block';
+    }
+  }
+
+  updateSelectedRow() {
     this.spinner = true;
     let payload = {
-      id:this.id,
-      configValue:this.configValue,
-      configType:this.configType,
-      description:this.description
+      id: this.id,
+      configValue: this.configValue,
+      configType: this.configType,
+      description: this.description
     }
 
     this.configSettingsService.saveConfigSettings(payload).subscribe((result: any) => {
@@ -88,5 +144,12 @@ export class ConfigSettingsComponent {
       }
     });
 
+  }
+
+  applyFilter(filterValue: any) {
+    this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }
