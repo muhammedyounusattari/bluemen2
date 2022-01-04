@@ -1,0 +1,80 @@
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="../../../assets/img/left-img.png" alt="Image">
+                <p><button type="button" class="btn btn-warning"
+                        style="margin-top: 52px; color: #fff; border-radius: 30px; background-color: #55c404">Like to
+                        see who logged in?</button></p>
+            </div>
+            <div class="col-md-6 contents">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <img src="../../../assets/img/bot_logo.jpg" alt="Bot-Logo" style="margin-bottom: 40px;
+">
+                        <div class="mb-4">
+                            <h3 style="color: #0f6eb5; font-size: 50px; ">Welcome! </h3>
+                            <p class="mb-4" style="color: #080808">Please Login with your credentials…</p>
+                        </div>
+                        <form action="#" method="post">
+                            <div class="form-group first">
+                                <label for="username"
+                                    style="margin-left: 20px; font-size: 16px; color: #828282;">Organization
+                                    Code</label>
+                                <input type="text" class="form-control"
+                                    style="border: 1px solid #76acd5; padding-left: 20px; font-size: 16px;"
+                                    id="username">
+
+                            </div>
+                            <div class="form-group first">
+                                <label for="username"
+                                    style="margin-left: 20px; font-size: 16px; color: #828282;">Username</label>
+                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="uname"
+                                    style="border: 1px solid #76acd5; padding-left: 20px; font-size: 16px;"
+                                    id="username">
+
+                            </div>
+                            <div class="form-group last mb-4">
+                                <label for="password" 
+                                    style="margin-left: 20px; font-size: 16px; color: #828282;">Password</label>
+                                <input type="password" class="form-control" [(ngModel)]="password" [ngModelOptions]="{standalone: true}"
+                                    style="border: 1px solid #76acd5; padding-left: 20px; font-size: 16px;"
+                                    id="password">
+
+                            </div>
+
+                            <div class="d-flex mb-5 align-items-center">
+                                <span class="mr-auto"><a href="#" class="forgot-pass" style="color: #3c88c2">Forgot
+                                        Password</a></span>
+                                <label class="control control--checkbox mb-0"><span class="caption"
+                                        style="color: #3c88c2">Remember me</span>
+                                    <input type="checkbox" checked="checked" />
+                                    <div class="control__indicator" style="background: #3c88c2; "></div>
+                                </label>
+                            </div>
+
+                            <input type="submit" value="Log In" (click)="validate()"
+                                style="background: #3c88c2;border-radius: 0px!important; background: #1672b7!important; width: 150px; height: 42px;"
+                                class="btn text-white btn-block btn-primary">
+
+
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+
+
+                <div class="col-6">@All right reserved</div>
+                <div class="col-6 text-right">SSL Certificate | Help | Contact Us</div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -149,15 +149,15 @@ export class GradeStandingListComponent implements OnInit {
         this.requestData.gradingId = this.gradeGroupStandingList.gradingId;
         this.requestData.gradingName = this.gradeGroupStandingList.gradingName;
         this.requestData.gradingGroupName = this.gradeGroupStandingList.gradingGroupName;
-        this.requestData.gradingNewGrade = '';
+        this.requestData.gradingNewGrade = this.gradeGroupStandingList.gradingName;
         this.requestData.gradingParticipantStatus = this.gradeGroupStandingList.gradingParticipantStatus;
         this.requestData.gradingYearEnbStatus = this.gradeGroupStandingList.gradingYearEnbStatus;
         this.requestData.gradingFiscalYear = this.gradeGroupStandingList.gradingFiscalYear;
         this._gradingGroupStandingService.postGradingStandingList(this.requestData).subscribe(result => {
             if (result) {
-                document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
                     this.hideLoader();
+                    this.modalRef.hide();
                     this.selectedRowIndex = null;
                     if (result) {
                         this.dataSource = new MatTableDataSource(result);
@@ -211,14 +211,14 @@ export class GradeStandingListComponent implements OnInit {
             this.requestData.gradingId = this.gradeGroupStandingList.gradingId;
             this.requestData.gradingName = this.gradeGroupStandingList.gradingName;
             this.requestData.gradingGroupName = this.gradeGroupStandingList.gradingGroupName;
-            this.requestData.gradingNewGrade = '';
+            this.requestData.gradingNewGrade = this.gradeGroupStandingList.gradingName;
             this.requestData.gradingParticipantStatus = this.gradeGroupStandingList.gradingParticipantStatus;
             this.requestData.gradingYearEnbStatus = this.gradeGroupStandingList.gradingYearEnbStatus;
             this.requestData.gradingFiscalYear = this.gradeGroupStandingList.gradingFiscalYear;
             this._gradingGroupStandingService.updateGradingStandingList(this.requestData).subscribe(response => {
-                document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
                     this.hideLoader();
+                    this.modalRef.hide();
                     this.selectedRowIndex = null;
                     if (result) {
                         this.dataSource = new MatTableDataSource(result);

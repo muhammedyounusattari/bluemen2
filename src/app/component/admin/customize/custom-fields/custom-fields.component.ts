@@ -183,7 +183,7 @@ export class CustomFieldsComponent implements OnInit {
    * @method getSelectedRow
    * @description get selected row data to perform action
    */
-   public getSelectedRow(data: any, index: number) {
+  public getSelectedRow(data: any, index: number) {
     this.selectedRow = index;
     this.selectedRowData = data;
   }

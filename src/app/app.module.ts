@@ -16,13 +16,17 @@ import { UtilitiesModule } from './component/utilities/utilities.module';
 import { StaffModule } from './component/staff/staff.module.';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CounselorModule } from './component/counselor/counselor.module';
+import { LoginComponent } from './component/login/login.component';
+
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     NavigationComponent,
-    FooterComponent
+    FooterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +38,8 @@ import { CounselorModule } from './component/counselor/counselor.module';
     MDBBootstrapModule.forRoot(),
     ModalModule.forRoot(),
     BrowserAnimationsModule,
-    CounselorModule
+    CounselorModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

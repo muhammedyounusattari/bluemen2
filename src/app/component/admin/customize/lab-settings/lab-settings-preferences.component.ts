@@ -2,6 +2,7 @@ import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { LabSettingsEnum } from '../../../../constants/enums/lab-settings.enum';
 import { LabSettingsPreferencesService } from '../../../../services/admin/lab-settings.preferences.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'lab-settings',
@@ -30,7 +31,10 @@ export class LabSettingsPreferencesComponent implements OnInit {
         labWaitWindowTime: '',
         lapSearchPriority: ''
     }
+    isDisabled: boolean = false;
+
     constructor(private modalService: BsModalService
+        , private router: Router
         , private _labSettingsPreferencesService: LabSettingsPreferencesService) { }
 
     ngOnInit(): void {
@@ -53,11 +57,16 @@ export class LabSettingsPreferencesComponent implements OnInit {
                 this.lLabSettingsEnum.labStudentsCanChooseMultipleService = result[0].labStudentsCanChooseMultipleService;
                 this.lLabSettingsEnum.labWaitWindowTime = result[0].labWaitWindowTime;
                 this.lLabSettingsEnum.lapSearchPriority = result[0].lapSearchPriority;
+                if (result[0].labServicesVisibile) {
+                    this.isDisabled = true;
+                } else {
+                    this.isDisabled = false;
+                }
             }
         });
     }
 
-    addLabSettingsPreferences() {
+    addLabSettingsPreferences(isSave?: any) {
         this.requestBody.id = this.lLabSettingsEnum.id;
         this.requestBody.labAcknowledgement = this.lLabSettingsEnum.labAcknowledgement;
         this.requestBody.labAutomaticallyCheckInCheckOut = this.lLabSettingsEnum.labAutomaticallyCheckInCheckOut;
@@ -79,7 +88,20 @@ export class LabSettingsPreferencesComponent implements OnInit {
         this._labSettingsPreferencesService.postLabSettingsPreferences(this.requestBody).subscribe(result => {
             if (result) {
                 alert('Record Saved Successfully !');
+                if (isSave === 'SaveAndClose') {
+                    window.location.assign('');
+                }
             }
         });
+    }
+    cancelClick() {
+        window.location.assign('');
+    }
+    setEnableDisable() {
+        if (this.lLabSettingsEnum.labServicesVisibile) {
+            this.isDisabled = true;
+        } else {
+            this.isDisabled = false;
+        }
     }
 }

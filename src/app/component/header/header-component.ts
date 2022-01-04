@@ -6,4 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./header-component.css']
 })
 export class HeaderComponent {
+  logout() {
+    localStorage.setItem('accessToken', 'null');
+    window.location.reload();
+  }
 }

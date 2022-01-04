@@ -98,4 +98,8 @@ export class ServiceUrls {
     public static POST_TUTORS = environment.apiUrl + '/blumen-api/tutor/tutorList/v1';
     public static DELETE_TUTORS = environment.apiUrl + '/blumen-api/tutor/deleteTutorList/v1';
 
+    // SYSTEM PREFERENCES
+    public static POST_SYSTEM_PREFERENCES = environment.apiUrl + '/blumen-api/admin/postSystemPreferenceData/v1';
+    public static GET_SYSTEM_PREFERENCES = environment.apiUrl + '/blumen-api/admin/getSystemPreferenceData/v1';
+
 }

@@ -19,4 +19,5 @@ export class SchoolListEnum {
     email: string = '';
     notes: string = '';
     fafsaId: any = null;
+    inPullDown: boolean = false;
 }

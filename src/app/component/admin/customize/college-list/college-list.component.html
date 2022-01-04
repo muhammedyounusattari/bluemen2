@@ -50,9 +50,9 @@
                 <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.name}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="orgType">
+            <ng-container matColumnDef="inPullDown">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> In Pulldown</th>
-                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.orgType}} </td>
+                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.inPullDown ? 'YES' : 'NO'}} </td>
             </ng-container>
             <ng-container matColumnDef="fafsaId">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> FAFSA ID </th>
@@ -78,9 +78,6 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> FAX </th>
                 <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.fax}} </td>
             </ng-container>
-            <ng-template [ngIf]="dataSource.data.length === 0">
-                <tr mat-footer-row *matFooterRowDef="['noRecord']"></tr>
-            </ng-template>
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
             <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
                 [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
@@ -111,7 +108,7 @@
                         (click)="setSelectedRow(collegeData, idx)"
                         [ngClass]="{'selected-row' : this.selectedRowIndex == idx}">
                         <td>{{collegeData.name}}</td>
-                        <td>{{collegeData.orgType}}</td>
+                        <td>{{collegeData.inPullDown}}</td>
                         <td>{{collegeData.fafsaId}}</td>
                         <td>{{collegeData.country}}</td>
                         <td>{{collegeData.phone1}}</td>
@@ -348,7 +345,7 @@
                             <input type="text" [(ngModel)]="collegeListEnum.name" class="form-control" id="collegeName"
                                 [readonly]="isDisabled"> &nbsp;
                                 <label class="radio-inline inpulldownChk">
-                                    <input type="checkbox" name="optradio"> In Pulldown List
+                                    <input type="checkbox" [(ngModel)]="collegeListEnum.inPullDown" name="optradio"> In Pulldown List
                                 </label>
                         </div>
                         <div class="form-group col-md-6">
@@ -462,7 +459,7 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="closePopup"
-            (click)="isEdit = false; selectedRowIndex = null; modalRef.hide();" data-bs-dismiss="modal">Close</button>
+            (click)="selectedRowIndex = null; modalRef.hide();" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" *ngIf="!isEdit"
             (click)="addNewCollegeName();">Save
             & Close</button>

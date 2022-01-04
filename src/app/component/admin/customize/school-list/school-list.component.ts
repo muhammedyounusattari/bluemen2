@@ -47,13 +47,14 @@ export class SchoolListComponent implements OnInit {
         zipcode: '',
         ncesId: '',
         fiscalYear: '',
-        fafsaId: null
+        fafsaId: null,
+        inPullDown: false
     };
     myElement: any = null;
     public spinner: boolean = true;
     selectedRowIndex: any;
     isDisabled: boolean = false;
-    columnsToDisplay: string[] = ['name', 'orgType', 'ncesId', 'country', 'phone1', 'phone2', 'phone3', 'fax'];
+    columnsToDisplay: string[] = ['name', 'inPullDown', 'ncesId', 'country', 'phone1', 'phone2', 'phone3', 'fax'];
     dataSource: MatTableDataSource<any>;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -108,7 +109,7 @@ export class SchoolListComponent implements OnInit {
             this.isEdit = true;
             this.isDisabled = true;
             this.schoolListEnum.orgName = this.selectedRow.name;
-            this.schoolListEnum.orgType = this.selectedRow.orgType;
+            this.schoolListEnum.inPullDown = this.selectedRow.inPullDown;
             this.schoolListEnum.name = this.selectedRow.name;
             this.schoolListEnum.codes = this.selectedRow.codes;
             this.schoolListEnum.title = this.selectedRow.title;
@@ -180,7 +181,7 @@ export class SchoolListComponent implements OnInit {
             return alert('Please enter NCESID.');
         }
         this.requestData.orgName = this.schoolListEnum.name;
-        this.requestData.orgType = this.schoolListEnum.orgType;
+        this.requestData.inPullDown = this.schoolListEnum.inPullDown;
         this.requestData.name = this.schoolListEnum.name;
         this.requestData.codes = this.schoolListEnum.codes;
         this.requestData.title = this.schoolListEnum.title;
@@ -223,7 +224,7 @@ export class SchoolListComponent implements OnInit {
         if (this.selectedRow) {
             this.showLoader();
             this.requestData.orgName = this.selectedRow.name;
-            this.requestData.orgType = this.selectedRow.orgType;
+            this.requestData.inPullDown = this.selectedRow.inPullDown;
             this.requestData.name = this.selectedRow.name;
             this.requestData.codes = this.selectedRow.codes;
             this.requestData.title = this.selectedRow.title;
@@ -276,7 +277,7 @@ export class SchoolListComponent implements OnInit {
         if (this.selectedRow) {
             this.showLoader();
             this.requestData.orgName = this.schoolListEnum.name;
-            this.requestData.orgType = this.schoolListEnum.orgType;
+            this.requestData.inPullDown = this.schoolListEnum.inPullDown;
             this.requestData.name = this.schoolListEnum.name;
             this.requestData.codes = this.schoolListEnum.codes;
             this.requestData.title = this.schoolListEnum.title;

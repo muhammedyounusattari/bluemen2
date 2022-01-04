@@ -62,9 +62,6 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Grade/Standing (next year) </th>
                 <td mat-cell *matCellDef="let gradeObj; let row = dataIndex;"> {{gradeObj.gradingFiscalYear}} </td>
             </ng-container>
-            <ng-template [ngIf]="dataSource.data.length === 0">
-                <tr mat-footer-row *matFooterRowDef="['noRecord']"></tr>
-            </ng-template>
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
             <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
                 [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
@@ -341,9 +338,9 @@
         <button type="button" class="btn btn-secondary" id="closePopup"
             (click)="isEdit = false; selectedRowIndex = null; modalRef.hide();">Close</button>
         <button type="button" class="btn btn-primary" *ngIf="!isEdit"
-            (click)="addGradeStanding();modalRef.hide()">Save & Close</button>
+            (click)="addGradeStanding();">Save & Close</button>
         <button type="button" class="btn btn-primary" *ngIf="isEdit"
-            (click)="updateSelectedRow();modalRef.hide()">Update & Close</button>
+            (click)="updateSelectedRow();">Update & Close</button>
     </div>
 </ng-template>
 <!-- Modal End-->

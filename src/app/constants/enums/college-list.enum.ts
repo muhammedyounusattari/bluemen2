@@ -19,4 +19,5 @@ export class CollegeListEnum {
     email: string = '';
     notes: string = '';
     ncesId: any = null;
+    inPullDown: boolean = false;
 }

@@ -1,8 +1,4 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
-  <!-- Full Screen Loader Start -->
-  <div id="loading"></div>
-  <!-- Full Screen Loader End -->
-
   <div class="row bg-white">
     <div class="col-md-12">
       <h3>Config Settings</h3>
@@ -22,7 +18,6 @@
       </div>
     </div>
   </div>
-
   <div class="row ">
     <div class="col-md-6 mt-3 mb-3 ">
       <form class="example">
@@ -30,44 +25,56 @@
       </form>
     </div>
   </div>
-
-  <!-- Spinner Start-->
-  <div class="spinner-container" *ngIf="isLoading">
-    <mat-spinner id="spinner"></mat-spinner>
-  </div>
-  <!-- Spinner End-->
-
-  <!-- Data Table Start-->
-  <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.id}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="configType">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Config Type</th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.configType}} </td>
-      </ng-container>
-      <ng-container matColumnDef="configValue">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Config Value </th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.configValue}} </td>
-      </ng-container>
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;">
-          {{groupObj.description}} </td>
-      </ng-container>
-      <ng-template [ngIf]="dataSource.data.length === 0">
-        <tr mat-footer-row *matFooterRowDef="['noRecord']"></tr>
-      </ng-template>
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-      <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
-          [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
+  <div class="table-responsive" style="border:1px solid #1366A0;">
+    <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
+      <thead>
+      <tr style="background: #F5F6FA;">
+        <th scope="col">Config ID</th>
+        <th scope="col">Config Type</th>
+        <th scope="col">Config Value</th>
+        <th scope="col">Description</th>
       </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngIf="!spinner">
+        <tr *ngFor="let data of configSettingsList;let idx = index;"
+            (click)="setSelectedRow(data, idx)" [ngClass]="{'selected-row' : this.selectedRowIndex == idx}">
+          <th scope="row">{{data.id}}</th>
+          <td>{{data.configType}}</td>
+          <td>{{data.configValue}}</td>
+          <td>{{data.description}}</td>
+        </tr>
+      </ng-container>
+      <div class="no-record">
+        <div *ngIf="spinner" class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div *ngIf="!spinner && configSettingsList.length == 0">
+          <span>No Data Found</span>
+        </div>
+      </div>
+      </tbody>
     </table>
-    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
   </div>
+
+  <div class="row">
+    <div class="col-md-12 mt-3">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination pagination-sm justify-content-right">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
 
 <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
   <div class="container-fluid">

@@ -1,4 +1,5 @@
-<app-header></app-header>
-<app-navigation></app-navigation>  
-<router-outlet></router-outlet>
-<app-footer></app-footer>
+<app-header *ngIf="isLoggedIn"></app-header>
+<app-navigation *ngIf="isLoggedIn"></app-navigation>
+<router-outlet *ngIf="isLoggedIn"></router-outlet>
+<app-footer *ngIf="isLoggedIn"></app-footer>
+<app-login *ngIf="!isLoggedIn" (validateLogin)="validate($event)"></app-login>

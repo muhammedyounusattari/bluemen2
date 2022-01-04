@@ -144,9 +144,9 @@ export class GradeStandingGroupListComponent implements OnInit {
         this.requestData.gradeGroupAprColumn = this._gradeGroupStandingList.gradeGroupGradeType;
         this._gradingGroupStandingService.postGradingGroupList(this.requestData).subscribe(result => {
             if (result) {
-                document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
                     this.hideLoader();
+                    this.modalRef.hide();
                     this.selectedRowIndex = null;
                     if (result) {
                         this.dataSource = new MatTableDataSource(result);
@@ -203,9 +203,9 @@ export class GradeStandingGroupListComponent implements OnInit {
             this.requestData.gradeGroupGradeType = this._gradeGroupStandingList.gradeGroupGradeType;
             this.requestData.gradeGroupAprColumn = this._gradeGroupStandingList.gradeGroupGradeType;
             this._gradingGroupStandingService.updateGradingGroupList(this.requestData).subscribe(response => {
-                document.getElementById('closePopup')?.click();
                 this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
                     this.hideLoader();
+                    this.modalRef.hide();
                     this.selectedRowIndex = null;
                     if (result) {
                         this.dataSource = new MatTableDataSource(result);

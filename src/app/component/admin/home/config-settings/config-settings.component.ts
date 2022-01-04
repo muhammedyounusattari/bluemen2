@@ -61,6 +61,7 @@ export class ConfigSettingsComponent implements OnInit {
 
     this.configSettingsService.getConfigSettings().subscribe((result: any) => {
       this.hideLoader();
+
       if (result) {
         this.dataSource = new MatTableDataSource(result);
         this.dataSource.paginator = this.paginator;

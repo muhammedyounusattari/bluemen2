@@ -201,7 +201,7 @@ export class ServicesListComponent implements OnInit {
             this.requestData.activityName = this.activityServiceListEnum.activityName;
             this.requestData.activityGroupName = this.activityServiceListEnum.activityGroupName;
             this.requestData.lapService = this.activityServiceListEnum.lapService;
-
+            this.requestData.activityBoltService = this.activityServiceListEnum.activityBoltService;
             this._activityGroupServicesService.updateActivityServiceList(this.requestData).subscribe(result => {
                 this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
                     document.getElementById('closePopup')?.click();

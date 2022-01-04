@@ -47,13 +47,14 @@ export class CollegeListComponent implements OnInit {
         zipcode: '',
         fafsaId: '',
         fiscalYear: '',
-        ncesId: null
+        ncesId: null,
+        inPullDown: false
     };
     myElement: any = null;
     public spinner: boolean = true;
     selectedRowIndex: any;
     isDisabled: boolean = false;
-    columnsToDisplay: string[] = ['name', 'orgType', 'fafsaId', 'country', 'phone1', 'phone2', 'phone3', 'fax'];
+    columnsToDisplay: string[] = ['name', 'inPullDown', 'fafsaId', 'country', 'phone1', 'phone2', 'phone3', 'fax'];
     dataSource: MatTableDataSource<any>;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -108,7 +109,7 @@ export class CollegeListComponent implements OnInit {
             this.isEdit = true;
             this.isDisabled = true;
             this.collegeListEnum.orgName = this.selectedRow.name;
-            this.collegeListEnum.orgType = this.selectedRow.orgType;
+            this.collegeListEnum.inPullDown = this.selectedRow.inPullDown;
             this.collegeListEnum.name = this.selectedRow.name;
             this.collegeListEnum.codes = this.selectedRow.codes;
             this.collegeListEnum.title = this.selectedRow.title;
@@ -180,7 +181,7 @@ export class CollegeListComponent implements OnInit {
             return alert('Please enter FAFSAID.');
         }
         this.requestData.orgName = this.collegeListEnum.name;
-        this.requestData.orgType = this.collegeListEnum.orgType;
+        this.requestData.inPullDown = this.collegeListEnum.inPullDown;
         this.requestData.name = this.collegeListEnum.name;
         this.requestData.codes = this.collegeListEnum.codes;
         this.requestData.title = this.collegeListEnum.title;
@@ -221,7 +222,7 @@ export class CollegeListComponent implements OnInit {
     deleteSelectedRow() {
         if (this.selectedRow) {
             this.requestData.orgName = this.selectedRow.name;
-            this.requestData.orgType = this.selectedRow.orgType;
+            this.requestData.inPullDown = this.selectedRow.inPullDown;
             this.requestData.name = this.selectedRow.name;
             this.requestData.codes = this.selectedRow.codes;
             this.requestData.title = this.selectedRow.title;
@@ -274,7 +275,7 @@ export class CollegeListComponent implements OnInit {
         if (this.selectedRow) {
             this.showLoader();
             this.requestData.orgName = this.collegeListEnum.name;
-            this.requestData.orgType = this.collegeListEnum.orgType;
+            this.requestData.inPullDown = this.collegeListEnum.inPullDown;
             this.requestData.name = this.collegeListEnum.name;
             this.requestData.codes = this.collegeListEnum.codes;
             this.requestData.title = this.collegeListEnum.title;
