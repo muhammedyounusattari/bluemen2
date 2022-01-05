@@ -98,12 +98,12 @@ export class ConfigSettingsComponent implements OnInit {
 
   setSelectedRowToUpdate() {
     this.isEdit = true;
-    if (this.dataSource.data[0]) {
+
       this.id = this.dataSource.data[0].id
-      this.configValue = this.dataSource.data[0].configValue;
-      this.configType = this.dataSource.data[0].configType;
-      this.description = this.dataSource.data[0].description;
-    }
+      this.configValue = this.selectedRow.configValue;
+      this.configType = this.selectedRow.configType;
+      this.description = this.selectedRow.description;
+
 
   }
 
