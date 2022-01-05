@@ -240,7 +240,7 @@ export class StaffMemberComponent {
            this.notes = this.selectedRow.staffNotes;
            this.picture = this.selectedRow.staffPicture;
            this.staffBolt = this.selectedRow.staffBolt;
-
+           this.staff = this.selectedRow.staff;
 
 
 
@@ -316,7 +316,8 @@ export class StaffMemberComponent {
               staffNotes:  this.notes,
               staffPicture:  this.picture,
               staffBolt: this.staffBolt,
-              staffPhoneNumber:this.staffPhoneNumber
+              staffPhoneNumber:this.staffPhoneNumber,
+              staff:this.staff
       };
     }
 
@@ -353,6 +354,6 @@ export class StaffMemberComponent {
         }
 
         resetFields() {
-        this.id = ''; this.staffName='';this.title='';this.staffActive='';this.staffTutor='';this.ssn='';this.staffCounselor='';this.staffTeacher='';this.staffLab='';this.codes='';this.dob='';this.spouse='';this.staffHireDate='';this.license='';this.terminationDate='';this.customField1='';this.customField2='';this.customField3='';this.customField4='';this.notes='';this.picture='';this.staffBolt='';
+        this.id = ''; this.staffName='';this.title='';this.staffActive='true';this.staffTutor='';this.ssn='';this.staffCounselor='';this.staffTeacher='';this.staffLab='';this.codes='';this.dob='';this.spouse='';this.staffHireDate='';this.license='';this.terminationDate='';this.customField1='';this.customField2='';this.customField3='';this.customField4='';this.notes='';this.picture='';this.staffBolt='';
         }
   }
