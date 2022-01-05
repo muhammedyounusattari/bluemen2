@@ -32,6 +32,7 @@ export class DefaultSetting {
     fiscalYear: any;
     id: number = 0;
     semester: string = '';
+    timeout: string = '';
 }
 export class ReportSetting {
     id: number = 0;

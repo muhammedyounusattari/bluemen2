@@ -75,6 +75,7 @@ export class SystemPreferencesComponent implements OnInit {
         this.systemPreferencesEnum.defaultSetting.currentYear = obj?.defaultSetting?.currentYear;
         this.systemPreferencesEnum.defaultSetting.fiscalYear = obj?.defaultSetting?.fiscalYear;
         this.systemPreferencesEnum.defaultSetting.semester = obj?.defaultSetting?.semester;
+        this.systemPreferencesEnum.defaultSetting.timeout = obj?.defaultSetting?.timeout;
         
         this.systemPreferencesEnum.reportSetting.id = obj?.reportSetting?.id;
         this.systemPreferencesEnum.reportSetting.reportTitle = obj?.reportSetting?.reportTitle;
@@ -109,6 +110,7 @@ export class SystemPreferencesComponent implements OnInit {
         this.defaultSetting.currentYear = obj?.defaultSetting?.currentYear;
         this.defaultSetting.fiscalYear = obj?.defaultSetting?.fiscalYear;
         this.defaultSetting.semester = obj?.defaultSetting?.semester;
+        this.defaultSetting.timeout = obj?.defaultSetting?.timeout;
         
         this.reportSetting.id = obj?.reportSetting?.id;
         this.reportSetting.reportTitle = obj?.reportSetting?.reportTitle;
@@ -143,6 +145,8 @@ export class SystemPreferencesComponent implements OnInit {
         this.systemPreferencesEnum.defaultSetting.currentYear = this.defaultSetting?.currentYear;
         this.systemPreferencesEnum.defaultSetting.fiscalYear = this.defaultSetting?.fiscalYear;
         this.systemPreferencesEnum.defaultSetting.semester = this.defaultSetting?.semester;
+        this.systemPreferencesEnum.defaultSetting.timeout = this.defaultSetting?.timeout;
+
         
         this.systemPreferencesEnum.reportSetting.id = this.reportSetting?.id;
         this.systemPreferencesEnum.reportSetting.reportTitle = this.reportSetting?.reportTitle;

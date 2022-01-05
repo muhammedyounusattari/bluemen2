@@ -417,6 +417,10 @@ footer.page-footer .footer-copyright {
     display: grid;
 }
 
+.border-right {
+  border-right: 1px solid #777777;
+}
+
 @-webkit-keyframes spin {
     0% {
         -webkit-transform: rotate(0deg);
