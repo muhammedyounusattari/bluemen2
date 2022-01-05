@@ -98,8 +98,48 @@ export class ServiceUrls {
     public static POST_TUTORS = environment.apiUrl + '/blumen-api/tutor/tutorList/v1';
     public static DELETE_TUTORS = environment.apiUrl + '/blumen-api/tutor/deleteTutorList/v1';
 
-    // SYSTEM PREFERENCES
+    // Get Student's
+    public static GET_STUDENTS_LIST = environment.apiUrl + '/blumen-api/student/getStudents/v1';
+
+    // Tutor Contacts API URL's
+    public static GET_TUTOR_CONTACTS = environment.apiUrl + '/blumen-api/staff/getStaffList/v1';
+    public static DELETE_TUTOR_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/deleteStudentDispTutorContReminderList/v1';
+    public static ADD_TUTOR_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/studentDispTutorContReminderList/v1';
+    public static UPDATE_TUTOR_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/updateStudentDispTutorContReminderList/v1';
+
+    // Teacher Contacts API URL's
+    public static GET_TEACHER_CONTACTS = environment.apiUrl + '/blumen-api/staff/getStaffList/v1';
+    // public static GET_TEACHER_CONTACTS_ADVANCE_FLTR = environment.apiUrl + '/blumen-api/admin/contact/getTutorContactsByAdvanceFilter/v1';
+    // public static GET_TEACHER_CONTACTS_MORE_ADV_FLTR = environment.apiUrl + '/blumen-api/admin/contact/getTutorContactsByMoreAdvanceFilter/v1';
+    // public static GET_TEACHER_CONTACTS_MORE_FLTR = environment.apiUrl + '/blumen-api/admin/admin/contact/getTutorContactsByMoreFilter/v1';
+    // public static GET_TEACHER_CONTACTS_MORE_NORMAL_FLTR = environment.apiUrl + '/blumen-api/admin/contact/getTutorContactsByNormalFilter/v1';
+    public static DELETE_TEACHER_CONTACTS = environment.apiUrl + '/blumen-api/admin/contact/deleteTutorContact/v1';
+    public static ADD_TEACHER_CONTACTS = environment.apiUrl + '/blumen-api/tutor/tutorList/v1';
+    public static UPDATE_TEACHER_CONTACTS = environment.apiUrl + '/blumen-api/tutor/deleteTutorList/v1';
+
+    // Staff Contacts API URL's
+    public static GET_STAFF_CONTACTS = environment.apiUrl + '/blumen-api/staff/getStaffList/v1';
+    // public static GET_STAFF_CONTACTS_ADVANCE_FLTR = environment.apiUrl + '/blumen-api/admin/contact/getTutorContactsByAdvanceFilter/v1';
+    // public static GET_STAFF_CONTACTS_MORE_ADV_FLTR = environment.apiUrl + '/blumen-api/admin/contact/getTutorContactsByMoreAdvanceFilter/v1';
+    // public static GET_STAFF_CONTACTS_MORE_FLTR = environment.apiUrl + '/blumen-api/admin/admin/contact/getTutorContactsByMoreFilter/v1';
+    // public static GET_STAFF_CONTACTS_MORE_NORMAL_FLTR = environment.apiUrl + '/blumen-api/admin/contact/getTutorContactsByNormalFilter/v1';
+    public static DELETE_STAFF_CONTACTS = environment.apiUrl + '/blumen-api/admin/contact/deleteTutorContact/v1';
+    public static ADD_STAFF_CONTACTS = environment.apiUrl + '/blumen-api/tutor/tutorList/v1';
+    public static UPDATE_STAFF_CONTACTS = environment.apiUrl + '/blumen-api/tutor/deleteTutorList/v1';
+
+    // Staff Contacts API URL's
+    public static GET_COUNSELOR_CONTACTS = environment.apiUrl + '/blumen-api/staff/getStaffList/v1';
+    // public static GET_COUNSELOR_CONTACTS_ADVANCE_FLTR = environment.apiUrl + '/blumen-api/admin/contact/getTutorContactsByAdvanceFilter/v1';
+    // public static GET_COUNSELOR_CONTACTS_MORE_ADV_FLTR = environment.apiUrl + '/blumen-api/admin/contact/getTutorContactsByMoreAdvanceFilter/v1';
+    // public static GET_COUNSELOR_CONTACTS_MORE_FLTR = environment.apiUrl + '/blumen-api/admin/admin/contact/getTutorContactsByMoreFilter/v1';
+    // public static GET_COUNSELOR_CONTACTS_MORE_NORMAL_FLTR = environment.apiUrl + '/blumen-api/admin/contact/getTutorContactsByNormalFilter/v1';
+    public static DELETE_COUNSELOR_CONTACTS = environment.apiUrl + '/blumen-api/admin/contact/deleteTutorContact/v1';
+    public static ADD_COUNSELOR_CONTACTS = environment.apiUrl + '/blumen-api/tutor/tutorList/v1';
+    public static UPDATE_COUNSELOR_CONTACTS = environment.apiUrl + '/blumen-api/tutor/deleteTutorList/v1';
+
+ // SYSTEM PREFERENCES
     public static POST_SYSTEM_PREFERENCES = environment.apiUrl + '/blumen-api/admin/postSystemPreferenceData/v1';
     public static GET_SYSTEM_PREFERENCES = environment.apiUrl + '/blumen-api/admin/getSystemPreferenceData/v1';
+
 
 }
