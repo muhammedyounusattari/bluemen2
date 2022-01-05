@@ -63,6 +63,7 @@ export class ConfigSettingsComponent implements OnInit {
       this.hideLoader();
 
       if (result) {
+        this.configSettingsList = result;
         this.dataSource = new MatTableDataSource(result);
         this.dataSource.paginator = this.paginator;
         this.selectedRowIndex = null;

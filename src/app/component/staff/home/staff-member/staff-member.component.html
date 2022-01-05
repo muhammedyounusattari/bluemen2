@@ -1,185 +1,155 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
-    <div class="row bg-white">
-        <div class="col-md-12">
-            <h3>Staff Data Filter</h3>
-        </div>
+  <!-- Full Screen Loader Start -->
+  <div id="loading"></div>
+  <!-- Full Screen Loader End -->
+
+  <div class="row bg-white">
+    <div class="col-md-12">
+      <h3>Staff Data Filter</h3>
     </div>
+  </div>
 
-    <div class="row ">
-        <div class="col-md-6 mt-3 mb-3 ">
-            <form class="example" action="/action_page.php">
-                <input type="text" placeholder="Search.." name="search2">
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        </div>
+
+  <div class="row ">
+    <div class="col-md-6 mt-3 mb-3 ">
+      <form class="example">
+        <input type="text" matInput (keyup)="applyFilter($event)" placeholder="Search.." />
+      </form>
     </div>
+  </div>
 
-    <div class="table-responsive" style="border:1px solid #1366A0;">
-        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-            <thead>
-                <tr style="background: #F5F6FA;">
-                    <th scope="col">Staff ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Active</th>
-                    <th scope="col">Counselor</th>
-                    <th scope="col">Tutor</th>
-                    <th scope="col">Teacher</th>
-                    <th scope="col">Lab</th>
-                    <th scope="col">Phone Number</th>
-                    <th scope="col">Hire Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngIf="!spinner">
-                    <tr *ngFor="let data of staffMembersList; let i = index" (click)="getSelectedRow(data, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">
-                        <th scope="row">{{data.id}}</th>
-                        <td scope="row">{{data.staffName}}</td>
-                        <td>{{data.staffTitle}}</td>
-                        <td>{{data.staffActive}}</td>
-                        <th>{{data.staffCounselor}}</th>
-                        <td>{{data.staffTutor ? 'YES' : 'NO'}}</td>
-                        <th scope="row">{{data.staffTeacher}}</th>
-                        <td>{{data.staffLab}}</td>
-                        <td>{{data.staffSSNO}}</td>
-                        <td>{{data.staffHireDate}}</td>
-                    </tr>
-                </ng-container>
+  <!-- Spinner Start-->
+  <div class="spinner-container" *ngIf="isLoading">
+    <mat-spinner id="spinner"></mat-spinner>
+  </div>
+  <!-- Spinner End-->
 
-                <div class="no-record">
-                    <div *ngIf="spinner" class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div *ngIf="!spinner && staffMembersList.length == 0">
-                        <span>No Data Found</span>
-                    </div>
-                </div>
-            </tbody>
-        </table>
+  <!-- Data Table Start-->
+  <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading">
+    <table mat-table [dataSource]="dataSource"  class="mat-elevation-z8" matSort>
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff Id </th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="staffName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffTitle}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="staffActive">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffActive?'Yes':'No'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="staffCounselor">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Counselor</th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffCounselor?'Yes':'No'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="staffTutor">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tutor</th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffTutor?'Yes':'No'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="staffTeacher">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Teacher</th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffTeacher?'Yes':'No'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="staffBolt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Bolt</th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffBolt?'Yes':'No'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="staff">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff</th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staff?'Yes':'No'}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="staffLab">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lab</th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffLab?'Yes':'No'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="staffPhoneNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffPhoneNumber}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="staffHireDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Hire Date</th>
+        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffHireDate}} </td>
+      </ng-container>
+
+      <ng-template [ngIf]="dataSource.data.length === 0">
+        <tr mat-footer-row *matFooterRowDef="['noRecord']"></tr>
+      </ng-template>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
+          [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
+      </tr>
+    </table>
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+  </div>
+
+
+  <div class="no-record">
+    <div *ngIf="spinner" class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
-
-    <div class="row">
-        <div class="col-md-12 mt-3">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination pagination-sm justify-content-right">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+    <div *ngIf="!spinner && staffMembersList.length == 0">
+      <span>No Data Found</span>
     </div>
-</div>
+  </div>
 
-<div class="row" style="margin-left: 0px!important; margin-right: 0px!important; margin-bottom: 50px;">
-    <form [formGroup]="staffMembersForm" class="col-md-12">
-        <div class="bg-white" style="padding: 20px;">
-            <div role="tabpanel" aria-labelledby="home-tab">
-                <div class="d-flex">
-                    <div class="col-md-12 ">
-                        <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>
-                    </div>
-                </div>
 
-                <div class="row " style="margin-left: 0px!important; margin-right: 0px!important;">
-                    <div class="col-md-6 flex">
-                        <div class="form-group">
-                            <label for="sel1">Hire Date From: </label>
-                            <input formControlName="hireDateFrom" type="date" class="form-control" id="usr">
-                        </div>&nbsp;&nbsp;&nbsp;
-                        <div class="form-group">
-                            <label for="sel1">To: </label>
-                            <input formControlName="hireDateTo" type="date" class="form-control" id="usr">
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
-                    <div class="col-md-4">
-                        <label class="radio-inline"> Active:
-                        <input formControlName="active" value="Yes" type="radio" checked> Yes </label>
-                        <label class="radio-inline">
-                        <input formControlName="active" value="No" type="radio"type="radio"> NO
-                    </label>
-                        <label class="radio-inline">
-                        <input formControlName="active" value="All" type="radio"> All
-                    </label>
-                    </div>
-                </div>
-                <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="sel1">Codes:</label>
-                            <select formControlName="codes" class="form-control" id="sel1">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                        </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="sel1">Zip Code:</label>
-                            <select formControlName="zipCode" class="form-control" id="sel1">
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                        </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
 
 <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page">Reset</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal" data-bs-target="#exampleModal">New</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Move')">Move</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Merge')">Merge</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="deleteStaffMembers()">Delete</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Print')">Print</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Submit')">Submit</a>
-                </li>
-            </ul>
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page">Reset</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal" data-bs-target="#exampleModal">New</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="getSelectedOption('Move')">Move</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="getSelectedOption('Merge')">Merge</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="deleteStaffMembers()">Delete</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="getSelectedOption('Print')">Print</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="getSelectedOption('Submit')">Submit</a>
+        </li>
+      </ul>
 
-        </div>
     </div>
+  </div>
 </nav>
 
 
@@ -204,37 +174,37 @@
               <div class="col-md-4">
                 <div class="form-group ">
                   <label for="usr">Name:</label>
-                  <input type="text" class="form-control" id="usr">
+                  <input type="text" class="form-control" [(ngModel)]="staffName" id="usr">
                 </div>
 
                 <div class="form-group mt-3">
                   <label for="usr">Title</label>
-                  <input type="text" class="form-control" id="usr">
+                  <input type="text" class="form-control" [(ngModel)]="title"   id="usr">
                 </div>
 
                 <div class="form-group mt-3">
                   <label for="usr">SS.No</label>
-                  <input type="text" class="form-control" id="usr">
+                  <input type="text" class="form-control" [(ngModel)]="ssn"  id="usr">
                 </div>
 
                 <div class="form-group mt-3">
                   <label for="usr">Codes</label>
-                  <input type="text" class="form-control" id="usr">
+                  <input type="text" class="form-control" [(ngModel)]="codes"  id="usr">
                 </div>
 
                 <div class="form-group mt-3">
                   <label for="usr">Spouse Name</label>
-                  <input type="text" class="form-control" id="usr">
+                  <input type="text" class="form-control" id="usr" [(ngModel)]="spouse" >
                 </div>
 
                 <div class="form-group mt-3">
                   <label for="usr">Driver License#</label>
-                  <input type="text" class="form-control" id="usr">
+                  <input type="text" class="form-control" id="usr" [(ngModel)]="license" >
                 </div>
 
                 <div class="form-group mt-3">
                   <label for="usr">Custom Field 1</label>
-                  <select class="form-control" id="sel1">
+                  <select class="form-control" id="sel1" [(ngModel)]="customField1">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -244,7 +214,7 @@
 
                 <div class="form-group mt-3">
                   <label for="usr">Custom Field 2</label>
-                  <select class="form-control" id="sel1">
+                  <select class="form-control" id="sel1" [(ngModel)]="customField2">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -254,7 +224,7 @@
 
                 <div class="form-group">
                   <label for="usr">Notes</label>
-                  <input type="text" class="form-control" id="usr">
+                  <input type="text" class="form-control" id="usr" [(ngModel)]="notes">
                 </div>
 
 
@@ -267,27 +237,27 @@
 
               <div class="col-md-4 mt-3"><div class="form-group">
                 <label for="sel1">Staff ID</label>
-                <input type="text" class="form-control" value="130" id="usr">
+                <input type="text" disabled class="form-control" value="130" id="usr" [(ngModel)]="id">
               </div>
                 <div class="row mt-3">
                   <div class="col-md-3" >
                     <label class="radio-inline">
-                      <input type="checkbox" name="optradio"> Active
+                      <input type="checkbox" name="optradio" [(ngModel)]="staffActive"> Active
                     </label>
                   </div>
                   <div class="col-md-3" >
                     <label class="radio-inline">
-                      <input type="checkbox" name="optradio"> Tutor
+                      <input type="checkbox" name="optradio" [(ngModel)]="staffTutor"> Tutor
                     </label>
                   </div>
                   <div class="col-md-3" >
                     <label class="radio-inline">
-                      <input type="checkbox" name="optradio"> Bot
+                      <input type="checkbox" name="optradio" [(ngModel)]="staffBolt"> Bolt
                     </label>
                   </div>
                   <div class="col-md-3" >
                     <label class="radio-inline">
-                      <input type="checkbox" name="optradio"> Staff
+                      <input type="checkbox" name="optradio" [(ngModel)]="staff"> Staff
                     </label>
                   </div>
 
@@ -297,44 +267,40 @@
 
                   <div class="col-md-4" >
                     <label class="radio-inline">
-                      <input type="checkbox" name="optradio"> Counselor
+                      <input type="checkbox" name="optradio" [(ngModel)]="staffCounselor"> Counselor
                     </label>
                   </div>
                   <div class="col-md-4" >
                     <label class="radio-inline">
-                      <input type="checkbox" name="optradio"> Teacher
+                      <input type="checkbox" name="optradio" [(ngModel)]="staffTeacher"> Teacher
                     </label>
                   </div>
                   <div class="col-md-4">
                     <label class="radio-inline">
-                      <input type="checkbox" name="optradio"> Lab
+                      <input type="checkbox" name="optradio" [(ngModel)]="staffLab"> Lab
                     </label>
                   </div>
                 </div>
                 <div class="form-group mt-3">
                   <label for="sel1">Date of Birth</label>
                   <div class="form-group">
-                    <input type=date id=start class="form-control" required>
+                    <input type=date  class="form-control" [(ngModel)]="dob" required>
                   </div></div>
                 <div class="form-group mt-3">
                   <label for="sel1">Hire Date </label>
                   <div class="form-group">
-                    <input type=date id=start class="form-control" required>
+                    <input type=date  class="form-control" [(ngModel)]="staffHireDate" required>
                   </div></div>
 
                 <div class="form-group mt-3">
                   <label for="usr">Termination Date</label>
-                  <select class="form-control" id="sel1">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                  </select>
+                  <input type=date  class="form-control" [(ngModel)]="terminationDate" required>
+
                 </div>
 
                 <div class="form-group mt-3">
                   <label for="usr">Custome field 3</label>
-                  <select class="form-control" id="sel1">
+                  <select class="form-control" id="sel1" [(ngModel)]="customField3">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -343,7 +309,7 @@
                 </div>
                 <div class="form-group mt-3">
                   <label for="usr">Custome field 4</label>
-                  <select class="form-control" id="sel1">
+                  <select class="form-control" id="sel1" [(ngModel)]="customField4">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -358,7 +324,7 @@
                 <div class="container">
                   <div class="col-md-12 text-center"><img src="images/photo.png"></div>
                   <div class="col-md-12 text-center">
-                    <input type="submit" value="Upload Files" class="btn btn-sm btn-primary text-center mt-3" />
+                    <input type="submit" value="Upload Files" class="btn btn-sm btn-primary text-center mt-3" [(ngModel)]="picture" />
 
                   </div>
                   <div class="col-md-4"></div>
@@ -379,7 +345,11 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+
+        <button type="button" class="btn btn-v .primary" *ngIf="!isEdit" (click)="addStaffMembers();modalRef.hide()">Save & Close</button>
+        <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();modalRef.hide()">Update &
+          Close</button>
+
       </div>
     </div>
   </div>
