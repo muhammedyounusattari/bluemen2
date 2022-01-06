@@ -83,7 +83,7 @@ export class ServiceGroupListComponent implements OnInit {
             this.router.navigate(['admin/services-list']);
         }
     }
-    
+
     applyFilter(filterValue: any) {
         this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
         if (this.dataSource.paginator) {

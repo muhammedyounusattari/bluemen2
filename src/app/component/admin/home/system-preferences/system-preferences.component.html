@@ -8,13 +8,13 @@
         <div class="col-md-12 mt-3 mb-3 ">
             <!-- Modal -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
+                <li class="nav-item" role="presentation" id="generalTab">
                     <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"
-                        aria-controls="home" aria-selected="true">General Setting</a>
+                        aria-controls="home" aria-selected="true" (click)="activeTab('generalTab')">General Setting</a>
                 </li>
-                <li class="nav-item" role="presentation">
+                <li class="nav-item" role="presentation" id="defaultTab">
                     <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
-                        aria-controls="profile" aria-selected="false">Default Setting</a>
+                        aria-controls="profile" aria-selected="false" (click)="activeTab('defaultTab')">Default Setting</a>
                 </li>
             </ul>
             <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
@@ -29,7 +29,8 @@
                                     <div class="card-body p-3">
                                         <div class="form-group ">
                                             <label for="usr">Fiscal Year</label>
-                                                <input [(ngModel)]="defaultSetting.fiscalYear" type="text" class="form-control" id="usr">
+                                            <input [(ngModel)]="defaultSetting.fiscalYear" type="text"
+                                                class="form-control" id="usr">
                                             <!-- <mat-form-field class="mat-control" appearance="fill">
                                                 <input matInput [matDatepicker]="picker1"
                                                     [formControl]="defaultSetting.fiscalYear">
@@ -41,7 +42,8 @@
 
                                         <div class="form-group mt-3 ">
                                             <label for="usr">Current Year</label>
-                                            <input [(ngModel)]="defaultSetting.currentYear" type="text" class="form-control" id="usr">
+                                            <input [(ngModel)]="defaultSetting.currentYear" type="text"
+                                                class="form-control" id="usr">
                                             <!-- <mat-form-field class="mat-control" appearance="fill">
                                                 <input matInput [matDatepicker]="picker2"
                                                     [formControl]="defaultSetting.currentYear">
@@ -75,7 +77,8 @@
 
                                         <div class="form-group ">
                                             <label for="usr">Time Out</label>
-                                            <input [(ngModel)]="defaultSetting.timeout" type="text" class="form-control" id="usr">
+                                            <input [(ngModel)]="defaultSetting.timeout" type="text" class="form-control"
+                                                id="usr">
                                         </div>
                                     </div>
                                 </div>
@@ -133,7 +136,8 @@
 
                                                 <div class="form-group mt-3">
                                                     <label for="usr">Reporting Period From</label>
-                                                    <input [(ngModel)]="annualPerformance.reportingPeriodFrom" type="date" class="form-control" id="usr">
+                                                    <input [(ngModel)]="annualPerformance.reportingPeriodFrom"
+                                                        type="date" class="form-control" id="usr">
                                                     <!-- <mat-form-field class="mat-control" appearance="fill">
                                                         <input matInput [matDatepicker]="picker3"
                                                             [formControl]="annualPerformance.reportingPeriodFrom">
@@ -145,7 +149,8 @@
 
                                                 <div class="form-group mt-3">
                                                     <label for="usr">Reporting Period To</label>
-                                                        <input [(ngModel)]="annualPerformance.reportingPeriodTo" type="date" class="form-control" id="usr">
+                                                    <input [(ngModel)]="annualPerformance.reportingPeriodTo" type="date"
+                                                        class="form-control" id="usr">
                                                     <!-- <mat-form-field class="mat-control" appearance="fill">
                                                         <input matInput [matDatepicker]="picker4"
                                                             [formControl]="annualPerformance.reportingPeriodTo">
@@ -165,10 +170,10 @@
                                                     <label for="usr">City</label>
                                                     <select class="form-control" id="sel1"
                                                         [(ngModel)]="annualPerformance.city">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
+                                                        <option>Pune</option>
+                                                        <option>Mumbai</option>
+                                                        <option>Hyederabad</option>
+                                                        <option>Delhi</option>
                                                     </select>
                                                 </div>
 
@@ -176,10 +181,10 @@
                                                     <label for="usr">State</label>
                                                     <select class="form-control" id="sel1"
                                                         [(ngModel)]="annualPerformance.state">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
+                                                        <option>Maharashtra</option>
+                                                        <option>AP</option>
+                                                        <option>MP</option>
+                                                        <option>UP</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -230,9 +235,9 @@
                                                 <div class="form-group ">
                                                     <label for="usr">Programme Type</label>
                                                     <select class="form-control" id="sel1"
-                                                        [(ngModel)]="annualPerformance.programType">
-                                                        <option>60</option>
-                                                        <option>2</option>
+                                                        [(ngModel)]="annualPerformance.programType" disabled>
+                                                        <option>SSS</option>
+                                                        <option>UB</option>
                                                         <option>3</option>
                                                         <option>4</option>
                                                     </select>
@@ -240,7 +245,8 @@
 
                                                 <div class="form-group mt-3">
                                                     <label for="usr">Expiration Date</label>
-                                                        <input [(ngModel)]="annualPerformance.expDate" type="date" class="form-control" id="usr">
+                                                    <input [(ngModel)]="annualPerformance.expDate" type="date"
+                                                        class="form-control" id="usr">
                                                     <!-- <mat-form-field class="mat-control" appearance="fill">
                                                         <input matInput [matDatepicker]="picker5"
                                                             [formControl]="annualPerformance.expDate">
@@ -304,8 +310,10 @@
                                                 <td>
                                                     <span style="font-weight:bold;">
                                                         <input id="ctl00_head_chkCopy" type="checkbox"
-                                                            name="ctl00$head$chkCopy" checked="checked"><label
-                                                            for="ctl00_head_chkCopy">Copy The Active, Served and
+                                                            name="ctl00$head$chkCopy"
+                                                            [(ngModel)]="defaultSettingTab.copyPreviousData"
+                                                            checked="checked"><label for="ctl00_head_chkCopy">Copy The
+                                                            Active, Served and
                                                             Reported Status from Previous year when possible.
                                                         </label></span>
                                                 </td>
@@ -342,6 +350,7 @@
                                                 </td>
                                                 <td>
                                                     <input id="ctl00_head_chkACTIVE" type="checkbox"
+                                                        [(ngModel)]="defaultSettingTab.studentActive"
                                                         name="ctl00$head$chkACTIVE" checked="checked"><label
                                                         for="ctl00_head_chkACTIVE"> Prompt to mark a student ACTIVE for
                                                         the fiscal year</label>
@@ -353,6 +362,7 @@
                                                 </td>
                                                 <td>
                                                     <input id="ctl00_head_chkSERVED" type="checkbox"
+                                                        [(ngModel)]="defaultSettingTab.studentServed"
                                                         name="ctl00$head$chkSERVED" checked="checked"><label
                                                         for="ctl00_head_chkSERVED"> Prompt to mark a student SERVED for
                                                         the fiscal year</label>
@@ -364,6 +374,7 @@
                                                 </td>
                                                 <td>
                                                     <input id="ctl00_head_chkREPORTED" type="checkbox"
+                                                        [(ngModel)]="defaultSettingTab.studentReported"
                                                         name="ctl00$head$chkREPORTED" checked="checked"><label
                                                         for="ctl00_head_chkREPORTED"> Prompt to mark a student REPORTED
                                                         for the fiscal year</label>
@@ -375,6 +386,7 @@
                                                 </td>
                                                 <td>
                                                     <input id="ctl00_head_ChkADD" type="checkbox"
+                                                        [(ngModel)]="defaultSettingTab.addStudentToFiscalYear"
                                                         name="ctl00$head$ChkADD" checked="checked"><label
                                                         for="ctl00_head_ChkADD"> Prompt to ADD a student to the fiscal
                                                         year</label>
@@ -386,6 +398,7 @@
                                                 </td>
                                                 <td>
                                                     <input id="ctl00_head_chkFIRSTDTSERVICE" type="checkbox"
+                                                        [(ngModel)]="defaultSettingTab.updateFirstDateOfService"
                                                         name="ctl00$head$chkFIRSTDTSERVICE" checked="checked"><label
                                                         for="ctl00_head_chkFIRSTDTSERVICE"> Update "First Date of
                                                         Service"</label>
@@ -397,6 +410,7 @@
                                                 </td>
                                                 <td>
                                                     <input id="ctl00_head_chkDATEOFLASRPROJECT" type="checkbox"
+                                                        [(ngModel)]="defaultSettingTab.updateLastDateOfService"
                                                         name="ctl00$head$chkDATEOFLASRPROJECT" checked="checked"><label
                                                         for="ctl00_head_chkDATEOFLASRPROJECT"> Update "Date of Last
                                                         Project Service" for the fiscal year</label>
@@ -436,12 +450,15 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="rcbInputCell rcbInputCellLeft"
-                                                                        style="width:100%;"><input
-                                                                            name="ctl00$head$cmbGpa$cbPulldown"
-                                                                            type="text"
-                                                                            class="rcbInput radPreventDecorate"
-                                                                            id="ctl00_head_cmbGpa_cbPulldown_Input"
-                                                                            value="4 point scale" autocomplete="off">
+                                                                        style="width:100%;">
+                                                                        <select class="form-control"
+                                                                            [(ngModel)]="defaultSettingTab.gpaScale"
+                                                                            id="gpaScale">
+                                                                            <option value= "1" selected>4 Point Scale | 1</option>
+                                                                            <option value= "2" selected>5 Point Scale | 2</option>
+                                                                            <option value= "3" selected>No Response/Unknown | 0</option>
+                                                                            <option value= "4" selected>Other | 3</option>
+                                                                        </select>
                                                                     </td>
                                                                     <td class="rcbArrowCell rcbArrowCellRight"><a
                                                                             id="ctl00_head_cmbGpa_cbPulldown_Arrow"
@@ -449,9 +466,8 @@
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
-                                                        </table><input id="ctl00_head_cmbGpa_cbPulldown_ClientState"
-                                                            name="ctl00_head_cmbGpa_cbPulldown_ClientState"
-                                                            type="hidden" autocomplete="off">
+                                                        </table>
+                                                        
                                                     </div>
 
 
@@ -472,12 +488,15 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="rcbInputCell rcbInputCellLeft"
-                                                                        style="width:100%;"><input
-                                                                            name="ctl00$head$cmbStateTest$cbPulldown"
-                                                                            type="text"
-                                                                            class="rcbInput radPreventDecorate"
-                                                                            id="ctl00_head_cmbStateTest_cbPulldown_Input"
-                                                                            value="" autocomplete="off"></td>
+                                                                        style="width:100%;">
+                                                                    
+                                                                        <select class="form-control"
+                                                                            [(ngModel)]="defaultSettingTab.stateTest"
+                                                                            id="gpaScale">
+                                                                            <option selected>   | 1</option>
+                                                                            <option selected> | 2</option>
+                                                                        </select>    
+                                                                    </td>
                                                                     <td class="rcbArrowCell rcbArrowCellRight"><a
                                                                             id="ctl00_head_cmbStateTest_cbPulldown_Arrow"
                                                                             style="overflow: hidden;display: block;position: relative;outline: none;">select</a>
@@ -504,6 +523,7 @@
                                                         class="riSingle RadInput RadInput_Default"
                                                         style="width:160px;"><input id="ctl00_head_rtbAgeCal"
                                                             name="ctl00$head$rtbAgeCal" size="20"
+                                                            [(ngModel)]="defaultSettingTab.ageCalculator"
                                                             class="riTextBox riEnabled" value="09/01" type="text"><input
                                                             id="ctl00_head_rtbAgeCal_ClientState"
                                                             name="ctl00_head_rtbAgeCal_ClientState" type="hidden"
@@ -520,6 +540,7 @@
                                                         class="riSingle RadInput RadInput_Default"
                                                         style="width:160px;"><input id="ctl00_head_rdtxtSiteLocation"
                                                             name="ctl00$head$rdtxtSiteLocation" size="20"
+                                                            [(ngModel)]="defaultSettingTab.siteLocation"
                                                             class="riTextBox riDisabled" disabled="disabled" value="Off"
                                                             type="text"><input
                                                             id="ctl00_head_rdtxtSiteLocation_ClientState"

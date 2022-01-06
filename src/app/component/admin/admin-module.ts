@@ -33,6 +33,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TeacherClassesComponent } from '../teacher/home/classes/teachers-classes.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     LabSettingsPreferencesComponent,
     TimeClockManagerComponent,
     RecallStudentsComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    TeacherClassesComponent
   ],
   imports: [
     AdminRoutingModule,

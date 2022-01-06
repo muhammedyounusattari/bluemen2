@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { AssignStudentsToTeacherClassesComponent } from '../teacher/home/assign-student-teacher-classes/assign-student-teacher-classes.component';
+import { TeacherClassesComponent } from '../teacher/home/classes/teachers-classes.component';
 import { TeacherComponent } from '../teacher/home/teachers/teacher.component';
 import { AssignStudentsToTutorClassesComponent } from '../tutor/home/assign-student-tutor-classes/assign-student-tutor-classes.component';
 import { TutorsComponent } from '../tutor/home/tutors/tutors.component';
@@ -92,6 +93,10 @@ const routes: Routes = [
   {
     path: 'admin/recall-students',
     component: RecallStudentsComponent
+  },
+  {
+    path: 'admin/teacher-classes',
+    component: TeacherClassesComponent
   }
 
 ];

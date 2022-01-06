@@ -1,0 +1,728 @@
+<div class="container-fluid mt-3" style="background:#EFF4F8;">
+    <!-- Full Screen Loader Start -->
+    <div id="loading"></div>
+    <!-- Full Screen Loader End -->
+
+    <!-- Header Start-->
+    <div class="row bg-white">
+        <div class="col-md-12">
+            <h3>Teacher Classes Data Entry</h3>
+        </div>
+    </div>
+    <!-- Header End-->
+
+    <!-- Search Box Start-->
+    <div class="row ">
+        <div class="col-md-6 mt-3 mb-3 ">
+            <form class="example">
+                <input type="text" class="border-right" matInput (keyup)="applyFilter($event)" placeholder="Search.." />
+            </form>
+        </div>
+    </div>
+    <!-- Search Box End-->
+
+    <!-- Spinner Start-->
+    <div class="spinner-container" *ngIf="isLoading">
+        <mat-spinner id="spinner"></mat-spinner>
+    </div>
+    <!-- Spinner End-->
+
+    <!-- Data Table Start-->
+    <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+            <ng-container matColumnDef="currentYear">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Year </th>
+                <td mat-cell *matCellDef="let classObj; let row = dataIndex;"> {{classObj.currentYear}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="semester">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Semester</th>
+                <td mat-cell *matCellDef="let classObj; let row = dataIndex;"> {{classObj.semester}} </td>
+            </ng-container>
+            <ng-container matColumnDef="teacherName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Teacher </th>
+                <td mat-cell *matCellDef="let classObj; let row = dataIndex;"> {{classObj.teacherName }} </td>
+            </ng-container>
+            <ng-container matColumnDef="subject">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Subject </th>
+                <td mat-cell *matCellDef="let classObj; let row = dataIndex;">
+                    {{classObj.subject}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="period">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Period </th>
+                <td mat-cell *matCellDef="let classObj; let row = dataIndex;">
+                    {{classObj.period}} </td>
+            </ng-container>
+            <ng-container matColumnDef="meetTime">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Meet Time </th>
+                <td mat-cell *matCellDef="let classObj; let row = dataIndex;">
+                    {{classObj.meetTime}} </td>
+            </ng-container>
+            <ng-container matColumnDef="days">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Days </th>
+                <td mat-cell *matCellDef="let classObj; let row = dataIndex;">
+                    {{classObj.days}} </td>
+            </ng-container>
+            <ng-container matColumnDef="room">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Room </th>
+                <td mat-cell *matCellDef="let classObj; let row = dataIndex;">
+                    {{classObj.room}} </td>
+            </ng-container>
+            <ng-container matColumnDef="maxLimit">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Max Limit </th>
+                <td mat-cell *matCellDef="let classObj; let row = dataIndex;">
+                    {{classObj.maxLimit}} </td>
+            </ng-container>
+            <ng-container matColumnDef="assigned">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Assigned </th>
+                <td mat-cell *matCellDef="let classObj; let row = dataIndex;">
+                    {{classObj.assigned}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
+                [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
+            </tr>
+        </table>
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+    </div>
+    <!-- Data Table End-->
+
+    <!-- Search Filter Start-->
+    <div class="row" style="margin-left: 0px!important; margin-right: 0px!important; margin-bottom: 50px;">
+        <div class="col-md-12">
+
+            <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="d-flex">
+                        <div class="col-md-12 ">
+                            <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>
+                        </div>
+                    </div>
+
+                    <div class="row " style="margin-left: 0px!important; margin-right: 0px!important;">
+                        <div class="col-md-4 flex">
+                            <div class="form-group">
+                                <label for="sel1">Semester Current Year
+                                </label>
+                                <input type="number" class="form-control" id="usr">
+                            </div>
+                        </div>
+                        <div class="col-md-4 flex">
+                            <div class="form-group">
+                                <label for="sel1">Class Period
+                                </label>
+                                <input type="number" class="form-control" id="usr">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="sel1">Semester </label>
+                                <select class="form-control" id="sel1">
+                                    <option>Fall</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="sel1">Subject</label>
+                                <select class="form-control" id="sel1">
+                                    <option>All</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="sel1">Tutor</label>
+                                <select class="form-control" id="sel1">
+                                    <option>All</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Search Filter End-->
+
+</div>
+
+
+<!-- Buttons Start-->
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" (click)="resetFields()">New</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="javascript:void(0);" (click)="setValuesToUpdate()">Edit</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Move</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Merge</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#">Print</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Buttons End-->
+
+
+<!-- Modal Start-->
+<ng-template #activityServiceGroupListPopup>
+    <!-- Modal -->
+    <div class="modal-header popHeaderBG">
+        <span class="modal-title popHeader" id="exampleModalLabel">Customize Activity/Service Group</span>
+        <button type="button" class="btn-close" (click)="selectedRowIndex = null; modalRef.hide()"
+            aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="usr">Look for</label>
+                                <form class="example" action="/action_page.php">
+                                    <input type="text" placeholder="Search.." name="search2">
+                                    <button type="submit"><i class="fa fa-search"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-3 ">
+                                <label for="usr">This Class by</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Current Year</label>
+                                <input type=number id=start placeholder="2017" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Class Period</label>
+                                <input type=number id=start placeholder="0" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Semester</label>
+                                <span class="form-group">
+                                    <select name="sel3" class="form-control" id="sel4">
+                                        <option>Fall</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Meeting time
+                                </label>
+                                <span class="form-group">
+                                    <select name="sel3" class="form-control" id="sel4">
+                                        <option>0</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Duration</label>
+                                <input type=number id=start placeholder="0" class="form-control" required>
+                                <h1 style="font-size: 12px"> in minutes</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label for="usr">Teacher name</label>
+                                <span class="form-group">
+                                    <select name="sel3" class="form-control" id="sel4">
+                                        <option>select</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label for="usr">Days
+                                </label>
+                                <span class="form-group">
+                                    <select name="sel3" class="form-control" id="sel4">
+                                        <option>select</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label for="usr">Max Limit
+                                </label>
+                                <input type=number id=start placeholder="0" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Subject</label>
+                                <span class="form-group">
+                                    <select name="sel3" class="form-control" id="sel4">
+                                        <option>select</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Room
+                                </label>
+                                <select name="sel3" class="form-control" id="sel4">
+                                    <option>select</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Student Assigned
+                                </label>
+                                <input type=number id=start placeholder="0" class="form-control" required>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-2 ">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Assign
+                                Student</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit Grade &
+                                Notes</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Remove From
+                                Class</button>
+
+                        </div>
+                        <div class="col-md-4">&nbsp;</div>
+
+                    </div>
+
+                    <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2">
+                        <div class="table-responsive" style="border:1px solid #1366A0;">
+                            <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
+                                <thead>
+                                    <tr style="background: #F5F6FA;">
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Grade</th>
+                                        <th scope="col">Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Mark</td>
+                                        <td>Mark</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td colspan="2">Jacob</td>
+                                        <td colspan="2">Mark</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td colspan="2">Larry </td>
+                                        <td colspan="2">Mark</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">4</th>
+                                        <td colspan="2">Larry </td>
+                                        <td colspan="2">Mark</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2">
+                        <label for="form23"> Notes:
+                        </label>
+                        <i class="fa fa-edit"></i>
+                        <textarea id="form23" class="md-textarea form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="closePopup"
+            (click)="isEdit = false; selectedRowIndex = null; modalRef.hide()">Close</button>
+        <button type="button" class="btn btn-v .primary" *ngIf="!isEdit"
+            (click)="modalRef.hide()">Save &
+            Close</button>
+        <button type="button" class="btn btn-primary" *ngIf="isEdit"
+            (click)="modalRef.hide()">Update &
+            Close</button>
+    </div>
+</ng-template>
+<!-- Modal End-->
+
+<!-- Modal -->
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Teacher Classes Data Entry</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="tab-content bg-white" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="usr">Look for</label>
+                                        <form class="example" action="/action_page.php">
+                                            <input type="text" placeholder="Search.." name="search2">
+                                            <button type="submit"><i class="fa fa-search"></i></button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mt-3 ">
+                                        <label for="usr">This Class by</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mt-4">
+                                        <label for="usr">Current Year</label>
+                                        <input type=number id=start placeholder="2017" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mt-4">
+                                        <label for="usr">Class Period</label>
+                                        <input type=number id=start placeholder="0" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mt-4">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mt-4">
+                                        <label for="usr">Semester</label>
+                                        <span class="form-group">
+                                            <select name="sel3" class="form-control" id="sel4">
+                                                <option>Fall</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mt-4">
+                                        <label for="usr">Meeting time
+                                        </label>
+                                        <span class="form-group">
+                                            <select name="sel3" class="form-control" id="sel4">
+                                                <option>0</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mt-4">
+                                        <label for="usr">Duration</label>
+                                        <input type=number id=start placeholder="0" class="form-control" required>
+                                        <h1 style="font-size: 12px"> in minutes</h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label for="usr">Teacher name</label>
+                                        <span class="form-group">
+                                            <select name="sel3" class="form-control" id="sel4">
+                                                <option>select</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label for="usr">Days
+                                        </label>
+                                        <span class="form-group">
+                                            <select name="sel3" class="form-control" id="sel4">
+                                                <option>select</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label for="usr">Max Limit
+                                        </label>
+                                        <input type=number id=start placeholder="0" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mt-4">
+                                        <label for="usr">Subject</label>
+                                        <span class="form-group">
+                                            <select name="sel3" class="form-control" id="sel4">
+                                                <option>select</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mt-4">
+                                        <label for="usr">Room
+                                        </label>
+                                        <select name="sel3" class="form-control" id="sel4">
+                                            <option>select</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mt-4">
+                                        <label for="usr">Student Assigned
+                                        </label>
+                                        <input type=number id=start placeholder="0" class="form-control" required>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-md-2 ">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Assign
+                                        Student</button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit Grade &
+                                        Notes</button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Remove From
+                                        Class</button>
+
+                                </div>
+                                <div class="col-md-4">&nbsp;</div>
+
+                            </div>
+
+                            <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2">
+                                <div class="table-responsive" style="border:1px solid #1366A0;">
+                                    <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
+                                        <thead>
+                                            <tr style="background: #F5F6FA;">
+                                                <th scope="col">First Name</th>
+                                                <th scope="col">Last Name</th>
+                                                <th scope="col">Grade</th>
+                                                <th scope="col">Notes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>Mark</td>
+                                                <td>Mark</td>
+                                                <td>Mark</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td colspan="2">Jacob</td>
+                                                <td colspan="2">Mark</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">3</th>
+                                                <td colspan="2">Larry </td>
+                                                <td colspan="2">Mark</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">4</th>
+                                                <td colspan="2">Larry </td>
+                                                <td colspan="2">Mark</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2">
+                                <label for="form23"> Notes:
+                                </label>
+                                <i class="fa fa-edit"></i>
+                                <textarea id="form23" class="md-textarea form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
+                            <div class="container-fluid">
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01"
+                                    aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" aria-current="page" href="#">Top</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active" aria-current="page" href="#">Next</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active" aria-current="page" href="#">Previous</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active" aria-current="page" href="#">Bottom</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active" aria-current="page" href="#">Delete</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="#">Print</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="#">Save</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="#">Save & Close</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="#">Cancel</a>
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

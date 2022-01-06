@@ -113,6 +113,8 @@ export class NavigationComponent {
       this.router.navigate(['counselor/counselors'])
     } else if (componentName === 'recall-students') {
       this.router.navigate(['admin/recall-students'])
+    } else if (componentName === 'teacher-classes') {
+      this.router.navigate(['admin/teacher-classes'])
     }
   }
 }
