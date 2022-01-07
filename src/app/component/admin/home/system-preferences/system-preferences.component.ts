@@ -60,7 +60,7 @@ export class SystemPreferencesComponent implements OnInit {
             }
         }
         if (element !== null) {
-            element.style.borderBottom = "thick solid #0000FF";
+            element.style.borderBottom = "3px solid #1366A0";
         }
     }
 

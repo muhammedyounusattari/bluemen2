@@ -29,7 +29,7 @@ a {
 .navbar-dark .navbar-nav .nav-link {
     color: #000!important;
     border-right: 1px solid #BCBCBC!important;
-    padding: 0px 58px 0px 58px;
+    padding: 0px 56px 0px 56px;
     height: 50px;
     font-weight: bold;
     line-height: 50px;
@@ -263,12 +263,14 @@ th.mat-header-cell {
 .table tr.clicked {
     background-color: #000!important;
 }
-
+.tabletd{border: 0px!important;}
+.tabletd td {border: 0px!important;}
 td {
     border: 1px #DDD solid;
     padding: 5px;
     cursor: pointer;
 }
+
 
 .selected {
     background-color: brown;

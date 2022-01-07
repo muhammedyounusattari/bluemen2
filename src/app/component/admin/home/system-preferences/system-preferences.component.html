@@ -8,7 +8,7 @@
         <div class="col-md-12 mt-3 mb-3 ">
             <!-- Modal -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation" id="generalTab">
+                <li class="nav-item" role="presentation" id="generalTab" >
                     <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"
                         aria-controls="home" aria-selected="true" (click)="activeTab('generalTab')">General Setting</a>
                 </li>
@@ -287,21 +287,12 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <table style="width: 100%;height: 100%;" class="table-responsive form-control ">
+                    <table style="width: 100%; height: 100%;" class="table-responsive form-control tabletd ">
                         <tbody>
+                                                       
                             <tr>
                                 <td>
-                                    &nbsp;
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    &nbsp;
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <table style="width: 100%;height: 100%;">
+                                    <table  class="tabletd">
                                         <tbody>
                                             <tr>
                                                 <td style="width: 265px">
@@ -312,26 +303,19 @@
                                                         <input id="ctl00_head_chkCopy" type="checkbox"
                                                             name="ctl00$head$chkCopy"
                                                             [(ngModel)]="defaultSettingTab.copyPreviousData"
-                                                            checked="checked"><label for="ctl00_head_chkCopy">Copy The
-                                                            Active, Served and
-                                                            Reported Status from Previous year when possible.
+                                                            checked="checked"><label for="ctl00_head_chkCopy">
                                                         </label></span>
                                                 </td>
+                                                <td> Copy The
+                                                    Active, Served and
+                                                    Reported Status from Previous year when possible.</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    &nbsp;
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    &nbsp;
-                                </td>
-                            </tr>
+                            
+                           
                             <tr>
                                 <td>
                                     <table style="width: 100%; height: 100%;">
@@ -352,7 +336,7 @@
                                                     <input id="ctl00_head_chkACTIVE" type="checkbox"
                                                         [(ngModel)]="defaultSettingTab.studentActive"
                                                         name="ctl00$head$chkACTIVE" checked="checked"><label
-                                                        for="ctl00_head_chkACTIVE"> Prompt to mark a student ACTIVE for
+                                                        for="ctl00_head_chkACTIVE"> &nbsp; Prompt to mark a student ACTIVE for
                                                         the fiscal year</label>
                                                 </td>
                                             </tr>
@@ -364,7 +348,7 @@
                                                     <input id="ctl00_head_chkSERVED" type="checkbox"
                                                         [(ngModel)]="defaultSettingTab.studentServed"
                                                         name="ctl00$head$chkSERVED" checked="checked"><label
-                                                        for="ctl00_head_chkSERVED"> Prompt to mark a student SERVED for
+                                                        for="ctl00_head_chkSERVED">  &nbsp;Prompt to mark a student SERVED for
                                                         the fiscal year</label>
                                                 </td>
                                             </tr>
@@ -376,7 +360,7 @@
                                                     <input id="ctl00_head_chkREPORTED" type="checkbox"
                                                         [(ngModel)]="defaultSettingTab.studentReported"
                                                         name="ctl00$head$chkREPORTED" checked="checked"><label
-                                                        for="ctl00_head_chkREPORTED"> Prompt to mark a student REPORTED
+                                                        for="ctl00_head_chkREPORTED"> &nbsp; Prompt to mark a student REPORTED
                                                         for the fiscal year</label>
                                                 </td>
                                             </tr>
@@ -388,7 +372,7 @@
                                                     <input id="ctl00_head_ChkADD" type="checkbox"
                                                         [(ngModel)]="defaultSettingTab.addStudentToFiscalYear"
                                                         name="ctl00$head$ChkADD" checked="checked"><label
-                                                        for="ctl00_head_ChkADD"> Prompt to ADD a student to the fiscal
+                                                        for="ctl00_head_ChkADD">  &nbsp; Prompt to ADD a student to the fiscal
                                                         year</label>
                                                 </td>
                                             </tr>
@@ -400,7 +384,7 @@
                                                     <input id="ctl00_head_chkFIRSTDTSERVICE" type="checkbox"
                                                         [(ngModel)]="defaultSettingTab.updateFirstDateOfService"
                                                         name="ctl00$head$chkFIRSTDTSERVICE" checked="checked"><label
-                                                        for="ctl00_head_chkFIRSTDTSERVICE"> Update "First Date of
+                                                        for="ctl00_head_chkFIRSTDTSERVICE">  &nbsp; Update "First Date of
                                                         Service"</label>
                                                 </td>
                                             </tr>
@@ -412,7 +396,7 @@
                                                     <input id="ctl00_head_chkDATEOFLASRPROJECT" type="checkbox"
                                                         [(ngModel)]="defaultSettingTab.updateLastDateOfService"
                                                         name="ctl00$head$chkDATEOFLASRPROJECT" checked="checked"><label
-                                                        for="ctl00_head_chkDATEOFLASRPROJECT"> Update "Date of Last
+                                                        for="ctl00_head_chkDATEOFLASRPROJECT">  &nbsp; Update "Date of Last
                                                         Project Service" for the fiscal year</label>
                                                 </td>
                                             </tr>
@@ -420,31 +404,19 @@
                                     </table>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    &nbsp;
-                                </td>
-                            </tr>
+                            
                             <tr>
                                 <td>
                                     <table align="center" style="width: 60%">
                                         <tbody>
-                                            <tr>
-                                                <td style="width: 94px">
-                                                    &nbsp;
-                                                </td>
-                                                <td>
-                                                    &nbsp;
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="width: 94px">
+                                                                                        <tr>
+                                                <td style="width: 150px">
                                                     GPA Scale:
                                                 </td>
                                                 <td>
                                                     <div id="ctl00_head_cmbGpa_cbPulldown"
                                                         class="RadComboBox RadComboBox_Office2007"
-                                                        style="width:150px;white-space:normal;">
+                                                        style="white-space:normal;">
                                                         <table summary="combobox"
                                                             style="border-width:0;border-collapse:collapse;width:100%">
                                                             <tbody>
@@ -470,9 +442,6 @@
                                                         
                                                     </div>
 
-
-
-
                                                 </td>
                                             </tr>
                                             <tr>
@@ -482,7 +451,7 @@
                                                 <td>
                                                     <div id="ctl00_head_cmbStateTest_cbPulldown"
                                                         class="RadComboBox RadComboBox_Office2007"
-                                                        style="width:150px;white-space:normal;">
+                                                        style="white-space:normal;">
                                                         <table summary="combobox"
                                                             style="border-width:0;border-collapse:collapse;width:100%">
                                                             <tbody>
@@ -521,8 +490,8 @@
                                                 <td>
                                                     <span id="ctl00_head_rtbAgeCal_wrapper"
                                                         class="riSingle RadInput RadInput_Default"
-                                                        style="width:160px;"><input id="ctl00_head_rtbAgeCal"
-                                                            name="ctl00$head$rtbAgeCal" size="20"
+                                                        ><input id="ctl00_head_rtbAgeCal"
+                                                            name="ctl00$head$rtbAgeCal" size="34"
                                                             [(ngModel)]="defaultSettingTab.ageCalculator"
                                                             class="riTextBox riEnabled" value="09/01" type="text"><input
                                                             id="ctl00_head_rtbAgeCal_ClientState"
@@ -538,8 +507,8 @@
                                                 <td>
                                                     <span id="ctl00_head_rdtxtSiteLocation_wrapper"
                                                         class="riSingle RadInput RadInput_Default"
-                                                        style="width:160px;"><input id="ctl00_head_rdtxtSiteLocation"
-                                                            name="ctl00$head$rdtxtSiteLocation" size="20"
+                                                        ><input id="ctl00_head_rdtxtSiteLocation"
+                                                            name="ctl00$head$rdtxtSiteLocation" size="34"
                                                             [(ngModel)]="defaultSettingTab.siteLocation"
                                                             class="riTextBox riDisabled" disabled="disabled" value="Off"
                                                             type="text"><input
@@ -554,21 +523,7 @@
                                     </table>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    &nbsp;
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    &nbsp;
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    &nbsp;
-                                </td>
-                            </tr>
+               
                         </tbody>
                     </table>
                 </div>
