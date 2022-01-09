@@ -517,3 +517,9 @@ footer.page-footer .footer-copyright {
 .mat-cell:last-of-type, .mat-header-cell:last-of-type {
     padding-right: 0rem !important;
 }
+
+.button-center {
+    display: block !important;
+    text-align: center;
+
+}

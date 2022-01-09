@@ -126,7 +126,7 @@ export class CounselorsComponent {
     this.counselorsService
       .filterCounselors(this.requestPayload())
       .subscribe((result: any) => {
-        if (result && result.length > 0) {
+        if (result ) {
           this.getCounselors();
         }
       });

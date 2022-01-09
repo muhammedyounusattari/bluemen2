@@ -126,7 +126,7 @@ export class RecallStudentsComponent implements OnInit {
     this.recallStudentsService
       .filterRecallStaffMembers(this.requestPayload())
       .subscribe((result: any) => {
-        if (result && result.length > 0) {
+        if (result ) {
           result.forEach((data: any) => {
             data.orgType = data.orgType.toString();
           });

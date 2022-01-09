@@ -201,7 +201,7 @@ export class StaffMemberComponent {
       this.staffMembersService
         .filterStaffMembers(this.requestPayload())
         .subscribe((result: any) => {
-          if (result && result.length > 0) {
+          if (result ) {
             this.getStaffMembers();
           }
         });

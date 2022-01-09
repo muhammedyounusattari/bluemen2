@@ -8,37 +8,37 @@
     <div class="row ">
         <div class="col-md-6 mt-3 mb-3 ">
             <form class="example">
-                <input type="text" placeholder="Search.." (keyup)="applyFilter($event)">
-                <button type="submit"><i class="fa fa-search"></i></button>
+                <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event, dataSource)">
+                <i class="fa fa-search search"></i>
             </form>
         </div>
     </div>
     <div class="mat-elevation-z8 data-table-height" style="border:1px solid #1366A0;">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"
             [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
-            <ng-container matColumnDef="staffFirstName">
+            <ng-container matColumnDef="firstName">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
-                <td mat-cell *matCellDef="let entry"> {{entry.staffFirstName}} </td>
+                <td mat-cell *matCellDef="let entry"> {{entry?.student?.firstName}} </td>
             </ng-container>
-            <ng-container matColumnDef="staffLastName">
+            <ng-container matColumnDef="lastName">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
-                <td mat-cell *matCellDef="let entry"> {{entry.staffLastName}} </td>
+                <td mat-cell *matCellDef="let entry"> {{entry?.student?.lastName}} </td>
             </ng-container>
-            <ng-container matColumnDef="staffPhoneNumber">
+            <ng-container matColumnDef="phoneNumber">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number </th>
-                <td mat-cell *matCellDef="let entry"> {{entry.staffPhoneNumber}} </td>
+                <td mat-cell *matCellDef="let entry"> {{entry?.student?.phoneNumber}} </td>
             </ng-container>
             <ng-container matColumnDef="staffContactDate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact Date </th>
                 <td mat-cell *matCellDef="let entry"> {{entry.staffContactDate}} </td>
             </ng-container>
-            <ng-container matColumnDef="staffActive">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tutor </th>
-                <td mat-cell *matCellDef="let entry"> {{entry.staffActive ? 'Yes' : 'No'}} </td>
+            <ng-container matColumnDef="staffContactStaff">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Staff </th>
+                <td mat-cell *matCellDef="let entry"> {{entry.staffContactStaff}} </td>
             </ng-container>
-            <ng-container matColumnDef="staffContactTime">
+            <ng-container matColumnDef="staffTotalTime">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact Time </th>
-                <td mat-cell *matCellDef="let entry"> {{entry.staffContactTime}} </td>
+                <td mat-cell *matCellDef="let entry"> {{entry.staffTotalTime}} </td>
             </ng-container>
             <ng-container matColumnDef="staffRecontactDate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Re-Contact Date </th>
@@ -46,7 +46,7 @@
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
             <tr mat-row *matRowDef="let row; columns: columnsToDisplay;let i = index;" (click)="getSelectedRow(row, i)"
-                [ngClass]="{'selected-row' : this.selectedRow == i}"></tr>
+                [ngClass]="{'selected-row' : (staffContactsList.length > 0) && (selectedRow == i)}"></tr>
         </table>
         <div *ngIf="spinner" class="spinner-container bg-colr-wht py-4">
             <mat-progress-spinner class="center" [diameter]="50" color="default" mode="indeterminate">
@@ -59,7 +59,7 @@
         </div>
         <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
     </div>
-    <div class="row">
+    <div class="row" [ngStyle]="{'display': 'none'}">
         <div class="col-md-12 mt-3">
             <nav aria-label="Page navigation example">
                 <ul class="pagination pagination-sm justify-content-right">
@@ -78,7 +78,7 @@
     </div>
 </div>
 
-<div class="row" style="margin-left: 0px!important; margin-right: 0px!important; margin-bottom: 50px;">
+<div class="row" style="display: none !important; margin-left: 0px!important; margin-right: 0px!important; margin-bottom: 50px;">
     <div class="col-md-12">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -101,45 +101,11 @@
                         <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>
                     </div>
                 </div>
-
-                <div class="row " style="margin-left: 0px!important; margin-right: 0px!important;">
-                    <div class="col-md-4">
-                        <label class="radio-inline"> Logged:
-                            <input type="radio" required name="optradio" checked> Yes </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="optradio"> NO
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="optradio"> All
-                        </label>
-                    </div>
-                    <div class="col-md-8 flex">
-                        <div class="form-group">
-                            <label for="sel1">Attendance Date From: </label>
-                            <input type="text" class="form-control" id="usr">
-                        </div>&nbsp;&nbsp;&nbsp;
-                        <div class="form-group">
-                            <label for="sel1">To: </label>
-                            <input type="text" class="form-control" id="usr">
-                        </div>
-                    </div>
-                </div>
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="sel1">Fiscal Year: </label>
-                            <input type="text" class="form-control" id="usr">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="sel1">Amount:</label>
-                            <select class="form-control" id="sel1">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                            </select>
+                            <label for="usr">Fiscal year</label>
+                            <input type="number" [value]="'2017'" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -157,12 +123,12 @@
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
                         <label class="radio-inline"> Active:
-                            <input type="radio" name="optradio" checked> Yes </label>
+                            <input class="ml-2" type="radio" value="Yes"> Yes </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> NO
+                            <input class="ml-2" type="radio" value="No"> No
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> All
+                            <input class="ml-2" type="radio" value="All"> All
                         </label>
                     </div>
                     <div class="col-md-4">
@@ -190,13 +156,13 @@
                 </div>
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
-                        <label class="radio-inline"> Active:
-                            <input type="radio" name="optradio" checked> Yes </label>
+                        <label class="radio-inline"> Served:
+                            <input class="ml-2" type="radio" value="Yes"> Yes </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> NO
+                            <input class="ml-2" type="radio" value="No"> No
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> All
+                            <input class="ml-2" type="radio" value="All"> All
                         </label>
                     </div>
                     <div class="col-md-4">
@@ -224,13 +190,13 @@
                 </div>
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
-                        <label class="radio-inline"> Active:
-                            <input type="radio" name="optradio" checked> Yes </label>
+                        <label class="radio-inline"> Reported:
+                            <input class="ml-2" type="radio" value="Yes"> Yes </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> NO
+                            <input class="ml-2" type="radio" value="No"> No
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> All
+                            <input class="ml-2" type="radio" value="All"> All
                         </label>
                     </div>
                     <div class="col-md-4">
@@ -294,7 +260,6 @@
                             </select>
                         </div>
                     </div>
-
                 </div>
                 <div class="row">
                     <div class="col-md-4">
@@ -323,7 +288,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="sel1">Tutor:</label>
+                            <label for="sel1">Staff:</label>
                             <select class="form-control" id="sel1">
                                 <option>1</option>
                                 <option>2</option>
@@ -420,14 +385,14 @@
         <span class="modal-title popHeader" id="exampleModalLabel">Select Students</span>
         <button type="button" class="btn-close" (click)="modalRef.hide()"></button>
     </div>
-    <div class="modal-body">
+    <form [formGroup]="staffContactsModalForm" class="modal-body">
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="row ">
                     <div class="col-md-6 mt-3 mb-3 ">
                         <form class="example">
-                            <input type="text" placeholder="Search.." (keyup)="applyFilter($event)">
-                            <button type="submit"><i class="fa fa-search"></i></button>
+                            <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event, modalDataSource)">
+                            <i class="fa fa-search search"></i>
                         </form>
                     </div>
                 </div>
@@ -481,7 +446,7 @@
                         <tr mat-header-row *matHeaderRowDef="modalColumnsToDisplay"></tr>
                         <tr mat-row *matRowDef="let row; columns: modalColumnsToDisplay;let i = index;"
                             (click)="getSelectedModalRow(row, i)"
-                            [ngClass]="{'selected-row' : this.selectedModalRow == i}"></tr>
+                            [ngClass]="{'selected-row' : (studentsList.length > 0) && (selectedModalRow == i)}"></tr>
                     </table>
                     <div *ngIf="spinner" class="spinner-container bg-colr-wht py-4">
                         <mat-progress-spinner class="center" [diameter]="50" color="default" mode="indeterminate">
@@ -503,36 +468,31 @@
                     <div class="col-sm-12 flex">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="sel1">Fiscal Year:</label>
-                                <select class="form-control" id="sel1">
-                                    <option>2021</option>
-                                    <option>2021</option>
-                                    <option>2021</option>
-                                    <option>2021</option>
-                                </select>
+                                <label for="usr">Fiscal year</label>
+                                <input formControlName="fiscalYear" type="number" [value]="'2017'" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label> Served </label>
                             <div class="form-group mt-2">
                                 <label class="radio-inline">
-                                    <input class="ml-2" type="radio" name="optradio" value="Yes"> Yes </label>
-                                <label class="radio-inline">
-                                    <input class="ml-2" type="radio" name="optradio" value="No"> No
+                                    <input formControlName="served" class="ml-2" type="radio" value="Yes" selected> Yes
                                 </label>
                                 <label class="radio-inline">
-                                    <input class="ml-2" type="radio" name="optradio" value="All"> All
+                                    <input formControlName="served" class="ml-2" type="radio" value="No"> No
+                                </label>
+                                <label class="radio-inline">
+                                    <input formControlName="served" class="ml-2" type="radio" value="All"> All
                                 </label>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="sel1">Site Location:</label>
-                                <select class="form-control" id="sel1">
-                                    <option>All</option>
-                                    <option>All</option>
-                                    <option>All</option>
-                                    <option>All</option>
+                                <select formControlName="siteLocation" class="form-control" id="sel1">
+                                    <option value="All">All</option>
+                                    <option value="Not Entered">Not Entered</option>
+                                    <option value="Undefined">Undefined</option>
                                 </select>
                             </div>
                         </div>
@@ -542,22 +502,22 @@
                     <div class="col-sm-12 flex">
                         <div class="col-md-4">
                             <label class="radio-inline"> Active:
-                                <input class="ml-2" type="radio" name="optradio" value="Yes"> Yes </label>
+                                <input formControlName="active" class="ml-2" type="radio" value="Yes"> Yes </label>
                             <label class="radio-inline">
-                                <input class="ml-2" type="radio" name="optradio" value="No"> No
+                                <input formControlName="active" class="ml-2" type="radio" value="No"> No
                             </label>
                             <label class="radio-inline">
-                                <input class="ml-2" type="radio" name="optradio" value="All"> All
+                                <input formControlName="active" class="ml-2" type="radio" value="All"> All
                             </label>
                         </div>
                         <div class="col-md-4">
                             <label class="radio-inline"> Reported:
-                                <input class="ml-2" type="radio" name="optradio" value="Yes"> Yes </label>
+                                <input formControlName="reported" class="ml-2" type="radio" value="Yes"> Yes </label>
                             <label class="radio-inline">
-                                <input class="ml-2" type="radio" name="optradio" value="No"> No
+                                <input formControlName="reported" class="ml-2" type="radio" value="No"> No
                             </label>
                             <label class="radio-inline">
-                                <input class="ml-2" type="radio" name="optradio" value="All"> All
+                                <input formControlName="reported" class="ml-2" type="radio" value="All"> All
                             </label>
                         </div>
                     </div>
@@ -588,7 +548,7 @@
             </div>
         </nav>
 
-    </div>
+    </form>
 </ng-template>
 
 
@@ -601,7 +561,7 @@
     </div>
     <div class="modal-body">
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-            <form [formGroup]="staffContactsModalForm" class="tab-pane fade show active" id="home" role="tabpanel"
+            <form [formGroup]="staffContactsEditModalForm" class="tab-pane fade show active" id="home" role="tabpanel"
                 aria-labelledby="home-tab">
                 <div class="container">
                     <div class="row">
@@ -614,8 +574,7 @@
                         <div class="col-md-2">
                             <div class="form-group mt-4">
                                 <label for="usr">Fiscal year</label>
-                                <input formControlName="fiscalYear" type="number" min="50" id=start class="form-control"
-                                    required>
+                                <input formControlName="fiscalYear" type="number" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -635,10 +594,10 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group mt-4">
-                                <label for="usr">Contact Tutor:</label>
+                                <label for="usr">Contact Staff:</label>
                                 <span class="form-group">
                                     <select formControlName="tutor" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
+                                        <option selected value="">Please select</option>
                                         <option value="James">James</option>
                                         <option value="Adam">Adam</option>
                                         <option value="Allen">Allen</option>
@@ -653,7 +612,7 @@
                                 <label for="usr">Component</label>
                                 <span class="form-group">
                                     <select formControlName="component" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
+                                        <option selected value="">Please select</option>
                                         <option value="Academic">Academic</option>
                                         <option value="Summer">Summer</option>
                                         <option value="Both">Both</option>
@@ -668,7 +627,7 @@
                                 <label for="usr">APR Subject:</label>
                                 <span class="form-group">
                                     <select formControlName="aprSubject" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
+                                        <option selected value="">Please select</option>
                                         <option value="English Instruction">English Instruction</option>
                                         <option value="Foreign Language">Foreign Language</option>
                                         <option value="Mathematics">Mathematics</option>
@@ -684,7 +643,7 @@
                                 <label for="usr">Contact Type:</label>
                                 <span class="form-group">
                                     <select formControlName="contactType" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
+                                        <option selected value="">Please select</option>
                                         <option value="E-mail">E-mail</option>
                                         <option value="Group">Group</option>
                                         <option value="Mail">Mail</option>
@@ -699,7 +658,7 @@
                                 </label>
                                 <span class="form-group">
                                     <select formControlName="subject" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
+                                        <option selected value="">Please select</option>
                                         <option value="Algebra">Algebra</option>
                                         <option value="Geography">Geography</option>
                                         <option value="Mathematics">Mathematics</option>
@@ -714,7 +673,7 @@
                                 </label>
                                 <span class="form-group">
                                     <select formControlName="instructions" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
+                                        <option selected value="">Please select</option>
                                         <option value="Not enrolled">Not enrolled</option>
                                         <option value="Composition">Composition</option>
                                         <option value="Literature">Literature</option>
@@ -731,7 +690,7 @@
                                 <span class="form-group">
                                     <select formControlName="activityService" name="sel3" class="form-control"
                                         id="sel4">
-                                        <option selected>select</option>
+                                        <option selected value="">Please select</option>
                                         <option value="Academic Tutoring">Academic Tutoring</option>
                                         <option value="ACT Registration">ACT Registration</option>
                                         <option value="ACT Preparation">ACT Preparation</option>
@@ -744,57 +703,63 @@
                             <div class="form-group mt-4">
                                 <label for="usr">Total Time:
                                 </label>
-                                <input formControlName="totalTime" type="time" id=start class="form-control" required>
+                                <div [ngStyle]="{'display': 'flex'}">
+                                    <input [ngStyle]="{'width': '65%'}" formControlName="totalTime" type="number"
+                                         class="form-control" required>
+                                    <label [ngStyle]="{'margin-left': '1rem', 'margin-top': '0.5rem'}"> (in
+                                        minutes)</label>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-2 ">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Add</button>
+                            <button type="button" class="btn btn-secondary"
+                                (click)="openActivityServiceModal('Add')">Add </button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit</button>
+                            <button type="button" class="btn btn-secondary" (click)="openActivityServiceModal('Edit')">Edit</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Remove</button>
+                            <button type="button" class="btn btn-secondary" (click)="removeServiceActivity()">Remove</button>
                         </div>
                         <div class="col-md-4">&nbsp;</div>
                     </div>
                     <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2">
-                        <div class="table-responsive" style="border:1px solid #1366A0;">
-                            <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-                                <thead>
-                                    <tr style="background: #F5F6FA;">
-                                        <th scope="col">Activity /Service Rendered</th>
-                                        <th scope="col">Activity Time</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td colspan="2">Larry </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">4</th>
-                                        <td colspan="2">Larry </td>
-                                    </tr>
-                                </tbody>
+                        <div class="mat-elevation-z8 data-table-height"
+                            style="border:1px solid #1366A0;overflow-y: auto;">
+                            <table mat-table [dataSource]="serviceDataSource" class="mat-elevation-z8"
+                                [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
+                                <ng-container matColumnDef="activity">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Activity / Service Rendered
+                                    </th>
+                                    <td mat-cell *matCellDef="let entry"> {{entry.activity}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="totalTime">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Activity Time </th>
+                                    <td mat-cell *matCellDef="let entry"> {{entry.totalTime}} </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="serviceColumnsToDisplay"></tr>
+                                <tr mat-row *matRowDef="let row; columns: serviceColumnsToDisplay; let i = index;"
+                                    (click)="getSelectedEditModalRow(row, i)" [ngClass]="{'selected-row':
+                                    (activityServiceData?.length > 0) && (selectedEditModalRow == i)}"></tr>
                             </table>
+                            <div *ngIf="spinner" class="spinner-container bg-colr-wht py-4">
+                                <mat-progress-spinner class="center" [diameter]="50" color="default" mode="indeterminate">
+                                </mat-progress-spinner>
+                            </div>
+                            <div *ngIf="!spinner && activityServiceData?.length == 0" class="bg-colr-wht py-4">
+                                <div class="center">
+                                    <h3>No record to display</h3>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2">
                         <label for="form23"> Notes:
                         </label>
                         <i class="fa fa-edit"></i>
-                        <textarea id="form23" class="md-textarea form-control" rows="3"></textarea>
+                        <textarea formControlName="notes" class="md-textarea form-control" rows="3"></textarea>
                     </div>
                 </div>
                 <nav class="navbar navbar-expand-lg navbar-light "
@@ -814,10 +779,10 @@
                                     <a class="nav-link ">Print</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link " (click)="addStaffContacts()">Save</a>
+                                    <a class="nav-link " (click)="handleMethodToCall()">Save</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link " (click)="addStaffContacts();editModalRef.hide()">Save &
+                                    <a class="nav-link " (click)="handleMethodToCall();editModalRef.hide()">Save &
                                         Close</a>
                                 </li>
                                 <li class="nav-item">
@@ -827,6 +792,52 @@
                         </div>
                     </div>
                 </nav>
+            </form>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #activityServicePopup>
+    <div class="modal-header popHeaderBG">
+        <span class="modal-title popHeader" id="exampleModalLabel">Enter the Time in Minutes for this Activity/Service</span>
+        <button type="button" class="btn-close" (click)="activityServiceModalRef.hide()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="tab-content bg-white" id="myTabContent">
+            <form [formGroup]="activityServiceForm" class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Activity</label>
+                                <span class="form-group">
+                                    <select formControlName="activity" name="sel3" class="form-control"
+                                        id="sel4">
+                                        <option selected value="">Please select</option>
+                                        <option value="Academic Tutoring">Academic Tutoring</option>
+                                        <option value="ACT Registration">ACT Registration</option>
+                                        <option value="ACT Preparation">ACT Preparation</option>
+                                        <option value="Career Planning">Career Planning</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Time in Minutes</label>
+                                <input formControlName="time" type="number" value="2" id="start" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 mt-3 mb-3">
+                            <button type="button" (click)="addServiceActivity();activityServiceModalRef.hide()" class="btn btn-primary active float-left">Save</button>
+                        </div>
+                        <div class="col-md-3 mt-3 mb-3">
+                            <button type="button" (click)="activityServiceForm.reset();activityServiceModalRef.hide()" class="btn btn-primary active float-left">Cancel</button>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

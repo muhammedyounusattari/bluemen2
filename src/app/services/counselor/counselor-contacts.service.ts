@@ -19,9 +19,9 @@ export class CounselorContactsService {
   }
 
   /**
-   * @method getTStudentsList
+   * @method getStudentsList
    */
-   public getTStudentsList(): Observable<any> {
+   public getStudentsList(): Observable<any> {
     return this.dataService.callGetService(ServiceUrls.GET_STUDENTS_LIST);
   }
 

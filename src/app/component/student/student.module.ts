@@ -25,6 +25,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StaffContactsComponent } from './contacts/staff-contacts/staff-contacts.component';
 import { CounselorContactsComponent } from './contacts/counselor-contacts/counselor-contacts.component';
+import { LabContactsComponent } from './contacts/lab-contacts/lab-contacts.component';
 
 @NgModule({
     declarations: [
@@ -41,7 +42,8 @@ import { CounselorContactsComponent } from './contacts/counselor-contacts/counse
         TutorContactsComponent,
         TeacherContactsComponent,
         StaffContactsComponent,
-        CounselorContactsComponent
+        CounselorContactsComponent,
+        LabContactsComponent
     ],
     imports: [
         StudentRoutingModule,

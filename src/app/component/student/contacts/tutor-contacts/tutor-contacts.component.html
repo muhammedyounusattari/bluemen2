@@ -7,33 +7,33 @@
     <div class="row ">
         <div class="col-md-6 mt-3 mb-3 ">
             <form class="example">
-                <input type="text" placeholder="Search.." (keyup)="applyFilter($event)">
-                <button type="submit"><i class="fa fa-search"></i></button>
+                <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event, dataSource)">
+                <i class="fa fa-search search"></i>
             </form>
         </div>
     </div>
     <div class="mat-elevation-z8 data-table-height" style="border:1px solid #1366A0;">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"
             [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
-            <ng-container matColumnDef="staffFirstName">
+            <ng-container matColumnDef="firstName">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
-                <td mat-cell *matCellDef="let entry"> {{entry.staffFirstName}} </td>
+                <td mat-cell *matCellDef="let entry"> {{entry?.student?.firstName | titlecase}} </td>
             </ng-container>
-            <ng-container matColumnDef="staffLastName">
+            <ng-container matColumnDef="lastName">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
-                <td mat-cell *matCellDef="let entry"> {{entry.staffLastName}} </td>
+                <td mat-cell *matCellDef="let entry"> {{entry?.student?.lastName | titlecase}} </td>
             </ng-container>
-            <ng-container matColumnDef="staffPhoneNumber">
+            <ng-container matColumnDef="phoneNumber">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number </th>
-                <td mat-cell *matCellDef="let entry"> {{entry.staffPhoneNumber}} </td>
+                <td mat-cell *matCellDef="let entry"> {{entry?.student?.phoneNumber}} </td>
             </ng-container>
             <ng-container matColumnDef="staffContactDate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact Date </th>
                 <td mat-cell *matCellDef="let entry"> {{entry.staffContactDate}} </td>
             </ng-container>
-            <ng-container matColumnDef="staffTutor">
+            <ng-container matColumnDef="staffContactTutor">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Tutor </th>
-                <td mat-cell *matCellDef="let entry"> {{entry.staffTutor ? 'Yes' : 'No'}} </td>
+                <td mat-cell *matCellDef="let entry"> {{entry.staffContactTutor | titlecase}} </td>
             </ng-container>
             <ng-container matColumnDef="staffContactTime">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact Time </th>
@@ -45,7 +45,7 @@
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
             <tr mat-row *matRowDef="let row; columns: columnsToDisplay;let i = index;" (click)="getSelectedRow(row, i)"
-                [ngClass]="{'selected-row' : this.selectedRow == i}"></tr>
+                [ngClass]="{'selected-row' : (tutorContactsList.length > 0) && (selectedRow == i)}"></tr>
         </table>
         <div *ngIf="spinner" class="spinner-container bg-colr-wht py-4">
             <mat-progress-spinner class="center" [diameter]="50" color="default" mode="indeterminate">
@@ -58,7 +58,7 @@
         </div>
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
     </div>
-    <div class="row">
+    <div class="row" [ngStyle]="{'display': 'none'}">
         <div class="col-md-12 mt-3">
             <nav aria-label="Page navigation example">
                 <ul class="pagination pagination-sm justify-content-right">
@@ -76,7 +76,8 @@
         </div>
     </div>
 </div>
-<div class="row" style="margin-left: 0px!important; margin-right: 0px!important; margin-bottom: 50px;">
+<div class="row"
+    style="display: none !important; margin-left: 0px!important; margin-right: 0px!important; margin-bottom: 50px;">
     <div class="col-md-12">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -102,8 +103,8 @@
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="sel1">Fiscal Year: </label>
-                            <input type="date" class="form-control" id="usr">
+                            <label for="usr">Fiscal year</label>
+                            <input type="number" [value]="'2017'" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -121,12 +122,12 @@
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
                         <label class="radio-inline"> Active:
-                            <input class="ml-2" type="radio" name="optradio" value="Yes"> Yes </label>
+                            <input class="ml-2" type="radio" value="Yes"> Yes </label>
                         <label class="radio-inline">
-                            <input class="ml-2" type="radio" name="optradio" value="No"> No
+                            <input class="ml-2" type="radio" value="No"> No
                         </label>
                         <label class="radio-inline">
-                            <input class="ml-2" type="radio" name="optradio" value="All"> All
+                            <input class="ml-2" type="radio" value="All"> All
                         </label>
                     </div>
                     <div class="col-md-4">
@@ -155,12 +156,12 @@
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
                         <label class="radio-inline"> Served:
-                            <input class="ml-2" type="radio" name="optradio" value="Yes"> Yes </label>
+                            <input class="ml-2" type="radio" value="Yes"> Yes </label>
                         <label class="radio-inline">
-                            <input class="ml-2" type="radio" name="optradio" value="No"> No
+                            <input class="ml-2" type="radio" value="No"> No
                         </label>
                         <label class="radio-inline">
-                            <input class="ml-2" type="radio" name="optradio" value="All"> All
+                            <input class="ml-2" type="radio" value="All"> All
                         </label>
                     </div>
                     <div class="col-md-4">
@@ -189,12 +190,12 @@
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
                         <label class="radio-inline"> Reported:
-                            <input class="ml-2" type="radio" name="optradio" value="Yes"> Yes </label>
+                            <input class="ml-2" type="radio" value="Yes"> Yes </label>
                         <label class="radio-inline">
-                            <input class="ml-2" type="radio" name="optradio" value="No"> No
+                            <input class="ml-2" type="radio" value="No"> No
                         </label>
                         <label class="radio-inline">
-                            <input class="ml-2" type="radio" name="optradio" value="All"> All
+                            <input class="ml-2" type="radio" value="All"> All
                         </label>
                     </div>
                     <div class="col-md-4">
@@ -378,18 +379,19 @@
 
 
 <ng-template #tutorStudentPopup>
-    <div class="modal-header popHeaderBG" >
+    <div class="modal-header popHeaderBG">
         <span class="modal-title popHeader" id="exampleModalLabel">Select Students</span>
         <button type="button" class="btn-close" (click)="modalRef.hide()"></button>
     </div>
-    <div class="modal-body">
+    <form [formGroup]="tutorContactsModalForm" class="modal-body">
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="row ">
                     <div class="col-md-6 mt-3 mb-3 ">
                         <form class="example">
-                            <input type="text" placeholder="Search.." (keyup)="applyFilter($event)">
-                            <button type="submit"><i class="fa fa-search"></i></button>
+                            <input class="search-input" type="text" placeholder="Search.."
+                                (keyup)="applyFilter($event, modalDataSource)">
+                            <i class="fa fa-search search"></i>
                         </form>
                     </div>
                 </div>
@@ -402,11 +404,11 @@
                         </ng-container>
                         <ng-container matColumnDef="firstName">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
-                            <td mat-cell *matCellDef="let entry"> {{entry.firstName}} </td>
+                            <td mat-cell *matCellDef="let entry"> {{entry.firstName | titlecase}} </td>
                         </ng-container>
                         <ng-container matColumnDef="lastName">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
-                            <td mat-cell *matCellDef="let entry"> {{entry.lastName}} </td>
+                            <td mat-cell *matCellDef="let entry"> {{entry.lastName | titlecase}} </td>
                         </ng-container>
                         <ng-container matColumnDef="phoneNumber">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number </th>
@@ -418,31 +420,32 @@
                         </ng-container>
                         <ng-container matColumnDef="active">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Active </th>
-                            <td mat-cell *matCellDef="let entry"> {{entry.active}} </td>
+                            <td mat-cell *matCellDef="let entry"> {{entry.active | titlecase}} </td>
                         </ng-container>
                         <ng-container matColumnDef="served">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Served </th>
-                            <td mat-cell *matCellDef="let entry"> {{entry.served}} </td>
+                            <td mat-cell *matCellDef="let entry"> {{entry.served | titlecase}} </td>
                         </ng-container>
                         <ng-container matColumnDef="reported">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Reported </th>
-                            <td mat-cell *matCellDef="let entry"> {{entry.reported}} </td>
+                            <td mat-cell *matCellDef="let entry"> {{entry.reported | titlecase}} </td>
                         </ng-container>
                         <ng-container matColumnDef="counselor">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Counselor </th>
-                            <td mat-cell *matCellDef="let entry"> {{entry?.graduatedInformation?.counselor}} </td>
+                            <td mat-cell *matCellDef="let entry"> {{entry?.graduatedInformation?.counselor | titlecase}} </td>
                         </ng-container>
                         <ng-container matColumnDef="school">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> School </th>
-                            <td mat-cell *matCellDef="let entry"> {{entry.school}} </td>
+                            <td mat-cell *matCellDef="let entry"> {{entry.school | titlecase}} </td>
                         </ng-container>
                         <ng-container matColumnDef="standing">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Standing </th>
-                            <td mat-cell *matCellDef="let entry"> {{entry.standing}} </td>
+                            <td mat-cell *matCellDef="let entry"> {{entry.standing | titlecase}} </td>
                         </ng-container>
                         <tr mat-header-row *matHeaderRowDef="modalColumnsToDisplay"></tr>
                         <tr mat-row *matRowDef="let row; columns: modalColumnsToDisplay;let i = index;"
-                            (click)="getSelectedModalRow(row, i)" [ngClass]="{'selected-row' : this.selectedModalRow == i}"></tr>
+                            (click)="getSelectedModalRow(row, i)"
+                            [ngClass]="{'selected-row' : (studentsList.length > 0) && (selectedModalRow == i)}"></tr>
                     </table>
                     <div *ngIf="spinner" class="spinner-container bg-colr-wht py-4">
                         <mat-progress-spinner class="center" [diameter]="50" color="default" mode="indeterminate">
@@ -464,36 +467,32 @@
                     <div class="col-sm-12 flex">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="sel1">Fiscal Year:</label>
-                                <select class="form-control" id="sel1">
-                                    <option>2021</option>
-                                    <option>2021</option>
-                                    <option>2021</option>
-                                    <option>2021</option>
-                                </select>
+                                <label for="usr">Fiscal year</label>
+                                <input formControlName="fiscalYear" type="number" [value]="'2017'" class="form-control"
+                                    required>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label> Served </label>
                             <div class="form-group mt-2">
                                 <label class="radio-inline">
-                                    <input class="ml-2" type="radio" name="optradio" value="Yes"> Yes </label>
-                                <label class="radio-inline">
-                                    <input class="ml-2" type="radio" name="optradio" value="No"> No
+                                    <input formControlName="served" class="ml-2" type="radio" value="Yes" selected> Yes
                                 </label>
                                 <label class="radio-inline">
-                                    <input class="ml-2" type="radio" name="optradio" value="All"> All
+                                    <input formControlName="served" class="ml-2" type="radio" value="No"> No
+                                </label>
+                                <label class="radio-inline">
+                                    <input formControlName="served" class="ml-2" type="radio" value="All"> All
                                 </label>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="sel1">Site Location:</label>
-                                <select class="form-control" multiple="multiple" id="sel1">
-                                    <option>All</option>
-                                    <option>All</option>
-                                    <option>All</option>
-                                    <option>All</option>
+                                <select formControlName="siteLocation" class="form-control" id="sel1">
+                                    <option value="All">All</option>
+                                    <option value="Not Entered">Not Entered</option>
+                                    <option value="Undefined">Undefined</option>
                                 </select>
                             </div>
                         </div>
@@ -503,22 +502,22 @@
                     <div class="col-sm-12 flex">
                         <div class="col-md-4">
                             <label class="radio-inline"> Active:
-                                <input class="ml-2" type="radio" name="optradio" value="Yes"> Yes </label>
+                                <input formControlName="active" class="ml-2" type="radio" value="Yes"> Yes </label>
                             <label class="radio-inline">
-                                <input class="ml-2" type="radio" name="optradio" value="No"> No
+                                <input formControlName="active" class="ml-2" type="radio" value="No"> No
                             </label>
                             <label class="radio-inline">
-                                <input class="ml-2" type="radio" name="optradio" value="All"> All
+                                <input formControlName="active" class="ml-2" type="radio" value="All"> All
                             </label>
                         </div>
                         <div class="col-md-4">
                             <label class="radio-inline"> Reported:
-                                <input class="ml-2" type="radio" name="optradio" value="Yes"> Yes </label>
+                                <input formControlName="reported" class="ml-2" type="radio" value="Yes"> Yes </label>
                             <label class="radio-inline">
-                                <input class="ml-2" type="radio" name="optradio" value="No"> No
+                                <input formControlName="reported" class="ml-2" type="radio" value="No"> No
                             </label>
                             <label class="radio-inline">
-                                <input class="ml-2" type="radio" name="optradio" value="All"> All
+                                <input formControlName="reported" class="ml-2" type="radio" value="All"> All
                             </label>
                         </div>
                     </div>
@@ -528,8 +527,9 @@
 
         <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5; position:relative;">
             <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo"
-                    aria-controls="navbarTogglerDemo" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarTogglerDemo" aria-controls="navbarTogglerDemo" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo">
@@ -548,7 +548,7 @@
             </div>
         </nav>
 
-    </div>
+    </form>
 </ng-template>
 
 
@@ -561,7 +561,8 @@
     </div>
     <div class="modal-body">
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-            <form [formGroup]="tutorContactsModalForm" class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <form [formGroup]="tutorContactsEditModalForm" class="tab-pane fade show active" id="home" role="tabpanel"
+                aria-labelledby="home-tab">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-4">
@@ -573,18 +574,20 @@
                         <div class="col-md-2">
                             <div class="form-group mt-4">
                                 <label for="usr">Fiscal year</label>
-                                <input formControlName="fiscalYear" type="number" min="50" id=start class="form-control" required>
+                                <input formControlName="fiscalYear" type="number" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group mt-4">
                                 <label for="usr">Re-Contact Date:</label>
-                                <input formControlName="recontactDate" type="date" id=start class="form-control" required>
+                                <input formControlName="recontactDate" type="date" id=start class="form-control"
+                                    required>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group pt-3 mt-5">
-                                <input formControlName="isReContacted" type="checkbox" style="float: left" required> &nbsp; Re-Contacted
+                                <input formControlName="isReContacted" type="checkbox" style="float: left" required>
+                                &nbsp; Re-Contacted
                             </div>
                         </div>
                     </div>
@@ -594,12 +597,13 @@
                                 <label for="usr">Contact Tutor:</label>
                                 <span class="form-group">
                                     <select formControlName="tutor" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
-                                        <option value="James">James</option>
+                                        <option selected value="">Please select</option>
+                                        <option *ngFor="let tutor of tutorsList" [value]="tutor">{{tutor}}</option>
+                                        <!-- <option value="James">James</option>
                                         <option value="Adam">Adam</option>
                                         <option value="Allen">Allen</option>
                                         <option value="Avery">Avery</option>
-                                        <option value="Barber">Barber</option>
+                                        <option value="Barber">Barber</option> -->
                                     </select>
                                 </span>
                             </div>
@@ -609,7 +613,7 @@
                                 <label for="usr">Component</label>
                                 <span class="form-group">
                                     <select formControlName="component" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
+                                        <option selected value="">Please select</option>
                                         <option value="Academic">Academic</option>
                                         <option value="Summer">Summer</option>
                                         <option value="Both">Both</option>
@@ -624,7 +628,7 @@
                                 <label for="usr">APR Subject:</label>
                                 <span class="form-group">
                                     <select formControlName="aprSubject" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
+                                        <option selected value="">Please select</option>
                                         <option value="English Instruction">English Instruction</option>
                                         <option value="Foreign Language">Foreign Language</option>
                                         <option value="Mathematics">Mathematics</option>
@@ -640,7 +644,7 @@
                                 <label for="usr">Contact Type:</label>
                                 <span class="form-group">
                                     <select formControlName="contactType" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
+                                        <option selected value="">Please select</option>
                                         <option value="E-mail">E-mail</option>
                                         <option value="Group">Group</option>
                                         <option value="Mail">Mail</option>
@@ -655,7 +659,7 @@
                                 </label>
                                 <span class="form-group">
                                     <select formControlName="subject" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
+                                        <option selected value="">Please select</option>
                                         <option value="Algebra">Algebra</option>
                                         <option value="Geography">Geography</option>
                                         <option value="Mathematics">Mathematics</option>
@@ -670,7 +674,7 @@
                                 </label>
                                 <span class="form-group">
                                     <select formControlName="instructions" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
+                                        <option selected value="">Please select</option>
                                         <option value="Not enrolled">Not enrolled</option>
                                         <option value="Composition">Composition</option>
                                         <option value="Literature">Literature</option>
@@ -685,8 +689,9 @@
                             <div class="form-group mt-4">
                                 <label for="usr">Activity/Service:</label>
                                 <span class="form-group">
-                                    <select formControlName="activityService" name="sel3" class="form-control" id="sel4">
-                                        <option selected>select</option>
+                                    <select formControlName="activityService" name="sel3" class="form-control"
+                                        id="sel4">
+                                        <option selected value="">Please select</option>
                                         <option value="Academic Tutoring">Academic Tutoring</option>
                                         <option value="ACT Registration">ACT Registration</option>
                                         <option value="ACT Preparation">ACT Preparation</option>
@@ -699,79 +704,90 @@
                             <div class="form-group mt-4">
                                 <label for="usr">Total Time:
                                 </label>
-                                <input formControlName="totalTime" type="time" id=start class="form-control" required>
+                                <div [ngStyle]="{'display': 'flex'}">
+                                    <input [ngStyle]="{'width': '65%'}" formControlName="totalTime" type="number"
+                                        class="form-control" required>
+                                    <label [ngStyle]="{'margin-left': '1rem', 'margin-top': '0.5rem'}"> (in
+                                        minutes)</label>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-2 ">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Add</button>
+                            <button type="button" class="btn btn-secondary"
+                                (click)="openActivityServiceModal('Add')">Add </button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit</button>
+                            <button type="button" class="btn btn-secondary"
+                                (click)="openActivityServiceModal('Edit')">Edit</button>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Remove</button>
+                            <button type="button" class="btn btn-secondary"
+                                (click)="removeServiceActivity()">Remove</button>
                         </div>
                         <div class="col-md-4">&nbsp;</div>
                     </div>
                     <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2">
-                        <div class="table-responsive" style="border:1px solid #1366A0;">
-                            <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-                                <thead>
-                                    <tr style="background: #F5F6FA;">
-                                        <th scope="col">Activity /Service Rendered</th>
-                                        <th scope="col">Activity Time</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td colspan="2">Larry </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">4</th>
-                                        <td colspan="2">Larry </td>
-                                    </tr>
-                                </tbody>
+                        <div class="mat-elevation-z8 data-table-height"
+                            style="border:1px solid #1366A0;overflow-y: auto;">
+                            <table mat-table [dataSource]="serviceDataSource" class="mat-elevation-z8"
+                                [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
+                                <ng-container matColumnDef="activity">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Activity / Service Rendered
+                                    </th>
+                                    <td mat-cell *matCellDef="let entry"> {{entry.activity | titlecase}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="totalTime">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Activity Time </th>
+                                    <td mat-cell *matCellDef="let entry"> {{entry.totalTime}} </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="serviceColumnsToDisplay"></tr>
+                                <tr mat-row *matRowDef="let row; columns: serviceColumnsToDisplay; let i = index;"
+                                    (click)="getSelectedEditModalRow(row, i)" [ngClass]="{'selected-row':
+                                    (activityServiceData?.length > 0) && (selectedEditModalRow == i)}"></tr>
                             </table>
+                            <div *ngIf="spinner" class="spinner-container bg-colr-wht py-4">
+                                <mat-progress-spinner class="center" [diameter]="50" color="default"
+                                    mode="indeterminate">
+                                </mat-progress-spinner>
+                            </div>
+                            <div *ngIf="!spinner && activityServiceData?.length == 0" class="bg-colr-wht py-4">
+                                <div class="center">
+                                    <h3>No record to display</h3>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2">
                         <label for="form23"> Notes:
                         </label>
                         <i class="fa fa-edit"></i>
-                        <textarea id="form23" class="md-textarea form-control" rows="3"></textarea>
+                        <textarea formControlName="notes" class="md-textarea form-control" rows="3"></textarea>
                     </div>
                 </div>
-                <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5; position:relative;">
+                <nav class="navbar navbar-expand-lg navbar-light "
+                    style="background-color: #d7e8f5; position:relative;">
                     <div class="container-fluid">
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarTogglerDemo" aria-controls="navbarTogglerDemo"
-                            aria-expanded="false" aria-label="Toggle navigation">
+                            data-bs-target="#navbarTogglerDemo" aria-controls="navbarTogglerDemo" aria-expanded="false"
+                            aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarTogglerDemo">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
-                                    <a class="nav-link active" (click)="deleteTutorContacts()" >Delete</a>
+                                    <a class="nav-link active" (click)="deleteTutorContacts()">Delete</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link ">Print</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link " (click)="addTutorContacts()">Save</a>
+                                    <a class="nav-link " (click)="handleMethodToCall()">Save</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link " (click)="addTutorContacts();editModalRef.hide()">Save & Close</a>
+                                    <a class="nav-link " (click)="handleMethodToCall();editModalRef.hide()">Save &
+                                        Close</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link " (click)="editModalRef.hide()">Cancel</a>
@@ -780,6 +796,57 @@
                         </div>
                     </div>
                 </nav>
+            </form>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #activityServicePopup>
+    <div class="modal-header popHeaderBG">
+        <span class="modal-title popHeader" id="exampleModalLabel">Enter the Time in Minutes for this
+            Activity/Service</span>
+        <button type="button" class="btn-close" (click)="activityServiceModalRef.hide()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="tab-content bg-white" id="myTabContent">
+            <form [formGroup]="activityServiceForm" class="tab-pane fade show active" id="home" role="tabpanel"
+                aria-labelledby="home-tab">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Activity</label>
+                                <span class="form-group">
+                                    <select formControlName="activity" name="sel3" class="form-control" id="sel4">
+                                        <option selected value="">Please select</option>
+                                        <option value="Academic Tutoring">Academic Tutoring</option>
+                                        <option value="ACT Registration">ACT Registration</option>
+                                        <option value="ACT Preparation">ACT Preparation</option>
+                                        <option value="Career Planning">Career Planning</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Time in Minutes</label>
+                                <input formControlName="time" type="number" value="2" id="start" class="form-control"
+                                    required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 mt-3 mb-3">
+                            <button type="button" (click)="addServiceActivity();activityServiceModalRef.hide()"
+                                class="btn btn-primary active float-left">Save</button>
+                        </div>
+                        <div class="col-md-3 mt-3 mb-3">
+                            <button type="button" (click)="activityServiceForm.reset();activityServiceModalRef.hide()"
+                                class="btn btn-primary active float-left">Cancel</button>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

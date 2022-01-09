@@ -1,5 +1,13 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { LabContactService } from 'src/app/services/lab/lab-contact.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Utility } from 'src/app/shared/global-constants/utility';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog-box/confirm-dialog-box.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'lab-contacts',
@@ -8,5 +16,388 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 })
 
 export class LabContactsComponent {
+    public columnsToDisplay: string[] =
+    ['firstName', 'lastName', 'phoneNumber', 'staffContactDate', 'staffContactLab', 'staffTotalTime', 'staffRecontactDate'];
+  public modalColumnsToDisplay: string[] =
+    ['ssno', 'firstName', 'lastName', 'phoneNumber', 'fiscalYear', 'active', 'served', 'reported', 'counselor', 'school', 'standing'];
+  public serviceColumnsToDisplay: string[] = ['activity', 'totalTime'];
+  public dataSource: MatTableDataSource<any>;
+  public modalDataSource: MatTableDataSource<any>;
+  public serviceDataSource: MatTableDataSource<any>;
+  @ViewChild('labStudentPopup') labStudentPopupRef: TemplateRef<any>;
+  public modalRef: BsModalRef;
+  @ViewChild('labStudentEditPopup') labStudentEditPopupRef: TemplateRef<any>;
+  public editModalRef: BsModalRef;
+  @ViewChild('activityServicePopup') activityServicePopupRef: TemplateRef<any>;
+  public activityServiceModalRef: BsModalRef;
+  modalConfigSM = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+    class: 'modal-lg'
+  }
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  public activityServiceForm: FormGroup;
+  public labContactsModalForm: FormGroup;
+  public labContactsEditModalForm: FormGroup;
+  public labContactsList: any = [];
+  public studentsList: any = [];
+  public selectedOption: string = '';
+  public selectedRow: any = null;
+  public selectedRowData: any = null;
+  public selectedModalRow: any = null;
+  public selectedModalRowData: any = null;
+  public selectedEditModalRow: any = null;
+  public selectedEditModalRowData: any = null;
+  public spinner: boolean = true;
+  public activityServiceData: any = [];
+  public isActivityEdit: boolean = false;
+  public labsList: any = []
+
+  constructor(
+    private modalService: BsModalService,
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private labContactService: LabContactService
+  ) {
+    this.serviceDataSource = this.modalDataSource = this.dataSource = new MatTableDataSource();
+    this.getLabContacts();
+  }
+
+  ngOnInit(): void {
+    this.initialiseForm();
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  /**
+   * @method initialiseForm
+   */
+  public initialiseForm() {
+    this.activityServiceForm = this.fb.group({
+      activity: [''],
+      time: [0]
+    });
+
+    this.labContactsModalForm = this.fb.group({
+      fiscalYear: ['2017'],
+      served: [''],
+      siteLocation: [''],
+      active: [''],
+      reported: ['']
+    });
+
+    this.labContactsEditModalForm = this.fb.group({
+      contactDate: [''],
+      fiscalYear: ['2017'],
+      recontactDate: [''],
+      isReContacted: [''],
+      lab: [''],
+      component: [''],
+      aprSubject: [''],
+      contactType: [''],
+      subject: [''],
+      instructions: [''],
+      activityService: [''],
+      totalTime: [{value: 0, disabled: true}],
+      notes: ['']
+    });
+  }
+
+  /**
+   * @method applyFilter
+   */
+  public applyFilter(filterValue: any, dataSource: MatTableDataSource<any>) {
+    dataSource.filter = filterValue.target.value.trim().toLowerCase();
+    if (dataSource.paginator) {
+      dataSource.paginator.firstPage();
+    }
+  }
+
+  /**
+   * @method openModal
+   */
+  public openModal() {
+    this.modalRef = this.modalService.show(this.labStudentPopupRef, this.modalConfigSM);
+  }
+
+  /**
+   * @method openEditModal
+   */
+  public openEditModal() {
+    if(this.selectedOption === 'Edit') {
+      this.patchValuesToForm();
+    }
+    this.editModalRef = this.modalService.show(this.labStudentEditPopupRef, this.modalConfigSM);
+  }
+
+  /**
+   * @method openActivityServiceModal
+   */
+  public openActivityServiceModal(selector: string) {
+    this.isActivityEdit = selector === 'Edit';
+    if (this.isActivityEdit) {
+      if (this.activityServiceData.length > 0) {
+        this.activityServiceForm.patchValue({
+          activity: this.selectedEditModalRowData?.activityService,
+          time: this.selectedEditModalRowData?.totalTime
+        });
+        this.activityServiceModalRef = this.modalService.show(this.activityServicePopupRef, this.modalConfigSM);
+      }
+    } else {
+      this.activityServiceForm.patchValue({
+        activity: this.labContactsEditModalForm.controls['activityService'].value,
+        time: 0
+      });
+      this.activityServiceModalRef = this.modalService.show(this.activityServicePopupRef, this.modalConfigSM);
+    }
+  }
+
+  /**
+   * @method getLabContacts
+   */
+  public getLabContacts() {
+    this.spinner = true;
+    this.labContactService.getLabContacts().subscribe((result: any) => {
+      if (result) {
+        this.labContactsList = result;
+        this.spinner = false;
+        this.selectedRow = null;
+        this.dataSource = new MatTableDataSource(this.labContactsList);
+        this.getSelectedRow(this.labContactsList[0], 0);
+      }
+    });
+  }
+
+  /**
+   * @method getStudentsList
+   */
+  public getStudentsList() {
+    this.spinner = true;
+    this.labContactService.getStudentsList().subscribe((result: any) => {
+      if (result) {
+        this.spinner = false;
+        this.selectedModalRow = null;
+        this.studentsList = result;
+        this.modalDataSource = new MatTableDataSource(this.studentsList);
+        this.getSelectedModalRow(this.studentsList[0], 0);
+      }
+    });
+  }
+
+  /**
+   * @method getStaffList
+   */
+  public getStaffList() {
+    this.labContactService.getStaffList().subscribe((result: any) => {
+      if (result && result.length > 0) {
+        result.forEach((element: any) => {
+          if (element.staffLab && element.staffContactLab) {
+            this.labsList.push(element.staffContactLab);
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * @method addLabContacts
+   */
+  public addLabContacts() {
+    this.labContactService
+      .addLabContacts(this.requestPayload())
+      .subscribe((result: any) => {
+        if (result) {
+          this.getLabContacts();
+        }
+      });
+  }
+
+  /**
+   * @method editLabContacts
+   */
+  public editLabContacts(): any {
+    if (this.selectedRowData == null) { return true; };
+    let request: any = this.requestPayload();
+    if (request['ssno'] == undefined) {
+      request['ssno'] = this.selectedRowData.ssno
+    }
+    this.labContactService
+      .editLabContacts(request)
+      .subscribe((result: any) => {
+        if (result) {
+          this.getLabContacts();
+        }
+      });
+  }
+
+  /**
+   * @method deleteLabContacts
+   */
+  public deleteLabContacts() {
+      const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          title: 'Confirm remove record',
+          message: 'Are you sure, you want to remove this record: ' + this.selectedRow.activityGroupName
+        }
+      });
+      confirmDialog.afterClosed().subscribe((result: any) => {
+        if (result === true) {
+            this.labContactService
+            .deleteLabContacts({ ssno: this.selectedRowData.ssno })
+            .subscribe((result: any) => {
+              if (result) {
+                this.getLabContacts();
+              }
+            });
+        }
+      });
+  }
+
+  /**
+   * @method getSelectedOption
+   * @description get the requested modal type
+   */
+  public getSelectedOption(selectedOption: string) {
+    this.selectedOption = selectedOption;
+    this.getStaffList();
+    if (this.selectedOption === 'Edit') {
+      this.openEditModal();
+    } else {
+      this.getStudentsList();
+      this.openModal();
+    }
+  }
+
+  /**
+   * @method getSelectedRow
+   * @description get selected row data to perform action
+   */
+  public getSelectedRow(data: any, index: number) {
+    this.selectedRow = index;
+    this.selectedRowData = data;
+  }
+
+  /**
+   * @method handleMethodToCall
+   */
+  public handleMethodToCall() {
+    switch (this.selectedOption) {
+      case 'New':
+        this.addLabContacts();
+        break;
+      case 'Edit':
+        this.editLabContacts();
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * @method getSelectedModalRow
+   * @description get selected row data to perform action on modal
+   */
+  public getSelectedModalRow(data: any, index: number) {
+    this.selectedModalRow = index;
+    this.selectedModalRowData = data;
+  }
+
+  /**
+   * @method addServiceActivity
+   */
+  public addServiceActivity() {
+    if (this.isActivityEdit) {
+      this.activityServiceData[this.selectedEditModalRow] = {activity: this.activityServiceForm.value.activity, totalTime: this.activityServiceForm.value.time};
+    } else {
+      this.activityServiceData.push({activity: this.activityServiceForm.value.activity, totalTime: this.activityServiceForm.value.time});
+    }
+    this.labContactsEditModalForm.controls['activityService'].setValue(null);
+    let totalTime = 0;
+    if (this.activityServiceData.length > 0) {
+      this.activityServiceData.forEach((element: any) => {
+        totalTime += element.totalTime;
+      });
+    }
+    this.labContactsEditModalForm.controls['totalTime'].setValue(totalTime);
+    this.getSelectedEditModalRow(this.activityServiceData[0], 0);
+    this.serviceDataSource = new MatTableDataSource(this.activityServiceData);
+  }
+
+  /**
+   * @method removeServiceActivity
+   */
+  public removeServiceActivity() {
+    if (this.activityServiceData.length > 0) {
+      this.activityServiceData.splice([this.selectedEditModalRow], 1);
+      let totalTime = 0;
+      if (this.activityServiceData.length > 0) {
+        this.activityServiceData.forEach((element: any) => {
+          totalTime += element.totalTime;
+        });
+      }
+      this.labContactsEditModalForm.controls['totalTime'].setValue(totalTime);
+    }
+    this.serviceDataSource = new MatTableDataSource(this.activityServiceData);
+  }
+
+  /**
+   * @method getSelectedEditModalRow
+   * @description get selected row data to perform action on edit modal
+   */
+   public getSelectedEditModalRow(data: any, index: number) {
+    this.selectedEditModalRow = index;
+    this.selectedEditModalRowData = data;
+  }
+
+  /**
+   * @method patchValuesToForm
+   */
+  public patchValuesToForm() {
+    this.labContactsEditModalForm.patchValue({
+      contactDate: Utility.formatDate(this.selectedRowData?.staffContactDate),
+      fiscalYear: Number(this.selectedRowData?.staffFiscalYear),
+      recontactDate: Utility.formatDate(this.selectedRowData?.staffRecontactDate),
+      isReContacted: this.selectedRowData?.staffRecontacted,
+      lab: this.selectedRowData?.staffContactLab,
+      component: this.selectedRowData?.staffComponents,
+      aprSubject: this.selectedRowData?.staffAprSubject,
+      contactType: this.selectedRowData?.staffContactType,
+      subject: this.selectedRowData?.staffSubject,
+      instructions: this.selectedRowData?.staffInstruction,
+      activityService: this.selectedRowData?.staffActivityService,
+      totalTime: this.selectedRowData?.staffTotalTime,
+      notes: this.selectedRowData?.staffNotes
+    });
+    this.activityServiceData = this.selectedRowData.activityRenderedList ? this.selectedRowData.activityRenderedList : [];
+    this.getSelectedEditModalRow(this.activityServiceData[0], 0);
+    this.serviceDataSource = new MatTableDataSource(this.activityServiceData);
+  }
+
+  /**
+   * @method requestPayload
+   * @description create the request payload for API's
+   */
+  public requestPayload() {
+    const formValue = this.labContactsEditModalForm.value;
+    return {
+      staffContactDate: formValue.contactDate,
+      staffFiscalYear: formValue.fiscalYear.toString(),
+      staffRecontactDate: formValue.recontactDate,
+      staffRecontacted: formValue.isReContacted,
+      staffContactLab: formValue.lab,
+      staffComponents: formValue.component,
+      staffAprSubject: formValue.aprSubject,
+      staffContactType: formValue.contactType,
+      staffSubject: formValue.subject,
+      staffInstruction: formValue.instructions,
+      staffActivityService: formValue.activityService,
+      staffTotalTime: this.labContactsEditModalForm.controls.totalTime.value.toString(),
+      staffNotes: formValue.notes,
+      activityRenderedList: this.activityServiceData,
+      student: this.selectedRowData && this.selectedRowData.ssno && 
+        this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData
+    }
+  }
 }

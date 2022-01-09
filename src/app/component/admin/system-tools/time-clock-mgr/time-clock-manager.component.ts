@@ -132,7 +132,7 @@ export class TimeClockManagerComponent {
     this.timeClockManagerService
       .filterTimeClockManager(this.requestPayloadForFilter())
       .subscribe((result: any) => {
-        if (result && result.length > 0) {
+        if (result ) {
           this.getTimeClockManager();
         }
       });
