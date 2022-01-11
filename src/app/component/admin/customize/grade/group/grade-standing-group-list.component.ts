@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '../../../../../shared/components/confirm
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-grade-standing-group-list',
@@ -51,7 +52,8 @@ export class GradeStandingGroupListComponent implements OnInit {
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog
-        , private _gradingGroupStandingService: GradingGroupStandingService) { }
+        , private _gradingGroupStandingService: GradingGroupStandingService
+        , private toastr: ToastrService) { }
 
     ngOnInit() {
         this.myElement = window.document.getElementById('loading');
@@ -94,7 +96,11 @@ export class GradeStandingGroupListComponent implements OnInit {
             this._gradeGroupStandingList.gradeGroupAprColumn = this.selectedRow.gradeGroupGradeType;
             this.openModal(this.gradeGroupListPopupRef);
         } else {
-            alert('Please select a row to update.')
+            this.toastr.info('Please select a record to update', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
+
         }
     }
 
@@ -151,15 +157,20 @@ export class GradeStandingGroupListComponent implements OnInit {
                     if (result) {
                         this.dataSource = new MatTableDataSource(result);
                         this.dataSource.paginator = this.paginator;
-                        this.selectedRowIndex = null;
+                        this.selectedRow = null;
                         this.dataSource.sort = this.sort;
+                        this.toastr.success('Saved successfully!', '', {
+                            timeOut: 5000,
+                            closeButton: true
+                        });
+
                     }
                 });
             }
         });
     }
 
-    deleteSelectedRow() {   
+    deleteSelectedRow() {
         if (this.selectedRow) {
             const data = {
                 gradeGroupId: this.selectedRow.gradeGroupId
@@ -180,8 +191,12 @@ export class GradeStandingGroupListComponent implements OnInit {
                             if (result) {
                                 this.dataSource = new MatTableDataSource(result);
                                 this.dataSource.paginator = this.paginator;
-                                this.selectedRowIndex = null;
+                                this.selectedRow = null;
                                 this.dataSource.sort = this.sort;
+                                this.toastr.success('Deleted successfully!', '', {
+                                    timeOut: 5000,
+                                    closeButton: true
+                                });
                             }
                         });
                     });
@@ -190,7 +205,10 @@ export class GradeStandingGroupListComponent implements OnInit {
                 }
             });
         } else {
-            alert('Please select a row to delete.')
+            this.toastr.info('Please select a row to delete', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
         }
     }
 
@@ -210,9 +228,13 @@ export class GradeStandingGroupListComponent implements OnInit {
                     if (result) {
                         this.dataSource = new MatTableDataSource(result);
                         this.dataSource.paginator = this.paginator;
-                        this.selectedRowIndex = null;
+                        this.selectedRow = null;
                         this.dataSource.sort = this.sort;
                         this.isEdit = false;
+                        this.toastr.success('Updated successfully!', '', {
+                            timeOut: 5000,
+                            closeButton: true
+                        });
                     }
                 });
             });

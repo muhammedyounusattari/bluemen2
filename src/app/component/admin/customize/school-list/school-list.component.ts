@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-school-list',
@@ -68,7 +69,8 @@ export class SchoolListComponent implements OnInit {
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog
-        , private _collegeAndSchoolService: CollegeAndSchoolService) { }
+        , private _collegeAndSchoolService: CollegeAndSchoolService
+        , private toastr: ToastrService) { }
 
     ngOnInit() {
         this.myElement = window.document.getElementById('loading');
@@ -129,7 +131,10 @@ export class SchoolListComponent implements OnInit {
             this.schoolListEnum.notes = this.selectedRow.notes;
             this.openModal(this.schoolNamePopupRef);
         } else {
-            alert('Please select a row to update.')
+            this.toastr.info('Please select a row to update', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
         }
     }
 
@@ -173,12 +178,19 @@ export class SchoolListComponent implements OnInit {
                 const isFound = this.schoolDataList.filter((item: any) => item.fafsaId === this.schoolListEnum.ncesId);
                 if (isFound && isFound.length > 0) {
                     this.hideLoader();
-                    return alert('Entered NCESID is alreay exist, to add this organization name please change entered NCESID.');
+                    this.toastr.info('Entered NCESID is alreay exist, to add this organization name please change entered NCESID.', '', {
+                        timeOut: 5000,
+                        closeButton: true
+                    });
+                    return;
                 }
             }
         } else {
             this.hideLoader();
-            return alert('Please enter NCESID.');
+            this.toastr.info('Please enter NCESID.', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
         }
         this.requestData.orgName = this.schoolListEnum.name;
         this.requestData.inPullDown = this.schoolListEnum.inPullDown;
@@ -214,6 +226,11 @@ export class SchoolListComponent implements OnInit {
                         this.dataSource.sort = this.sort;
                         document.getElementById('closePopup')?.click();
                         this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
+
+                        this.toastr.success('Saved successfully!', '', {
+                            timeOut: 5000,
+                            closeButton: true
+                        });
                     }
                 });
             }
@@ -258,9 +275,14 @@ export class SchoolListComponent implements OnInit {
                             if (result) {
                                 this.dataSource = new MatTableDataSource(result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined));
                                 this.dataSource.paginator = this.paginator;
-                                this.selectedRowIndex = null;
+                                this.selectedRow = null;
                                 this.dataSource.sort = this.sort;
                                 this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
+
+                                this.toastr.success('Deleted successfully!', '', {
+                                    timeOut: 5000,
+                                    closeButton: true
+                                });
                             }
                         });
                     });
@@ -269,7 +291,10 @@ export class SchoolListComponent implements OnInit {
                 }
             });
         } else {
-            alert('Please select a row to delete.')
+            this.toastr.info('Please select a row to delete.', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
         }
     }
 
@@ -305,11 +330,15 @@ export class SchoolListComponent implements OnInit {
                     if (result) {
                         this.dataSource = new MatTableDataSource(result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined));
                         this.dataSource.paginator = this.paginator;
-                        this.selectedRowIndex = null;
+                        this.selectedRow = null;
                         this.dataSource.sort = this.sort;
                         document.getElementById('closePopup')?.click();
                         this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
                         this.isEdit = false;
+                        this.toastr.success('Updated successfully!', '', {
+                            timeOut: 5000,
+                            closeButton: true
+                        });
                     }
                 });
             });

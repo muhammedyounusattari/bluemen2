@@ -19,6 +19,7 @@ import { CounselorModule } from './component/counselor/counselor.module';
 import { LoginComponent } from './component/login/login.component';
 
 import { FormsModule } from '@angular/forms';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -39,9 +40,10 @@ import { FormsModule } from '@angular/forms';
     ModalModule.forRoot(),
     BrowserAnimationsModule,
     CounselorModule,
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [ToastrService],
   bootstrap: [AppComponent],
   schemas: [ NO_ERRORS_SCHEMA ]
 })

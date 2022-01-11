@@ -401,7 +401,7 @@ export class TutorContactsComponent implements OnInit {
       staffTotalTime: this.tutorContactsEditModalForm.controls.totalTime.value.toString(),
       staffNotes: formValue.notes,
       activityRenderedList: this.activityServiceData,
-      student: this.selectedRowData && this.selectedRowData.ssno &&
+      student: this.selectedOption === 'Edit' && this.selectedRowData.ssno &&
         this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData
     }
   }

@@ -130,8 +130,28 @@ export class ServiceUrls {
     public static GET_SYSTEM_PREFERENCES = environment.apiUrl + '/blumen-api/admin/getSystemPreferenceData/v1';
 
     // Lab Contacts API URL's
-    public static GET_LAB_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/getStudentTutorContactsList/v1';
-    public static DELETE_LAB_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/deleteStudentTutorContactsList/v1';
-    public static ADD_LAB_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/studentTutorContactsList/v1';
-    public static UPDATE_LAB_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/updateStudentTutorContactsList/v1';
+    public static GET_LAB_CONTACTS = environment.apiUrl + '/blumen-api/blumen-api/admin/getLabContacts/v1';
+    public static DELETE_LAB_CONTACTS = environment.apiUrl + '/blumen-api/admin/deleteLabContact/v1';
+    public static ADD_LAB_CONTACTS = environment.apiUrl + '/blumen-api/admin/addStudentLabContactList/v1';
+    public static UPDATE_LAB_CONTACTS = environment.apiUrl + '/blumen-api/admin/updateStudentLabContactList/v1';
+
+    // TEACHER CLASSES URL's
+    public static GET_TEACHER_CLASSES_LIST = environment.apiUrl + '/blumen-api/admin/classes/getTeacherClassess/v1';
+    public static ADD_TEACHER_CLASSES_LIST = environment.apiUrl + '/blumen-api/admin/classes/addToTeacherClassesList/v1';
+    public static UPDATE_TEACHER_CLASSES_LIST = environment.apiUrl + '/blumen-api/admin/classes/updateTeacherClasses/v1';
+    public static DELETE_TEACHER_CLASSES_LIST = environment.apiUrl + '/blumen-api/admin/classes/deleteTeacherClasses/v1';
+    public static FILTER_TEACHER_CLASSES_LIST = environment.apiUrl + '/blumen-api/admin/classes/filterTeacherClasses/v1';
+
+    // COUNSELOR CLASSES URL's
+    public static GET_COUNSELOR_CLASSES_LIST = environment.apiUrl + '/blumen-api/admin/classes/getCounselorClassess/v1';
+    public static ADD_COUNSELOR_CLASSES_LIST = environment.apiUrl + '/blumen-api/admin/classes/counselorClassesList/v1';
+    public static UPDATE_COUNSELOR_CLASSES_LIST = environment.apiUrl + '/blumen-api/admin/classes/updateCounselorClasses/v1';
+    public static DELETE_COUNSELOR_CLASSES_LIST = environment.apiUrl + '/blumen-api/admin/classes/deleteCounselorClasses/v1';
+    public static FILTER_COUNSELOR_CLASSES_LIST = environment.apiUrl + '/blumen-api/admin/classes/filterCounselorClasses/v1';
+
+    // Tutor Classes API URL's
+    public static POST_TUTOR_CLASSES = environment.apiUrl + '/blumen-api/admin/classes/addToTutorClassesList/v1';
+    public static GET_TUTOR_CLASSES = environment.apiUrl + '/blumen-api/admin/classes/getTutorClassess/v1';
+    public static GET_TUTOR_CLASSES_PER_RECORD = environment.apiUrl + '/blumen-api/admin/classes/getTutorClass/v1/';
+    public static DELETE_TUTOR_CLASSES = environment.apiUrl + '/blumen-api/admin/classes/deleteTutorClasses/v1';
 }

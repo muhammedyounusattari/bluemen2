@@ -30,7 +30,7 @@
     <div class="row ">
         <div class="col-md-6 mt-3 mb-3 ">
             <form class="example">
-                <input type="text" matInput class="border-right" (keyup)="applyFilter($event)" placeholder="Search.." />
+                <input type="text" matInput class="border-rightToTxtBox" (keyup)="applyFilter($event)" placeholder="Search.." />
             </form>
         </div>
     </div>
@@ -43,7 +43,7 @@
     <!-- Spinner End-->
 
     <!-- Data Table Start-->
-    <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading">
+    <div class="mat-elevation-z8 data-table-height dt-max-height" *ngIf="!isLoading">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
             <ng-container matColumnDef="activityId">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
@@ -71,122 +71,7 @@
         <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
     </div>
     <!-- Data Table End-->
-
-    <!-- <div class="table-responsive" style="border:1px solid #1366A0;">
-        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-            <thead>
-                <tr style="background: #F5F6FA;">
-                    <th scope="col">ID</th>
-                    <th scope="col">Activity/Service Name</th>
-                    <th scope="col">Group</th>
-                    <th scope="col">BOLT Service</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngIf="!spinner">
-                    <tr *ngFor="let serviceData of activityServiceData; let idx = index;"
-                        (click)="setSelectedRow(serviceData, idx)"
-                        [ngClass]="{'selected-row' : this.selectedRowIndex == idx}">
-                        <td>{{serviceData.activityId}}</td>
-                        <td>{{serviceData.activityName}}</td>
-                        <td>{{serviceData.activityGroupName}}</td>
-                        <td *ngIf="serviceData.lapService">YES</td>
-                        <td *ngIf="!serviceData.lapService">NO</td>
-                    </tr>
-                </ng-container>
-                <div class="no-record">
-                    <div *ngIf="spinner" class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div *ngIf="activityServiceData.length == 0">
-                        <span>No Data Found</span>
-                    </div>
-                </div>
-
-            </tbody>
-        </table>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12 mt-3">
-
-            <nav aria-label="Page navigation example">
-                <ul class="pagination pagination-sm justify-content-right">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div> -->
 </div>
-
-
-<!-- Modal -->
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Customize Activity/Service</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="selectedRowIndex = null;"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group ">
-                                    <label for="usr">Activity/Service ID:</label>
-                                    <input type="text" class="form-control"
-                                        [(ngModel)]="activityServiceListEnum.activityId" id="serviceId" readonly>
-                                </div>
-
-                                <div class="form-group mt-3">
-                                    <label for="usr">Activity/Service Name:</label>
-                                    <input type="text" class="form-control"
-                                        [(ngModel)]="activityServiceListEnum.activityName" id="serviceName">
-                                </div>
-
-                                <div class="form-group mt-3">
-                                    <label for="usr">Activity/Service Group</label>
-                                    <select class="form-control" id="serviceGrpName"
-                                        [(ngModel)]="activityServiceListEnum.activityGroupName">
-                                        <option selected>Tutoring</option>
-                                        <option selected>Assisted Computer Labs</option>
-                                        <option selected>Counseling</option>
-                                        <option selected>Mentoring</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group mt-3">
-                                    <label for="usr">BOLT Service:</label>
-                                    <input type="checkbox" name="labService"
-                                        [(ngModel)]="activityServiceListEnum.lapService">&nbsp;
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="closePopup"
-                    (click)="isEdit = false; selectedRowIndex = null;" data-bs-dismiss="modal">Close</button>
-
-                <button type="button" class="btn btn-v .primary" *ngIf="!isEdit" (click)="addNewServiceName()">Save &
-                    Close</button>
-                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update &
-                    Close</button>
-            </div>
-        </div>
-    </div>
-</div> -->
 
 <!-- Buttons Start-->
 <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
@@ -230,7 +115,7 @@
     <!-- Modal -->
     <div class="modal-header popHeaderBG">
         <span class="modal-title popHeader" id="exampleModalLabel">Customize Activity/Service</span>
-        <button type="button" class="btn-close" (click)="selectedRowIndex = null;modalRef.hide()"
+        <button type="button" class="btn-close" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()"
             aria-label="Close"></button>
     </div>
     <div class="modal-body">

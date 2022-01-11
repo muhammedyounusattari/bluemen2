@@ -6,20 +6,20 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { TeacherService } from 'src/app/services/teacher/teacher.service';
-import { TeacherClassesListEnum } from 'src/app/constants/enums/teacher-classes-list.enum';
+import { CounselorsService } from 'src/app/services/counselor/counselors.service';
+import { CounselorClassesListEnum } from 'src/app/constants/enums/counselor-classes-list.enum';
 import { StudentListEnum } from 'src/app/constants/enums/student-list.enum';
 import { StudentService } from 'src/app/services/student/student.service';
 
 @Component({
-    selector: 'app-teachers-classes',
-    templateUrl: './teachers-classes.component.html',
-    styleUrls: ['./teachers-classes.component.css']
+    selector: 'app-counselor-classes',
+    templateUrl: './counselors-classes.component.html',
+    styleUrls: ['./counselors-classes.component.css']
 })
 
-export class TeacherClassesComponent implements OnInit {
-    teacherClassesListData: any;
-    @ViewChild('teacherClassesPopup') teacherClassesPopupRef: TemplateRef<any>;
+export class CounselorClassesComponent implements OnInit {
+    counselorClassesListData: any;
+    @ViewChild('counselorClassesPopup') counselorClassesPopupRef: TemplateRef<any>;
 
     modalRef: BsModalRef;
     modalConfigSM = {
@@ -38,8 +38,8 @@ export class TeacherClassesComponent implements OnInit {
     public spinner: boolean = true;
     selectedClassesRowIndex: any;
 
-    // Teacher Classes List Grid DT start
-    columnsToDisplay: string[] = ['currentYear', 'semester', 'teacherName', 'subject',
+    // Counselor Classes List Grid DT start
+    columnsToDisplay: string[] = ['currentYear', 'semester', 'counselorName', 'subject',
         'classPeriod', 'meetingTime', 'days', 'room', 'maxLimit', 'studentAssigned'];
     dataSource: MatTableDataSource<any>;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -50,9 +50,9 @@ export class TeacherClassesComponent implements OnInit {
         }
     }
     isLoading: boolean = true;
-    // Teacher Classes List End
+    // Counselor Classes List End
 
-    // Teacher Classes Student Grid DT start
+    // Counselor Classes Student Grid DT start
     selectedClassesStudentRowIndex: any;
     selectedClassesStudentRow: any;
     columnsToDisplay1: string[] = ['firstName', 'lastName', 'grade', 'gradeNotes'];
@@ -65,7 +65,7 @@ export class TeacherClassesComponent implements OnInit {
         }
     }
     isLoading1: boolean = true;
-    // Teacher Classes Student Grid DT End
+    // Counselor Classes Student Grid DT End
 
     // Student List Grid DT Start
     public studentListColumnsToDisplay: string[] =
@@ -87,7 +87,7 @@ export class TeacherClassesComponent implements OnInit {
     isLoading2: boolean = true;
     // Student List Grid DT End
 
-    teacherClassListEnum: TeacherClassesListEnum = new TeacherClassesListEnum();
+    counselorClassListEnum: CounselorClassesListEnum = new CounselorClassesListEnum();
 
     // Grade pop up
     @ViewChild('classesGradeModalPopup') classesGradeModalPopupRef: TemplateRef<any>;
@@ -102,23 +102,23 @@ export class TeacherClassesComponent implements OnInit {
 
     constructor(private modalService: BsModalService
         , private dialog: MatDialog
-        , private _teacheClassesService: TeacherService
+        , private _counselorClassesService: CounselorsService
         , private _studentService: StudentService
         , private toastr: ToastrService) { }
 
     ngOnInit(): void {
-        this.teacherClassesListData = [];
+        this.counselorClassesListData = [];
         this.myElement = window.document.getElementById('loading');
-        this.teacherClassListEnum = new TeacherClassesListEnum();
-        this.teacherClassListEnum.studentList = new Array<StudentListEnum>();
-        this.getTeacherClassesList();
+        this.counselorClassListEnum = new CounselorClassesListEnum();
+        this.counselorClassListEnum.studentList = new Array<StudentListEnum>();
+        this.getCounselorClassesList();
     }
 
-    getTeacherClassesList() {
-        this._teacheClassesService.getTeacherClassesList().subscribe(result => {
+    getCounselorClassesList() {
+        this._counselorClassesService.getCounselorClassesList().subscribe(result => {
             this.hideLoader();
             if (result) {
-                this.teacherClassesListData = result;
+                this.counselorClassesListData = result;
                 this.dataSource = new MatTableDataSource(result);
                 this.dataSource.paginator = this.paginator;
                 this.selectedClassesRowIndex = null;
@@ -142,13 +142,13 @@ export class TeacherClassesComponent implements OnInit {
     }
 
     openModal(template: TemplateRef<any>) {
-        this.teacherClassListEnum = new TeacherClassesListEnum();
-        this.teacherClassListEnum.studentList = new Array<StudentListEnum>();
+        this.counselorClassListEnum = new CounselorClassesListEnum();
+        this.counselorClassListEnum.studentList = new Array<StudentListEnum>();
         this.modalRef = this.modalService.show(template, this.modalConfigSM);
     }
 
     resetFields() {
-        this.openModal(this.teacherClassesPopupRef);
+        this.openModal(this.counselorClassesPopupRef);
         this.bindClassesStudentListData();
     }
 
@@ -161,31 +161,31 @@ export class TeacherClassesComponent implements OnInit {
     }
 
     bindDataToProperties(object: any) {
-        this.teacherClassListEnum.id = object.id;
-        this.teacherClassListEnum.classPeriod = object.classPeriod;
-        this.teacherClassListEnum.currentYear = object.currentYear;
-        this.teacherClassListEnum.days = object.days;
-        this.teacherClassListEnum.duration = object.duration;
-        this.teacherClassListEnum.maxLimit = object.maxLimit;
-        this.teacherClassListEnum.meetingTime = object.meetingTime;
-        this.teacherClassListEnum.notes = object.notes;
-        this.teacherClassListEnum.room = object.room;
-        this.teacherClassListEnum.semester = object.semester;
-        this.teacherClassListEnum.studentAssigned = object.studentAssigned;
-        this.teacherClassListEnum.studentList = object.studentList;
-        this.teacherClassListEnum.subject = object.subject;
-        this.teacherClassListEnum.teacherName = object.teacherName;
+        this.counselorClassListEnum.id = object.id;
+        this.counselorClassListEnum.classPeriod = object.classPeriod;
+        this.counselorClassListEnum.currentYear = object.currentYear;
+        this.counselorClassListEnum.days = object.days;
+        this.counselorClassListEnum.duration = object.duration;
+        this.counselorClassListEnum.maxLimit = object.maxLimit;
+        this.counselorClassListEnum.meetingTime = object.meetingTime;
+        this.counselorClassListEnum.notes = object.notes;
+        this.counselorClassListEnum.room = object.room;
+        this.counselorClassListEnum.semester = object.semester;
+        this.counselorClassListEnum.studentAssigned = object.studentAssigned;
+        this.counselorClassListEnum.studentList = object.studentList;
+        this.counselorClassListEnum.subject = object.subject;
+        this.counselorClassListEnum.counselorName = object.counselorName;
     }
 
     setValuesToUpdate() {
         if (this.selectedClassesRow) {
             this.isEdit = true;
-            if (this.teacherClassesListData) {
-                const selectedData = this.teacherClassesListData.filter((item: any) => item.id === this.selectedClassesRow.id);
+            if (this.counselorClassesListData) {
+                const selectedData = this.counselorClassesListData.filter((item: any) => item.id === this.selectedClassesRow.id);
                 if (selectedData && selectedData.length > 0) {
                     this.bindDataToProperties(selectedData[0]);
                     this.bindClassesStudentListData();
-                    this.modalRef = this.modalService.show(this.teacherClassesPopupRef, this.modalConfigSM);
+                    this.modalRef = this.modalService.show(this.counselorClassesPopupRef, this.modalConfigSM);
                 }
             }
         } else {
@@ -213,7 +213,7 @@ export class TeacherClassesComponent implements OnInit {
         }
     }
 
-    // Teacher Classes Grid : Store selected row data
+    // Counselor Classes Grid : Store selected row data
     setSelectedClassesGridRow(selectedRowItem: any, index: Number) {
         this.selectedClassesRowIndex = index;
         this.selectedClassesRow = selectedRowItem;
@@ -221,8 +221,8 @@ export class TeacherClassesComponent implements OnInit {
 
     // Assigned Student List Grid : Store selected row data
     bindClassesStudentListData() {
-        this.dataSource1 = new MatTableDataSource(this.teacherClassListEnum.studentList);
-        this.teacherClassListEnum.studentAssigned = this.teacherClassListEnum.studentList.length.toString();
+        this.dataSource1 = new MatTableDataSource(this.counselorClassListEnum.studentList);
+        this.counselorClassListEnum.studentAssigned = this.counselorClassListEnum.studentList.length.toString();
         this.dataSource1.paginator = this.paginator1;
         this.selectedStudentRowIndex = null;
         this.dataSource1.sort = this.sort1;
@@ -260,7 +260,7 @@ export class TeacherClassesComponent implements OnInit {
     }
 
     addSelectedStudentToClassGrid() {
-        this.teacherClassListEnum.studentList.push(this.selectedStudentRow);
+        this.counselorClassListEnum.studentList.push(this.selectedStudentRow);
         this.bindClassesStudentListData();
         this.selectedStudentRow = null;
         this.studentListModalRef.hide();
@@ -268,9 +268,9 @@ export class TeacherClassesComponent implements OnInit {
 
     removeSelectedStudent() {
         if (this.selectedClassesStudentRow) {
-            if (this.teacherClassListEnum.studentList && this.teacherClassListEnum.studentList.length > 0) {
-                const updatedAssignedStudentList = this.teacherClassListEnum.studentList.filter(item => item.ssno !== this.selectedClassesStudentRow.ssno);
-                this.teacherClassListEnum.studentList = updatedAssignedStudentList;
+            if (this.counselorClassListEnum.studentList && this.counselorClassListEnum.studentList.length > 0) {
+                const updatedAssignedStudentList = this.counselorClassListEnum.studentList.filter(item => item.ssno !== this.selectedClassesStudentRow.ssno);
+                this.counselorClassListEnum.studentList = updatedAssignedStudentList;
                 this.bindClassesStudentListData();
             }
         } else {
@@ -300,7 +300,7 @@ export class TeacherClassesComponent implements OnInit {
     }
 
     updateStudentGrade() {
-        const updateStudent = this.teacherClassListEnum.studentList.filter(item => item.ssno === this.selectedClassesStudentRow.ssno);
+        const updateStudent = this.counselorClassListEnum.studentList.filter(item => item.ssno === this.selectedClassesStudentRow.ssno);
         if (updateStudent && updateStudent.length > 0) {
             updateStudent[0].grade = this.grade;
             updateStudent[0].gradeNotes = this.gradeNotes;
@@ -309,14 +309,14 @@ export class TeacherClassesComponent implements OnInit {
         this.classesGradeModalRef.hide();
     }
 
-    addTeacherClassesToList() {
+    addCounselorClassesToList() {
         this.showLoader();
-        this._teacheClassesService.addToTeacherClassesList(this.teacherClassListEnum).subscribe(result => {
+        this._counselorClassesService.addToCounselorClassesList(this.counselorClassListEnum).subscribe(result => {
             this.hideLoader();
             if (result) {
-                this.getTeacherClassesList();
+                this.getCounselorClassesList();
                 this.modalRef.hide();
-                this.toastr.success('Saved successfully!', '', {
+                this.toastr.success('Saved successfully !', '', {
                     timeOut: 5000,
                     closeButton: true
                 });
@@ -324,16 +324,16 @@ export class TeacherClassesComponent implements OnInit {
         });
     }
 
-    updateTeacherClassesToList() {
+    updateCounselorClassesToList() {
         this.showLoader();
-        this._teacheClassesService.updateTeacherClassesList(this.teacherClassListEnum).subscribe(result => {
+        this._counselorClassesService.updateCounselorClassesList(this.counselorClassListEnum).subscribe(result => {
             this.hideLoader();
             if (result) {
                 this.isEdit = false;
                 this.selectedClassesRow = null;
-                this.getTeacherClassesList();
+                this.getCounselorClassesList();
                 this.modalRef.hide();
-                this.toastr.success('Updated successfully!', '', {
+                this.toastr.success('Updated successfully !', '', {
                     timeOut: 5000,
                     closeButton: true
                 });
@@ -355,9 +355,9 @@ export class TeacherClassesComponent implements OnInit {
             });
             confirmDialog.afterClosed().subscribe(result => {
                 if (result === true) {
-                    this._teacheClassesService.deleteTeacherClassesList(data).subscribe(result => {
-                        this.getTeacherClassesList();
-                        this.toastr.success('Deleted successfully!', '', {
+                    this._counselorClassesService.deleteCounselorClassesList(data).subscribe(result => {
+                        this.getCounselorClassesList();
+                        this.toastr.success('Deleted successfully !', '', {
                             timeOut: 5000,
                             closeButton: true
                         });
@@ -367,7 +367,7 @@ export class TeacherClassesComponent implements OnInit {
                 }
             });
         } else {
-            this.toastr.info('Please select row to delete', '', {
+            this.toastr.info('Please select a row to delete', '', {
                 timeOut: 5000,
                 closeButton: true
             });

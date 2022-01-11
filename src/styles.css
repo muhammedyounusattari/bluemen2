@@ -1,3 +1,6 @@
+/* Add application styles & imports to this file! */
+@import '~ngx-toastr/toastr.css';
+
 html,
 body,
 h1,
@@ -237,11 +240,12 @@ table {
 }
 
 .data-table-height{
-    height: 296px !important;
+    height: auto;
     overflow: auto;
-    overflow-x: hidden;
 }
-
+.dt-max-height{
+    max-height: 296px !important;
+}
 .popHeader {
     color: white;
     font-weight: 500;
@@ -419,8 +423,13 @@ footer.page-footer .footer-copyright {
     display: grid;
 }
 
-.border-right {
-  border-right: 1px solid #777777;
+.border-rightToTxtBox {
+  border-right: 1px solid #777777 !important;
+}
+
+#toast-container > .toast-info {
+    background-color: #EFF4F8;
+    color: black;
 }
 
 @-webkit-keyframes spin {
@@ -521,5 +530,8 @@ footer.page-footer .footer-copyright {
 .button-center {
     display: block !important;
     text-align: center;
+}
 
+.mat-elevation-z8 {
+    box-shadow: none !important;
 }

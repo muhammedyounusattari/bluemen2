@@ -6,7 +6,7 @@
     <!-- Header Start-->
     <div class="row bg-white">
         <div class="col-md-12">
-            <h3>Teacher Classes Data Entry</h3>
+            <h3>Counselor Classes Data Entry</h3>
         </div>
     </div>
     <!-- Header End-->
@@ -40,9 +40,9 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Semester</th>
                 <td mat-cell *matCellDef="let classObj; let row = dataIndex;"> {{classObj.semester}} </td>
             </ng-container>
-            <ng-container matColumnDef="teacherName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Teacher </th>
-                <td mat-cell *matCellDef="let classObj; let row = dataIndex;"> {{classObj.teacherName }} </td>
+            <ng-container matColumnDef="counselorName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Counselor </th>
+                <td mat-cell *matCellDef="let classObj; let row = dataIndex;"> {{classObj.counselorName }} </td>
             </ng-container>
             <ng-container matColumnDef="subject">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Subject </th>
@@ -145,7 +145,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="sel1">Teacher</label>
+                                <label for="sel1">Counselor</label>
                                 <select class="form-control" id="sel1">
                                     <option>Rock</option>
                                     <option>GoldBerg</option>
@@ -198,11 +198,11 @@
 <!-- Buttons End-->
 
 
-<!-- Teacher Classes Modal Start-->
-<ng-template #teacherClassesPopup>
+<!-- Counselor Classes Modal Start-->
+<ng-template #counselorClassesPopup>
     <!-- Modal -->
     <div class="modal-header popHeaderBG">
-        <span class="modal-title popHeader" id="exampleModalLabel">Teacher Classes Data Entry</span>
+        <span class="modal-title popHeader" id="exampleModalLabel">Counselor Classes Data Entry</span>
         <button type="button" class="btn-close" (click)="resetVariables();modalRef.hide()" aria-label="Close"></button>
     </div>
     <div class="modal-body">
@@ -233,14 +233,15 @@
                         <div class="col-md-4">
                             <div class="form-group mt-4">
                                 <label for="usr">Current Year</label>
-                                <input type="text" class="form-control" [(ngModel)]="teacherClassListEnum.currentYear">
+                                <input type="text" class="form-control"
+                                    [(ngModel)]="counselorClassListEnum.currentYear">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group mt-4">
                                 <label for="usr">Class Period</label>
                                 <input type="number" placeholder="0" class="form-control"
-                                    [(ngModel)]="teacherClassListEnum.classPeriod">
+                                    [(ngModel)]="counselorClassListEnum.classPeriod">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -255,7 +256,7 @@
                                 <label for="usr">Semester</label>
                                 <span class="form-group">
                                     <select name="sel3" class="form-control" id="sel4"
-                                        [(ngModel)]="teacherClassListEnum.semester">
+                                        [(ngModel)]="counselorClassListEnum.semester">
                                         <option value="null">Select</option>
                                         <option value="Fall">Fall</option>
                                         <option value="Spring">Spring</option>
@@ -271,7 +272,7 @@
                                 </label>
                                 <span class="form-group">
                                     <select name="sel3" class="form-control" id="sel4"
-                                        [(ngModel)]="teacherClassListEnum.meetingTime">
+                                        [(ngModel)]="counselorClassListEnum.meetingTime">
                                         <option value="null">Select</option>
                                         <option>1:30 - 2:30</option>
                                         <option>2:30 - 3:30</option>
@@ -286,7 +287,7 @@
                             <div class="form-group mt-4">
                                 <label for="usr">Duration</label>
                                 <input type="number" placeholder="0" class="form-control"
-                                    [(ngModel)]="teacherClassListEnum.duration">
+                                    [(ngModel)]="counselorClassListEnum.duration">
                                 <h1 style="font-size: 12px"> in minutes</h1>
                             </div>
                         </div>
@@ -295,10 +296,10 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group ">
-                                <label for="usr">Teacher name</label>
+                                <label for="usr">Counselor name</label>
                                 <span class="form-group">
                                     <select name="sel3" class="form-control" id="sel4"
-                                        [(ngModel)]="teacherClassListEnum.teacherName">
+                                        [(ngModel)]="counselorClassListEnum.counselorName">
                                         <option value="null">Select</option>
                                         <option>Rock</option>
                                         <option>GoldBerg</option>
@@ -314,7 +315,7 @@
                                 </label>
                                 <span class="form-group">
                                     <select name="sel3" class="form-control" id="sel4"
-                                        [(ngModel)]="teacherClassListEnum.days">
+                                        [(ngModel)]="counselorClassListEnum.days">
                                         <option value="null">Select</option>
                                         <option>M F</option>
                                         <option>M T W T F</option>
@@ -329,7 +330,7 @@
                                 <label for="usr">Max Limit
                                 </label>
                                 <input type="number" placeholder="0" class="form-control"
-                                    [(ngModel)]="teacherClassListEnum.maxLimit">
+                                    [(ngModel)]="counselorClassListEnum.maxLimit">
                             </div>
                         </div>
                     </div>
@@ -340,7 +341,7 @@
                                 <label for="usr">Subject</label>
                                 <span class="form-group">
                                     <select name="sel3" class="form-control" id="sel4"
-                                        [(ngModel)]="teacherClassListEnum.subject">
+                                        [(ngModel)]="counselorClassListEnum.subject">
                                         <option value="null">Select</option>
                                         <option>Economics</option>
                                         <option>English</option>
@@ -355,7 +356,7 @@
                                 <label for="usr">Room
                                 </label>
                                 <select name="sel3" class="form-control" id="sel4"
-                                    [(ngModel)]="teacherClassListEnum.room">
+                                    [(ngModel)]="counselorClassListEnum.room">
                                     <option value="null">Select</option>
                                     <option>126</option>
                                     <option>215</option>
@@ -369,7 +370,7 @@
                                 <label for="usr">Student Assigned
                                 </label>
                                 <input type="number" placeholder="0" class="form-control"
-                                    [(ngModel)]="teacherClassListEnum.studentAssigned" readonly>
+                                    [(ngModel)]="counselorClassListEnum.studentAssigned" readonly>
                             </div>
                         </div>
 
@@ -442,7 +443,7 @@
                             </label>
                         </div>
                         <div class="row" style="margin-top: 3%;">
-                            <textarea id="form23" style="margin-left: 2%;" [(ngModel)]="teacherClassListEnum.notes"
+                            <textarea id="form23" style="margin-left: 2%;" [(ngModel)]="counselorClassListEnum.notes"
                                 class="md-textarea form-control" rows="3"></textarea>
                         </div>
                     </div>
@@ -453,13 +454,13 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="closePopup"
             (click)="isEdit = false; selectedStudentRowIndex = null;selectedClassesRowIndex = null; modalRef.hide()">Close</button>
-        <button type="button" class="btn btn-v .primary" *ngIf="!isEdit" (click)="addTeacherClassesToList()">Save &
+        <button type="button" class="btn btn-v .primary" *ngIf="!isEdit" (click)="addCounselorClassesToList()">Save &
             Close</button>
-        <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateTeacherClassesToList()">Update &
+        <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateCounselorClassesToList()">Update &
             Close</button>
     </div>
 </ng-template>
-<!-- Teacher Classes Modal End-->
+<!-- counselor Classes Modal End-->
 
 <!-- Student List Modal Start-->
 <ng-template #studentListPopup>
@@ -642,7 +643,7 @@
             (click)="studentListModalRef.hide();selectedClassesStudentRow = null;">Cancel</button>
     </div>
 </ng-template>
-<!-- Teacher Classes Modal End-->
+<!-- Counselor Classes Modal End-->
 
 <!-- Student List Modal Start-->
 <ng-template #classesGradeModalPopup>
@@ -688,4 +689,4 @@
         <button type="button" class="btn btn-v .primary" (click)="updateStudentGrade()">Save</button>
     </div>
 </ng-template>
-<!-- Teacher Classes Modal End-->
+<!-- Counselor Classes Modal End-->

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
+import { CounselorClassesComponent } from '../counselor/home/classes/counselors-classes.component';
 import { AssignStudentsToTeacherClassesComponent } from '../teacher/home/assign-student-teacher-classes/assign-student-teacher-classes.component';
 import { TeacherClassesComponent } from '../teacher/home/classes/teachers-classes.component';
 import { TeacherComponent } from '../teacher/home/teachers/teacher.component';
@@ -20,6 +21,7 @@ import { SystemPreferencesComponent } from './home/system-preferences/system-pre
 import { UserNamesAndPasswordComponent } from './home/user-names-password/user-names-and-pwd.component';
 import { RecallStudentsComponent } from './system-tools/recall-students/recall-students.component';
 import { TimeClockManagerComponent } from './system-tools/time-clock-mgr/time-clock-manager.component';
+import { TutorClassesComponent } from '../tutor/home/classes/tutor-classes.component';
 
 const routes: Routes = [
   {
@@ -97,6 +99,14 @@ const routes: Routes = [
   {
     path: 'admin/teacher-classes',
     component: TeacherClassesComponent
+  },
+  {
+    path: 'admin/counselors-classes',
+    component: CounselorClassesComponent
+  },
+  {
+    path: 'admin/tutor-classes',
+    component: TutorClassesComponent
   }
 
 ];

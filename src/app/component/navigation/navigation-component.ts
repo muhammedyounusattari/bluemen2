@@ -115,6 +115,10 @@ export class NavigationComponent {
       this.router.navigate(['admin/recall-students'])
     } else if (componentName === 'teacher-classes') {
       this.router.navigate(['admin/teacher-classes'])
+    } else if (componentName === 'counselors-classes') {
+      this.router.navigate(['admin/counselors-classes'])
+    } else if (componentName === 'tutor-classes') {
+      this.router.navigate(['admin/tutor-classes'])
     }
   }
 }

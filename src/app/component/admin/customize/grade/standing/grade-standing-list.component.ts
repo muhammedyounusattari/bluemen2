@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '../../../../../shared/components/confirm
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-grade-standing-list',
@@ -55,7 +56,8 @@ export class GradeStandingListComponent implements OnInit {
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog
-        , private _gradingGroupStandingService: GradingGroupStandingService) { }
+        , private _gradingGroupStandingService: GradingGroupStandingService
+        , private toastr: ToastrService) { }
 
     ngOnInit() {
         this.myElement = window.document.getElementById('loading');
@@ -102,7 +104,10 @@ export class GradeStandingListComponent implements OnInit {
             this.gradeGroupStandingList.gradingFiscalYear = this.selectedRow.gradingFiscalYear;
             this.openModal(this.gradeStandingListPopupRef);
         } else {
-            alert('Please select a row to update.')
+            this.toastr.info('Please select a row to update.', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
         }
     }
 
@@ -162,8 +167,12 @@ export class GradeStandingListComponent implements OnInit {
                     if (result) {
                         this.dataSource = new MatTableDataSource(result);
                         this.dataSource.paginator = this.paginator;
-                        this.selectedRowIndex = null;
+                        this.selectedRow = null;
                         this.dataSource.sort = this.sort;
+                        this.toastr.success('Saved successfully!', '', {
+                            timeOut: 5000,
+                            closeButton: true
+                        });
                     }
                 });
             }
@@ -187,12 +196,16 @@ export class GradeStandingListComponent implements OnInit {
                     this._gradingGroupStandingService.deleteGradingStandingList(data).subscribe(result => {
                         this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
                             this.hideLoader();
-                            this.selectedRowIndex = null;
+                            this.selectedRow = null;
                             if (result) {
                                 this.dataSource = new MatTableDataSource(result);
                                 this.dataSource.paginator = this.paginator;
                                 this.selectedRowIndex = null;
                                 this.dataSource.sort = this.sort;
+                                this.toastr.success('Deleted successfully!', '', {
+                                    timeOut: 5000,
+                                    closeButton: true
+                                });
                             }
                         });
                     });
@@ -201,7 +214,10 @@ export class GradeStandingListComponent implements OnInit {
                 }
             });
         } else {
-            alert('Please select a row to delete.')
+            this.toastr.info('Please select a row to delete.', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
         }
     }
     updateSelectedRow() {
@@ -223,9 +239,13 @@ export class GradeStandingListComponent implements OnInit {
                     if (result) {
                         this.dataSource = new MatTableDataSource(result);
                         this.dataSource.paginator = this.paginator;
-                        this.selectedRowIndex = null;
+                        this.selectedRow = null;
                         this.dataSource.sort = this.sort;
                         this.isEdit = false;
+                        this.toastr.success('Updated successfully!', '', {
+                            timeOut: 5000,
+                            closeButton: true
+                        });
                     }
                 });
             });

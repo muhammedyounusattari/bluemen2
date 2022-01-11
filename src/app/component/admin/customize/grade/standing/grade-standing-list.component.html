@@ -30,7 +30,7 @@
     <div class="row ">
         <div class="col-md-6 mt-3 mb-3 ">
             <form class="example">
-                <input type="text" class="border-right" matInput (keyup)="applyFilter($event)" placeholder="Search.." />
+                <input type="text" class="border-rightToTxtBox" matInput (keyup)="applyFilter($event)" placeholder="Search.." />
             </form>
         </div>
     </div>
@@ -43,7 +43,7 @@
     <!-- Spinner End-->
 
     <!-- Data Table Start-->
-    <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading">
+    <div class="mat-elevation-z8 data-table-height dt-max-height" *ngIf="!isLoading">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
             <ng-container matColumnDef="gradingId">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Grade/Standing ID </th>
@@ -70,61 +70,6 @@
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
     </div>
     <!-- Data Table End-->
-
-    <!-- <div class="table-responsive" style="border:1px solid #1366A0;">
-        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-            <thead>
-                <tr style="background: #F5F6FA;">
-                    <th scope="col">Grade/Standing ID</th>
-                    <th scope="col">Grade/Standing Name</th>
-                    <th scope="col">Group</th>
-                    <th scope="col">Grade/Standing (next year)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngIf="!spinner">
-                    <tr *ngFor="let gradeStd of gradeStandingListData; let idx = index;"
-                        (click)="setSelectedRow(gradeStd, idx)"
-                        [ngClass]="{'selected-row' : this.selectedRowIndex == idx}">
-
-                        <td>{{gradeStd.gradingId}}</td>
-                        <td>{{gradeStd.gradingName}}</td>
-                        <td>{{gradeStd.gradingGroupName}}</td>
-                        <td>{{gradeStd.gradingParticipantStatus}}</td>
-
-                    </tr>
-                </ng-container>
-                <div class="no-record">
-                    <div *ngIf="spinner" class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div *ngIf="gradeStandingListData.length == 0">
-                        <span>No Data Found</span>
-                    </div>
-                </div>
-            </tbody>
-        </table>
-    </div>
-
-
-    <div class="row">
-        <div class="col-md-12 mt-3">
-
-            <nav aria-label="Page navigation example">
-                <ul class="pagination pagination-sm justify-content-right">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div> -->
 </div>
 
 <!-- Buttons Start-->
@@ -163,104 +108,12 @@
 </nav>
 <!-- Buttons End-->
 
-<!-- Modal -->
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Customize Grade/Standing</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="selectedRowIndex = null;"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group mt-3">
-                                    <label for="usr" class="lable-style">Grade/Standing ID:</label>
-                                    <input type="text" class="form-control" id="stdId"
-                                        [(ngModel)]="gradeGroupStandingList.gradingId" readonly>
-                                </div>
-
-                                <div class="form-group mt-3">
-                                    <label for="usr" class="lable-style">Grade/Standing Name:</label>
-                                    <textarea type="text" class="form-control" cols="100" rows="5" id="gradeStdName"
-                                        [(ngModel)]="gradeGroupStandingList.gradingName"></textarea>
-                                </div>
-
-
-                                <div class="form-group mt-3">
-                                    <label for="usr" class="lable-style">Group Name:</label>
-                                    <select class="form-control" id="gradeStdGrpName"
-                                        [(ngModel)]="gradeGroupStandingList.gradingGroupName">
-                                        <option selected>Freshman | 1</option>
-                                        <option selected>Junior | 2</option>
-                                        <option selected>Senior | 3</option>
-                                        <option selected>Sophomore | 4</option>
-                                        <option selected>test | 5</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group mt-3">
-                                    <label for="usr" class="lable-style">New Grade/Standing for next Fiscal
-                                        Year:</label>
-                                    <select class="form-control" id="gradeFiscalYear"
-                                        [(ngModel)]="gradeGroupStandingList.gradingFiscalYear">
-                                        <option selected>Freshman | 1</option>
-                                        <option selected>Junior | 2</option>
-                                        <option selected>Senior | 3</option>
-                                        <option selected>Sophomore | 4</option>
-                                        <option selected>test | 5</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group mt-3">
-                                    <label for="usr" class="lable-style">Participant Status for next Fiscal
-                                        Year:</label>
-                                    <select class="form-control" id="gradeStdPStatus"
-                                        [(ngModel)]="gradeGroupStandingList.gradingParticipantStatus">
-                                        <option selected>Continuing Participant</option>
-                                        <option selected>New Participant</option>
-                                        <option selected>New Summer Participant</option>
-                                        <option selected>No Response / Unknown</option>
-                                        <option selected>Prior Year Participant</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group mt-3">
-                                    <label for="usr" class="lable-style">End Status for current Fiscal Year:</label>
-                                    <select class="form-control" id="gradeStdYearEndStatus"
-                                        [(ngModel)]="gradeGroupStandingList.gradingYearEnbStatus">
-                                        <option selected>No Reponse</option>
-                                        <option selected>Academic Dismissal</option>
-                                        <option selected>Continuing Student</option>
-                                        <option selected>Graduated</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="closePopup"
-                    (click)="isEdit = false; selectedRowIndex = null;" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addGradeStanding()">Save
-                    changes</button>
-                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update
-                    Changes</button>
-            </div>
-        </div>
-    </div>
-</div> -->
-
 <!-- Modal Start-->
 <ng-template #gradeStandingListPopup>
     <!-- Modal -->
     <div class="modal-header popHeaderBG">
         <span class="modal-title popHeader" id="exampleModalLabel">Customize Grade/Standing</span>
-        <button type="button" class="btn-close" (click)="selectedRowIndex = null; modalRef.hide()"
+        <button type="button" class="btn-close" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()"
             aria-label="Close"></button>
     </div>
     <div class="modal-body">

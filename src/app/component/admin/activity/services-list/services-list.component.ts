@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ActivityGroupServicesService } from '../../../../services/admin/activity-group-services.service';
 import { ActivityServiceListEnum } from '../../../../constants/enums/activity-service-list.enum';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -52,7 +53,8 @@ export class ServicesListComponent implements OnInit {
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog
-        , private _activityGroupServicesService: ActivityGroupServicesService) { }
+        , private _activityGroupServicesService: ActivityGroupServicesService
+        , private toastr: ToastrService) { }
 
     ngOnInit() {
         this.myElement = window.document.getElementById('loading');
@@ -95,7 +97,10 @@ export class ServicesListComponent implements OnInit {
             this.activityServiceListEnum.lapService = this.selectedRow.lapService;
             this.openModal(this.activityServiceListPopupRef);
         } else {
-            alert('Please select a row to update.')
+            this.toastr.info('Please select a row to update', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
         }
     }
 
@@ -154,6 +159,10 @@ export class ServicesListComponent implements OnInit {
                         this.dataSource = new MatTableDataSource(result);
                         this.dataSource.paginator = this.paginator;
                         this.dataSource.sort = this.sort;
+                        this.toastr.success('Saved successfully!', '', {
+                            timeOut: 5000,
+                            closeButton: true
+                        });
                     }
                 });
             }
@@ -182,6 +191,11 @@ export class ServicesListComponent implements OnInit {
                                 this.dataSource = new MatTableDataSource(result);
                                 this.dataSource.paginator = this.paginator;
                                 this.dataSource.sort = this.sort;
+                                this.selectedRow = null;
+                                this.toastr.success('Deleted successfully!', '', {
+                                    timeOut: 5000,
+                                    closeButton: true
+                                });
                             }
                         });
                     });
@@ -190,7 +204,10 @@ export class ServicesListComponent implements OnInit {
                 }
             });
         } else {
-            alert('Please select a row to delete.')
+            this.toastr.info('Please select a row to delete', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
         }
     }
 
@@ -212,6 +229,11 @@ export class ServicesListComponent implements OnInit {
                         this.dataSource.paginator = this.paginator;
                         this.dataSource.sort = this.sort;
                         this.isEdit = false;
+                        this.selectedRow = null;
+                        this.toastr.success('Updated successfully!', '', {
+                            timeOut: 5000,
+                            closeButton: true
+                        });
                     }
                 });
             });

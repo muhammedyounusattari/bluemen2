@@ -60,4 +60,26 @@ export class CounselorsService {
       request
     );
   }
+
+    // Counselor CLASSES API's
+  
+    getCounselorClassesList() {
+      return this.dataService.callGetService(ServiceUrls.GET_COUNSELOR_CLASSES_LIST, '');
+    }
+  
+    addToCounselorClassesList(request: any) {
+      return this.dataService.callPostService(ServiceUrls.ADD_COUNSELOR_CLASSES_LIST, request);
+    }
+  
+    updateCounselorClassesList(request: any) {
+      return this.dataService.callPutService(ServiceUrls.UPDATE_COUNSELOR_CLASSES_LIST, request);
+    }
+  
+    deleteCounselorClassesList(request: any) {
+      return this.dataService.callDeleteService(ServiceUrls.DELETE_COUNSELOR_CLASSES_LIST, request);
+    }
+  
+    filterCounselorClassesList(request: any) {
+      return this.dataService.callGetService(ServiceUrls.FILTER_COUNSELOR_CLASSES_LIST, request);
+    }
 }

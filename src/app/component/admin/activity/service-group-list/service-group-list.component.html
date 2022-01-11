@@ -30,7 +30,7 @@
     <div class="row ">
         <div class="col-md-6 mt-3 mb-3 ">
             <form class="example">
-                <input type="text" class="border-right" matInput (keyup)="applyFilter($event)" placeholder="Search.." />
+                <input type="text" class="border-rightToTxtBox" matInput (keyup)="applyFilter($event)" placeholder="Search.." />
             </form>
         </div>
     </div>
@@ -43,7 +43,7 @@
     <!-- Spinner End-->
 
     <!-- Data Table Start-->
-    <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading">
+    <div class="mat-elevation-z8 data-table-height dt-max-height" *ngIf="!isLoading">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
             <ng-container matColumnDef="activityGroupId">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Group Id </th>
@@ -113,7 +113,7 @@
     <!-- Modal -->
     <div class="modal-header popHeaderBG">
         <span class="modal-title popHeader" id="exampleModalLabel">Customize Activity/Service Group</span>
-        <button type="button" class="btn-close" (click)="selectedRowIndex = null; modalRef.hide()"
+        <button type="button" class="btn-close" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()"
             aria-label="Close"></button>
     </div>
     <div class="modal-body">

@@ -34,6 +34,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TeacherClassesComponent } from '../teacher/home/classes/teachers-classes.component';
+import { CounselorClassesComponent } from '../counselor/home/classes/counselors-classes.component';
+import { TutorClassesComponent } from '../tutor/home/classes/tutor-classes.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { TeacherClassesComponent } from '../teacher/home/classes/teachers-classe
     TimeClockManagerComponent,
     RecallStudentsComponent,
     ConfirmDialogComponent,
-    TeacherClassesComponent
+    TeacherClassesComponent,
+    CounselorClassesComponent,
+    TutorClassesComponent
   ],
   imports: [
     AdminRoutingModule,

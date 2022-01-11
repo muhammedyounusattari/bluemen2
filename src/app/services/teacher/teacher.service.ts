@@ -23,4 +23,25 @@ export class TeacherService {
     return this.dataService.callDeleteService(ServiceUrls.DELETE_TEACHER, request);
   }
 
+  // TEACHER CLASSES API's
+  
+  getTeacherClassesList() {
+    return this.dataService.callGetService(ServiceUrls.GET_TEACHER_CLASSES_LIST, '');
+  }
+
+  addToTeacherClassesList(request: any) {
+    return this.dataService.callPostService(ServiceUrls.ADD_TEACHER_CLASSES_LIST, request);
+  }
+
+  updateTeacherClassesList(request: any) {
+    return this.dataService.callPutService(ServiceUrls.UPDATE_TEACHER_CLASSES_LIST, request);
+  }
+
+  deleteTeacherClassesList(request: any) {
+    return this.dataService.callDeleteService(ServiceUrls.DELETE_TEACHER_CLASSES_LIST, request);
+  }
+
+  filterTeacherClassesList(request: any) {
+    return this.dataService.callGetService(ServiceUrls.FILTER_TEACHER_CLASSES_LIST, request);
+  }
 }

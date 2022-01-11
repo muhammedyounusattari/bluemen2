@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-college-list',
@@ -63,12 +64,13 @@ export class CollegeListComponent implements OnInit {
             this.dataSource.sort = sort;
         }
     }
-    isLoading: boolean = true;    
+    isLoading: boolean = true;
 
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog
-        , private _collegeAndSchoolService: CollegeAndSchoolService) { }
+        , private _collegeAndSchoolService: CollegeAndSchoolService
+        , private toastr: ToastrService) { }
 
     ngOnInit() {
         this.navigateToComponent('service-group-list');
@@ -129,14 +131,17 @@ export class CollegeListComponent implements OnInit {
             this.collegeListEnum.notes = this.selectedRow.notes;
             this.openModal(this.collegeNamePopupRef);
         } else {
-            alert('Please select a row to update.')
+            this.toastr.info('Please select a row to update', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
         }
     }
 
     openModal(template: TemplateRef<any>) {
         this.modalRef = this.modalService.show(template, this.modalConfigSM)
     }
-    
+
     resetFields() {
         this.isEdit = false;
         this.collegeListEnum = new CollegeListEnum();
@@ -164,7 +169,7 @@ export class CollegeListComponent implements OnInit {
     setSelectedRow(selectedRowItem: any, index: number) {
         this.selectedRowIndex = index;
         this.selectedRow = selectedRowItem;
-    } 
+    }
 
     addNewCollegeName() {
         this.showLoader();
@@ -173,12 +178,20 @@ export class CollegeListComponent implements OnInit {
                 const isFound = this.collegeDataList.filter((item: any) => item.fafsaId === this.collegeListEnum.fafsaId);
                 if (isFound && isFound.length > 0) {
                     this.hideLoader();
-                    return alert('Entered FAFSAID is alreay exist, to add this organization name please change entered FAFSAID.');
+                    this.toastr.info('Entered FAFSAID is alreay exist, to add this organization name please change entered FAFSAID.', '', {
+                        timeOut: 5000,
+                        closeButton: true
+                    });
+                    return;
                 }
             }
         } else {
             this.hideLoader();
-            return alert('Please enter FAFSAID.');
+            this.toastr.info('Please enter FAFSAID.', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
+            return;
         }
         this.requestData.orgName = this.collegeListEnum.name;
         this.requestData.inPullDown = this.collegeListEnum.inPullDown;
@@ -213,6 +226,10 @@ export class CollegeListComponent implements OnInit {
                         this.selectedRowIndex = null;
                         this.dataSource.sort = this.sort;
                         this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
+                        this.toastr.success('Saved successfully!', '', {
+                            timeOut: 5000,
+                            closeButton: true
+                        });
                     }
                 });
             }
@@ -256,9 +273,13 @@ export class CollegeListComponent implements OnInit {
                             if (result) {
                                 this.dataSource = new MatTableDataSource(result.filter((item: any) => item.ncesId === null || item.ncesId === undefined));
                                 this.dataSource.paginator = this.paginator;
-                                this.selectedRowIndex = null;
+                                this.selectedRow = null;
                                 this.dataSource.sort = this.sort;
                                 this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
+                                this.toastr.success('Deleted successfully!', '', {
+                                    timeOut: 5000,
+                                    closeButton: true
+                                });
                             }
                         });
                     });
@@ -267,7 +288,10 @@ export class CollegeListComponent implements OnInit {
                 }
             });
         } else {
-            alert('Please select a row to delete.')
+            this.toastr.info('Please select a row to delete', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
         }
     }
 
@@ -304,10 +328,14 @@ export class CollegeListComponent implements OnInit {
                         document.getElementById('closePopup')?.click();
                         this.dataSource = new MatTableDataSource(result.filter((item: any) => item.ncesId === null || item.ncesId === undefined));
                         this.dataSource.paginator = this.paginator;
-                        this.selectedRowIndex = null;
+                        this.selectedRow = null;
                         this.dataSource.sort = this.sort;
                         this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
                         this.isEdit = false;
+                        this.toastr.success('Updated successfully!', '', {
+                            timeOut: 5000,
+                            closeButton: true
+                        });
                     }
                 });
             });

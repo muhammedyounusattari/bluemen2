@@ -30,7 +30,8 @@
     <div class="row ">
         <div class="col-md-6 mt-3 mb-3 ">
             <form class="example">
-                <input type="text" class="border-right" matInput (keyup)="applyFilter($event)" placeholder="Search.." />
+                <input type="text" class="border-rightToTxtBox" matInput (keyup)="applyFilter($event)"
+                    placeholder="Search.." />
             </form>
         </div>
     </div>
@@ -43,7 +44,7 @@
     <!-- Spinner End-->
 
     <!-- Data Table Start-->
-    <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading">
+    <div class="mat-elevation-z8 data-table-height dt-max-height" *ngIf="!isLoading">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> College Name </th>
@@ -52,7 +53,8 @@
 
             <ng-container matColumnDef="inPullDown">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> In Pulldown</th>
-                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.inPullDown ? 'YES' : 'NO'}} </td>
+                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.inPullDown ? 'YES' :
+                    'NO'}} </td>
             </ng-container>
             <ng-container matColumnDef="fafsaId">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> FAFSA ID </th>
@@ -86,67 +88,6 @@
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
     </div>
     <!-- Data Table End-->
-
-
-    <!-- <div class="table-responsive" style="border:1px solid #1366A0;">
-        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-            <thead>
-                <tr style="background: #F5F6FA;">
-                    <th scope="col">College Name</th>
-                    <th scope="col">In Pulldown</th>
-                    <th scope="col">FAFSA ID</th>
-                    <th scope="col">Country Name</th>
-                    <th scope="col">Phone 1</th>
-                    <th scope="col">Phone 2</th>
-                    <th scope="col">Phone 3</th>
-                    <th scope="col">FAX</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngIf="!spinner">
-                    <tr *ngFor="let collegeData of collegeDataList; let idx = index;"
-                        (click)="setSelectedRow(collegeData, idx)"
-                        [ngClass]="{'selected-row' : this.selectedRowIndex == idx}">
-                        <td>{{collegeData.name}}</td>
-                        <td>{{collegeData.inPullDown}}</td>
-                        <td>{{collegeData.fafsaId}}</td>
-                        <td>{{collegeData.country}}</td>
-                        <td>{{collegeData.phone1}}</td>
-                        <td>{{collegeData.phone2}}</td>
-                        <td>{{collegeData.phone3}}</td>
-                        <td>{{collegeData.fax}}</td>
-                    </tr>
-                </ng-container>
-                <div class="no-record">
-                    <div *ngIf="spinner" class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div *ngIf="collegeDataList.length == 0">
-                        <span>No Data Found</span>
-                    </div>
-                </div>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12 mt-3">
-
-            <nav aria-label="Page navigation example">
-                <ul class="pagination pagination-sm justify-content-right">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div> -->
 </div>
 
 <!-- Buttons Start-->
@@ -185,154 +126,12 @@
 </nav>
 <!-- Buttons End-->
 
-<!-- Modal -->
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">College Name</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="selectedRowIndex = null;"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row">
-                            <div class="col-md-12 flex">
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Name:</label>
-                                    <input type="text" [(ngModel)]="collegeListEnum.name" class="form-control"
-                                        id="collegeName" [readonly]="isDisabled"> &nbsp;
-                                        <label class="radio-inline">
-                                            <input type="checkbox" name="optradio"> In Pulldown List
-                                        </label>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Codes:</label>
-                                    <input type="text" class="form-control" [(ngModel)]="collegeListEnum.codes"
-                                        id="codes"> &nbsp;
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Title:</label>
-                                    <input type="text" class="form-control" [(ngModel)]="collegeListEnum.title"
-                                        id="title"> &nbsp;
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="usr">County:</label>
-                                    <input type="text" class="form-control" [(ngModel)]="collegeListEnum.country"
-                                        id="country"> &nbsp;
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Address:</label>
-                                    <textarea type="text" class="form-control" id="address"
-                                        [(ngModel)]="collegeListEnum.address"> </textarea>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="usr">FAFSA ID:</label>
-                                    <input type="text" class="form-control" id="fafsaId"
-                                        [(ngModel)]="collegeListEnum.fafsaId" [readonly]="isDisabled"> &nbsp;
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <div class="form-group col-md-6">
-                                    <label for="usr">City:</label>
-                                    <select class="form-control" id="city" [(ngModel)]="collegeListEnum.city">
-                                        <option selected>Pune</option>
-                                        <option>Mumbai</option>
-                                    </select>
-
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="usr">State:</label>
-                                    <select class="form-control" id="state" [(ngModel)]="collegeListEnum.states">
-                                        <option selected>Maharashtra</option>
-                                        <option>Goa</option>
-                                    </select>
-
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Zip Code:</label>
-                                    <input type="text" class="form-control" id="zipcode"
-                                        [(ngModel)]="collegeListEnum.zipcode"> &nbsp;
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Fiscal Years:</label>
-                                    <input type="text" class="form-control" id="fiscalYear"
-                                        [(ngModel)]="collegeListEnum.fiscalYear"> &nbsp;
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Phone 1:</label>
-                                    <input type="text" class="form-control" id="phone1"
-                                        [(ngModel)]="collegeListEnum.phone1"> &nbsp;
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Phone 2:</label>
-                                    <input type="text" class="form-control" id="phone2"
-                                        [(ngModel)]="collegeListEnum.phone2"> &nbsp;
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Phone 3:</label>
-                                    <input type="text" class="form-control" id="phone3"
-                                        [(ngModel)]="collegeListEnum.phone3"> &nbsp;
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="usr">FAX:</label>
-                                    <input type="text" class="form-control" id="fax" [(ngModel)]="collegeListEnum.fax">
-                                    &nbsp;
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Web Site:</label>
-                                    <input type="text" class="form-control" id="website"
-                                        [(ngModel)]="collegeListEnum.website"> &nbsp;
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Email:</label>
-                                    <input type="text" class="form-control" id="email"
-                                        [(ngModel)]="collegeListEnum.email"> &nbsp;
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <div class="form-group">
-                                    <label for="usr">Notes:</label>
-                                    <textarea type="text" cols="100" rows="5" class="form-control" id="notes"
-                                        [(ngModel)]="collegeListEnum.notes"> </textarea>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="closePopup"
-                    (click)="isEdit = false; selectedRowIndex = null;" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewCollegeName()">Save
-                    & Close</button>
-                <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update
-                    & Close</button>
-            </div>
-        </div>
-    </div>
-</div> -->
-
 <!-- Modal Start-->
 <ng-template #collegeNamePopup>
     <!-- Modal -->
     <div class="modal-header popHeaderBG">
         <span class="modal-title popHeader" id="exampleModalLabel">College Name</span>
-        <button type="button" class="btn-close" (click)="selectedRowIndex = null; modalRef.hide()"
+        <button type="button" class="btn-close" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()"
             aria-label="Close"></button>
     </div>
     <div class="modal-body">
@@ -344,9 +143,10 @@
                             <label for="usr">Name:</label>
                             <input type="text" [(ngModel)]="collegeListEnum.name" class="form-control" id="collegeName"
                                 [readonly]="isDisabled"> &nbsp;
-                                <label class="radio-inline inpulldownChk">
-                                    <input type="checkbox" [(ngModel)]="collegeListEnum.inPullDown" name="optradio"> In Pulldown List
-                                </label>
+                            <label class="radio-inline inpulldownChk">
+                                <input type="checkbox" [(ngModel)]="collegeListEnum.inPullDown" name="optradio"> In
+                                Pulldown List
+                            </label>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="usr">Codes:</label>
@@ -460,11 +260,9 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="closePopup"
             (click)="selectedRowIndex = null; modalRef.hide();" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" *ngIf="!isEdit"
-            (click)="addNewCollegeName();">Save
+        <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewCollegeName();">Save
             & Close</button>
-        <button type="button" class="btn btn-primary" *ngIf="isEdit"
-            (click)="updateSelectedRow();">Update
+        <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();">Update
             & Close</button>
     </div>
 </ng-template>

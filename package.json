@@ -29,13 +29,14 @@
     "cors": "^2.8.5",
     "hammerjs": "^2.0.8",
     "ngx-bootstrap": "^7.1.0",
+    "ngx-toastr": "^14.2.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "typescript": "~4.4.4",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^13.0.1",
+    "@angular-devkit/build-angular": "^0.1101.2",
     "@angular/cli": "^13.0.3",
     "@angular/compiler-cli": "~13.0.2",
     "@types/jasmine": "~3.8.0",
