@@ -260,6 +260,7 @@ export class TutorClassesComponent implements OnInit {
     let payload = this.payloadFormation();
     console.log(payload);
     this.tutorClassesService.addTutorClasses(payload).subscribe((result) => {
+      this.getTutorClassesList();
       console.log(result);
     });
 
@@ -271,7 +272,7 @@ export class TutorClassesComponent implements OnInit {
     };
     this.tutorClassesService.deleteTutorClasses(payload).subscribe((result)=>{
       if(result){
-
+        this.getTutorClassesList();
       }
     });
   }
