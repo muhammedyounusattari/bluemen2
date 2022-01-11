@@ -32,6 +32,13 @@ export class LabContactService {
   }
 
   /**
+   * @method getActivityServiceList
+   */
+   public getActivityServiceList(): Observable<any> {
+    return this.dataService.callGetService(ServiceUrls.GET_ACTIVITY_SERVICE_LIST);
+  }
+
+  /**
    * @method addLabContacts
    * @param request
    */

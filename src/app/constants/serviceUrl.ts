@@ -130,7 +130,7 @@ export class ServiceUrls {
     public static GET_SYSTEM_PREFERENCES = environment.apiUrl + '/blumen-api/admin/getSystemPreferenceData/v1';
 
     // Lab Contacts API URL's
-    public static GET_LAB_CONTACTS = environment.apiUrl + '/blumen-api/blumen-api/admin/getLabContacts/v1';
+    public static GET_LAB_CONTACTS = environment.apiUrl + '/blumen-api/admin/getLabContacts/v1';
     public static DELETE_LAB_CONTACTS = environment.apiUrl + '/blumen-api/admin/deleteLabContact/v1';
     public static ADD_LAB_CONTACTS = environment.apiUrl + '/blumen-api/admin/addStudentLabContactList/v1';
     public static UPDATE_LAB_CONTACTS = environment.apiUrl + '/blumen-api/admin/updateStudentLabContactList/v1';

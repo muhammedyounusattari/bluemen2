@@ -25,6 +25,20 @@ export class CounselorContactsService {
     return this.dataService.callGetService(ServiceUrls.GET_STUDENTS_LIST);
   }
 
+  /**
+   * @method getStaffList
+   */
+   public getStaffList(): Observable<any> {
+    return this.dataService.callGetService(ServiceUrls.GET_STAFF_MEMBERS);
+  }
+
+  /**
+   * @method getActivityServiceList
+   */
+   public getActivityServiceList(): Observable<any> {
+    return this.dataService.callGetService(ServiceUrls.GET_ACTIVITY_SERVICE_LIST);
+  }
+
   // /**
   //  * @method getCounselorContactsAdvFilter
   //  */

@@ -18,7 +18,7 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
 
 export class TutorContactsComponent implements OnInit {
   public columnsToDisplay: string[] =
-    ['firstName', 'lastName', 'phoneNumber', 'staffContactDate', 'staffContactTutor', 'staffContactTime', 'staffRecontactDate'];
+    ['firstName', 'lastName', 'phoneNumber', 'staffContactDate', 'staffContactTutor', 'staffTotalTime', 'staffRecontactDate'];
   public modalColumnsToDisplay: string[] =
     ['ssno', 'firstName', 'lastName', 'phoneNumber', 'fiscalYear', 'active', 'served', 'reported', 'counselor', 'school', 'standing'];
   public serviceColumnsToDisplay: string[] = ['activity', 'totalTime'];
@@ -54,7 +54,9 @@ export class TutorContactsComponent implements OnInit {
   public spinner: boolean = true;
   public activityServiceData: any = [];
   public isActivityEdit: boolean = false;
-  public tutorsList: any = []
+  public tutorsList: any = [];
+  public studentData: any;
+  public activityServiceList: any = [];
 
   constructor(
     private modalService: BsModalService,
@@ -131,6 +133,8 @@ export class TutorContactsComponent implements OnInit {
    * @method openEditModal
    */
   public openEditModal() {
+    this.studentData = this.selectedOption === 'Edit' && this.selectedRowData.ssno &&
+    this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData;
     if (this.selectedOption === 'Edit') {
       this.patchValuesToForm();
     }
@@ -145,7 +149,7 @@ export class TutorContactsComponent implements OnInit {
     if (this.isActivityEdit) {
       if (this.activityServiceData.length > 0) {
         this.activityServiceForm.patchValue({
-          activity: this.selectedEditModalRowData?.activityService,
+          activity: this.selectedEditModalRowData?.activity,
           time: this.selectedEditModalRowData?.totalTime
         });
         this.activityServiceModalRef = this.modalService.show(this.activityServicePopupRef, this.modalConfigSM);
@@ -198,8 +202,8 @@ export class TutorContactsComponent implements OnInit {
     this.tutorContactService.getStaffList().subscribe((result: any) => {
       if (result && result.length > 0) {
         result.forEach((element: any) => {
-          if (element.staffTutor && element.staffContactTutor) {
-            this.tutorsList.push(element.staffContactTutor);
+          if (element.staffTutor && element.staffName) {
+            this.tutorsList.push(element.staffName);
           }
         });
       }
@@ -267,12 +271,24 @@ export class TutorContactsComponent implements OnInit {
   public getSelectedOption(selectedOption: string) {
     this.selectedOption = selectedOption;
     this.getStaffList();
+    this.getActivityServiceList();
     if (this.selectedOption === 'Edit') {
       this.openEditModal();
     } else {
       this.getStudentsList();
       this.openModal();
     }
+  }
+
+  /**
+   * @method getActivityServiceList
+   */
+  public getActivityServiceList() {
+    this.tutorContactService.getActivityServiceList().subscribe(result => {
+      if(result) {
+        this.activityServiceList = result;
+      }
+    })
   }
 
   /**

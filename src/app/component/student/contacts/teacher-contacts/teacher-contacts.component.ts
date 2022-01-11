@@ -56,6 +56,9 @@ export class TeacherContactsComponent {
   public spinner: boolean = true;
   public activityServiceData: any = [];
   public isActivityEdit: boolean = false;
+  public teachersList: any = [];
+  public studentData: any;
+  public activityServiceList: any = [];
 
   constructor(
     private modalService: BsModalService,
@@ -129,6 +132,8 @@ export class TeacherContactsComponent {
    * @method openEditModal
    */
   public openEditModal() {
+    this.studentData = this.selectedOption === 'Edit' && this.selectedRowData.ssno &&
+    this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData;
     if(this.selectedOption === 'Edit') {
       this.patchValuesToForm(); 
     }
@@ -143,7 +148,7 @@ export class TeacherContactsComponent {
     if (this.isActivityEdit) {
       if (this.activityServiceData.length > 0) {
         this.activityServiceForm.patchValue({
-          activity: this.selectedEditModalRowData?.activityService,
+          activity: this.selectedEditModalRowData?.activity,
           time: this.selectedEditModalRowData?.totalTime
         });
         this.activityServiceModalRef = this.modalService.show(this.activityServicePopupRef, this.modalConfigSM);
@@ -185,6 +190,21 @@ export class TeacherContactsComponent {
         this.studentsList = result;
         this.modalDataSource = new MatTableDataSource(this.studentsList);
         this.getSelectedModalRow(this.studentsList[0], 0);
+      }
+    });
+  }
+
+  /**
+   * @method getStaffList
+   */
+   public getStaffList() {
+    this.teacherContactsService.getStaffList().subscribe((result: any) => {
+      if (result && result.length > 0) {
+        result.forEach((element: any) => {
+          if (element.staffTeacher && element.staffName) {
+            this.teachersList.push(element.staffName);
+          }
+        });
       }
     });
   }
@@ -248,14 +268,27 @@ export class TeacherContactsComponent {
    * @method getSelectedOption
    * @description get the requested modal type
    */
-  public getSelectedOption(selectedOption: string) {
+   public getSelectedOption(selectedOption: string) {
     this.selectedOption = selectedOption;
+    this.getStaffList();
+    this.getActivityServiceList();
     if (this.selectedOption === 'Edit') {
-      this.openEditModal()
+      this.openEditModal();
     } else {
       this.getStudentsList();
       this.openModal();
     }
+  }
+
+  /**
+   * @method getActivityServiceList
+   */
+  public getActivityServiceList() {
+    this.teacherContactsService.getActivityServiceList().subscribe(result => {
+      if(result) {
+        this.activityServiceList = result;
+      }
+    })
   }
 
   /**
@@ -384,7 +417,7 @@ export class TeacherContactsComponent {
       staffTotalTime: this.teacherContactsEditModalForm.controls.totalTime.value.toString(),
       staffNotes: formValue.notes,
       activityRenderedList: this.activityServiceData,
-      student: this.selectedRowData && this.selectedRowData.ssno && 
+      student: this.selectedOption === 'Edit' && this.selectedRowData.ssno && 
         this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData
     }
   }

@@ -54,7 +54,10 @@ export class CounselorContactsComponent {
     public spinner: boolean = true;
     public activityServiceData: any = [];
     public isActivityEdit: boolean = false;
-  
+    public counselorsList: any = [];
+    public studentData: any;
+    public activityServiceList: any = [];
+
     constructor(
       private modalService: BsModalService,
       private fb: FormBuilder,
@@ -128,6 +131,8 @@ export class CounselorContactsComponent {
      * @method openEditModal
      */
     public openEditModal() {
+      this.studentData = this.selectedOption === 'Edit' && this.selectedRowData.ssno &&
+      this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData;
       if(this.selectedOption === 'Edit') {
         this.patchValuesToForm();
       }
@@ -142,7 +147,7 @@ export class CounselorContactsComponent {
     if (this.isActivityEdit) {
       if (this.activityServiceData.length > 0) {
         this.activityServiceForm.patchValue({
-          activity: this.selectedEditModalRowData?.activityService,
+          activity: this.selectedEditModalRowData?.activity,
           time: this.selectedEditModalRowData?.totalTime
         });
         this.activityServiceModalRef = this.modalService.show(this.activityServicePopupRef, this.modalConfigSM);
@@ -187,7 +192,21 @@ export class CounselorContactsComponent {
         }
       });
     }
-  
+
+  /**
+   * @method getStaffList
+   */
+   public getStaffList() {
+    this.counselorContactsService.getStaffList().subscribe((result: any) => {
+      if (result && result.length > 0) {
+        result.forEach((element: any) => {
+          if (element.staffCounselor && element.staffName) {
+            this.counselorsList.push(element.staffName);
+          }
+        });
+      }
+    });
+  }
   
     /**
      * @method addCounselorContacts
@@ -242,19 +261,32 @@ export class CounselorContactsComponent {
         });
     }
   
-    /**
-     * @method getSelectedOption
-     * @description get the requested modal type
-     */
-    public getSelectedOption(selectedOption: string) {
-      this.selectedOption = selectedOption;
-      if (this.selectedOption === 'Edit') {
-        this.openEditModal()
-      } else {
-        this.getStudentsList();
-        this.openModal();
-      }
+  /**
+   * @method getSelectedOption
+   * @description get the requested modal type
+   */
+   public getSelectedOption(selectedOption: string) {
+    this.selectedOption = selectedOption;
+    this.getStaffList();
+    this.getActivityServiceList();
+    if (this.selectedOption === 'Edit') {
+      this.openEditModal();
+    } else {
+      this.getStudentsList();
+      this.openModal();
     }
+  }
+
+  /**
+   * @method getActivityServiceList
+   */
+  public getActivityServiceList() {
+    this.counselorContactsService.getActivityServiceList().subscribe(result => {
+      if(result) {
+        this.activityServiceList = result;
+      }
+    })
+  }
   
     /**
      * @method getSelectedRow
@@ -382,7 +414,7 @@ export class CounselorContactsComponent {
       staffTotalTime: this.counselorContactsEditModalForm.controls.totalTime.value.toString(),
       staffNotes: formValue.notes,
       activityRenderedList: this.activityServiceData,
-      student: this.selectedRowData && this.selectedRowData.id && 
+      student: this.selectedOption === 'Edit' && this.selectedRowData.id && 
         this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData
     }
   }

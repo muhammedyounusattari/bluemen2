@@ -53,7 +53,9 @@ export class LabContactsComponent {
   public spinner: boolean = true;
   public activityServiceData: any = [];
   public isActivityEdit: boolean = false;
-  public labsList: any = []
+  public labsList: any = [];
+  public studentData: any;
+  public activityServiceList: any = [];
 
   constructor(
     private modalService: BsModalService,
@@ -126,6 +128,8 @@ export class LabContactsComponent {
    * @method openEditModal
    */
   public openEditModal() {
+    this.studentData = this.selectedOption === 'Edit' && this.selectedRowData.ssno &&
+    this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData;
     if(this.selectedOption === 'Edit') {
       this.patchValuesToForm();
     }
@@ -140,7 +144,7 @@ export class LabContactsComponent {
     if (this.isActivityEdit) {
       if (this.activityServiceData.length > 0) {
         this.activityServiceForm.patchValue({
-          activity: this.selectedEditModalRowData?.activityService,
+          activity: this.selectedEditModalRowData?.activity,
           time: this.selectedEditModalRowData?.totalTime
         });
         this.activityServiceModalRef = this.modalService.show(this.activityServicePopupRef, this.modalConfigSM);
@@ -193,8 +197,8 @@ export class LabContactsComponent {
     this.labContactService.getStaffList().subscribe((result: any) => {
       if (result && result.length > 0) {
         result.forEach((element: any) => {
-          if (element.staffLab && element.staffContactLab) {
-            this.labsList.push(element.staffContactLab);
+          if (element.staffLab && element.staffName) {
+            this.labsList.push(element.staffName);
           }
         });
       }
@@ -259,15 +263,27 @@ export class LabContactsComponent {
    * @method getSelectedOption
    * @description get the requested modal type
    */
-  public getSelectedOption(selectedOption: string) {
+   public getSelectedOption(selectedOption: string) {
     this.selectedOption = selectedOption;
     this.getStaffList();
+    this.getActivityServiceList();
     if (this.selectedOption === 'Edit') {
       this.openEditModal();
     } else {
       this.getStudentsList();
       this.openModal();
     }
+  }
+
+  /**
+   * @method getActivityServiceList
+   */
+  public getActivityServiceList() {
+    this.labContactService.getActivityServiceList().subscribe(result => {
+      if(result) {
+        this.activityServiceList = result;
+      }
+    })
   }
 
   /**
@@ -396,7 +412,7 @@ export class LabContactsComponent {
       staffTotalTime: this.labContactsEditModalForm.controls.totalTime.value.toString(),
       staffNotes: formValue.notes,
       activityRenderedList: this.activityServiceData,
-      student: this.selectedRowData && this.selectedRowData.ssno && 
+      student: this.selectedOption === 'Edit' && this.selectedRowData.ssno && 
         this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData
     }
   }

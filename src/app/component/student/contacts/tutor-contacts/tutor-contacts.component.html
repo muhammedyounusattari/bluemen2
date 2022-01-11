@@ -35,9 +35,9 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Tutor </th>
                 <td mat-cell *matCellDef="let entry"> {{entry.staffContactTutor | titlecase}} </td>
             </ng-container>
-            <ng-container matColumnDef="staffContactTime">
+            <ng-container matColumnDef="staffTotalTime">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact Time </th>
-                <td mat-cell *matCellDef="let entry"> {{entry.staffContactTime}} </td>
+                <td mat-cell *matCellDef="let entry"> {{entry.staffTotalTime}} </td>
             </ng-container>
             <ng-container matColumnDef="staffRecontactDate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Re-Contact Date </th>
@@ -563,6 +563,10 @@
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
             <form [formGroup]="tutorContactsEditModalForm" class="tab-pane fade show active" id="home" role="tabpanel"
                 aria-labelledby="home-tab">
+                <div class="col-md-4">
+                    <h4>Student's Name : <span>{{studentData?.firstName}} {{studentData?.lastName}}</span></h4>
+                    <h4>Student's SSNO : <span>{{studentData?.ssno}}</span></h4>
+                </div>
                 <div class="container">
                     <div class="row">
                         <div class="col-md-4">
@@ -599,11 +603,6 @@
                                     <select formControlName="tutor" name="sel3" class="form-control" id="sel4">
                                         <option selected value="">Please select</option>
                                         <option *ngFor="let tutor of tutorsList" [value]="tutor">{{tutor}}</option>
-                                        <!-- <option value="James">James</option>
-                                        <option value="Adam">Adam</option>
-                                        <option value="Allen">Allen</option>
-                                        <option value="Avery">Avery</option>
-                                        <option value="Barber">Barber</option> -->
                                     </select>
                                 </span>
                             </div>
@@ -692,10 +691,9 @@
                                     <select formControlName="activityService" name="sel3" class="form-control"
                                         id="sel4">
                                         <option selected value="">Please select</option>
-                                        <option value="Academic Tutoring">Academic Tutoring</option>
-                                        <option value="ACT Registration">ACT Registration</option>
-                                        <option value="ACT Preparation">ACT Preparation</option>
-                                        <option value="Career Planning">Career Planning</option>
+                                        <option *ngFor="let item of activityServiceList" [value]="item?.activityName">
+                                            {{item?.activityName}}
+                                        </option>
                                     </select>
                                 </span>
                             </div>
@@ -728,8 +726,8 @@
                         </div>
                         <div class="col-md-4">&nbsp;</div>
                     </div>
-                    <div class="md-form col-md-12 mb-4 mt-4">
-                        <div class="table-responsive"
+                    <div class="md-form form-group pink-textarea active-pink-textarea-2">
+                        <div class="mat-elevation-z8 data-table-height mt-4 mb-4"
                             style="border:1px solid #1366A0;overflow-y: auto">
                             <table mat-table [dataSource]="serviceDataSource" class="table table-hover mat-elevation-z8"
                                 [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
@@ -763,7 +761,7 @@
                         <label for="form23"> Notes:
                         </label>
                         <i class="fa fa-edit"></i>
-                        <textarea formControlName="notes" class="md-textarea form-control" rows="3"></textarea>
+                        <textarea formControlName="notes" placeholder="Enter notes" class="md-textarea form-control" rows="3"></textarea>
                     </div>
                 </div>
                 <nav class="navbar navbar-expand-lg navbar-light "
