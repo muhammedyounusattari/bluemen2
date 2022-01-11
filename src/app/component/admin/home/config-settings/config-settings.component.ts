@@ -97,13 +97,14 @@ export class ConfigSettingsComponent implements OnInit {
   }
 
   setSelectedRowToUpdate() {
-      this.isEdit = true;
-      this.id = this.selectedRow.id
-      this.configValue = this.selectedRow.configValue;
-      this.configType = this.selectedRow.configType;
-      this.description = this.selectedRow.description;
-      this.openModal(this.confiSettingPopupRef);
-  }
+        this.isEdit = true;
+        this.id = this.selectedRow.id
+        this.configValue = this.selectedRow.configValue;
+        this.configType = this.selectedRow.configType;
+        this.description = this.selectedRow.description;
+        this.openModal(this.confiSettingPopupRef);
+    }
+
 
   hideLoader() {
     this.myElement = window.document.getElementById('loading');

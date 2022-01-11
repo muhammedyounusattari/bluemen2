@@ -260,6 +260,8 @@ export class CounselorClassesComponent implements OnInit {
     }
 
     addSelectedStudentToClassGrid() {
+        this.selectedStudentRow.grade = '';
+        this.selectedStudentRow.gradeNotes = '';
         this.counselorClassListEnum.studentList.push(this.selectedStudentRow);
         this.bindClassesStudentListData();
         this.selectedStudentRow = null;

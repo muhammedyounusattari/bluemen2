@@ -136,13 +136,9 @@
 
                         <div class="form-group mt-3">
                             <label for="usr" class="lable-style">Group Name:</label>
-                            <select class="form-control" id="gradeStdGrpName"
+                            <select class="form-control" id="gr adeStdGrpName"
                                 [(ngModel)]="gradeGroupStandingList.gradingGroupName">
-                                <option selected>Freshman | 1</option>
-                                <option selected>Junior | 2</option>
-                                <option selected>Senior | 3</option>
-                                <option selected>Sophomore | 4</option>
-                                <option selected>test | 5</option>
+                                <option *ngFor="let groupObj of ddlGroupList" value="{{groupObj.gradeGroupName}}">{{groupObj.gradeGroupName}}</option>
                             </select>
                         </div>
 

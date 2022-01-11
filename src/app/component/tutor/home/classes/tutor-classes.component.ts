@@ -89,7 +89,6 @@ export class TutorClassesComponent implements OnInit {
   }
 
   openTutorClassesModal(template: TemplateRef<any>) {
-    this.resetFields();
     this.modalRef = this.modalService.show(template, this.modalConfigSM);
   }
 
@@ -111,23 +110,23 @@ export class TutorClassesComponent implements OnInit {
     if(this.selectedRow) {
       this.id = this.selectedRow.id;
       this.tutorClassesService.getTutorClassesRecordPerId(this.id).subscribe((request)=>{
-        if(request){
+      if(request){
 
-          this.id= request.id;
-          this.classPeriod= String(request.classPeriod);
-          this.currentYear= String(request.currentYear);
-          this.days= String(request.days);
-          this.duration= String(request.duration);
-          this.maxLimit= String(request.maxLimit);
-          this.meetingTime= request.meetingTime;
-          this.notes= request.notes;
-          this.room= request.room;
-          this.semester= request.semester;
+            this.id= request.id;
+            this.classPeriod= String(request.classPeriod);
+            this.currentYear= String(request.currentYear);
+            this.days= String(request.days);
+            this.duration= String(request.duration);
+            this.maxLimit= String(request.maxLimit);
+            this.meetingTime= request.meetingTime;
+            this.notes= request.notes;
+            this.room= request.room;
+            this.semester= request.semester;
 
-          this.selectedStudentList= request.studentList;
-          this.subject= request.subject;
-          this.tutorName= request.tutorName
-        }
+            this.selectedStudentList= request.studentList;
+            this.subject= request.subject;
+            this.tutorName= request.tutorName
+      }
 
 
       });

@@ -260,6 +260,8 @@ export class TeacherClassesComponent implements OnInit {
     }
 
     addSelectedStudentToClassGrid() {
+        this.selectedStudentRow.grade = '';
+        this.selectedStudentRow.gradeNotes = '';
         this.teacherClassListEnum.studentList.push(this.selectedStudentRow);
         this.bindClassesStudentListData();
         this.selectedStudentRow = null;

@@ -52,6 +52,7 @@ export class GradeStandingListComponent implements OnInit {
         }
     }
     isLoading: boolean = true;
+    ddlGroupList: any= [];
 
     constructor(private modalService: BsModalService
         , private router: Router
@@ -72,6 +73,11 @@ export class GradeStandingListComponent implements OnInit {
                 this.dataSource.paginator = this.paginator;
                 this.selectedRowIndex = null;
                 this.dataSource.sort = this.sort;
+            }
+        });
+        this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
+            if (result) {
+                this.ddlGroupList = result;
             }
         });
     }
