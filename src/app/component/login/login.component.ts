@@ -13,7 +13,7 @@ export class LoginComponent {
     username: 'mumbaiuniversity.user1',
     password: 'mupassword1234'
   }
-  uname: string = 'mumbaiuniversity.user1';
+  uname: string = 'EOC_DEMO';
   password: string = 'mupassword1234';
 
   constructor(private _loginService: LoginService) {}
@@ -24,5 +24,11 @@ export class LoginComponent {
         this.validateLogin.emit(result);
       }
     });
+    const result = {
+      body: {
+        access_token: 'asfjaskdf090909-dasfsadfdsfa09090909'
+      }
+    }
+    this.validateLogin.emit(result);
   }
 }

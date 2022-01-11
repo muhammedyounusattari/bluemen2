@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   }
   validate(event: any) {
     localStorage.setItem('accessToken', 'null');
-    event = JSON.parse(event);
+    // event = JSON.parse(event);
     if (event && event.body && event.body.access_token) {
       this.isLoggedIn = true;
       localStorage.setItem('accessToken', event.body.access_token);
