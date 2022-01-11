@@ -89,6 +89,7 @@ export class TutorClassesComponent implements OnInit {
   }
 
   openTutorClassesModal(template: TemplateRef<any>) {
+    this.resetFields();
     this.modalRef = this.modalService.show(template, this.modalConfigSM);
   }
 
@@ -110,39 +111,27 @@ export class TutorClassesComponent implements OnInit {
     if(this.selectedRow) {
       this.id = this.selectedRow.id;
       this.tutorClassesService.getTutorClassesRecordPerId(this.id).subscribe((request)=>{
-      if(request){
+        if(request){
 
-            this.id= request.id;
-            this.classPeriod= String(request.classPeriod);
-            this.currentYear= String(request.currentYear);
-            this.days= String(request.days);
-            this.duration= String(request.duration);
-            this.maxLimit= String(request.maxLimit);
-            this.meetingTime= request.meetingTime;
-            this.notes= request.notes;
-            this.room= request.room;
-            this.semester= request.semester;
+          this.id= request.id;
+          this.classPeriod= String(request.classPeriod);
+          this.currentYear= String(request.currentYear);
+          this.days= String(request.days);
+          this.duration= String(request.duration);
+          this.maxLimit= String(request.maxLimit);
+          this.meetingTime= request.meetingTime;
+          this.notes= request.notes;
+          this.room= request.room;
+          this.semester= request.semester;
 
-            this.selectedStudentList= request.studentList;
-            this.subject= request.subject;
-            this.tutorName= request.tutorName
-      }
+          this.selectedStudentList= request.studentList;
+          this.subject= request.subject;
+          this.tutorName= request.tutorName
+        }
 
 
       });
-     /* this.classPeriod = this.selectedRow.classPeriod;
-      this.currentYear = String(this.selectedRow.currentYear);
-      this.days = String(this.selectedRow.days);
-      this.duration = String(this.selectedRow.duration);
-      this.maxLimit = String(this.selectedRow.maxLimit);
-      this.meetingTime = this.selectedRow.meetingTime;
-      this.notes = this.selectedRow.notes;
-      this.room = this.selectedRow.room;
-      this.semester = this.selectedRow.semester;
-      //this.studentAssigned = '';
-      this.selectedStudentList = this.selectedRow.selectedStudentList;
-      this.subject = this.selectedRow.subject;
-      this.tutorName = this.selectedRow.tutorName; */
+
     }
   }
 
@@ -177,21 +166,7 @@ export class TutorClassesComponent implements OnInit {
         this.selectedRowIndex = null;
         this.dataSource.sort = this.sort;
         console.log('...', result);
-        //  this.studentList = [];
 
-        /*    this.classPeriod= result.classPeriod;
-                    this.currentYear= result.currentYear;
-                    this.days= result.days;
-                    this.duration= result.duration;
-                    this.maxLimit= result.maxLimit;
-                    this.meetingTime= result.meetingTime;
-                    this.notes= result.notes;
-                    this.room= result.room;
-                    this.semester= result.semester;
-
-                 //   this.studentList= result.selectedStudentList;
-                    this.subject= result.subject;
-                    this.tutorName= result.tutorName */
       }
 
     });
@@ -296,9 +271,5 @@ export class TutorClassesComponent implements OnInit {
     }
 
   }
-
-
-
-
 }
 
