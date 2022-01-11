@@ -8,13 +8,14 @@
         <div class="col-md-12 mt-3 mb-3 ">
             <!-- Modal -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation" id="generalTab" >
+                <li class="nav-item" role="presentation" id="generalTab">
                     <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"
                         aria-controls="home" aria-selected="true" (click)="activeTab('generalTab')">General Setting</a>
                 </li>
                 <li class="nav-item" role="presentation" id="defaultTab">
                     <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
-                        aria-controls="profile" aria-selected="false" (click)="activeTab('defaultTab')">Default Setting</a>
+                        aria-controls="profile" aria-selected="false" (click)="activeTab('defaultTab')">Default
+                        Setting</a>
                 </li>
             </ul>
             <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
@@ -289,10 +290,10 @@
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <table style="width: 100%; height: 100%;" class="table-responsive form-control tabletd ">
                         <tbody>
-                                                       
+
                             <tr>
                                 <td>
-                                    <table  class="tabletd">
+                                    <table class="tabletd">
                                         <tbody>
                                             <tr>
                                                 <td style="width: 265px">
@@ -314,8 +315,8 @@
                                     </table>
                                 </td>
                             </tr>
-                            
-                           
+
+
                             <tr>
                                 <td>
                                     <table style="width: 100%; height: 100%;">
@@ -336,7 +337,8 @@
                                                     <input id="ctl00_head_chkACTIVE" type="checkbox"
                                                         [(ngModel)]="defaultSettingTab.studentActive"
                                                         name="ctl00$head$chkACTIVE" checked="checked"><label
-                                                        for="ctl00_head_chkACTIVE"> &nbsp; Prompt to mark a student ACTIVE for
+                                                        for="ctl00_head_chkACTIVE"> &nbsp; Prompt to mark a student
+                                                        ACTIVE for
                                                         the fiscal year</label>
                                                 </td>
                                             </tr>
@@ -348,7 +350,8 @@
                                                     <input id="ctl00_head_chkSERVED" type="checkbox"
                                                         [(ngModel)]="defaultSettingTab.studentServed"
                                                         name="ctl00$head$chkSERVED" checked="checked"><label
-                                                        for="ctl00_head_chkSERVED">  &nbsp;Prompt to mark a student SERVED for
+                                                        for="ctl00_head_chkSERVED"> &nbsp;Prompt to mark a student
+                                                        SERVED for
                                                         the fiscal year</label>
                                                 </td>
                                             </tr>
@@ -360,7 +363,8 @@
                                                     <input id="ctl00_head_chkREPORTED" type="checkbox"
                                                         [(ngModel)]="defaultSettingTab.studentReported"
                                                         name="ctl00$head$chkREPORTED" checked="checked"><label
-                                                        for="ctl00_head_chkREPORTED"> &nbsp; Prompt to mark a student REPORTED
+                                                        for="ctl00_head_chkREPORTED"> &nbsp; Prompt to mark a student
+                                                        REPORTED
                                                         for the fiscal year</label>
                                                 </td>
                                             </tr>
@@ -372,7 +376,8 @@
                                                     <input id="ctl00_head_ChkADD" type="checkbox"
                                                         [(ngModel)]="defaultSettingTab.addStudentToFiscalYear"
                                                         name="ctl00$head$ChkADD" checked="checked"><label
-                                                        for="ctl00_head_ChkADD">  &nbsp; Prompt to ADD a student to the fiscal
+                                                        for="ctl00_head_ChkADD"> &nbsp; Prompt to ADD a student to the
+                                                        fiscal
                                                         year</label>
                                                 </td>
                                             </tr>
@@ -384,7 +389,7 @@
                                                     <input id="ctl00_head_chkFIRSTDTSERVICE" type="checkbox"
                                                         [(ngModel)]="defaultSettingTab.updateFirstDateOfService"
                                                         name="ctl00$head$chkFIRSTDTSERVICE" checked="checked"><label
-                                                        for="ctl00_head_chkFIRSTDTSERVICE">  &nbsp; Update "First Date of
+                                                        for="ctl00_head_chkFIRSTDTSERVICE"> &nbsp; Update "First Date of
                                                         Service"</label>
                                                 </td>
                                             </tr>
@@ -396,7 +401,8 @@
                                                     <input id="ctl00_head_chkDATEOFLASRPROJECT" type="checkbox"
                                                         [(ngModel)]="defaultSettingTab.updateLastDateOfService"
                                                         name="ctl00$head$chkDATEOFLASRPROJECT" checked="checked"><label
-                                                        for="ctl00_head_chkDATEOFLASRPROJECT">  &nbsp; Update "Date of Last
+                                                        for="ctl00_head_chkDATEOFLASRPROJECT"> &nbsp; Update "Date of
+                                                        Last
                                                         Project Service" for the fiscal year</label>
                                                 </td>
                                             </tr>
@@ -404,12 +410,12 @@
                                     </table>
                                 </td>
                             </tr>
-                            
+
                             <tr>
                                 <td>
                                     <table align="center" style="width: 60%">
                                         <tbody>
-                                                                                        <tr>
+                                            <tr>
                                                 <td style="width: 150px">
                                                     GPA Scale:
                                                 </td>
@@ -426,7 +432,7 @@
                                                                         <select class="form-control"
                                                                             [(ngModel)]="defaultSettingTab.gpaScale"
                                                                             id="gpaScale">
-                                                                              <option value= "1" selected>Select</option>
+                                                                            <option value= "1" selected>Select</option>
                                                                             <option value= "1" selected>4 Point Scale | 1</option>
                                                                             <option value= "2" selected>5 Point Scale | 2</option>
                                                                             <option value= "3" selected>No Response/Unknown | 0</option>
@@ -437,9 +443,7 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
-                                                        
                                                     </div>
-
                                                 </td>
                                             </tr>
                                             <tr>
@@ -456,26 +460,18 @@
                                                                 <tr>
                                                                     <td class="rcbInputCell rcbInputCellLeft"
                                                                         style="width:100%;">
-                                                                    
+
                                                                         <select class="form-control"
                                                                             [(ngModel)]="defaultSettingTab.stateTest"
                                                                             id="gpaScale">
-                                                                            <option selected>   | 1</option>
+                                                                            <option selected> | 1</option>
                                                                             <option selected> | 2</option>
-                                                                        </select>    
+                                                                        </select>
                                                                     </td>
-                                                              
                                                                 </tr>
                                                             </tbody>
-                                                        </table><input
-                                                            id="ctl00_head_cmbStateTest_cbPulldown_ClientState"
-                                                            name="ctl00_head_cmbStateTest_cbPulldown_ClientState"
-                                                            type="hidden" autocomplete="off">
+                                                        </table>
                                                     </div>
-
-
-
-
                                                 </td>
                                             </tr>
                                             <tr>
@@ -484,10 +480,9 @@
                                                 </td>
                                                 <td>
                                                     <span id="ctl00_head_rtbAgeCal_wrapper"
-                                                        class="riSingle RadInput RadInput_Default"
-                                                        ><input id="ctl00_head_rtbAgeCal"
-                                                            name="ctl00$head$rtbAgeCal" size="34"
-                                                            [(ngModel)]="defaultSettingTab.ageCalculator"
+                                                        class="riSingle RadInput RadInput_Default"><input
+                                                            id="ctl00_head_rtbAgeCal" name="ctl00$head$rtbAgeCal"
+                                                            size="34" [(ngModel)]="defaultSettingTab.ageCalculator"
                                                             class="riTextBox riEnabled" value="09/01" type="text"><input
                                                             id="ctl00_head_rtbAgeCal_ClientState"
                                                             name="ctl00_head_rtbAgeCal_ClientState" type="hidden"
@@ -501,8 +496,8 @@
                                                 </td>
                                                 <td>
                                                     <span id="ctl00_head_rdtxtSiteLocation_wrapper"
-                                                        class="riSingle RadInput RadInput_Default"
-                                                        ><input id="ctl00_head_rdtxtSiteLocation"
+                                                        class="riSingle RadInput RadInput_Default"><input
+                                                            id="ctl00_head_rdtxtSiteLocation"
                                                             name="ctl00$head$rdtxtSiteLocation" size="34"
                                                             [(ngModel)]="defaultSettingTab.siteLocation"
                                                             class="riTextBox riDisabled" disabled="disabled" value="Off"
@@ -518,7 +513,6 @@
                                     </table>
                                 </td>
                             </tr>
-               
                         </tbody>
                     </table>
                 </div>

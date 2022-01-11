@@ -140,10 +140,7 @@
                             <label for="usr">Activity/Service Group</label>
                             <select class="form-control" id="serviceGrpName"
                                 [(ngModel)]="activityServiceListEnum.activityGroupName">
-                                <option selected>Tutoring</option>
-                                <option selected>Assisted Computer Labs</option>
-                                <option selected>Counseling</option>
-                                <option selected>Mentoring</option>
+                                <option *ngFor="let actGroup of activityGroup" value="{{actGroup.activityGroupName}}">{{actGroup.activityGroupName}}</option>
                             </select>
                         </div>
 

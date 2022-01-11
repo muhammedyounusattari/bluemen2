@@ -15,7 +15,7 @@ import {MatTableDataSource} from '@angular/material/table';
 })
 
 export class ConfigSettingsComponent implements OnInit {
-  @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
+  @ViewChild('confiSettingPopup') confiSettingPopupRef: TemplateRef<any>;
   isVisible: boolean = false;
   modalRef: BsModalRef;
   selectedRowIndex: any;
@@ -73,7 +73,7 @@ export class ConfigSettingsComponent implements OnInit {
   }
 
   addNewDropdown() {
-    this.openModal(this.addDropDownValueRef);
+    this.openModal(this.confiSettingPopupRef);
   }
 
   openModal(template: TemplateRef<any>) {
@@ -97,14 +97,12 @@ export class ConfigSettingsComponent implements OnInit {
   }
 
   setSelectedRowToUpdate() {
-    this.isEdit = true;
-
+      this.isEdit = true;
       this.id = this.dataSource.data[0].id
       this.configValue = this.selectedRow.configValue;
       this.configType = this.selectedRow.configType;
       this.description = this.selectedRow.description;
-
-
+      this.openModal(this.confiSettingPopupRef);
   }
 
   hideLoader() {

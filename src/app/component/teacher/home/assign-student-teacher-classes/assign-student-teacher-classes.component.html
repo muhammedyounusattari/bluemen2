@@ -23,32 +23,51 @@
     <!-- Search Box End-->
 
     <!-- Spinner Start-->
-    <!-- <div class="spinner-container" *ngIf="isLoading">
+    <div class="spinner-container" *ngIf="isLoading">
         <mat-spinner id="spinner"></mat-spinner>
     </div> -->
     <!-- Spinner End-->
 
     <!-- Data Table Start-->
-    <!-- <div class="mat-elevation-z8 data-table-height dt-max-height" *ngIf="!isLoading">
+    <div class="mat-elevation-z8 data-table-height dt-max-height" *ngIf="!isLoading">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-            <ng-container matColumnDef="activityGroupId">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Group Id </th>
-                <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.activityGroupId}} </td>
+            <ng-container matColumnDef="firstName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+                <td mat-cell *matCellDef="let studentObj; let row = dataIndex;"> {{studentObj.firstName}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="activityGroupName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Group Name</th>
-                <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.activityGroupName}} </td>
+            <ng-container matColumnDef="lastName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name</th>
+                <td mat-cell *matCellDef="let studentObj; let row = dataIndex;"> {{studentObj.lastName}} </td>
             </ng-container>
-            <ng-container matColumnDef="activityReportActivityGroup">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Report Activity </th>
-                <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.activityReportActivityGroup ?
-                    'YES' : 'NO'}} </td>
+            <ng-container matColumnDef="phone">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number </th>
+                <td mat-cell *matCellDef="let studentObj; let row = dataIndex;"> {{studentObj.phone}} </td>
             </ng-container>
-            <ng-container matColumnDef="activityCalculateHoursforActivityGroup">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Calculate Hours </th>
-                <td mat-cell *matCellDef="let groupObj; let row = dataIndex;">
-                    {{groupObj.activityCalculateHoursforActivityGroup ? 'YES' : 'NO'}} </td>
+            <ng-container matColumnDef="currentYear">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Year </th>
+                <td mat-cell *matCellDef="let studentObj; let row = dataIndex;">
+                    {{studentObj.currentYear}} </td>
+            </ng-container>
+            <ng-container matColumnDef="semester">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Semester </th>
+                <td mat-cell *matCellDef="let studentObj; let row = dataIndex;">
+                    {{studentObj.semester}} </td>
+            </ng-container>
+            <ng-container matColumnDef="teacherName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Teacher </th>
+                <td mat-cell *matCellDef="let studentObj; let row = dataIndex;">
+                    {{studentObj.teacherName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="subject">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Subject </th>
+                <td mat-cell *matCellDef="let studentObj; let row = dataIndex;">
+                    {{studentObj.subject}} </td>
+            </ng-container>
+            <ng-container matColumnDef="classGrade">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Class Grade </th>
+                <td mat-cell *matCellDef="let studentObj; let row = dataIndex;">
+                    {{studentObj.classGrade}} </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
             <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
@@ -56,7 +75,7 @@
             </tr>
         </table>
         <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
-    </div> -->
+    </div> 
     <!-- Data Table End-->
 
     <!-- Search Filter Start-->

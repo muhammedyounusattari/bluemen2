@@ -17,7 +17,7 @@ import {MatTableDataSource} from '@angular/material/table';
   // styleUrls: ['./pulldown-list.component.css']
 })
 export class CustomFieldsComponent implements OnInit {
-  @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
+  @ViewChild('customFieldValuePopup') customFieldValuePopupRef: TemplateRef<any>;
   modalRef: BsModalRef;
   modalConfigSM = {
     backdrop: true,
@@ -74,7 +74,7 @@ export class CustomFieldsComponent implements OnInit {
   }
 
   addNewDropdown() {
-    this.openModal(this.addDropDownValueRef);
+    this.openModal(this.customFieldValuePopupRef);
   }
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, this.modalConfigSM);
@@ -177,6 +177,7 @@ export class CustomFieldsComponent implements OnInit {
       this.customFieldsForm.reset();
       this.customFieldsForm.updateValueAndValidity();
     }
+    this.openModal(this.customFieldValuePopupRef);
   }
 
   /**

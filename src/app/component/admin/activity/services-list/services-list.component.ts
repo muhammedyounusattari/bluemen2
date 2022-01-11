@@ -49,6 +49,7 @@ export class ServicesListComponent implements OnInit {
         }
     }
     public isLoading: boolean = true;
+    activityGroup: any;
 
     constructor(private modalService: BsModalService
         , private router: Router
@@ -69,6 +70,11 @@ export class ServicesListComponent implements OnInit {
                 this.selectedRowIndex = null;
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;
+            }
+        });
+        this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
+            if (result) {
+                this.activityGroup = result;
             }
         });
     }
