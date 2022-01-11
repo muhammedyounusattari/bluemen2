@@ -79,7 +79,7 @@ export class CollegeListComponent implements OnInit {
             this.hideLoader();
             let domElement = window.document.getElementById('COLLEGE_LIST');
             if (domElement) {
-                domElement.style.borderBottom = "thick solid #0000FF";
+                domElement.style.borderBottom = "2px solid #1672B7";
             }
             if (result) {
                 this.dataSource = new MatTableDataSource(result.filter((item: any) => item.ncesId === null || item.ncesId === undefined));

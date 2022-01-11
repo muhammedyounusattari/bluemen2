@@ -28,7 +28,7 @@
                                     </div>
                                     <div class="card-body p-3">
                                         <div class="form-group ">
-                                            <label for="usr">Fiscal Year</label>
+                                            <label for="usr" class="text-danger">Fiscal Year</label>
                                             <input [(ngModel)]="defaultSetting.fiscalYear" type="text"
                                                 class="form-control" id="usr">
                                             <!-- <mat-form-field class="mat-control" appearance="fill">
@@ -65,7 +65,7 @@
                                         </div>
 
                                         <div class="form-group mt-3">
-                                            <label for="usr">Component</label>
+                                            <label for="usr" class="text-danger">Component</label>
                                             <select class="form-control" id="sel1"
                                                 [(ngModel)]="defaultSetting.component">
                                                 <option>Acadamic</option>
@@ -123,19 +123,19 @@
 
                                             <div class="card-body p-3">
                                                 <div class="form-group ">
-                                                    <label for="usr">Project Director</label>
+                                                    <label for="usr" class="text-danger">Project Director</label>
                                                     <input type="text" class="form-control" id="usr"
                                                         [(ngModel)]="annualPerformance.projectDirector">
                                                 </div>
 
                                                 <div class="form-group mt-3 ">
-                                                    <label for="usr">Institution Name</label>
+                                                    <label for="usr" class="text-danger">Institution Name</label>
                                                     <input type="text" class="form-control" id="usr"
                                                         [(ngModel)]="annualPerformance.institutionName">
                                                 </div>
 
                                                 <div class="form-group mt-3">
-                                                    <label for="usr">Reporting Period From</label>
+                                                    <label for="usr" class="text-danger">Reporting Period From</label>
                                                     <input [(ngModel)]="annualPerformance.reportingPeriodFrom"
                                                         type="date" class="form-control" id="usr">
                                                     <!-- <mat-form-field class="mat-control" appearance="fill">
@@ -148,7 +148,7 @@
                                                 </div>
 
                                                 <div class="form-group mt-3">
-                                                    <label for="usr">Reporting Period To</label>
+                                                    <label for="usr" class="text-danger">Reporting Period To</label>
                                                     <input [(ngModel)]="annualPerformance.reportingPeriodTo" type="date"
                                                         class="form-control" id="usr">
                                                     <!-- <mat-form-field class="mat-control" appearance="fill">
@@ -160,14 +160,14 @@
                                                     </mat-form-field> -->
                                                 </div>
 
-                                                <div class="form-group ">
+                                                <div class="form-group " class="text-danger">
                                                     <label for="usr">Address</label>
                                                     <input type="text" class="form-control" id="usr"
                                                         [(ngModel)]="annualPerformance.address">
                                                 </div>
 
                                                 <div class="form-group mt-3">
-                                                    <label for="usr">City</label>
+                                                    <label for="usr" class="text-danger">City</label>
                                                     <select class="form-control" id="sel1"
                                                         [(ngModel)]="annualPerformance.city">
                                                         <option>Pune</option>
@@ -178,7 +178,7 @@
                                                 </div>
 
                                                 <div class="form-group mt-3">
-                                                    <label for="usr">State</label>
+                                                    <label for="usr" class="text-danger">State</label>
                                                     <select class="form-control" id="sel1"
                                                         [(ngModel)]="annualPerformance.state">
                                                         <option>Maharashtra</option>
@@ -193,25 +193,25 @@
                                         <div class="col-md-6">
                                             <div class="card-body p-3">
                                                 <div class="form-group ">
-                                                    <label for="usr">Zip Code</label>
+                                                    <label for="usr" class="text-danger">Zip Code</label>
                                                     <input type="text" class="form-control" id="usr"
                                                         [(ngModel)]="annualPerformance.zipCode">
                                                 </div>
 
                                                 <div class="form-group mt-3 ">
-                                                    <label for="usr">Phone 1</label>
+                                                    <label for="usr" class="text-danger">Phone 1</label>
                                                     <input type="text" class="form-control" id="usr"
                                                         [(ngModel)]="annualPerformance.phone1">
 
                                                 </div>
                                                 <div class="form-group mt-3">
-                                                    <label for="usr">Ext</label>
+                                                    <label for="usr" class="text-danger">Ext</label>
                                                     <input type="text" class="form-control" id="usr"
                                                         [(ngModel)]="annualPerformance.ext">
 
                                                 </div>
                                                 <div class="form-group mt-3">
-                                                    <label for="usr">Fax</label>
+                                                    <label for="usr" class="text-danger">Fax</label>
                                                     <input type="text" class="form-control" id="usr"
                                                         [(ngModel)]="annualPerformance.fax">
 
@@ -219,21 +219,21 @@
 
 
                                                 <div class="form-group mt-3">
-                                                    <label for="usr">Pr Award Number</label>
+                                                    <label for="usr" class="text-danger">Pr Award Number</label>
                                                     <input type="text" class="form-control" id="usr"
                                                         [(ngModel)]="annualPerformance.prAwardNumber">
 
                                                 </div>
 
                                                 <div class="form-group mt-3">
-                                                    <label for="usr">OMB Approval Number</label>
+                                                    <label for="usr" class="text-danger">OMB Approval Number</label>
                                                     <input type="text" class="form-control" id="usr"
                                                         [(ngModel)]="annualPerformance.ombApprNumb">
 
                                                 </div>
 
                                                 <div class="form-group ">
-                                                    <label for="usr">Programme Type</label>
+                                                    <label for="usr" class="text-danger">Programme Type</label>
                                                     <select class="form-control" id="sel1"
                                                         [(ngModel)]="annualPerformance.programType" disabled>
                                                         <option>SSS</option>
@@ -244,7 +244,7 @@
                                                 </div>
 
                                                 <div class="form-group mt-3">
-                                                    <label for="usr">Expiration Date</label>
+                                                    <label for="usr" class="text-danger">Expiration Date</label>
                                                     <input [(ngModel)]="annualPerformance.expDate" type="date"
                                                         class="form-control" id="usr">
                                                     <!-- <mat-form-field class="mat-control" appearance="fill">
@@ -257,14 +257,14 @@
                                                 </div>
 
                                                 <div class="form-group mt-3">
-                                                    <label for="usr">Funded To Serve</label>
+                                                    <label for="usr" class="text-danger">Funded To Serve</label>
                                                     <input type="text" class="form-control" id="usr"
                                                         [(ngModel)]="annualPerformance.fundedToServe">
 
                                                 </div>
 
                                                 <div class="form-group mt-3">
-                                                    <label for="usr">Funded To Serve Ratio Threshold</label>
+                                                    <label for="usr" class="text-danger">Funded To Serve Ratio Threshold</label>
                                                     <input type="text" class="form-control" id="usr"
                                                         [(ngModel)]="annualPerformance.fundToServeRatioThreshould">%
 
@@ -426,16 +426,14 @@
                                                                         <select class="form-control"
                                                                             [(ngModel)]="defaultSettingTab.gpaScale"
                                                                             id="gpaScale">
+                                                                              <option value= "1" selected>Select</option>
                                                                             <option value= "1" selected>4 Point Scale | 1</option>
                                                                             <option value= "2" selected>5 Point Scale | 2</option>
                                                                             <option value= "3" selected>No Response/Unknown | 0</option>
                                                                             <option value= "4" selected>Other | 3</option>
                                                                         </select>
                                                                     </td>
-                                                                    <td class="rcbArrowCell rcbArrowCellRight"><a
-                                                                            id="ctl00_head_cmbGpa_cbPulldown_Arrow"
-                                                                            style="overflow: hidden;display: block;position: relative;outline: none;">select</a>
-                                                                    </td>
+                                                                   
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -466,10 +464,7 @@
                                                                             <option selected> | 2</option>
                                                                         </select>    
                                                                     </td>
-                                                                    <td class="rcbArrowCell rcbArrowCellRight"><a
-                                                                            id="ctl00_head_cmbStateTest_cbPulldown_Arrow"
-                                                                            style="overflow: hidden;display: block;position: relative;outline: none;">select</a>
-                                                                    </td>
+                                                              
                                                                 </tr>
                                                             </tbody>
                                                         </table><input

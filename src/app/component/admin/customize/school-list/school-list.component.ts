@@ -79,7 +79,7 @@ export class SchoolListComponent implements OnInit {
             this.hideLoader();
             let domElement = window.document.getElementById('SCHOOL_LIST');
             if (domElement) {
-                domElement.style.borderBottom = "thick solid #0000FF";
+                domElement.style.borderBottom = "2px solid #1672B7";
             }
             if (result) {
                 this.dataSource = new MatTableDataSource(result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined));
