@@ -238,7 +238,9 @@ table {
 .mat-column-name {
   max-width: 100px;
 }
-
+.mat-select-width{
+    width: 100%;
+}
 .data-table-height{
     height: auto;
     overflow: auto;

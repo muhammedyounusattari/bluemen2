@@ -38,11 +38,10 @@ export class TeacherContactsComponent {
     class: 'modal-lg'
   }
   studentModalConfigSM = {
-      backdrop: true,
-      ignoreBackdropClick: true,
-      class: 'modal-xl'
-    }
-
+    backdrop: true,
+    ignoreBackdropClick: true,
+    class: 'modal-xl'
+  }
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild('editPopupPage', { read: MatPaginator, static: true }) editPopupPaginator: MatPaginator;
   @ViewChild('activityTablePage', { read: MatPaginator, static: true }) activityPaginator: MatPaginator;

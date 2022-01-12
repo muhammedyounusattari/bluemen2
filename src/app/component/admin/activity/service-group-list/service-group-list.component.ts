@@ -53,6 +53,8 @@ export class ServiceGroupListComponent implements OnInit {
         }
     }
     isLoading: boolean = true;
+    activityGroupType: any = [{'name': 'Count All Contact on Same Day As One Event | 1'},
+    {'name': 'Count All Contact on Same Day As Separate Sessions | 2'}];
 
     constructor(private modalService: BsModalService
         , private router: Router

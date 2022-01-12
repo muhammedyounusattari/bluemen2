@@ -30,8 +30,8 @@
     <div class="row ">
         <div class="col-md-6 mt-3 mb-3 ">
             <form class="example">
-                <input type="text" placeholder="Search.." (keyup)="applyFilter($event)">
-                <button type="submit"><i class="fa fa-search"></i></button>
+                <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
+                <i class="fa fa-search search"></i>
             </form>
         </div>
     </div>
@@ -125,29 +125,61 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group ">
-                            <label for="usr">Activity/Service ID:</label>
-                            <input type="text" class="form-control" [(ngModel)]="activityServiceListEnum.activityId"
-                                id="serviceId" readonly>
+                            <!-- <label for="usr">Activity/Service ID:</label> -->
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Activity/Service ID</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{activityServiceListEnum.activityId}}"
+                                    [(ngModel)]="activityServiceListEnum.activityId"
+                                    [ngModelOptions]="{standalone: true}" readonly>
+                            </mat-form-field>
+
+                            <!-- <input type="text" class="form-control" [(ngModel)]="activityServiceListEnum.activityId"
+                                id="serviceId" readonly> -->
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="usr">Activity/Service Name:</label>
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Activity/Service Name</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{activityServiceListEnum.activityName}}"
+                                    [(ngModel)]="activityServiceListEnum.activityName"
+                                    [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <!-- <label for="usr">Activity/Service Name:</label>
                             <input type="text" class="form-control" [(ngModel)]="activityServiceListEnum.activityName"
-                                id="serviceName">
+                                id="serviceName"> -->
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="usr">Activity/Service Group</label>
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Activity/Service Group</mat-label>
+                                <input matInput list="groups" placeholder="Ex. ABC"
+                                    value="{{activityServiceListEnum.activityGroupName}}"
+                                    [(ngModel)]="activityServiceListEnum.activityGroupName"
+                                    [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+
+                            <datalist id="groups">
+                                <option *ngFor="let actGroup of activityGroup" [ngValue]="actGroup.activityGroupName">
+                                    {{actGroup.activityGroupName}}</option>
+                            </datalist>
+                          
+                            <!-- <label for="usr">Activity/Service Group</label>
                             <select class="form-control" id="serviceGrpName"
                                 [(ngModel)]="activityServiceListEnum.activityGroupName">
-                                <option *ngFor="let actGroup of activityGroup" value="{{actGroup.activityGroupName}}">{{actGroup.activityGroupName}}</option>
-                            </select>
+                                <option *ngFor="let actGroup of activityGroup" value="{{actGroup.activityGroupName}}">
+                                    {{actGroup.activityGroupName}}</option>
+                            </select> -->
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="usr">BOLT Service:</label>
+                            <section class="example-section">
+                                <mat-checkbox [(ngModel)]="activityServiceListEnum.lapService" class="example-margin">
+                                    BOLT Service
+                                </mat-checkbox>
+                            </section>
+                            <!-- <label for="usr">BOLT Service:</label>
                             <input type="checkbox" name="labService"
-                                [(ngModel)]="activityServiceListEnum.lapService">&nbsp;
+                                [(ngModel)]="activityServiceListEnum.lapService">&nbsp; -->
                         </div>
                     </div>
                 </div>

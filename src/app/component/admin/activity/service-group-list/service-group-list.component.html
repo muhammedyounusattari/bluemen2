@@ -30,7 +30,8 @@
     <div class="row ">
         <div class="col-md-6 mt-3 mb-3 ">
             <form class="example">
-                <input type="text" class="border-rightToTxtBox" matInput (keyup)="applyFilter($event)" placeholder="Search.." />
+                <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
+                <i class="fa fa-search search"></i>
             </form>
         </div>
     </div>
@@ -122,51 +123,97 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group ">
-                            <label for="usr">Activity/Service ID:</label>
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Activity/Service ID</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{activityGrpListEnum.activityGroupId}}"
+                                    [(ngModel)]="activityGrpListEnum.activityGroupId"
+                                    [ngModelOptions]="{standalone: true}" readonly>
+                            </mat-form-field>
+
+                            <!-- <label for="usr">Activity/Service ID:</label>
                             <input type="text" class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupId"
-                                id="groupId" readonly>
+                                id="groupId" readonly> -->
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="usr">Activity/Service Group Name:</label>
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Activity/Service Group Name</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{activityGrpListEnum.activityGroupName}}"
+                                     [(ngModel)]="activityGrpListEnum.activityGroupName"
+                                    [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <!-- <label for="usr">Activity/Service Group Name:</label>
                             <input type="text" class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupName"
-                                id="groupName">
+                                id="groupName"> -->
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="usr">Group Type</label>
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label> Group Type</mat-label>
+                                <input matInput list="groups" placeholder="Ex. ABC"
+                                    value="{{activityGrpListEnum.activityGroupType}}"
+                                    [(ngModel)]="activityGrpListEnum.activityGroupType"
+                                    [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+
+                            <datalist id="groups">
+                                <option *ngFor="let actGroup of activityGroupType" [ngValue]="actGroup.name">
+                                    {{actGroup.name}}</option>
+                            </datalist>
+                          
+                            <!-- <label for="usr">Group Type</label>
                             <select class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupType"
                                 id="groupType">
                                 <option selected>Count All Contact on Same Day As One Event | 1</option>
                                 <option selected>Count All Contact on Same Day As Separate Sessions | 2</option>
-                            </select>
+                            </select> -->
                         </div>
 
 
                         <div class="form-group mt-3">
                             <div class="row mt-3">
                                 <div class="col-md-12">
-                                    <label class="radio-inline">
+                                    <section class="example-section">
+                                        <mat-checkbox
+                                            [(ngModel)]="activityGrpListEnum.activityCalculateHoursforActivityGroup"
+                                            class="example-margin">
+                                            Calculate Hours for Active Group
+                                        </mat-checkbox>
+                                    </section>
+                                    <!-- <label class="radio-inline">
                                         <input type="checkbox"
                                             [(ngModel)]="activityGrpListEnum.activityCalculateHoursforActivityGroup"
                                             name="optradio"> Calculate Hours for Active Group
-                                    </label>
+                                    </label> -->
                                 </div>
                                 <div class="col-md-12">
-                                    <label class="radio-inline">
+
+                                    <section class="example-section">
+                                        <mat-checkbox [(ngModel)]="activityGrpListEnum.activityReportActivityGroup"
+                                            class="example-margin">
+                                            Report Activity Group </mat-checkbox>
+                                    </section>
+                                    <!-- <label class="radio-inline">
                                         <input type="checkbox"
                                             [(ngModel)]="activityGrpListEnum.activityReportActivityGroup"
                                             name="optradio"> Report Activity Group
-                                    </label>
+                                    </label> -->
 
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="usr">Group Type Name</label>
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Group Type Name</mat-label>
+                                <input matInput placeholder="Ex. ABC"
+                                    value="{{activityGrpListEnum.activityGroupTypeName}}"
+                                    [(ngModel)]="activityGrpListEnum.activityGroupTypeName"
+                                    [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <!-- <label for="usr">Group Type Name</label>
                             <input type="text" class="form-control"
-                                [(ngModel)]="activityGrpListEnum.activityGroupTypeName" id="groupName">
+                                [(ngModel)]="activityGrpListEnum.activityGroupTypeName" id="groupName"> -->
                         </div>
                     </div>
                 </div>

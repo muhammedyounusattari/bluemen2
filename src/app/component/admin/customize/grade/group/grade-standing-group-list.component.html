@@ -30,7 +30,8 @@
     <div class="row ">
         <div class="col-md-6 mt-3 mb-3 ">
             <form class="example">
-                <input type="text" class="border-rightToTxtBox" matInput (keyup)="applyFilter($event)" placeholder="Search.." />
+                <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
+                <i class="fa fa-search search"></i>
             </form>
         </div>
     </div>
@@ -148,10 +149,9 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="closePopup"
             (click)="isEdit = false; selectedRowIndex = null; modalRef.hide()">Close</button>
-        <button type="button" class="btn btn-primary" *ngIf="!isEdit"
-            (click)="addGradeGroup();">Save & Close</button>
-        <button type="button" class="btn btn-primary" *ngIf="isEdit"
-            (click)="updateSelectedRow();">Update & Close</button>
+        <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addGradeGroup();">Save & Close</button>
+        <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();">Update &
+            Close</button>
     </div>
 </ng-template>
 <!-- Modal End-->
