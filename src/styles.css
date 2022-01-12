@@ -47,9 +47,9 @@ a {
     border: 0px!important;
 }
 
-.navbar-nav:first-child {
+/* .navbar-nav:first-child {
     border-left: 1px solid #BCBCBC!important;
-}
+} */
 
 .navbar-nav {
     margin: 0 auto;

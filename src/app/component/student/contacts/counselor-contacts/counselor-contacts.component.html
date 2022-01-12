@@ -501,20 +501,16 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12 flex">
-                        <div class="col-sm-4">
+                    <div class="col-md-12 flex">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label for="sel1">Fiscal Year:</label>
-                                <select class="form-control" id="sel1">
-                                    <option>2021</option>
-                                    <option>2021</option>
-                                    <option>2021</option>
-                                    <option>2021</option>
-                                </select>
+                                <label for="usr">Fiscal year</label>
+                                <input formControlName="fiscalYear" type="number" [value]="'2017'" class="form-control"
+                                    required>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label> Served </label>
+                            <label> Served: </label>
                             <div class="form-group mt-2">
                                 <label class="radio-inline">
                                     <input class="ml-2" type="radio" name="optradio" value="Yes"> Yes </label>
@@ -526,15 +522,18 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="sel1">Site Location:</label>
-                                <select class="form-control" id="sel1">
-                                    <option>All</option>
-                                    <option>All</option>
-                                    <option>All</option>
-                                    <option>All</option>
-                                </select>
+                        <div class="col-md-5">
+                            <label> Site Location: </label>
+                            <div class="form-group mt-2">
+                                <label class="radio-inline">
+                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="Undefined" selected> Undefined
+                                </label>
+                                <label class="radio-inline">
+                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="Not Entered"> Not Entered
+                                </label>
+                                <label class="radio-inline">
+                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="All"> All
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -772,7 +771,7 @@
                         <div class="mat-elevation-z8 data-table-height mt-4 mb-4"
                             style="border:1px solid #1366A0;overflow-y: auto">
                             <table mat-table [dataSource]="serviceDataSource" class="mat-elevation-z8"
-                                [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
+                                [ngStyle]="{'width': '100%', 'padding': '0.5rem 0', 'margin-bottom': '2px'}" matSort>
                                 <ng-container matColumnDef="activity">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Activity / Service Rendered
                                     </th>
@@ -858,10 +857,9 @@
                                     <select formControlName="activity" name="sel3" class="form-control"
                                         id="sel4">
                                         <option selected value="">Please select</option>
-                                        <option value="Academic Tutoring">Academic Tutoring</option>
-                                        <option value="ACT Registration">ACT Registration</option>
-                                        <option value="ACT Preparation">ACT Preparation</option>
-                                        <option value="Career Planning">Career Planning</option>
+                                        <option *ngFor="let item of activityServiceList" [value]="item?.activityName">
+                                            {{item?.activityName}}
+                                        </option>
                                     </select>
                                 </span>
                             </div>

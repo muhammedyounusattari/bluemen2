@@ -36,7 +36,11 @@ export class LabContactsComponent {
     class: 'modal-lg'
   }
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild('editPopupPage', { read: MatPaginator, static: true }) editPopupPaginator: MatPaginator;
+  @ViewChild('activityTablePage', { read: MatPaginator, static: true }) activityPaginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild('editPopup', { read: MatSort, static: true }) editPopupSort: MatSort;
+  @ViewChild('activityTable', { read: MatSort, static: true }) activitySort: MatSort;
 
   public activityServiceForm: FormGroup;
   public labContactsModalForm: FormGroup;
@@ -63,14 +67,24 @@ export class LabContactsComponent {
     private dialog: MatDialog,
     private labContactService: LabContactService
   ) {
-    this.serviceDataSource = this.modalDataSource = this.dataSource = new MatTableDataSource();
+    this.dataSource = new MatTableDataSource();
+    this.modalDataSource = new MatTableDataSource();
+    this.serviceDataSource = new MatTableDataSource();
     this.getLabContacts();
   }
 
   ngOnInit(): void {
     this.initialiseForm();
+  }
+  
+  ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+    this.modalDataSource.paginator = this.editPopupPaginator;
+    this.serviceDataSource.paginator = this.activityPaginator;
+
     this.dataSource.sort = this.sort;
+    this.modalDataSource.sort = this.editPopupSort;
+    this.serviceDataSource.sort = this.activitySort;
   }
 
   /**
@@ -90,12 +104,19 @@ export class LabContactsComponent {
       reported: ['']
     });
 
+    this.initializeContactForm();
+  }
+
+  /**
+   * @method initializeContactForm
+   */
+  public initializeContactForm() {
     this.labContactsEditModalForm = this.fb.group({
       contactDate: [''],
       fiscalYear: ['2017'],
       recontactDate: [''],
       isReContacted: [''],
-      lab: [''],
+      tutor: [''],
       component: [''],
       aprSubject: [''],
       contactType: [''],
@@ -132,6 +153,9 @@ export class LabContactsComponent {
     this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData;
     if(this.selectedOption === 'Edit') {
       this.patchValuesToForm();
+    } else {
+      this.initializeContactForm();
+      this.activityServiceData = [];
     }
     this.editModalRef = this.modalService.show(this.labStudentEditPopupRef, this.modalConfigSM);
   }
@@ -169,6 +193,8 @@ export class LabContactsComponent {
         this.spinner = false;
         this.selectedRow = null;
         this.dataSource = new MatTableDataSource(this.labContactsList);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         this.getSelectedRow(this.labContactsList[0], 0);
       }
     });
@@ -243,7 +269,9 @@ export class LabContactsComponent {
       const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
         data: {
           title: 'Confirm remove record',
-          message: 'Are you sure, you want to remove this record: ' + this.selectedRow.activityGroupName
+          message: `Are you sure, you want to delete ${this.selectedRowData?.student?.firstName} 
+          ${this.selectedRowData?.student?.lastName} ${this.selectedRowData?.staffContactDate} 
+          Contact information?`
         }
       });
       confirmDialog.afterClosed().subscribe((result: any) => {

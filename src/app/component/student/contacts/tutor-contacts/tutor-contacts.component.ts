@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TutorContactsService } from 'src/app/services/tutors/tutor-contacts.service';
 import { MatPaginator } from '@angular/material/paginator';
@@ -37,7 +37,11 @@ export class TutorContactsComponent implements OnInit {
     class: 'modal-lg'
   }
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild('editPopupPage', { read: MatPaginator, static: true }) editPopupPaginator: MatPaginator;
+  @ViewChild('activityTablePage', { read: MatPaginator, static: true }) activityPaginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild('editPopup', { read: MatSort, static: true }) editPopupSort: MatSort;
+  @ViewChild('activityTable', { read: MatSort, static: true }) activitySort: MatSort;
 
   public activityServiceForm: FormGroup;
   public tutorContactsModalForm: FormGroup;
@@ -62,10 +66,11 @@ export class TutorContactsComponent implements OnInit {
     private modalService: BsModalService,
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private cdr: ChangeDetectorRef,
     private tutorContactService: TutorContactsService
   ) {
-    this.serviceDataSource = this.modalDataSource = this.dataSource = new MatTableDataSource();
+    this.dataSource = new MatTableDataSource();
+    this.modalDataSource = new MatTableDataSource();
+    this.serviceDataSource = new MatTableDataSource();
     this.getTutorContacts();
   }
 
@@ -75,7 +80,12 @@ export class TutorContactsComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+    this.modalDataSource.paginator = this.editPopupPaginator;
+    this.serviceDataSource.paginator = this.activityPaginator;
+
     this.dataSource.sort = this.sort;
+    this.modalDataSource.sort = this.editPopupSort;
+    this.serviceDataSource.sort = this.activitySort;
   }
 
   /**
@@ -95,6 +105,13 @@ export class TutorContactsComponent implements OnInit {
       reported: ['']
     });
 
+    this.initializeContactForm();
+  }
+
+  /**
+   * @method initializeContactForm
+   */
+  public initializeContactForm() {
     this.tutorContactsEditModalForm = this.fb.group({
       contactDate: [''],
       fiscalYear: ['2017'],
@@ -107,7 +124,7 @@ export class TutorContactsComponent implements OnInit {
       subject: [''],
       instructions: [''],
       activityService: [''],
-      totalTime: [{ value: 0, disabled: true }],
+      totalTime: [{value: 0, disabled: true}],
       notes: ['']
     });
   }
@@ -116,7 +133,7 @@ export class TutorContactsComponent implements OnInit {
    * @method applyFilter
    */
   public applyFilter(filterValue: any, dataSource: MatTableDataSource<any>) {
-    dataSource.filter = filterValue.target.value.trim().toLowerCase();
+    dataSource.filter = filterValue?.target?.value?.trim()?.toLowerCase();
     if (dataSource.paginator) {
       dataSource.paginator.firstPage();
     }
@@ -137,6 +154,9 @@ export class TutorContactsComponent implements OnInit {
     this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData;
     if (this.selectedOption === 'Edit') {
       this.patchValuesToForm();
+    } else {
+      this.initializeContactForm();
+      this.activityServiceData = [];
     }
     this.editModalRef = this.modalService.show(this.tutorStudentEditPopupRef, this.modalConfigSM);
   }
@@ -174,6 +194,8 @@ export class TutorContactsComponent implements OnInit {
         this.spinner = false;
         this.selectedRow = null;
         this.dataSource = new MatTableDataSource(this.tutorContactsList);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         this.getSelectedRow(this.tutorContactsList[0], 0);
       }
     });
@@ -190,6 +212,10 @@ export class TutorContactsComponent implements OnInit {
         this.selectedModalRow = null;
         this.studentsList = result;
         this.modalDataSource = new MatTableDataSource(this.studentsList);
+        setTimeout(() => {
+          this.modalDataSource.paginator = this.editPopupPaginator;
+          this.modalDataSource.sort = this.editPopupSort;
+        }, 10);
         this.getSelectedModalRow(this.studentsList[0], 0);
       }
     });
@@ -248,7 +274,9 @@ export class TutorContactsComponent implements OnInit {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Confirm remove record',
-        message: 'Are you sure, you want to remove this record: ' + this.selectedRow.activityGroupName
+        message: `Are you sure, you want to delete ${this.selectedRowData?.student?.firstName} 
+        ${this.selectedRowData?.student?.lastName} ${this.selectedRowData?.staffContactDate} 
+        Contact information?`
       }
     });
     confirmDialog.afterClosed().subscribe(result => {
@@ -344,6 +372,8 @@ export class TutorContactsComponent implements OnInit {
     this.tutorContactsEditModalForm.controls['totalTime'].setValue(totalTime);
     this.getSelectedEditModalRow(this.activityServiceData[0], 0);
     this.serviceDataSource = new MatTableDataSource(this.activityServiceData);
+    this.serviceDataSource.paginator = this.activityPaginator;
+    this.serviceDataSource.sort = this.activitySort;
   }
 
   /**
@@ -361,6 +391,8 @@ export class TutorContactsComponent implements OnInit {
       this.tutorContactsEditModalForm.controls['totalTime'].setValue(totalTime);
     }
     this.serviceDataSource = new MatTableDataSource(this.activityServiceData);
+    this.serviceDataSource.paginator = this.activityPaginator;
+    this.serviceDataSource.sort = this.activitySort;
   }
 
   /**
@@ -394,6 +426,8 @@ export class TutorContactsComponent implements OnInit {
     this.activityServiceData = this.selectedRowData.activityRenderedList ? this.selectedRowData.activityRenderedList : [];
     this.getSelectedEditModalRow(this.activityServiceData[0], 0);
     this.serviceDataSource = new MatTableDataSource(this.activityServiceData);
+    this.serviceDataSource.paginator = this.activityPaginator;
+    this.serviceDataSource.sort = this.activitySort;
   }
 
   /**

@@ -56,7 +56,7 @@
                 <h3>No Data Found</h3>
             </div>
         </div>
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
     </div>
     <div class="row" [ngStyle]="{'display': 'none'}">
         <div class="col-md-12 mt-3">
@@ -96,7 +96,7 @@
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="d-flex">
-                    <div class="col-md-12 ">
+                    <div class="col-md-12">
                         <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>
                     </div>
                 </div>
@@ -396,7 +396,7 @@
                     </div>
                 </div>
                 <div class="mat-elevation-z8 data-table-height mb-4" style="border:1px solid #1366A0;overflow-y: auto; overflow-x: auto">
-                    <table mat-table [dataSource]="modalDataSource" class="mat-elevation-z8"
+                    <table mat-table #editPopup="matSort" [dataSource]="modalDataSource" class="mat-elevation-z8"
                         [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
                         <ng-container matColumnDef="ssno">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> S.S. No </th>
@@ -456,7 +456,7 @@
                             <h3>No Data Found</h3>
                         </div>
                     </div>
-                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+                    <mat-paginator #editPopupPage="matPaginator" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -464,8 +464,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12 flex">
-                        <div class="col-sm-4">
+                    <div class="col-md-12 flex">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="usr">Fiscal year</label>
                                 <input formControlName="fiscalYear" type="number" [value]="'2017'" class="form-control"
@@ -473,7 +473,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label> Served </label>
+                            <label> Served: </label>
                             <div class="form-group mt-2">
                                 <label class="radio-inline">
                                     <input formControlName="served" class="ml-2" type="radio" value="Yes" selected> Yes
@@ -486,14 +486,18 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="sel1">Site Location:</label>
-                                <select formControlName="siteLocation" class="form-control" id="sel1">
-                                    <option value="All">All</option>
-                                    <option value="Not Entered">Not Entered</option>
-                                    <option value="Undefined">Undefined</option>
-                                </select>
+                        <div class="col-md-5">
+                            <label> Site Location: </label>
+                            <div class="form-group mt-2">
+                                <label class="radio-inline">
+                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="Undefined" selected> Undefined
+                                </label>
+                                <label class="radio-inline">
+                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="Not Entered"> Not Entered
+                                </label>
+                                <label class="radio-inline">
+                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="All"> All
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -730,7 +734,7 @@
                         <div class="mat-elevation-z8 data-table-height mt-4 mb-4"
                             style="border:1px solid #1366A0;overflow-y: auto">
                             <table mat-table [dataSource]="serviceDataSource" class="table table-hover mat-elevation-z8"
-                                [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
+                                [ngStyle]="{'width': '100%', 'padding': '0.5rem 0', 'margin-bottom': '2px'}" matSort #activityTable>
                                 <ng-container matColumnDef="activity">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Activity / Service Rendered
                                     </th>
@@ -755,6 +759,9 @@
                                     <h3>No record to display</h3>
                                 </div>
                             </div>
+                            <ng-container *ngIf="activityServiceData?.length > 4">
+                                <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+                            </ng-container>
                         </div>
                     </div>
                     <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2" style="border: 1px solid #1366A0;">
@@ -818,10 +825,9 @@
                                 <span class="form-group">
                                     <select formControlName="activity" name="sel3" class="form-control" id="sel4">
                                         <option selected value="">Please select</option>
-                                        <option value="Academic Tutoring">Academic Tutoring</option>
-                                        <option value="ACT Registration">ACT Registration</option>
-                                        <option value="ACT Preparation">ACT Preparation</option>
-                                        <option value="Career Planning">Career Planning</option>
+                                        <option *ngFor="let item of activityServiceList" [value]="item?.activityName">
+                                            {{item?.activityName}}
+                                        </option>
                                     </select>
                                 </span>
                             </div>
