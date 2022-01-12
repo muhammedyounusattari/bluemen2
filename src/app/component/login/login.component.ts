@@ -24,11 +24,5 @@ export class LoginComponent {
         this.validateLogin.emit(result);
       }
     });
-    const result = {
-      body: {
-        access_token: 'asfjaskdf090909-dasfsadfdsfa09090909'
-      }
-    }
-    this.validateLogin.emit(result);
   }
 }

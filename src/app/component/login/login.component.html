@@ -18,24 +18,36 @@
                         </div>
                         <form action="#" method="post">
                             <div class="form-group first">
-                          
-                                <input type="text" class="form-control" placeholder=Organization&nbsp;Code
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Organization Code</mat-label>
+                                    <input matInput placeholder="Ex. EOC_DEMO" value="" [ngModelOptions]="{standalone: true}">
+                                  </mat-form-field>
+                                
+                                <!-- <input type="text" class="form-control" placeholder=Organization&nbsp;Code
                                     style="border: 1px solid #1672B7;  padding-left: 20px; height:50px; width: 433px; border-radius: 0px; font-family: 'Montserrat', sans-serif; font-size: 16px;"
-                                    id="username">
+                                    id="username"> -->
 
                             </div>
                             <div class="form-group first">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Username</mat-label>
+                                    <input matInput placeholder="Ex. Kastech" value="" [(ngModel)]="uname" [ngModelOptions]="{standalone: true}">
+                                  </mat-form-field>
                                 
-                                <input type="text"  placeholder=Username class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="uname"
+                                <!-- <input type="text"  placeholder=Username class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="uname"
                                     style="border: 1px solid #1672B7;  border-radius: 0px;width: 433px;font-family: 'Montserrat', sans-serif; height:50px; padding-left: 20px; font-size: 16px;"
-                                    id="username">
+                                    id="username"> -->
 
                             </div>
                             <div class="form-group last mb-5">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Password</mat-label>
+                                    <input type="password" matInput placeholder="Ex. ***" value="" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+                                  </mat-form-field>
                                
-                                <input type="password"  placeholder=Password class="form-control" [(ngModel)]="password" [ngModelOptions]="{standalone: true}"
+                                <!-- <input type="password"  placeholder=Password class="form-control" [(ngModel)]="password" [ngModelOptions]="{standalone: true}"
                                     style="border: 1px solid #1672B7;  border-radius: 0px; width: 433px;font-family: 'Montserrat', sans-serif; height:50px; padding-left: 20px; font-size: 16px;"
-                                    id="password">
+                                    id="password"> -->
 
                             </div>
 

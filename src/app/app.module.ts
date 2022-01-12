@@ -17,9 +17,14 @@ import { StaffModule } from './component/staff/staff.module.';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CounselorModule } from './component/counselor/counselor.module';
 import { LoginComponent } from './component/login/login.component';
-
+import { HomeComponent } from 'src/app/component/myhome/home/home.component';
+import { ConfirmationComponent } from 'src/app/shared/components/canDeactivate/confrimation.component';
+import { PendingChangesGuard } from 'src/app/shared/components/canDeactivate/can-deactivate.component';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +32,9 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
     HeaderComponent,
     NavigationComponent,
     FooterComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent,
+    ConfirmationComponent
   ],
   imports: [
     BrowserModule,
@@ -41,9 +48,12 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
     BrowserAnimationsModule,
     CounselorModule,
     FormsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatInputModule,
+    MatFormFieldModule
   ],
-  providers: [ToastrService],
+  entryComponents: [ConfirmationComponent],
+  providers: [ToastrService, PendingChangesGuard],
   bootstrap: [AppComponent],
   schemas: [ NO_ERRORS_SCHEMA ]
 })
