@@ -426,7 +426,7 @@
 <ng-template #studentPopup>
   <div class="modal-header popHeaderBG">
     <span class="modal-title popHeader" id="exampleModalLabel">Select Students</span>
-    <button (click)="modalRef.hide()" class="btn-close" type="button"></button>
+    <button (click)="modalStudentRef.hide()" class="btn-close" type="button"></button>
   </div>
   <div class="modal-body">
     <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
@@ -589,7 +589,7 @@
               <a (click)="addSelectedStudent();modalStudentRef.hide()" class="nav-link">Select</a>
             </li>
             <li class="nav-item">
-              <a (click)="modalRef.hide()" class="nav-link">Cancel</a>
+              <a (click)="modalStudentRef.hide()" class="nav-link">Cancel</a>
             </li>
           </ul>
         </div>

@@ -30,7 +30,7 @@ export class CounselorClassesComponent implements OnInit {
     studentModalConfigSM = {
         backdrop: true,
         ignoreBackdropClick: true,
-        class: 'modal-lg'
+        class: 'modal-xl'
     };
     selectedClassesRow: any = '';
     isEdit: boolean = false;

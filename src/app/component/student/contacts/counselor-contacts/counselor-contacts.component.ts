@@ -24,7 +24,7 @@ export class CounselorContactsComponent {
   public dataSource: MatTableDataSource<any>;
   public modalDataSource: MatTableDataSource<any>;
   public serviceDataSource: MatTableDataSource<any>;
-  
+
     @ViewChild('counselorStudentPopup') counselorStudentPopupRef: TemplateRef<any>;
     public modalRef: BsModalRef;
     @ViewChild('counselorStudentEditPopup') counselorStudentEditPopupRef: TemplateRef<any>;
@@ -36,6 +36,13 @@ export class CounselorContactsComponent {
       ignoreBackdropClick: true,
       class: 'modal-lg'
     }
+
+    studentModalConfigSM = {
+        backdrop: true,
+        ignoreBackdropClick: true,
+        class: 'modal-xl'
+    }
+
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild('editPopupPage', { read: MatPaginator, static: true }) editPopupPaginator: MatPaginator;
     @ViewChild('activityTablePage', { read: MatPaginator, static: true }) activityPaginator: MatPaginator;
@@ -73,7 +80,7 @@ export class CounselorContactsComponent {
       this.serviceDataSource = new MatTableDataSource();
       this.getCounselorContacts();
     }
-  
+
     ngOnInit(): void {
       this.initialiseForm();
     }
@@ -82,7 +89,7 @@ export class CounselorContactsComponent {
       this.dataSource.paginator = this.paginator;
       this.modalDataSource.paginator = this.editPopupPaginator;
       this.serviceDataSource.paginator = this.activityPaginator;
-  
+
       this.dataSource.sort = this.sort;
       this.modalDataSource.sort = this.editPopupSort;
       this.serviceDataSource.sort = this.activitySort;
@@ -128,7 +135,7 @@ export class CounselorContactsComponent {
       notes: ['']
     });
   }
-  
+
     /**
      * @method applyFilter
      */
@@ -138,15 +145,15 @@ export class CounselorContactsComponent {
         dataSource.paginator.firstPage();
       }
     }
-  
+
     /**
      * @method openModal
      */
     public openModal() {
-      this.modalRef = this.modalService.show(this.counselorStudentPopupRef, this.modalConfigSM);
+      this.modalRef = this.modalService.show(this.counselorStudentPopupRef, this.studentModalConfigSM);
       this.getStudentsList();
     }
-  
+
     /**
      * @method openEditModal
      */
@@ -183,7 +190,7 @@ export class CounselorContactsComponent {
       this.activityServiceModalRef = this.modalService.show(this.activityServicePopupRef, this.modalConfigSM);
     }
   }
-  
+
     /**
      * @method getCounselorContacts
      */
@@ -201,7 +208,7 @@ export class CounselorContactsComponent {
         }
       });
     }
-  
+
     /**
      * @method getStudentsList
      */
@@ -232,7 +239,7 @@ export class CounselorContactsComponent {
       }
     });
   }
-  
+
     /**
      * @method addCounselorContacts
      */
@@ -245,7 +252,7 @@ export class CounselorContactsComponent {
           }
         });
     }
-  
+
     /**
      * @method editCounselorContacts
      */
@@ -262,7 +269,7 @@ export class CounselorContactsComponent {
           }
         });
     }
-  
+
     /**
      * @method deleteCounselorContacts
      */
@@ -270,8 +277,8 @@ export class CounselorContactsComponent {
         const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
           data: {
             title: 'Confirm remove record',
-            message: `Are you sure, you want to delete ${this.selectedRowData?.student?.firstName} 
-            ${this.selectedRowData?.student?.lastName} ${this.selectedRowData?.staffContactDate} 
+            message: `Are you sure, you want to delete ${this.selectedRowData?.student?.firstName}
+            ${this.selectedRowData?.student?.lastName} ${this.selectedRowData?.staffContactDate}
             Contact information?`
           }
         });
@@ -287,7 +294,7 @@ export class CounselorContactsComponent {
           }
         });
     }
-  
+
   /**
    * @method getSelectedOption
    * @description get the requested modal type
@@ -314,7 +321,7 @@ export class CounselorContactsComponent {
       }
     })
   }
-  
+
     /**
      * @method getSelectedRow
      * @description get selected row data to perform action
@@ -323,7 +330,7 @@ export class CounselorContactsComponent {
       this.selectedRow = index;
       this.selectedRowData = data;
     }
-  
+
     /**
      * @method handleMethodToCall
      */
@@ -339,7 +346,7 @@ export class CounselorContactsComponent {
           break;
       }
     }
-  
+
     /**
      * @method getSelectedModalRow
      * @description get selected row data to perform action on modal
@@ -348,7 +355,7 @@ export class CounselorContactsComponent {
       this.selectedModalRow = index;
       this.selectedModalRowData = data;
     }
-  
+
   /**
    * @method addServiceActivity
    */
@@ -441,7 +448,7 @@ export class CounselorContactsComponent {
       staffTotalTime: this.counselorContactsEditModalForm.controls.totalTime.value.toString(),
       staffNotes: formValue.notes,
       activityRenderedList: this.activityServiceData,
-      student: this.selectedOption === 'Edit' && this.selectedRowData.id && 
+      student: this.selectedOption === 'Edit' && this.selectedRowData.id &&
         this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData
     }
   }

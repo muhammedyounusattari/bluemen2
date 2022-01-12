@@ -21,6 +21,11 @@ export class TutorClassesComponent implements OnInit {
     ignoreBackdropClick: true,
     class: 'modal-lg'
   }
+  studentModalConfigSM = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+    class: 'modal-xl'
+  }
   selectedRow: any = '';
   isEdit: boolean = false;
   myElement: any = null;
@@ -98,7 +103,7 @@ export class TutorClassesComponent implements OnInit {
   }
 
   openStudentModal(template: TemplateRef<any>) {
-    this.modalStudentRef = this.modalService.show(template, this.modalConfigSM);
+    this.modalStudentRef = this.modalService.show(template, this.studentModalConfigSM);
   }
 
   resetFields() {

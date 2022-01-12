@@ -35,6 +35,11 @@ export class LabContactsComponent {
     ignoreBackdropClick: true,
     class: 'modal-lg'
   }
+  studentModalConfigSM = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: 'modal-xl'
+  }
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild('editPopupPage', { read: MatPaginator, static: true }) editPopupPaginator: MatPaginator;
   @ViewChild('activityTablePage', { read: MatPaginator, static: true }) activityPaginator: MatPaginator;
@@ -76,7 +81,7 @@ export class LabContactsComponent {
   ngOnInit(): void {
     this.initialiseForm();
   }
-  
+
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.modalDataSource.paginator = this.editPopupPaginator;
@@ -142,7 +147,7 @@ export class LabContactsComponent {
    * @method openModal
    */
   public openModal() {
-    this.modalRef = this.modalService.show(this.labStudentPopupRef, this.modalConfigSM);
+    this.modalRef = this.modalService.show(this.labStudentPopupRef, this.studentModalConfigSM);
   }
 
   /**
@@ -269,8 +274,8 @@ export class LabContactsComponent {
       const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
         data: {
           title: 'Confirm remove record',
-          message: `Are you sure, you want to delete ${this.selectedRowData?.student?.firstName} 
-          ${this.selectedRowData?.student?.lastName} ${this.selectedRowData?.staffContactDate} 
+          message: `Are you sure, you want to delete ${this.selectedRowData?.student?.firstName}
+          ${this.selectedRowData?.student?.lastName} ${this.selectedRowData?.staffContactDate}
           Contact information?`
         }
       });
@@ -440,7 +445,7 @@ export class LabContactsComponent {
       staffTotalTime: this.labContactsEditModalForm.controls.totalTime.value.toString(),
       staffNotes: formValue.notes,
       activityRenderedList: this.activityServiceData,
-      student: this.selectedOption === 'Edit' && this.selectedRowData.ssno && 
+      student: this.selectedOption === 'Edit' && this.selectedRowData.ssno &&
         this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData
     }
   }

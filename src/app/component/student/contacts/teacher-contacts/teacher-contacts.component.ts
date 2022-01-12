@@ -37,6 +37,12 @@ export class TeacherContactsComponent {
     ignoreBackdropClick: true,
     class: 'modal-lg'
   }
+  studentModalConfigSM = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: 'modal-xl'
+    }
+
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild('editPopupPage', { read: MatPaginator, static: true }) editPopupPaginator: MatPaginator;
   @ViewChild('activityTablePage', { read: MatPaginator, static: true }) activityPaginator: MatPaginator;
@@ -97,7 +103,7 @@ export class TeacherContactsComponent {
         activity: [''],
         time: [0]
       });
-  
+
       this.teacherContactsModalForm = this.fb.group({
         fiscalYear: ['2017'],
         served: [''],
@@ -105,10 +111,10 @@ export class TeacherContactsComponent {
         active: [''],
         reported: ['']
       });
-  
+
       this.initializeContactForm();
     }
-  
+
     /**
      * @method initializeContactForm
      */
@@ -144,7 +150,7 @@ export class TeacherContactsComponent {
    * @method openModal
    */
   public openModal() {
-    this.modalRef = this.modalService.show(this.teacherStudentPopupRef, this.modalConfigSM);
+    this.modalRef = this.modalService.show(this.teacherStudentPopupRef, this.studentModalConfigSM);
     this.getStudentsList();
   }
 
@@ -155,7 +161,7 @@ export class TeacherContactsComponent {
     this.studentData = this.selectedOption === 'Edit' && this.selectedRowData.ssno &&
     this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData;
     if(this.selectedOption === 'Edit') {
-      this.patchValuesToForm(); 
+      this.patchValuesToForm();
     } else {
       this.initializeContactForm();
       this.activityServiceData = [];
@@ -273,8 +279,8 @@ export class TeacherContactsComponent {
       const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
         data: {
           title: 'Confirm remove record',
-          message: `Are you sure, you want to delete ${this.selectedRowData?.student?.firstName} 
-          ${this.selectedRowData?.student?.lastName} ${this.selectedRowData?.staffContactDate} 
+          message: `Are you sure, you want to delete ${this.selectedRowData?.student?.firstName}
+          ${this.selectedRowData?.student?.lastName} ${this.selectedRowData?.staffContactDate}
           Contact information?`
         }
       });
@@ -444,7 +450,7 @@ export class TeacherContactsComponent {
       staffTotalTime: this.teacherContactsEditModalForm.controls.totalTime.value.toString(),
       staffNotes: formValue.notes,
       activityRenderedList: this.activityServiceData,
-      student: this.selectedOption === 'Edit' && this.selectedRowData.ssno && 
+      student: this.selectedOption === 'Edit' && this.selectedRowData.ssno &&
         this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData
     }
   }
