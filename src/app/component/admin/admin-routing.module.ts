@@ -22,6 +22,7 @@ import { UserNamesAndPasswordComponent } from './home/user-names-password/user-n
 import { RecallStudentsComponent } from './system-tools/recall-students/recall-students.component';
 import { TimeClockManagerComponent } from './system-tools/time-clock-mgr/time-clock-manager.component';
 import { TutorClassesComponent } from '../tutor/home/classes/tutor-classes.component';
+import { StaffClassesComponent } from '../staff/home/classes/staff-classes.component';
 
 const routes: Routes = [
   {
@@ -107,7 +108,11 @@ const routes: Routes = [
   {
     path: 'admin/tutor-classes',
     component: TutorClassesComponent
-  }
+  },
+   {
+     path: 'admin/staff-classes',
+     component: StaffClassesComponent
+   }
 
 ];
 

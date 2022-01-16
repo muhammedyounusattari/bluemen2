@@ -1,0 +1,601 @@
+<div class="container-fluid mt-3" style="background:#EFF4F8;">
+  <!-- Full Screen Loader Start -->
+  <div id="loading"></div>
+  <!-- Full Screen Loader End -->
+
+  <!-- Header Start-->
+  <div class="row bg-white">
+    <div class="col-md-12">
+      <h3>Staff Classes Data Entry</h3>
+    </div>
+  </div>
+  <!-- Header End-->
+
+  <!-- Search Box Start-->
+  <div class="row ">
+    <div class="col-md-6 mt-3 mb-3 ">
+      <form class="example">
+        <input (keyup)="applyFilter($event)" class="search-input" matInput placeholder="Search.." type="text" >
+        <i class="fa fa-search search"></i>
+
+      </form>
+    </div>
+  </div>
+  <!-- Search Box End-->
+
+  <!-- Spinner Start-->
+  <div *ngIf="isLoading" class="spinner-container">
+    <mat-spinner id="spinner"></mat-spinner>
+  </div>
+  <!-- Spinner End-->
+
+  <!-- Data Table Start-->
+  <div *ngIf="!isLoading" class="mat-elevation-z8 data-table-height">
+    <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table matSort>
+      <ng-container matColumnDef="id">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Id </th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell> {{classObj.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="currentYear">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Current Year </th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell> {{classObj.currentYear}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="semester">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Semester</th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell> {{classObj.semester}} </td>
+      </ng-container>
+      <ng-container matColumnDef="staffName">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Staff </th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell> {{classObj.StaffName }} </td>
+      </ng-container>
+      <ng-container matColumnDef="subject">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Subject </th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell>
+          {{classObj.subject}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="classPeriod">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Period </th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell>
+          {{classObj.classPeriod}} </td>
+      </ng-container>
+      <ng-container matColumnDef="meetingTime">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Meet Time </th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell>
+          {{classObj.meetingTime}} </td>
+      </ng-container>
+      <ng-container matColumnDef="days">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Days </th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell>
+          {{classObj.days}} </td>
+      </ng-container>
+      <ng-container matColumnDef="room">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Room </th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell>
+          {{classObj.room}} </td>
+      </ng-container>
+      <ng-container matColumnDef="maxLimit">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Max Limit </th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell>
+          {{classObj.maxLimit}} </td>
+      </ng-container>
+      <ng-container matColumnDef="studentAssigned">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Assigned </th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell>
+          {{classObj.studentAssigned}} </td>
+      </ng-container>
+      <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
+      <tr (click)="setSelectedRow(row, idx)" *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
+          [ngClass]="{'selected-row' : selectedRowIndex == idx}" mat-row>
+      </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" [pageSize]="5"></mat-paginator>
+  </div>
+  <!-- Data Table End-->
+  <br/><br/>
+  <!-- Search Filter Start-->
+  <div class="row" style="margin-left: 0px!important; margin-right: 0px!important; margin-bottom: 50px;">
+    <div class="col-md-12">
+
+      <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+        <div aria-labelledby="home-tab" class="tab-pane fade show active" id="home" role="tabpanel">
+          <div class="d-flex">
+            <div class="col-md-12 ">
+              <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>
+            </div>
+          </div>
+
+          <div class="row " style="margin-left: 0px!important; margin-right: 0px!important;">
+            <div class="col-md-4 flex">
+              <div class="form-group">
+                <label for="sel1">Semester Current Year
+                </label>
+                <input class="form-control" id="usr" type="number">
+              </div>
+            </div>
+            <div class="col-md-4 flex">
+              <div class="form-group">
+                <label for="sel1">Class Period
+                </label>
+                <input class="form-control" id="usr" type="number">
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="sel1">Semester </label>
+                <select class="form-control" id="sel1">
+                  <option>Fall</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="sel1">Subject</label>
+                <select class="form-control" id="sel1">
+                  <option>All</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="sel1">Staff</label>
+                <select class="form-control" id="sel1">
+
+
+                  <option>All</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Search Filter End-->
+
+</div>
+
+
+<!-- Buttons Start-->
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
+  <div class="container-fluid">
+    <button aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+            data-bs-target="#navbarTogglerDemo01" data-bs-toggle="collapse" type="button">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a (click)="openStaffClassesModal(staffClassesPopup)" class="nav-link" href="javascript:void(0);">New</a>
+        </li>
+        <li class="nav-item">
+          <a (click)="openEditPopup(staffClassesPopup);setValuesToUpdate()" class="nav-link " href="javascript:void(0);">Edit</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="#">Move</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="#">Merge</a>
+        </li>
+        <li class="nav-item">
+          <a (click)="deleteSelectedRow()" class="nav-link " href="javascript:void(0)">Delete</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="#">Print</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- Buttons End-->
+
+
+<!-- Modal Start-->
+<ng-template #staffClassesPopup>
+  <!-- Modal -->
+  <div class="modal-header popHeaderBG">
+    <span class="modal-title popHeader" id="exampleModalLabel">staff Classes Data Entry</span>
+    <button (click)="selectedRowIndex = null; modalRef.hide()" aria-label="Close" class="btn-close"
+            type="button"></button>
+  </div>
+  <div class="modal-body">
+    <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+      <div aria-labelledby="home-tab" class="tab-pane fade show active" id="home" role="tabpanel">
+        <div class="container">
+          <div class="row">
+
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group mt-4">
+                <label for="usr">Current Year</label>
+                <input [(ngModel)]="currentYear" class="form-control" id=start placeholder="2017" required type=number>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mt-4">
+                <label for="usr">Class Period</label>
+                <input [(ngModel)]="classPeriod" class="form-control" id=start placeholder="0" required type=number>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mt-4">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group mt-4">
+                <label for="usr">Semester</label>
+                <span class="form-group">
+                                    <select [(ngModel)]="semester" class="form-control" id="sel4" name="sel3">
+                                        <option>Fall</option>
+                                        <option>Spring</option>
+                                        <option>Summer</option>
+                                        <option>Winter</option>
+                                    </select>
+                                </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mt-4">
+                <label for="usr">Meeting time
+                </label>
+                <span class="form-group">
+                                    <select [(ngModel)]="meetingTime" class="form-control" id="sel4" name="sel3">
+                                        <option>0</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mt-4">
+                <label for="usr">Duration</label>
+                <input [(ngModel)]="duration" class="form-control" id=start placeholder="0" required type=number>
+                <h1 style="font-size: 12px"> in minutes</h1>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group ">
+                <label for="usr">staff name</label>
+                <span class="form-group">
+                                  <select [(ngModel)]="staffName" class="form-control" id="sel1">
+                                    <option *ngFor="let staff of staffs" [value]="staff">
+                                      {{staff}}
+                                    </option>
+                                </select>
+                                </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group ">
+                <label for="usr">Days
+                </label>
+                <span class="form-group">
+                                    <select [(ngModel)]="days" class="form-control" id="sel4" name="sel3">
+                                        <option>select</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group ">
+                <label for="usr">Max Limit
+                </label>
+                <input [(ngModel)]="maxLimit" class="form-control" id=start placeholder="0" required type=number>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group mt-4">
+                <label for="usr">Subject</label>
+                <span class="form-group">
+                                    <select [(ngModel)]="subject" class="form-control" id="sel4" name="sel3">
+                                        <option>ACTIVITIES</option>
+                                      <option>Algebra</option>
+                                      <option>BIOLOGY</option>
+                                      <option>ENGLISH</option>
+                                    </select>
+                                </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mt-4">
+                <label for="usr">Room
+                </label>
+                <select [(ngModel)]="room" class="form-control" id="sel4" name="sel3">
+                  <option>select</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mt-4">
+                <label for="usr">Student Assigned
+                </label>
+                <input [(ngModel)]="subjectAssg" class="form-control" id=start placeholder="0" required type=number>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-md-2 ">
+              <button (click)="openStudentModal(studentPopup)" class="btn btn-secondary" data-bs-dismiss="modal" type="button" >Assign
+                Student</button>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Edit Grade &
+                Notes</button>
+            </div>
+            <div class="col-md-2">
+              <button (click)="removeStudentAssignRcd()" class="btn btn-secondary" data-bs-dismiss="modal" type="button">Remove From
+                Class</button>
+
+            </div>
+            <div class="col-md-4">&nbsp;</div>
+
+          </div>
+
+          <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2">
+            <div class="table-responsive" style="border:1px solid #1366A0;">
+              <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
+                <thead>
+                <tr style="background: #F5F6FA;">
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Grade</th>
+                  <th scope="col">Notes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr (click)="setSelectedAssignedStudentRow(student, idx)"
+                    *ngFor="let student of selectedStudentList; let idx = index;" [ngClass]="{'selected-row' : this.selectedAssgStdModalRow == idx}">
+
+                  <td scope="row">{{student.firstName}}</td>
+                  <td>{{student.lastName}}</td>
+                  <td>{{student.grade}}</td>
+                  <th>{{student.id}}</th>
+                </tr>
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+
+          <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2">
+            <label for="form23"> Notes:
+            </label>
+            <i class="fa fa-edit"></i>
+            <textarea [(ngModel)]="notes" class="md-textarea form-control" id="form23"  rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="isEdit = false; selectedRowIndex = null; modalRef.hide()" class="btn btn-secondary" id="closePopup"
+            type="button">Close</button>
+    <button (click)="saveStaffClassesData(); modalRef.hide()" *ngIf="!isEdit" class="btn btn-v .primary"
+            type="button">Save &
+      Close</button>
+    <button (click)="modalRef.hide()" *ngIf="isEdit" class="btn btn-primary"
+            type="button">Update &
+      Close</button>
+  </div>
+</ng-template>
+<!-- Modal End-->
+
+
+
+<ng-template #studentPopup>
+  <div class="modal-header popHeaderBG">
+    <span class="modal-title popHeader" id="exampleModalLabel">Select Students</span>
+    <button (click)="modalStudentRef.hide()" class="btn-close" type="button"></button>
+  </div>
+  <div class="modal-body">
+    <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+      <div aria-labelledby="home-tab" class="tab-pane fade show active" id="home" role="tabpanel">
+        <div class="row ">
+          <div class="col-md-6 mt-3 mb-3 ">
+            <form class="example">
+              <input (keyup)="applyFilter($event)" placeholder="Search.." type="text">
+              <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+          </div>
+        </div>
+        <div class="mat-elevation-z8 data-table-height" style="border:1px solid #1366A0;overflow-y: auto;">
+          <table [dataSource]="modalDataSource" [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" class="mat-elevation-z8"
+                 mat-table matSort>
+            <ng-container matColumnDef="ssno">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header> S.S. No </th>
+              <td *matCellDef="let entry" mat-cell> {{entry.ssno}} </td>
+            </ng-container>
+            <ng-container matColumnDef="firstName">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header> First Name </th>
+              <td *matCellDef="let entry" mat-cell> {{entry.firstName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="lastName">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header> Last Name </th>
+              <td *matCellDef="let entry" mat-cell> {{entry.lastName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="phoneNumber">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header> Phone Number </th>
+              <td *matCellDef="let entry" mat-cell> {{entry.phoneNumber}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fiscalYear">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header> Fiscal Year </th>
+              <td *matCellDef="let entry" mat-cell> {{entry.fiscalYear}} </td>
+            </ng-container>
+            <ng-container matColumnDef="active">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header> Active </th>
+              <td *matCellDef="let entry" mat-cell> {{entry.active}} </td>
+            </ng-container>
+            <ng-container matColumnDef="served">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header> Served </th>
+              <td *matCellDef="let entry" mat-cell> {{entry.served}} </td>
+            </ng-container>
+            <ng-container matColumnDef="reported">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header> Reported </th>
+              <td *matCellDef="let entry" mat-cell> {{entry.reported}} </td>
+            </ng-container>
+            <ng-container matColumnDef="counselor">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header> Counselor </th>
+              <td *matCellDef="let entry" mat-cell> {{entry?.graduatedInformation?.counselor}} </td>
+            </ng-container>
+            <ng-container matColumnDef="school">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header> School </th>
+              <td *matCellDef="let entry" mat-cell> {{entry.school}} </td>
+            </ng-container>
+            <ng-container matColumnDef="standing">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header> Standing </th>
+              <td *matCellDef="let entry" mat-cell> {{entry.standing}} </td>
+            </ng-container>
+            <tr *matHeaderRowDef="modalColumnsToDisplay" mat-header-row></tr>
+            <tr (click)="getSelectedModalRow(row, i)" *matRowDef="let row; columns: modalColumnsToDisplay;let i = index;"
+                [ngClass]="{'selected-row' : this.selectedModalRow == i}"
+                mat-row></tr>
+          </table>
+          <div *ngIf="spinner" class="spinner-container bg-colr-wht py-4">
+            <mat-progress-spinner [diameter]="50" class="center" color="default" mode="indeterminate">
+            </mat-progress-spinner>
+          </div>
+          <div *ngIf="!spinner && studentsList?.length == 0" class="bg-colr-wht py-4">
+            <div class="center">
+              <h3>No Data Found</h3>
+            </div>
+          </div>
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 flex">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="sel1">Fiscal Year:</label>
+                <select class="form-control" id="sel1">
+                  <option>2021</option>
+                  <option>2021</option>
+                  <option>2021</option>
+                  <option>2021</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label> Served </label>
+              <div class="form-group mt-2">
+                <label class="radio-inline">
+                  <input class="ml-2" name="optradio" type="radio" value="Yes"> Yes </label>
+                <label class="radio-inline">
+                  <input class="ml-2" name="optradio" type="radio" value="No"> No
+                </label>
+                <label class="radio-inline">
+                  <input class="ml-2" name="optradio" type="radio" value="All"> All
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="sel1">Site Location:</label>
+                <select class="form-control" id="sel1">
+                  <option>All</option>
+                  <option>All</option>
+                  <option>All</option>
+                  <option>All</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 flex">
+            <div class="col-md-4">
+              <label class="radio-inline"> Active:
+                <input class="ml-2" name="optradio" type="radio" value="Yes"> Yes </label>
+              <label class="radio-inline">
+                <input class="ml-2" name="optradio" type="radio" value="No"> No
+              </label>
+              <label class="radio-inline">
+                <input class="ml-2" name="optradio" type="radio" value="All"> All
+              </label>
+            </div>
+            <div class="col-md-4">
+              <label class="radio-inline"> Reported:
+                <input class="ml-2" name="optradio" type="radio" value="Yes"> Yes </label>
+              <label class="radio-inline">
+                <input class="ml-2" name="optradio" type="radio" value="No"> No
+              </label>
+              <label class="radio-inline">
+                <input class="ml-2" name="optradio" type="radio" value="All"> All
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5; position:relative;">
+      <div class="container-fluid">
+        <button aria-controls="navbarTogglerDemo" aria-expanded="false" aria-label="Toggle navigation"
+                class="navbar-toggler" data-bs-target="#navbarTogglerDemo" data-bs-toggle="collapse"
+                type="button">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a aria-current="page" class="nav-link active">Reset</a>
+            </li>
+            <li class="nav-item">
+              <a (click)="addSelectedStudent();modalStudentRef.hide()" class="nav-link">Select</a>
+            </li>
+            <li class="nav-item">
+              <a (click)="modalStudentRef.hide()" class="nav-link">Cancel</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+  </div>
+</ng-template>
+

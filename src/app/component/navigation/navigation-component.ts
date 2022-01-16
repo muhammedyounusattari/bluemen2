@@ -119,6 +119,8 @@ export class NavigationComponent {
       this.router.navigate(['admin/counselors-classes'])
     } else if (componentName === 'tutor-classes') {
       this.router.navigate(['admin/tutor-classes'])
+    }else if (componentName === 'staff-classes') {
+     this.router.navigate(['admin/staff-classes'])
     }
   }
 }

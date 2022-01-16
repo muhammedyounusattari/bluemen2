@@ -154,4 +154,11 @@ export class ServiceUrls {
     public static GET_TUTOR_CLASSES = environment.apiUrl + '/blumen-api/admin/classes/getTutorClassess/v1';
     public static GET_TUTOR_CLASSES_PER_RECORD = environment.apiUrl + '/blumen-api/admin/classes/getTutorClass/v1/';
     public static DELETE_TUTOR_CLASSES = environment.apiUrl + '/blumen-api/admin/classes/deleteTutorClasses/v1';
+
+    // STAFF CLASSES API URL'S
+    public static POST_STAFF_CLASSES = environment.apiUrl + '/blumen-api/admin/classes/addToStaffClassesList/v1';
+    public static GET_STAFF_CLASSES = environment.apiUrl + '/blumen-api/admin/classes/getStaffClasses/v1';
+    public static GET_STAFF_CLASSES_PER_RECORD = environment.apiUrl + '/blumen-api/admin/classes/getStaffClass/v1/';
+    public static DELETE_STAFF_CLASSES = environment.apiUrl + '/blumen-api/admin/classes/deleteStaffClasses/v1';
+
 }

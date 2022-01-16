@@ -37,6 +37,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TeacherClassesComponent } from '../teacher/home/classes/teachers-classes.component';
 import { CounselorClassesComponent } from '../counselor/home/classes/counselors-classes.component';
 import { TutorClassesComponent } from '../tutor/home/classes/tutor-classes.component';
+import { StaffClassesComponent } from '../staff/home/classes/staff-classes.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { TutorClassesComponent } from '../tutor/home/classes/tutor-classes.compo
     ConfirmDialogComponent,
     TeacherClassesComponent,
     CounselorClassesComponent,
-    TutorClassesComponent
+    TutorClassesComponent,
+    StaffClassesComponent
   ],
   imports: [
     AdminRoutingModule,
