@@ -139,131 +139,239 @@
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="row">
                     <div class="col-md-12 flex">
-                        <div class="form-group col-md-6">
-                            <label for="usr">Name:</label>
+                        <div class="form-group col-md-4">
+                            <mat-form-field appearance="fill" class="mat-select-width">
+                                <mat-label>Name</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.name}}"
+                                    [(ngModel)]="collegeListEnum.name" [readonly]="isDisabled" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <section class="example-section">
+                                <mat-checkbox [(ngModel)]="collegeListEnum.inPullDown" class="example-margin">
+                                    In Pulldown List </mat-checkbox>
+                            </section>
+                            <!-- <label for="usr">Name:</label>
                             <input type="text" [(ngModel)]="collegeListEnum.name" class="form-control" id="collegeName"
-                                [readonly]="isDisabled"> &nbsp;
-                            <label class="radio-inline inpulldownChk">
+                                [readonly]="isDisabled"> &nbsp; -->
+                            <!-- <label class="radio-inline inpulldownChk">
                                 <input type="checkbox" [(ngModel)]="collegeListEnum.inPullDown" name="optradio"> In
                                 Pulldown List
-                            </label>
+                            </label> -->
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="usr">Codes:</label>
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Codes</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.codes}}"
+                                    [(ngModel)]="collegeListEnum.codes" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <!-- <label for="usr">Codes:</label>
                             <input type="text" class="form-control" [(ngModel)]="collegeListEnum.codes" id="codes">
-                            &nbsp;
+                            &nbsp; -->
                         </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-6">
-                            <label for="usr">Title:</label>
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Title</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.title}}"
+                                    [(ngModel)]="collegeListEnum.title" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+
+                            <!-- <label for="usr">Title:</label>
                             <input type="text" class="form-control" [(ngModel)]="collegeListEnum.title" id="title">
-                            &nbsp;
+                            &nbsp; -->
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="usr">County:</label>
+                    </div>
+                    <div class="col-md-12 form-group flex">
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Country</mat-label>
+                                <input matInput list="countries" placeholder="Ex. ABC"
+                                    value="{{collegeListEnum.country}}" [(ngModel)]="collegeListEnum.country"
+                                    [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+
+                            <datalist id="countries">
+                                <option *ngFor="let countryObj of countryList" [ngValue]="countryObj.name">
+                                    {{countryObj.name}}</option>
+                            </datalist>
+
+                            <!-- <label for="usr">County:</label>
                             <input type="text" class="form-control" [(ngModel)]="collegeListEnum.country" id="country">
-                            &nbsp;
+                            &nbsp; -->
+                        </div>
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>State</mat-label>
+                                <input matInput list="states" placeholder="Ex. ABC" value="{{collegeListEnum.states}}"
+                                    [(ngModel)]="collegeListEnum.states" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+
+                            <datalist id="states">
+                                <option *ngFor="let stateObj of stateList" [ngValue]="stateObj.name">
+                                    {{stateObj.name}}</option>
+                            </datalist>
+
+                            <!-- <label for="usr">State:</label>
+                        <select class="form-control" id="state" [(ngModel)]="collegeListEnum.states">
+                            <option selected>Maharashtra</option>
+                            <option>Goa</option>
+                        </select> -->
+                        </div>
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>City</mat-label>
+                                <input matInput list="cities" placeholder="Ex. ABC" value="{{collegeListEnum.city}}"
+                                    [(ngModel)]="collegeListEnum.city" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+
+                            <datalist id="cities">
+                                <option *ngFor="let cityObj of cityList" [ngValue]="cityObj.name">
+                                    {{cityObj.name}}</option>
+                            </datalist>
+                            <!-- <label for="usr">City:</label>
+                                <select class="form-control" id="city" [(ngModel)]="collegeListEnum.city">
+                                    <option selected>Pune</option>
+                                    <option>Mumbai</option>
+                                </select> -->
+
                         </div>
                     </div>
                     <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-6">
-                            <label for="usr">Address:</label>
-                            <textarea type="text" class="form-control" id="address"
-                                [(ngModel)]="collegeListEnum.address"> </textarea>
+                        <div class="form-group col-md-12">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Address</mat-label>
+                                <textarea matInput placeholder="Enter Address"
+                                    [(ngModel)]="collegeListEnum.address"></textarea>
+                            </mat-form-field>
+                            <!-- <label for="usr">Address:</label>
+                        <textarea type="text" class="form-control" id="address"
+                            [(ngModel)]="collegeListEnum.address"> </textarea> -->
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="usr">FAFSA ID:</label>
+                    </div>
+                    <div class="col-md-12 form-group flex">
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>FAFSA ID</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.fafsaId}}"
+                                    [(ngModel)]="collegeListEnum.fafsaId" [ngModelOptions]="{standalone: true}" [readonly]="isDisabled">
+                            </mat-form-field>
+                            <!-- <label for="usr">FAFSA ID:</label>
                             <input type="text" class="form-control" id="fafsaId" [(ngModel)]="collegeListEnum.fafsaId"
-                                [readonly]="isDisabled"> &nbsp;
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-6">
-                            <label for="usr">City:</label>
-                            <select class="form-control" id="city" [(ngModel)]="collegeListEnum.city">
-                                <option selected>Pune</option>
-                                <option>Mumbai</option>
-                            </select>
+                                [readonly]="isDisabled"> &nbsp; -->
 
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="usr">State:</label>
-                            <select class="form-control" id="state" [(ngModel)]="collegeListEnum.states">
-                                <option selected>Maharashtra</option>
-                                <option>Goa</option>
-                            </select>
-
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Zip Code</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.zipcode}}"
+                                    [(ngModel)]="collegeListEnum.zipcode" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <!-- 
                             <label for="usr">Zip Code:</label>
                             <input type="text" class="form-control" id="zipcode" [(ngModel)]="collegeListEnum.zipcode">
-                            &nbsp;
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="usr">Fiscal Years:</label>
-                            <input type="text" class="form-control" id="fiscalYear"
-                                [(ngModel)]="collegeListEnum.fiscalYear"> &nbsp;
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-6">
-                            <label for="usr">Phone 1:</label>
-                            <input type="text" class="form-control" id="phone1" [(ngModel)]="collegeListEnum.phone1">
-                            &nbsp;
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="usr">Phone 2:</label>
-                            <input type="text" class="form-control" id="phone2" [(ngModel)]="collegeListEnum.phone2">
-                            &nbsp;
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-6">
-                            <label for="usr">Phone 3:</label>
-                            <input type="text" class="form-control" id="phone3" [(ngModel)]="collegeListEnum.phone3">
-                            &nbsp;
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="usr">FAX:</label>
-                            <input type="text" class="form-control" id="fax" [(ngModel)]="collegeListEnum.fax">
-                            &nbsp;
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-6">
-                            <label for="usr">Web Site:</label>
-                            <input type="text" class="form-control" id="website" [(ngModel)]="collegeListEnum.website">
-                            &nbsp;
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="usr">Email:</label>
-                            <input type="text" class="form-control" id="email" [(ngModel)]="collegeListEnum.email">
-                            &nbsp;
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group">
-                            <label for="usr">Notes:</label>
-                            <textarea type="text" cols="100" rows="5" class="form-control" id="notes"
-                                [(ngModel)]="collegeListEnum.notes"> </textarea>
-                        </div>
-                    </div>
+                            &nbsp; -->
 
+                        </div>
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Fiscal Years</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.fiscalYear}}"
+                                    [(ngModel)]="collegeListEnum.fiscalYear" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <!-- <label for="usr">Fiscal Years:</label>
+                            <input type="text" class="form-control" id="fiscalYear"
+                                [(ngModel)]="collegeListEnum.fiscalYear"> &nbsp; -->
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 form-group flex">
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Phone 1</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.phone1}}"
+                                    [(ngModel)]="collegeListEnum.phone1" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <!-- <label for="usr">Phone 1:</label>
+                            <input type="text" class="form-control" id="phone1" [(ngModel)]="collegeListEnum.phone1">
+                            &nbsp; -->
+                        </div>
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Phone 2</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.phone2}}"
+                                    [(ngModel)]="collegeListEnum.phone2" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <!-- <label for="usr">Phone 2:</label>
+                            <input type="text" class="form-control" id="phone2" [(ngModel)]="collegeListEnum.phone2">
+                            &nbsp; -->
+                        </div>
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Phone 3</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.phone3}}"
+                                    [(ngModel)]="collegeListEnum.phone3" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <!-- <label for="usr">Phone 3:</label>
+                            <input type="text" class="form-control" id="phone3" [(ngModel)]="collegeListEnum.phone3">
+                            &nbsp; -->
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group flex">
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Fax</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.fax}}"
+                                    [(ngModel)]="collegeListEnum.fax" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <!-- <label for="usr">FAX:</label>
+                            <input type="text" class="form-control" id="fax" [(ngModel)]="collegeListEnum.fax">
+                            &nbsp; -->
+
+                        </div>
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Web Site</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.website}}"
+                                    [(ngModel)]="collegeListEnum.website" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <!-- <label for="usr">Web Site:</label>
+                            <input type="text" class="form-control" id="website" [(ngModel)]="collegeListEnum.website">
+                            &nbsp; -->
+                        </div>
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Email</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.email}}"
+                                    [(ngModel)]="collegeListEnum.email" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                            <!-- <label for="usr">Email:</label>
+                            <input type="text" class="form-control" id="email" [(ngModel)]="collegeListEnum.email">
+                            &nbsp; -->
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group flex">
+                        <div class="form-group col-md-12">
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Notes</mat-label>
+                                <textarea matInput placeholder="Add notes if any"
+                                    [(ngModel)]="collegeListEnum.notes"></textarea>
+                            </mat-form-field>
+                            <!-- <label for="usr">Notes:</label>
+                            <textarea type="text" cols="100" rows="5" class="form-control" id="notes"
+                                [(ngModel)]="collegeListEnum.notes"> </textarea> -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="closePopup"
-            (click)="selectedRowIndex = null; modalRef.hide();" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewCollegeName();">Save
             & Close</button>
         <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();">Update
             & Close</button>
+        <button type="button" class="btn btn-secondary" id="closePopup"
+            (click)="selectedRowIndex = null; modalRef.hide();" data-bs-dismiss="modal">Cancel</button>
     </div>
 </ng-template>
 <!-- Modal End-->

@@ -54,6 +54,27 @@ export class GradeStandingListComponent implements OnInit {
     isLoading: boolean = true;
     ddlGroupList: any= [];
 
+    gradingFiscalYearList = [
+        {'name': 'Freshman | 1'},
+        {'name': 'Junior | 2'},
+        {'name': 'Senior | 3'},
+        {'name': 'Sophomore | 4'},
+        {'name': 'test | 5'}
+    ];
+    participantList = [
+        {'name': 'Continuing Participant'},
+        {'name': 'New Participant'},
+        {'name': 'New Summer Participant'},
+        {'name': 'No Response / Unknown'},
+        {'name': 'Prior Year Participant'}
+    ];
+
+    yearEndFYList = [
+        {'name': 'No Reponse'},
+        {'name': 'Academic Dismissal'},
+        {'name': 'Continuing Student'},
+        {'name': 'Graduated'}
+    ];
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog

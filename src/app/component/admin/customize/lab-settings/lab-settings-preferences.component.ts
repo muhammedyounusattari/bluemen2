@@ -32,6 +32,20 @@ export class LabSettingsPreferencesComponent implements OnInit {
         lapSearchPriority: ''
     }
     isDisabled: boolean = false;
+    lapSearchPriorityList = [
+        {'name': 'Student ID, Scan ID, System Serial Number'},
+        {'name': 'Student ID, System Serial Number, Scan ID'},
+        {'name': 'Scan ID, Student ID, System Serial Number'},
+        {'name': 'Scan ID, System Serial Number, Student ID'},
+        {'name': 'System Serial Number, Student ID, Scan ID'},
+        {'name': 'System Serial Number, Scan ID, Student ID'}
+    ];
+    labComponentsList = [
+        {'name': 'Academic'},
+        {'name': 'Both'},
+        {'name': 'Not Applicable'},
+        {'name': 'Summer'}
+    ];
 
     constructor(private modalService: BsModalService
         , private router: Router

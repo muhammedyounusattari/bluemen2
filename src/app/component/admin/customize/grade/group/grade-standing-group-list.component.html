@@ -119,27 +119,50 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group mt-3">
-                            <label for="usr" class="lable-style">Grade/Standing Group ID:</label>
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Grade/Standing Group ID</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{_gradeGroupStandingList.gradeGroupId}}"
+                                    [(ngModel)]="_gradeGroupStandingList.gradeGroupId"
+                                    [ngModelOptions]="{standalone: true}" readonly>
+                            </mat-form-field>
+                            <!-- <label for="usr" class="lable-style">Grade/Standing Group ID:</label>
                             <input type="text" class="form-control" id="gradeGroupID"
-                                [(ngModel)]="_gradeGroupStandingList.gradeGroupId" readonly>
+                                [(ngModel)]="_gradeGroupStandingList.gradeGroupId" readonly> -->
                         </div>
 
                         <div class="form-group mt-3">
-                            <label for="usr" class="lable-style">Grade/Standing Group Name:</label>
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Grade/Standing Group Name</mat-label>
+                                <textarea matInput placeholder="Ex. ABC"
+                                    [(ngModel)]="_gradeGroupStandingList.gradeGroupName"> </textarea>
+                            </mat-form-field>
+                            <!-- <label for="usr" class="lable-style">Grade/Standing Group Name:</label>
                             <textarea type="text" class="form-control" cols="100" rows="5" id="gradeGroupName"
-                                [(ngModel)]="_gradeGroupStandingList.gradeGroupName"></textarea>
+                                [(ngModel)]="_gradeGroupStandingList.gradeGroupName"></textarea> -->
                         </div>
 
 
                         <div class="form-group mt-3">
-                            <label for="usr" class="lable-style">Group Type:</label>
+                            <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>Group Type</mat-label>
+                                <input matInput list="groups" placeholder="Ex. ABC"
+                                    value="{{_gradeGroupStandingList.gradeGroupGradeType}}"
+                                    [(ngModel)]="_gradeGroupStandingList.gradeGroupGradeType"
+                                    [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+
+                            <datalist id="groups">
+                                <option *ngFor="let gType of gradeGroupGradeTypeList" [ngValue]="gType.name">
+                                    {{gType.name}}</option>
+                            </datalist>
+                            <!-- <label for="usr" class="lable-style">Group Type:</label>
                             <select class="form-control" id="grpType"
                                 [(ngModel)]="_gradeGroupStandingList.gradeGroupGradeType">
                                 <option selected>APR Column #1 | 1</option>
                                 <option selected>APR Column #2 | 2</option>
                                 <option selected>APR Column #3 | 3</option>
                                 <option selected>APR Column #4 | 4</option>
-                            </select>
+                            </select> -->
                         </div>
                     </div>
                 </div>
@@ -147,11 +170,11 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="closePopup"
-            (click)="isEdit = false; selectedRowIndex = null; modalRef.hide()">Close</button>
         <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addGradeGroup();">Save & Close</button>
         <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();">Update &
             Close</button>
+        <button type="button" class="btn btn-secondary" id="closePopup"
+            (click)="isEdit = false; selectedRowIndex = null; modalRef.hide()">Cancel</button>
     </div>
 </ng-template>
 <!-- Modal End-->

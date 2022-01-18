@@ -48,7 +48,12 @@ export class GradeStandingGroupListComponent implements OnInit {
         }
     }
     isLoading: boolean = true;
-
+    gradeGroupGradeTypeList = [
+        {'name' : 'APR Column #1 | 1'},
+        {'name' : 'APR Column #2 | 2'},
+        {'name' : 'APR Column #3 | 3'},
+        {'name' : 'APR Column #4 | 4'}
+    ];
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog

@@ -241,12 +241,17 @@ table {
 .mat-select-width{
     width: 100%;
 }
+
+.mat-menu-item{
+    line-height: 10px !important;
+    height: 28px !important;
+}
 .data-table-height{
     height: auto;
     overflow: auto;
 }
 .dt-max-height{
-    max-height: 296px !important;
+    overflow: auto;
 }
 .popHeader {
     color: white;
