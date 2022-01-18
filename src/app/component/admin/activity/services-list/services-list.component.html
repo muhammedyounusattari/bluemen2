@@ -69,8 +69,8 @@
                 [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)"></tr>
 
         </table>
-        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
     </div>
+        <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
     <!-- Data Table End-->
 </div>
 
@@ -162,7 +162,7 @@
                                 <option *ngFor="let actGroup of activityGroup" [ngValue]="actGroup.activityGroupName">
                                     {{actGroup.activityGroupName}}</option>
                             </datalist>
-                          
+
                             <!-- <label for="usr">Activity/Service Group</label>
                             <select class="form-control" id="serviceGrpName"
                                 [(ngModel)]="activityServiceListEnum.activityGroupName">

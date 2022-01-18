@@ -114,6 +114,10 @@ export class CounselorClassesComponent implements OnInit {
         this.getCounselorClassesList();
     }
 
+   ngAfterViewInit() {
+       this.dataSource.paginator = this.paginator;
+   }
+
     getCounselorClassesList() {
         this._counselorClassesService.getCounselorClassesList().subscribe(result => {
             this.hideLoader();

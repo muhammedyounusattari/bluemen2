@@ -114,6 +114,10 @@ export class TeacherClassesComponent implements OnInit {
         this.getTeacherClassesList();
     }
 
+    ngAfterViewInit() {
+        this.dataSource.paginator = this.paginator;
+    }
+
     getTeacherClassesList() {
         this._teacheClassesService.getTeacherClassesList().subscribe(result => {
             this.hideLoader();

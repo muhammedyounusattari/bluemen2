@@ -86,6 +86,10 @@ export class TutorClassesComponent implements OnInit {
     this.getTutorList();
   }
 
+   ngAfterViewInit() {
+       this.dataSource.paginator = this.paginator;
+   }
+
   applyFilter(filterValue: any) {
     this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
     if (this.dataSource.paginator) {

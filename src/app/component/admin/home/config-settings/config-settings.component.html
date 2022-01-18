@@ -62,8 +62,8 @@
           [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
       </tr>
     </table>
-    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
   </div>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
 
 
 
@@ -216,7 +216,7 @@
   <div class="modal-footer">
       <button type="button" class="btn btn-secondary" id="closePopup"
           (click)="isEdit = false; selectedRowIndex = null;modalRef.hide()">Close</button>
-      
+
       <button type="button" class="btn btn-primary" *ngIf="isEdit"
           (click)="updateSelectedRow();modalRef.hide()">Update &
           Close</button>
