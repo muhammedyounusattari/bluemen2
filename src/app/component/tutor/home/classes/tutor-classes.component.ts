@@ -19,7 +19,7 @@ export class TutorClassesComponent implements OnInit {
   modalConfigSM = {
     backdrop: true,
     ignoreBackdropClick: true,
-    class: 'modal-lg'
+    class: 'modal-xl'
   }
   studentModalConfigSM = {
     backdrop: true,
@@ -55,7 +55,9 @@ export class TutorClassesComponent implements OnInit {
   public subjectAssg: string = '';
   public notes: string = '';
   public id: string = '';
-  columnsToDisplay: string[] = ['id', 'currentYear', 'semester', 'tutorName', 'subject',
+  public studentAssigned:string = '';
+
+  columnsToDisplay: string[] = ['currentYear', 'semester', 'tutorName', 'subject',
     'classPeriod', 'meetingTime', 'days', 'room', 'maxLimit', 'studentAssigned'];
   modalColumnsToDisplay: string[] =
     ['ssno', 'firstName', 'lastName', 'phoneNumber', 'fiscalYear', 'active', 'served', 'reported', 'counselor', 'school', 'standing'];
@@ -98,6 +100,7 @@ export class TutorClassesComponent implements OnInit {
   }
 
   openTutorClassesModal(template: TemplateRef<any>) {
+    this.resetPayload();
     this.modalRef = this.modalService.show(template, this.modalConfigSM);
   }
 
@@ -272,12 +275,32 @@ export class TutorClassesComponent implements OnInit {
       notes: this.notes,
       room: this.room,
       semester: this.semester,
-      studentAssigned: null,
+      studentAssigned: this.studentAssigned,
       studentList: this.selectedStudentList,
       subject: this.subject,
       tutorName: this.tutorName
     }
 
   }
+
+
+  resetPayload() {
+
+        this.id = '',
+        this.classPeriod = '',
+        this.currentYear = '',
+        this.days = '',
+        this.duration = '',
+        this.maxLimit = '',
+        this.meetingTime = '',
+        this.notes = '',
+        this.room = '',
+        this.semester = '',
+        this.studentAssigned = '',
+        this.selectedStudentList = [],
+        this.subject = '',
+        this.tutorName = ''
+
+    }
 }
 

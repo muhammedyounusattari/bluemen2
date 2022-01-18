@@ -25,7 +25,7 @@ export class TeacherClassesComponent implements OnInit {
     modalConfigSM = {
         backdrop: true,
         ignoreBackdropClick: true,
-        class: 'modal-lg'
+        class: 'modal-xl'
     };
     studentModalConfigSM = {
         backdrop: true,

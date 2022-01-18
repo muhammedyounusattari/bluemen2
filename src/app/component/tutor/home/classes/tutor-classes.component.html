@@ -32,10 +32,6 @@
   <!-- Data Table Start-->
   <div *ngIf="!isLoading" class="mat-elevation-z8 data-table-height">
     <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table matSort>
-      <ng-container matColumnDef="id">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header> Id </th>
-        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell> {{classObj.id}} </td>
-      </ng-container>
 
       <ng-container matColumnDef="currentYear">
         <th *matHeaderCellDef mat-header-cell mat-sort-header> Current Year </th>
@@ -261,14 +257,16 @@
                 <label for="usr">Meeting time
                 </label>
                 <span class="form-group">
-                                    <select [(ngModel)]="meetingTime" class="form-control" id="sel4" name="sel3">
-                                        <option>0</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </span>
+                    <select name="sel3" class="form-control" id="sel4"
+                            [(ngModel)]="meetingTime">
+                        <option value="null">Select</option>
+                        <option>1:30 - 2:30</option>
+                        <option>2:30 - 3:30</option>
+                        <option>10:50 - 11:45</option>
+                        <option>8:00 - 8:50</option>
+                        <option>8:55 - 9:45</option>
+                    </select>
+                </span>
               </div>
             </div>
             <div class="col-md-4">
@@ -348,28 +346,25 @@
               <div class="form-group mt-4">
                 <label for="usr">Student Assigned
                 </label>
-                <input [(ngModel)]="subjectAssg" class="form-control" id=start placeholder="0" required type=number>
+                <input [(ngModel)]="studentAssigned" class="form-control" id=start placeholder="0" required type=number>
               </div>
             </div>
 
           </div>
 
           <div class="row mt-4">
-            <div class="col-md-2 ">
-              <button (click)="openStudentModal(studentPopup)" class="btn btn-secondary" data-bs-dismiss="modal" type="button" >Assign
+            <div class="col-md-4 ">
+              <button type="button" class="btn btn-secondary" (click)="openStudentModal(studentPopup)">Assign
                 Student</button>
             </div>
-            <div class="col-md-2">
-              <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Edit Grade &
+            <div class="col-md-4">
+              <button type="button" class="btn btn-secondary" >Edit Grade &
                 Notes</button>
             </div>
-            <div class="col-md-2">
-              <button (click)="removeStudentAssignRcd()" class="btn btn-secondary" data-bs-dismiss="modal" type="button">Remove From
-                Class</button>
-
+            <div class="col-md-4">
+              <button type="button" class="btn btn-secondary" (click)="removeStudentAssignRcd()">Remove From Class</button>
             </div>
             <div class="col-md-4">&nbsp;</div>
-
           </div>
 
           <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2">

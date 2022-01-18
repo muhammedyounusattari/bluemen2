@@ -23,7 +23,7 @@ export class StaffMemberComponent {
   modalConfigSM = {
     backdrop: true,
     ignoreBackdropClick: true,
-    class: 'modal-lg'
+    class: 'modal-xl'
   }
   public staffMembersForm: FormGroup;
   public staffMembersModalForm: FormGroup;

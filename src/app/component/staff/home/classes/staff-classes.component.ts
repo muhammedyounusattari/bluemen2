@@ -19,7 +19,7 @@ export class StaffClassesComponent implements OnInit {
   modalConfigSM = {
     backdrop: true,
     ignoreBackdropClick: true,
-    class: 'modal-lg'
+    class: 'modal-xl'
   }
   studentModalConfigSM = {
     backdrop: true,
@@ -55,7 +55,8 @@ export class StaffClassesComponent implements OnInit {
   public subjectAssg: string = '';
   public notes: string = '';
   public id: string = '';
-  columnsToDisplay: string[] = ['id', 'currentYear', 'semester', 'staffName', 'subject',
+  public studentAssigned:string = '';
+  columnsToDisplay: string[] = ['currentYear', 'semester', 'staffName', 'subject',
     'classPeriod', 'meetingTime', 'days', 'room', 'maxLimit', 'studentAssigned'];
   modalColumnsToDisplay: string[] =
     ['ssno', 'firstName', 'lastName', 'phoneNumber', 'fiscalYear', 'active', 'served', 'reported', 'counselor', 'school', 'standing'];
@@ -98,6 +99,7 @@ export class StaffClassesComponent implements OnInit {
   }
 
   openStaffClassesModal(template: TemplateRef<any>) {
+    this.resetPayload();
     this.modalRef = this.modalService.show(template, this.modalConfigSM);
   }
 
@@ -272,12 +274,30 @@ export class StaffClassesComponent implements OnInit {
       notes: this.notes,
       room: this.room,
       semester: this.semester,
-      studentAssigned: null,
+      studentAssigned: this.studentAssigned,
       studentList: this.selectedStudentList,
       subject: this.subject,
       staffName: this.staffName
     }
-
   }
+
+  resetPayload() {
+
+        this.id = '',
+        this.classPeriod = '',
+        this.currentYear = '',
+        this.days = '',
+        this.duration = '',
+        this.maxLimit = '',
+        this.meetingTime = '',
+        this.notes = '',
+        this.room = '',
+        this.semester = '',
+        this.studentAssigned = '',
+        this.selectedStudentList = [],
+        this.subject = '',
+        this.staffName = ''
+
+    }
 }
 
