@@ -91,7 +91,7 @@
           [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
       </tr>
     </table>
-    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
   </div>
 
   <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
@@ -240,7 +240,7 @@
     </div>
   </div> -->
 
-  
+
 <!-- Modal Start-->
 <ng-template #customFieldValuePopup>
   <!-- Modal -->
@@ -261,7 +261,7 @@
                         <label for="usr" class="lable-style">Enter Pulldown Name:</label>
                         <input type="text" formControlName="pullDownName" class="form-control" id="usr">
                       </div>
-    
+
                     </div>
                   </div>
                 </div>
@@ -274,8 +274,8 @@
       <button type="button" class="btn btn-secondary" id="closePopup"
           (click)="isEdit = false; selectedRowIndex = null;modalRef.hide()">Close</button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="handleMethodToCall(); modalRef.hide()">
-            {{selectedOption === 'Edit' ? 'Update & Close' : 'Save & Close'}}</button>      
-      
+            {{selectedOption === 'Edit' ? 'Update & Close' : 'Save & Close'}}</button>
+
   </div>
 </ng-template>
 <!-- Modal End-->

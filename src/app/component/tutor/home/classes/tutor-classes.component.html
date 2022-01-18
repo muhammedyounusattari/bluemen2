@@ -92,7 +92,7 @@
       </tr>
     </table>
   </div>
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]" [pageSize]="10"></mat-paginator>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]" [pageSize]="10"></mat-paginator>
   <!-- Data Table End-->
   <br/><br/>
   <!-- Search Filter Start-->
@@ -500,8 +500,8 @@
               <h3>No Data Found</h3>
             </div>
           </div>
-          <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
         </div>
+          <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
         <div class="row">
           <div class="col-md-12">
             <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>

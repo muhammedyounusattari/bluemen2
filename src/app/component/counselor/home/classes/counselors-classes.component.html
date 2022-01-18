@@ -432,8 +432,8 @@
                                     (click)="setSelectedRowOfClassesStudent(row, idx1)">
                                 </tr>
                             </table>
-                            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
                         </div>
+                            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
                         <!-- Data Table End-->
                     </div>
 
@@ -541,7 +541,7 @@
                             <h3>No Data Found</h3>
                         </div>
                     </div>
-                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+                    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
