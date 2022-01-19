@@ -10,19 +10,26 @@ import { LoginService } from '../../services/login.service';
 export class LoginComponent {
   @Output() validateLogin = new EventEmitter();
   requestData = {
-    username: 'mumbaiuniversity.user1',
-    password: 'mupassword1234'
+    username: '',
+    password: ''
   }
-  uname: string = 'EOC_DEMO';
-  password: string = 'mupassword1234';
+  orgCode: string ='mcn-demo';
+  uname: string = 'mcn-demo.user1';
+  password: string = 'mcn-demo.password1';
 
   constructor(private _loginService: LoginService) {}
 
   validate() {
-    this._loginService.validateLogin(this.requestData).subscribe(result => {
-      if (result) {
-        this.validateLogin.emit(result);
-      }
-    });
+    if (this.orgCode) {
+      this.requestData.username = this.uname;
+      this.requestData.password = this.password;
+      this._loginService.validateLogin(this.requestData, this.orgCode).subscribe(result => {
+        if (result) {
+          this.validateLogin.emit(result);
+        }
+      });
+    } else {
+      alert('Please enter Organization Code');
+    }
   }
 }

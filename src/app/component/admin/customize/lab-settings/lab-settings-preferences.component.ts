@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'lab-settings',
     templateUrl: './lab-settings-preferences.component.html',
-    // styleUrls: ['./lab-settings-preferences.component.css']
+    styleUrls: ['./lab-settings-preferences.css']
 })
 
 export class LabSettingsPreferencesComponent implements OnInit {
