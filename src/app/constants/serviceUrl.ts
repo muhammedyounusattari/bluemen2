@@ -103,24 +103,28 @@ export class ServiceUrls {
 
     // Tutor Contacts API URL's
     public static GET_TUTOR_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/getStudentTutorContactsList/v1';
+    public static GET_TUTOR_CONTACTS_REMINDER = environment.apiUrl + '/blumen-api/student-contacts/getStudentDispTutorContReminderList/v1';
     public static DELETE_TUTOR_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/deleteStudentTutorContactsList/v1';
     public static ADD_TUTOR_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/studentTutorContactsList/v1';
     public static UPDATE_TUTOR_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/updateStudentTutorContactsList/v1';
 
     // Teacher Contacts API URL's
     public static GET_TEACHER_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/getStudentTeacherContactsList/v1';
+    public static GET_TEACHER_CONTACTS_REMINDER = environment.apiUrl + '/blumen-api/student-contacts/getStudentDispTeacherContRemiList/v1';
     public static DELETE_TEACHER_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/deleteStudentTeacherContactsList/v1';
     public static ADD_TEACHER_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/studentTeacherContactsList/v1';
     public static UPDATE_TEACHER_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/updateStudentTeacherContactsList/v1';
 
     // Staff Contacts API URL's
     public static GET_STAFF_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/getStudentStaffContactsList/v1';
-    public static DELETE_STAFF_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/deleteStudentStaffContactsList/v1';
+    public static GET_STAFF_CONTACTS_REMINDER = environment.apiUrl + '/blumen-api/student-contacts/getStudentDispCouContReminList/v1';
+    public static DELETE_STAFF_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/getStudentDispStaffContReminderList/v1';
     public static ADD_STAFF_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/studentStaffContactsList/v1';
     public static UPDATE_STAFF_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/updateStudentStaffContactsList/v1';
 
-    // Staff Contacts API URL's
+    // Counselor Contacts API URL's
     public static GET_COUNSELOR_CONTACTS = environment.apiUrl + '/blumen-api/admin/getCounselorContactsList/v1';
+    public static GET_COUNSELOR_CONTACTS_REMINDER = environment.apiUrl + '/blumen-api/student-contacts/getStudentDispCouContReminList/v1';
     public static DELETE_COUNSELOR_CONTACTS = environment.apiUrl + '/blumen-api/admin/deleteStudentCounselorContactList/v1';
     public static ADD_COUNSELOR_CONTACTS = environment.apiUrl + '/blumen-api/admin/addStudentCounselorContactList/v1';
     public static UPDATE_COUNSELOR_CONTACTS = environment.apiUrl + '/blumen-api/admin/updateStudentCounselorContactList/v1';

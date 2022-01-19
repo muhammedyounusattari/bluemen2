@@ -26,6 +26,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StaffContactsComponent } from './contacts/staff-contacts/staff-contacts.component';
 import { CounselorContactsComponent } from './contacts/counselor-contacts/counselor-contacts.component';
 import { LabContactsComponent } from './contacts/lab-contacts/lab-contacts.component';
+import { DisplayTutorContactsComponent } from './contacts/display-tutor-contacts/display-tutor-contacts.component';
+import { DisplayCounselorContactsComponent } from './contacts/display-counselor-contacts/display-counselor-contacts.component';
+import { DisplayStaffContactsComponent } from './contacts/display-staff-contacts/display-staff-contacts.component';
+import { DisplayTeacherContactsComponent } from './contacts/display-teacher-contacts/display-teacher-contacts.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +47,11 @@ import { LabContactsComponent } from './contacts/lab-contacts/lab-contacts.compo
         TeacherContactsComponent,
         StaffContactsComponent,
         CounselorContactsComponent,
-        LabContactsComponent
+        LabContactsComponent,
+        DisplayTutorContactsComponent,
+        DisplayCounselorContactsComponent,
+        DisplayStaffContactsComponent,
+        DisplayTeacherContactsComponent
     ],
     imports: [
         StudentRoutingModule,

@@ -555,5 +555,6 @@ footer.page-footer .footer-copyright {
 }
 
 .mat-elevation-z8 {
+    overflow: hidden !important;
     box-shadow: none !important;
 }

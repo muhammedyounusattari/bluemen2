@@ -1,122 +1,83 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
     <div class="row bg-white">
         <div class="col-md-12">
-            <h3>Display Tutor Data Filter</h3>
+            <h3>Tutor Contact Data Filter</h3>
         </div>
     </div>
-
     <div class="row ">
         <div class="col-md-6 mt-3 mb-3 ">
-            <form class="example" action="/action_page.php">
-                <input type="text" placeholder="Search.." name="search2">
-                <button type="submit"><i class="fa fa-search"></i></button>
+            <form class="example">
+                <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event, dataSource)">
+                <i class="fa fa-search search"></i>
             </form>
         </div>
     </div>
-
-    <div class="table-responsive" style="border:1px solid #1366A0;">
-        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-            <thead>
-                <tr style="background: #F5F6FA;">
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Phone Number</th>
-                    <th scope="col">Attendance Date</th>
-                    <th scope="col">Attendance Amount</th>
-                    <th scope="col">Attendance Logged</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                </tr>
-                <tr>
-                    <th scope="row">Craig</th>
-                    <td>Adams</td>
-                    <td>(832)654-6546</td>
-                    <td>01/11/2021</td>
-                    <td>95.00</td>
-                    <td>NO</td>
-                </tr>
-
-            </tbody>
+    <div class="mat-elevation-z8 data-table-height mb-4" style="border:1px solid #1366A0;">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"
+            [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
+            <ng-container matColumnDef="firstName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.student?.firstName | titlecase}} </td>
+            </ng-container>
+            <ng-container matColumnDef="lastName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.student?.lastName | titlecase}} </td>
+            </ng-container>
+            <ng-container matColumnDef="phoneNumber">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.student?.phoneNumber}} </td>
+            </ng-container>
+            <ng-container matColumnDef="staffContactDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact Date </th>
+                <td mat-cell *matCellDef="let entry"> {{entry.staffContactDate}} </td>
+            </ng-container>
+            <ng-container matColumnDef="staffContactTutor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tutor </th>
+                <td mat-cell *matCellDef="let entry"> {{entry.staffContactTutor | titlecase}} </td>
+            </ng-container>
+            <ng-container matColumnDef="staffTotalTime">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact Time </th>
+                <td mat-cell *matCellDef="let entry"> {{entry.staffTotalTime}} </td>
+            </ng-container>
+            <ng-container matColumnDef="staffRecontactDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Re-Contact Date </th>
+                <td mat-cell *matCellDef="let entry"> {{entry.staffRecontactDate}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;let i = index;" (click)="getSelectedRow(row, i)"
+                [ngClass]="{'selected-row' : (tutorContactsList.length > 0) && (selectedRow == i)}"></tr>
         </table>
+        <div *ngIf="spinner" class="spinner-container bg-colr-wht py-4">
+            <mat-progress-spinner class="center" [diameter]="50" color="default" mode="indeterminate">
+            </mat-progress-spinner>
+        </div>
+        <div *ngIf="!spinner && tutorContactsList?.length == 0" class="bg-colr-wht py-4">
+            <div class="center">
+                <h3>No Data Found</h3>
+            </div>
+        </div>
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
     </div>
-
-    <div class="row">
+    <div class="row" [ngStyle]="{'display': 'none'}">
         <div class="col-md-12 mt-3">
-
             <nav aria-label="Page navigation example">
                 <ul class="pagination pagination-sm justify-content-right">
                     <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        <a class="page-link" tabindex="-1">Previous</a>
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link">1</a></li>
+                    <li class="page-item"><a class="page-link">2</a></li>
+                    <li class="page-item"><a class="page-link">3</a></li>
                     <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
+                        <a class="page-link">Next</a>
                     </li>
                 </ul>
             </nav>
         </div>
     </div>
 </div>
-
-<div class="row" style="margin-left: 0px!important; margin-right: 0px!important; margin-bottom: 50px;">
+<div class="row"
+    style="display: none !important; margin-left: 0px!important; margin-right: 0px!important; margin-bottom: 50px;">
     <div class="col-md-12">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -135,49 +96,15 @@
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="d-flex">
-                    <div class="col-md-12 ">
+                    <div class="col-md-12">
                         <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>
-                    </div>
-                </div>
-
-                <div class="row " style="margin-left: 0px!important; margin-right: 0px!important;">
-                    <div class="col-md-4">
-                        <label class="radio-inline"> Logged:
-                            <input type="radio" name="optradio" checked> Yes </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="optradio"> NO
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="optradio"> All
-                        </label>
-                    </div>
-                    <div class="col-md-8 flex">
-                        <div class="form-group">
-                            <label for="sel1">Attendance Date From: </label>
-                            <input type="text" class="form-control" id="usr">
-                        </div>&nbsp;&nbsp;&nbsp;
-                        <div class="form-group">
-                            <label for="sel1">To: </label>
-                            <input type="text" class="form-control" id="usr">
-                        </div>
                     </div>
                 </div>
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="sel1">Fiscal Year: </label>
-                            <input type="text" class="form-control" id="usr">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="sel1">Amount:</label>
-                            <select class="form-control" id="sel1">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                            </select>
+                            <label for="usr">Fiscal year</label>
+                            <input type="number" [value]="'2017'" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -195,12 +122,12 @@
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
                         <label class="radio-inline"> Active:
-                            <input type="radio" name="optradio" checked> Yes </label>
+                            <input class="ml-2" type="radio" value="Yes"> Yes </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> NO
+                            <input class="ml-2" type="radio" value="No"> No
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> All
+                            <input class="ml-2" type="radio" value="All"> All
                         </label>
                     </div>
                     <div class="col-md-4">
@@ -228,13 +155,13 @@
                 </div>
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
-                        <label class="radio-inline"> Active:
-                            <input type="radio" name="optradio" checked> Yes </label>
+                        <label class="radio-inline"> Served:
+                            <input class="ml-2" type="radio" value="Yes"> Yes </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> NO
+                            <input class="ml-2" type="radio" value="No"> No
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> All
+                            <input class="ml-2" type="radio" value="All"> All
                         </label>
                     </div>
                     <div class="col-md-4">
@@ -262,13 +189,13 @@
                 </div>
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-4">
-                        <label class="radio-inline"> Active:
-                            <input type="radio" name="optradio" checked> Yes </label>
+                        <label class="radio-inline"> Reported:
+                            <input class="ml-2" type="radio" value="Yes"> Yes </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> NO
+                            <input class="ml-2" type="radio" value="No"> No
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio"> All
+                            <input class="ml-2" type="radio" value="All"> All
                         </label>
                     </div>
                     <div class="col-md-4">
@@ -332,7 +259,6 @@
                             </select>
                         </div>
                     </div>
-
                 </div>
                 <div class="row">
                     <div class="col-md-4">
@@ -411,196 +337,6 @@
     </div>
 </div>
 
-
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Select Students</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="table-responsive" style="border:1px solid #1366A0;">
-                            <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-                                <thead>
-                                    <tr style="background: #F5F6FA;">
-                                        <th scope="col">S.S. No</th>
-                                        <th scope="col">First Name</th>
-                                        <th scope="col">Last Name</th>
-                                        <th scope="col">Phone</th>
-                                        <th scope="col">Fiscal Year</th>
-                                        <th scope="col">Active</th>
-                                        <th scope="col">Served</th>
-                                        <th scope="col">Reported</th>
-                                        <th scope="col">Counselor</th>
-                                        <th scope="col">School</th>
-                                        <th scope="col">Standing</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">265-85-786</th>
-                                        <th scope="row">Craig</th>
-                                        <td>Adams</td>
-                                        <td>(832)654-6546</td>
-                                        <td>2021</td>
-                                        <td>True</td>
-                                        <td>True</td>
-                                        <td>True</td>
-                                        <td>Jackson</td>
-                                        <td>Jordan</td>
-                                        <td>Adult w/o</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">265-85-786</th>
-                                        <th scope="row">Craig</th>
-                                        <td>Adams</td>
-                                        <td>(832)654-6546</td>
-                                        <td>2021</td>
-                                        <td>True</td>
-                                        <td>True</td>
-                                        <td>True</td>
-                                        <td>Jackson</td>
-                                        <td>Jordan</td>
-                                        <td>Adult w/o</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">265-85-786</th>
-                                        <th scope="row">Craig</th>
-                                        <td>Adams</td>
-                                        <td>(832)654-6546</td>
-                                        <td>2021</td>
-                                        <td>True</td>
-                                        <td>True</td>
-                                        <td>True</td>
-                                        <td>Jackson</td>
-                                        <td>Jordan</td>
-                                        <td>Adult w/o</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">265-85-786</th>
-                                        <th scope="row">Craig</th>
-                                        <td>Adams</td>
-                                        <td>(832)654-6546</td>
-                                        <td>2021</td>
-                                        <td>True</td>
-                                        <td>True</td>
-                                        <td>True</td>
-                                        <td>Jackson</td>
-                                        <td>Jordan</td>
-                                        <td>Adult w/o</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">265-85-786</th>
-                                        <th scope="row">Craig</th>
-                                        <td>Adams</td>
-                                        <td>(832)654-6546</td>
-                                        <td>2021</td>
-                                        <td>True</td>
-                                        <td>True</td>
-                                        <td>True</td>
-                                        <td>Jackson</td>
-                                        <td>Jordan</td>
-                                        <td>Adult w/o</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">265-85-786</th>
-                                        <th scope="row">Craig</th>
-                                        <td>Adams</td>
-                                        <td>(832)654-6546</td>
-                                        <td>2021</td>
-                                        <td>True</td>
-                                        <td>True</td>
-                                        <td>True</td>
-                                        <td>Jackson</td>
-                                        <td>Jordan</td>
-                                        <td>Adult w/o</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12 flex">
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="sel1">Fiscal Year:</label>
-                                        <select class="form-control" id="sel1">
-                                            <option>2021</option>
-                                            <option>2021</option>
-                                            <option>2021</option>
-                                            <option>2021</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="radio-inline"> Served:
-                                        <input type="radio" name="optradio" checked> Yes </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="optradio"> NO
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="optradio"> All
-                                    </label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="sel1">Site Location:</label>
-                                        <select class="form-control" id="sel1">
-                                            <option>All</option>
-                                            <option>All</option>
-                                            <option>All</option>
-                                            <option>All</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 flex">
-                                <div class="col-md-4">
-                                    <label class="radio-inline"> Active:
-                                        <input type="radio" name="optradio" checked> Yes </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="optradio"> NO
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="optradio"> All
-                                    </label>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="radio-inline"> Reported:
-                                        <input type="radio" name="optradio" checked> Yes </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="optradio"> NO
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="optradio"> All
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5; position:relative;">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
@@ -610,35 +346,512 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Reset</a>
+                    <a class="nav-link active" aria-current="page">Reset</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">New</a>
+                    <a class="nav-link" (click)="getSelectedOption('New')">New</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Edit</a>
+                    <a class="nav-link" (click)="getSelectedOption('Edit')">Edit</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Rename</a>
+                    <a class="nav-link">Rename</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Move</a>
+                    <a class="nav-link">Move</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Merge</a>
+                    <a class="nav-link">Merge</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Delete</a>
+                    <a class="nav-link" (click)="deleteDispTutorContacts()">Delete</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Print</a>
+                    <a class="nav-link">Print</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Submit</a>
+                    <a class="nav-link">Submit</a>
                 </li>
             </ul>
-
         </div>
     </div>
 </nav>
+
+
+<ng-template #tutorStudentPopup>
+    <div class="modal-header popHeaderBG">
+        <span class="modal-title popHeader" id="exampleModalLabel">Select Students</span>
+        <button type="button" class="btn-close" (click)="modalRef.hide()"></button>
+    </div>
+    <form [formGroup]="tutorContactsModalForm" class="modal-body">
+        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="row ">
+                    <div class="col-md-6 mt-3 mb-3 ">
+                        <form class="example">
+                            <input class="search-input" type="text" placeholder="Search.."
+                                (keyup)="applyFilter($event, modalDataSource)">
+                            <i class="fa fa-search search"></i>
+                        </form>
+                    </div>
+                </div>
+                <div class="mat-elevation-z8 data-table-height mb-4" style="border:1px solid #1366A0;overflow-y: auto; overflow-x: auto">
+                    <table mat-table #editPopup="matSort" [dataSource]="modalDataSource" class="mat-elevation-z8"
+                        [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
+                        <ng-container matColumnDef="ssno">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> S.S. No </th>
+                            <td mat-cell *matCellDef="let entry"> {{entry.ssno}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="firstName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+                            <td mat-cell *matCellDef="let entry"> {{entry.firstName | titlecase}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="lastName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+                            <td mat-cell *matCellDef="let entry"> {{entry.lastName | titlecase}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="phoneNumber">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number </th>
+                            <td mat-cell *matCellDef="let entry"> {{entry.phoneNumber}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="fiscalYear">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Fiscal Year </th>
+                            <td mat-cell *matCellDef="let entry"> {{entry.fiscalYear}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="active">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Active </th>
+                            <td mat-cell *matCellDef="let entry"> {{entry.active | titlecase}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="served">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Served </th>
+                            <td mat-cell *matCellDef="let entry"> {{entry.served | titlecase}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="reported">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Reported </th>
+                            <td mat-cell *matCellDef="let entry"> {{entry.reported | titlecase}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="counselor">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Counselor </th>
+                            <td mat-cell *matCellDef="let entry"> {{entry?.graduatedInformation?.counselor | titlecase}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="school">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> School </th>
+                            <td mat-cell *matCellDef="let entry"> {{entry.school | titlecase}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="standing">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Standing </th>
+                            <td mat-cell *matCellDef="let entry"> {{entry.standing | titlecase}} </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="modalColumnsToDisplay"></tr>
+                        <tr mat-row *matRowDef="let row; columns: modalColumnsToDisplay;let i = index;"
+                            (click)="getSelectedModalRow(row, i)"
+                            [ngClass]="{'selected-row' : (studentsList.length > 0) && (selectedModalRow == i)}"></tr>
+                    </table>
+                    <div *ngIf="spinner" class="spinner-container bg-colr-wht py-4">
+                        <mat-progress-spinner class="center" [diameter]="50" color="default" mode="indeterminate">
+                        </mat-progress-spinner>
+                    </div>
+                    <div *ngIf="!spinner && studentsList?.length == 0" class="bg-colr-wht py-4">
+                        <div class="center">
+                            <h3>No Data Found</h3>
+                        </div>
+                    </div>
+                    <mat-paginator #editPopupPage="matPaginator" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 flex">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="usr">Fiscal year</label>
+                                <input formControlName="fiscalYear" type="number" [value]="'2017'" class="form-control"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label> Served: </label>
+                            <div class="form-group mt-2">
+                                <label class="radio-inline">
+                                    <input formControlName="served" class="ml-2" type="radio" value="Yes" selected> Yes
+                                </label>
+                                <label class="radio-inline">
+                                    <input formControlName="served" class="ml-2" type="radio" value="No"> No
+                                </label>
+                                <label class="radio-inline">
+                                    <input formControlName="served" class="ml-2" type="radio" value="All"> All
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label> Site Location: </label>
+                            <div class="form-group mt-2">
+                                <label class="radio-inline">
+                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="Undefined" selected> Undefined
+                                </label>
+                                <label class="radio-inline">
+                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="Not Entered"> Not Entered
+                                </label>
+                                <label class="radio-inline">
+                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="All"> All
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 flex">
+                        <div class="col-md-4">
+                            <label class="radio-inline"> Active:
+                                <input formControlName="active" class="ml-2" type="radio" value="Yes"> Yes </label>
+                            <label class="radio-inline">
+                                <input formControlName="active" class="ml-2" type="radio" value="No"> No
+                            </label>
+                            <label class="radio-inline">
+                                <input formControlName="active" class="ml-2" type="radio" value="All"> All
+                            </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="radio-inline"> Reported:
+                                <input formControlName="reported" class="ml-2" type="radio" value="Yes"> Yes </label>
+                            <label class="radio-inline">
+                                <input formControlName="reported" class="ml-2" type="radio" value="No"> No
+                            </label>
+                            <label class="radio-inline">
+                                <input formControlName="reported" class="ml-2" type="radio" value="All"> All
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5; position:relative;">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarTogglerDemo" aria-controls="navbarTogglerDemo" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page">Reset</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click)="openEditModal();modalRef.hide()">Select</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click)="modalRef.hide()">Cancel</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+    </form>
+</ng-template>
+
+
+
+
+<ng-template #tutorStudentEditPopup>
+    <div class="modal-header popHeaderBG">
+        <span class="modal-title popHeader" id="exampleModalLabel">Tutor Contact</span>
+        <button type="button" class="btn-close" (click)="editModalRef.hide()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+            <form [formGroup]="tutorContactsEditModalForm" class="tab-pane fade show active" id="home" role="tabpanel"
+                aria-labelledby="home-tab">
+                <div class="col-md-4">
+                    <h4>Student's Name : <span>{{studentData?.firstName}} {{studentData?.lastName}}</span></h4>
+                    <h4>Student's SSNO : <span>{{studentData?.ssno}}</span></h4>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Contact Date</label>
+                                <input formControlName="contactDate" type="date" id=start class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group mt-4">
+                                <label for="usr">Fiscal year</label>
+                                <input formControlName="fiscalYear" type="number" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mt-4">
+                                <label for="usr">Re-Contact Date:</label>
+                                <input formControlName="recontactDate" type="date" id=start class="form-control"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group pt-3 mt-5">
+                                <input formControlName="isReContacted" type="checkbox" style="float: left" required>
+                                &nbsp; Re-Contacted
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Contact Tutor:</label>
+                                <span class="form-group">
+                                    <select formControlName="tutor" name="sel3" class="form-control" id="sel4">
+                                        <option selected value="">Please select</option>
+                                        <option *ngFor="let tutor of tutorsList" [value]="tutor">{{tutor}}</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Component</label>
+                                <span class="form-group">
+                                    <select formControlName="component" name="sel3" class="form-control" id="sel4">
+                                        <option selected value="">Please select</option>
+                                        <option value="Academic">Academic</option>
+                                        <option value="Summer">Summer</option>
+                                        <option value="Both">Both</option>
+                                        <option value="Unknown">Unknown</option>
+                                        <option value="Not applicable">Not applicable</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">APR Subject:</label>
+                                <span class="form-group">
+                                    <select formControlName="aprSubject" name="sel3" class="form-control" id="sel4">
+                                        <option selected value="">Please select</option>
+                                        <option value="English Instruction">English Instruction</option>
+                                        <option value="Foreign Language">Foreign Language</option>
+                                        <option value="Mathematics">Mathematics</option>
+                                        <option value="Science">Science</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Contact Type:</label>
+                                <span class="form-group">
+                                    <select formControlName="contactType" name="sel3" class="form-control" id="sel4">
+                                        <option selected value="">Please select</option>
+                                        <option value="E-mail">E-mail</option>
+                                        <option value="Group">Group</option>
+                                        <option value="Mail">Mail</option>
+                                        <option value="Phone">Phone</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Subject:
+                                </label>
+                                <span class="form-group">
+                                    <select formControlName="subject" name="sel3" class="form-control" id="sel4">
+                                        <option selected value="">Please select</option>
+                                        <option value="Algebra">Algebra</option>
+                                        <option value="Geography">Geography</option>
+                                        <option value="Mathematics">Mathematics</option>
+                                        <option value="English">English</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Instructions:
+                                </label>
+                                <span class="form-group">
+                                    <select formControlName="instructions" name="sel3" class="form-control" id="sel4">
+                                        <option selected value="">Please select</option>
+                                        <option value="Not enrolled">Not enrolled</option>
+                                        <option value="Composition">Composition</option>
+                                        <option value="Literature">Literature</option>
+                                        <option value="Composition and Literature">Composition and Literature</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mt-4">
+                                <label for="usr">Activity/Service:</label>
+                                <span class="form-group">
+                                    <select formControlName="activityService" name="sel3" class="form-control"
+                                        id="sel4">
+                                        <option selected value="">Please select</option>
+                                        <option *ngFor="let item of activityServiceList" [value]="item?.activityName">
+                                            {{item?.activityName}}
+                                        </option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mt-4">
+                                <label for="usr">Total Time:
+                                </label>
+                                <div [ngStyle]="{'display': 'flex'}">
+                                    <input [ngStyle]="{'width': '65%'}" formControlName="totalTime" type="number"
+                                        class="form-control" required>
+                                    <label [ngStyle]="{'margin-left': '1rem', 'margin-top': '0.5rem'}"> (in
+                                        minutes)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-2 ">
+                            <button type="button" class="btn btn-secondary"
+                                (click)="openActivityServiceModal('Add')">Add </button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-secondary"
+                                (click)="openActivityServiceModal('Edit')">Edit</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-secondary"
+                                (click)="removeServiceActivity()">Remove</button>
+                        </div>
+                        <div class="col-md-4">&nbsp;</div>
+                    </div>
+                    <div class="md-form form-group pink-textarea active-pink-textarea-2">
+                        <div class="mat-elevation-z8 data-table-height mt-4 mb-4"
+                            style="border:1px solid #1366A0;overflow-y: auto">
+                            <table mat-table [dataSource]="serviceDataSource" class="table table-hover mat-elevation-z8"
+                                [ngStyle]="{'width': '100%', 'padding': '0.5rem 0', 'margin-bottom': '2px'}" matSort #activityTable>
+                                <ng-container matColumnDef="activity">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Activity / Service Rendered
+                                    </th>
+                                    <td mat-cell *matCellDef="let entry"> {{entry.activity | titlecase}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="totalTime">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Activity Time </th>
+                                    <td mat-cell *matCellDef="let entry"> {{entry.totalTime}} </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="serviceColumnsToDisplay"></tr>
+                                <tr mat-row *matRowDef="let row; columns: serviceColumnsToDisplay; let i = index;"
+                                    (click)="getSelectedEditModalRow(row, i)" [ngClass]="{'selected-row':
+                                    (activityServiceData?.length > 0) && (selectedEditModalRow == i)}"></tr>
+                            </table>
+                            <div *ngIf="spinner" class="spinner-container bg-colr-wht py-4">
+                                <mat-progress-spinner class="center" [diameter]="50" color="default"
+                                    mode="indeterminate">
+                                </mat-progress-spinner>
+                            </div>
+                            <div *ngIf="!spinner && activityServiceData?.length == 0" class="bg-colr-wht py-4">
+                                <div class="center">
+                                    <h3>No record to display</h3>
+                                </div>
+                            </div>
+                            <ng-container *ngIf="activityServiceData?.length > 4">
+                                <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="md-form col-md-12 mb-4 mt-4 form-group pink-textarea active-pink-textarea-2" style="border: 1px solid #1366A0;">
+                        <label for="form23"> Notes:
+                        </label>
+                        <i class="fa fa-edit"></i>
+                        <textarea formControlName="notes" placeholder="Enter notes" class="md-textarea form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                <nav class="navbar navbar-expand-lg navbar-light "
+                    style="background-color: #d7e8f5; position:relative;">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarTogglerDemo" aria-controls="navbarTogglerDemo" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarTogglerDemo">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link active" (click)="deleteDispTutorContacts()">Delete</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link ">Print</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " (click)="handleMethodToCall()">Save</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " (click)="handleMethodToCall();editModalRef.hide()">Save &
+                                        Close</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " (click)="editModalRef.hide()">Cancel</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </form>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #activityServicePopup>
+    <div class="modal-header popHeaderBG">
+        <span class="modal-title popHeader" id="exampleModalLabel">Enter the Time in Minutes for this
+            Activity/Service</span>
+        <button type="button" class="btn-close" (click)="activityServiceModalRef.hide()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="tab-content bg-white" id="myTabContent">
+            <form [formGroup]="activityServiceForm" class="tab-pane fade show active" id="home" role="tabpanel"
+                aria-labelledby="home-tab">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Activity</label>
+                                <span class="form-group">
+                                    <select formControlName="activity" name="sel3" class="form-control" id="sel4">
+                                        <option selected value="">Please select</option>
+                                        <option *ngFor="let item of activityServiceList" [value]="item?.activityName">
+                                            {{item?.activityName}}
+                                        </option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mt-4">
+                                <label for="usr">Time in Minutes</label>
+                                <input formControlName="time" type="number" value="2" id="start" class="form-control"
+                                    required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 mt-3 mb-3">
+                            <button type="button" (click)="addServiceActivity();activityServiceModalRef.hide()"
+                                class="btn btn-primary active float-left">Save</button>
+                        </div>
+                        <div class="col-md-3 mt-3 mb-3">
+                            <button type="button" (click)="activityServiceForm.reset();activityServiceModalRef.hide()"
+                                class="btn btn-primary active float-left">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>

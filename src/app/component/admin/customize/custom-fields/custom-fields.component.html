@@ -9,57 +9,23 @@
       <h3>Custom Fields</h3>
     </div>
   </div>
-  <div class="row ">
-    <div class="col-md-6 mt-3 mb-3 ">
-      <form class="example" action="/action_page.php">
-        <input type="text" placeholder="Search.." name="search2">
-        <button type="submit"><i class="fa fa-search"></i></button>
-      </form>
-    </div>
-  </div>
+  <br/>
 
   <div class="row">
     <div class="form-group col-md-4">
-      <label for="sel1" class="lable-style">Custom Fields Name Type:</label>
-    </div>
-    <div class="col-md-4">
+      <label >Custom Fields Name Type:</label>
       <select [ngModelOptions]="{standalone: true}" [(ngModel)]="customID" class="form-control" id="CFN">
         <option value="1" selected>1 - Best time to call</option>
         <option value="2">T-shirt size</option>
       </select>
     </div>
   </div>
-  <!--    <div class="table-responsive" style="border:1px solid #1366A0;">-->
-  <!--        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">-->
-  <!--            <thead>-->
-  <!--                <tr style="background: #F5F6FA;">-->
-  <!--                    <th scope="col">Id</th>-->
-  <!--                    <th scope="col">Pulldown Name</th>-->
-  <!--                </tr>-->
-  <!--            </thead>-->
-  <!--            <tbody>-->
-  <!--                <ng-container *ngIf="!spinner">-->
-  <!--                    <tr *ngFor="let item of customFields; let i = index" (click)="getSelectedRow(item, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">-->
-  <!--                        <th scope="row">{{item.customId}}</th>-->
-  <!--                        <td>{{item.pullDownName}}</td>-->
-  <!--                    </tr>-->
-  <!--                </ng-container>-->
-  <!--                <div class="no-record">-->
-  <!--                    <div *ngIf="spinner" class="spinner-border" role="status">-->
-  <!--                        <span class="visually-hidden">Loading...</span>-->
-  <!--                    </div>-->
-  <!--                    <div *ngIf="customFields.length == 0">-->
-  <!--                        <span>No Data Found</span>-->
-  <!--                    </div>-->
-  <!--                </div>-->
-  <!--            </tbody>-->
-  <!--        </table>-->
-  <!--    </div>-->
 
   <div class="row ">
     <div class="col-md-6 mt-3 mb-3 ">
       <form class="example">
-        <input type="text" matInput (keyup)="applyFilter($event)" placeholder="Search.." />
+        <input type="text" matInput (keyup)="applyFilter($event)" class="search-input" matInput placeholder="Search.." type="text" >
+        <i class="fa fa-search search"></i>
       </form>
     </div>
   </div>

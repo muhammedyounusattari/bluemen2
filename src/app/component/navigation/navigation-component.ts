@@ -100,7 +100,7 @@ export class NavigationComponent {
     } else if (componentName === 'display-counselor-contacts') {
       this.router.navigate(['student/display-counselor-contacts'])
     } else if (componentName === 'display-tutor-contacts') {
-      this.router.navigate(['display-tutor-contacts'])
+      this.router.navigate(['student/display-tutor-contacts'])
     } else if (componentName === 'display-teacher-contacts') {
       this.router.navigate(['student/display-teacher-contacts'])
     } else if (componentName === 'display-staff-contacts') {
