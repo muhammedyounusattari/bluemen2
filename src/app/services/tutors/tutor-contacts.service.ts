@@ -103,7 +103,7 @@ export class TutorContactsService {
    */
   public editTutorContacts(request: any): Observable<any> {
     return this.dataService.callPutService(
-      // ServiceUrls.UPDATE_TutorContacts_LIST,
+      ServiceUrls.UPDATE_TUTOR_CONTACTS,
       request
     );
   }

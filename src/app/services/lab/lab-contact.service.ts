@@ -66,7 +66,7 @@ export class LabContactService {
    */
   public editLabContacts(request: any): Observable<any> {
     return this.dataService.callPutService(
-      // ServiceUrls.UPDATE_LabContacts_LIST,
+      ServiceUrls.UPDATE_LAB_CONTACTS,
       request
     );
   }
