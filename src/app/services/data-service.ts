@@ -42,8 +42,7 @@ export class DataService {
 
     callPutService(url: string, ...request: any): Observable<any> {
         try {
-            const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8')
-            .set('Authorization','');
+            const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
         headers.set("Accept", "application/json");
             const response = this.http.put(url, request ? request[0] : 0, {
                 headers: headers,
