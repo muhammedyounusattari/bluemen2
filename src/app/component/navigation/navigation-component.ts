@@ -11,7 +11,11 @@ export class NavigationComponent {
   }
 
   navigateToComponent(componentName: string) {
-    if (componentName === 'pulldown-list') {
+    if (componentName === 'logged-user') {
+      this.router.navigate(['home/logged-user']);
+    } else if (componentName === 'change-password') {
+      this.router.navigate(['home/change-password']);
+    } else if (componentName === 'pulldown-list') {
       this.router.navigate(['admin/pulldown-list']);
     } else if (componentName === 'service-group-list') {
       this.router.navigate(['admin/service-group-list']);

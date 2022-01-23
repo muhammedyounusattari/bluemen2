@@ -17,6 +17,7 @@ import { StaffModule } from './component/staff/staff.module.';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CounselorModule } from './component/counselor/counselor.module';
 import { LoginComponent } from './component/login/login.component';
+import { HomeModule} from './component/myhome/home-module';
 import { HomeComponent } from 'src/app/component/myhome/home/home.component';
 import { ConfirmationComponent } from 'src/app/shared/components/canDeactivate/confrimation.component';
 import { PendingChangesGuard } from 'src/app/shared/components/canDeactivate/can-deactivate.component';
@@ -44,6 +45,7 @@ import { MatMenuModule } from '@angular/material/menu';
     StudentModule,
     UtilitiesModule,
     StaffModule,
+    HomeModule,
     MDBBootstrapModule.forRoot(),
     ModalModule.forRoot(),
     BrowserAnimationsModule,

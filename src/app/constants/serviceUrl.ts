@@ -1,6 +1,11 @@
 import { environment } from '../../environments/environment';
 
 export class ServiceUrls {
+
+    //HOME
+    public static GET_LOGGED_USERS = environment.apiUrl + '/blumen-api/logged-user/getLoggedUsers/v1';
+    public static PUT_CHANGE_PASSWORD = environment.apiUrl + '/blumen-api/keycloak/tenant/';
+
     // ACTIVITY GROUP LIST API URL's
     public static FILTER_ACTIVITY_GROUP_LIST = environment.apiUrl + '/blumen-api/customize/filter/activityGroupList/v1';
     public static GET_ACTIVITY_GROUP_LIST = environment.apiUrl + '/blumen-api/customize/getActivityGroupList/v1';

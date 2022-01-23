@@ -25,6 +25,9 @@ export class LoginComponent {
       this.requestData.password = this.password;
       this._loginService.validateLogin(this.requestData, this.orgCode).subscribe(result => {
         if (result) {
+          sessionStorage.setItem("realmId", this.orgCode);
+          sessionStorage.setItem("username", this.uname);
+          sessionStorage.setItem("state", result);
           this.validateLogin.emit(result);
         }
       });
