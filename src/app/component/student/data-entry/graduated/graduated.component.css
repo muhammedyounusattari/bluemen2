@@ -1,0 +1,29 @@
+.data-table-height {
+    height: auto !important;
+}
+
+.search {
+    position: relative;
+    float: left;
+    top: 0.5rem;
+    color: #777777;
+    right: 1.5rem;
+}
+
+.search-input {
+    border-right: 1px solid #777777 !important;
+}
+
+.row-vertical {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.mat-tab-header {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.mat-tab-label {
+    padding: 0 1rem;
+}

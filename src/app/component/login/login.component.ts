@@ -28,6 +28,7 @@ export class LoginComponent {
           sessionStorage.setItem("realmId", this.orgCode);
           sessionStorage.setItem("username", this.uname);
           sessionStorage.setItem("state", result);
+         
           this.validateLogin.emit(result);
         }
       });

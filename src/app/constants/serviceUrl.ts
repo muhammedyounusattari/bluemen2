@@ -105,6 +105,9 @@ export class ServiceUrls {
 
     // Get Student's
     public static GET_STUDENTS_LIST = environment.apiUrl + '/blumen-api/student/getStudents/v1';
+    public static ADD_STUDENTS_LIST = environment.apiUrl + '/blumen-api/student/addStudents/v1';
+    public static UPDATE_STUDENTS_LIST = environment.apiUrl + '/blumen-api/student/student/v1';
+    public static DELETE_STUDENTS_LIST = environment.apiUrl + '/blumen-api/student/deleteStudents/v1';
 
     // Tutor Contacts API URL's
     public static GET_TUTOR_CONTACTS = environment.apiUrl + '/blumen-api/student-contacts/getStudentTutorContactsList/v1';
@@ -170,4 +173,15 @@ export class ServiceUrls {
     public static GET_STAFF_CLASSES_PER_RECORD = environment.apiUrl + '/blumen-api/admin/classes/getStaffClass/v1/';
     public static DELETE_STAFF_CLASSES = environment.apiUrl + '/blumen-api/admin/classes/deleteStaffClasses/v1';
 
+    // PULL DOWN STATE
+    public static GET_PULLDOWN_STATE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/State';
+
+    // PULL DOWN CITY
+    public static GET_PULLDOWN_CITY = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/City';
+
+    // Student Attendance Log
+    public static GET_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/utilities/generate-similar/attendance/log/v1';
+    public static ADD_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/utilities/generate-similar/attendance/log/v1';
+    public static UPDATE_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/utilities/generate-similar/attendance/log/v1';
+    public static DELETE_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/utilities/generate-similar/attendance/log/v1';
 }

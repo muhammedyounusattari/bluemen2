@@ -30,7 +30,7 @@ import { DisplayTutorContactsComponent } from './contacts/display-tutor-contacts
 import { DisplayCounselorContactsComponent } from './contacts/display-counselor-contacts/display-counselor-contacts.component';
 import { DisplayStaffContactsComponent } from './contacts/display-staff-contacts/display-staff-contacts.component';
 import { DisplayTeacherContactsComponent } from './contacts/display-teacher-contacts/display-teacher-contacts.component';
-
+import { MatTabsModule } from '@angular/material/tabs';
 @NgModule({
     declarations: [
         AttendanceLogsComponent,
@@ -65,7 +65,8 @@ import { DisplayTeacherContactsComponent } from './contacts/display-teacher-cont
         MatSortModule,
         MatDialogModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatTabsModule
     ],
     providers: []
   })
