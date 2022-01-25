@@ -159,7 +159,6 @@ export class GradeStandingGroupListComponent implements OnInit {
         this._gradingGroupStandingService.getGradingGroupMaxId().subscribe(result => {
             if (!this.validationClass.isNullOrUndefined(result)) {
                 this.formGroup.get('gradeGroupId')?.setValue(result + 1);
-                // this.formGroup.patchValue({ 'gradeGroupId': (result + 1) });
                 // this._gradeGroupStandingList.gradeGroupId = result + 1;
             } else {
                 this.formGroup.get('gradeGroupId')?.setValue(1);
@@ -295,6 +294,8 @@ export class GradeStandingGroupListComponent implements OnInit {
                     }
                 });
             });
+        } else {
+            this.formGroup.markAllAsTouched();
         }
     }
 }

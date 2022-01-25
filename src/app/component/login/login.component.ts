@@ -66,6 +66,9 @@ export class LoginComponent implements OnInit {
       this._loginService.validateLogin(this.requestData, this.formGroup?.get('orgCode')?.value).subscribe(result => {
         this.isLoading = false;
         if (result) {
+          sessionStorage.setItem('realmId', this.formGroup?.get('orgCode')?.value);
+          sessionStorage.setItem('username', this.formGroup?.get('username')?.value);
+          sessionStorage.setItem('state', result);
           this.validateLogin.emit(result);
         }
       },

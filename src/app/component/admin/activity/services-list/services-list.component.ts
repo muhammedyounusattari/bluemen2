@@ -156,7 +156,7 @@ export class ServicesListComponent implements OnInit {
         this.requestData.lapService = this.activityServiceListEnum.lapService;
         this.requestData.activityBoltService = this.activityServiceListEnum.activityBoltService;
         this._activityGroupServicesService.postActivityServiceList(this.requestData).subscribe(result => {
-            document.getElementById('closePopup')?.click();
+            this.modalRef.hide();
             if (result) {
                 this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
                     this.hideLoader();
@@ -226,8 +226,8 @@ export class ServicesListComponent implements OnInit {
             this.requestData.lapService = this.activityServiceListEnum.lapService;
             this.requestData.activityBoltService = this.activityServiceListEnum.activityBoltService;
             this._activityGroupServicesService.updateActivityServiceList(this.requestData).subscribe(result => {
+                this.modalRef.hide();
                 this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
-                    document.getElementById('closePopup')?.click();
                     this.hideLoader();
                     this.selectedRowIndex = null;
                     if (result) {

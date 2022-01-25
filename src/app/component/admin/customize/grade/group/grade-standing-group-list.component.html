@@ -125,24 +125,15 @@
                                     <input matInput placeholder="" value="" formControlName="gradeGroupId" readonly>
                                 </mat-form-field>
                             </div>
-                            
-                            <!-- <div class="form-group mt-3">
-                                <mat-form-field class="mat-select-width" appearance="fill">
-                                    <mat-label>Grade/Standing Group ID</mat-label>
-                                    <input matInput placeholder="Ex. ABC" value="{{_gradeGroupStandingList.gradeGroupId}}"
-                                        [(ngModel)]="_gradeGroupStandingList.gradeGroupId"
-                                        [ngModelOptions]="{standalone: true}" readonly>
-                                </mat-form-field>
-                            </div> -->
 
                             <div class="form-group txtMatHeight">
                                 <mat-form-field class="example-full-width" appearance="fill">
                                     <mat-label>Grade/Standing Group Name</mat-label>
                                     <input matInput value="" formControlName="gradeGroupName"
                                         minlength="3" required>
-                                    <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                                    <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
                                         {{getError('gradeGroupName')}}
-                                    </mat-error>
+                                    </mat-error> -->
                                 </mat-form-field>
                             </div>
                             <!-- <div class="form-group mt-3">
@@ -158,9 +149,9 @@
                                     <mat-label>Group Type</mat-label>
                                     <input matInput list="groups" value="" formControlName="gradeGroupGradeType"
                                         minlength="1" required>
-                                    <mat-error *ngIf="formGroup.controls['gradeGroupGradeType'].invalid">
+                                    <!-- <mat-error *ngIf="formGroup.controls['gradeGroupGradeType'].invalid">
                                         {{getError('gradeGroupGradeType')}}
-                                    </mat-error>
+                                    </mat-error> -->
                                 </mat-form-field>
                                 <datalist id="groups">
                                     <option *ngFor="let gType of gradeGroupGradeTypeList" [ngValue]="gType.name">

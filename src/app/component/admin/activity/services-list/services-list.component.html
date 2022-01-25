@@ -188,10 +188,10 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-v .primary" *ngIf="!isEdit"
-            (click)="addNewServiceName();modalRef.hide()">Save &
+            (click)="addNewServiceName();">Save &
             Close</button>
         <button type="button" class="btn btn-primary" *ngIf="isEdit"
-            (click)="updateSelectedRow();modalRef.hide()">Update &
+            (click)="updateSelectedRow();">Update &
             Close</button>
         <button type="button" class="btn btn-secondary" id="closePopup"
             (click)="isEdit = false; selectedRowIndex = null;modalRef.hide()">Cancel</button>

@@ -1,3 +1,13 @@
 .example-full-width {
     width: 100% !important;
 }
+
+/* .search {
+    position: relative;
+    float: right;
+    top: -1.5rem;
+    color: #777777;
+}
+.mat-form-field-appearance-fill .mat-form-field-infix {
+    padding: 0 !important;
+} */

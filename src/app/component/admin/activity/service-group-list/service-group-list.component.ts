@@ -9,11 +9,13 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 
 @Component({
     selector: 'app-service-group-list',
-    templateUrl: './service-group-list.component.html'
-    // styleUrls: ['./pulldown-list.component.css']
+    templateUrl: './service-group-list.component.html',
+    styleUrls: ['./service-group-list.component.css']
 })
 
 export class ServiceGroupListComponent implements OnInit {
@@ -35,7 +37,7 @@ export class ServiceGroupListComponent implements OnInit {
     modalConfigSM = {
         backdrop: true,
         ignoreBackdropClick: true,
-        class: 'modal-lg'
+        class: 'modal-md'
     }
     selectedRow: any = '';
     isEdit: boolean = false;
@@ -53,16 +55,20 @@ export class ServiceGroupListComponent implements OnInit {
         }
     }
     isLoading: boolean = true;
-    activityGroupType: any = [{'name': 'Count All Contact on Same Day As One Event | 1'},
-    {'name': 'Count All Contact on Same Day As Separate Sessions | 2'}];
+    activityGroupTypes: any = [{ 'name': 'Count All Contact on Same Day As One Event | 1' },
+    { 'name': 'Count All Contact on Same Day As Separate Sessions | 2' }];
+    formGroup: FormGroup;
+    validationClass: ValidationClass = new ValidationClass();
 
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog
         , private _activityGroupServicesService: ActivityGroupServicesService
-        , private toastr: ToastrService) { }
+        , private toastr: ToastrService
+        , private formBuilder: FormBuilder) { }
 
     ngOnInit() {
+        this.createForm();
         this.myElement = window.document.getElementById('loading');
         this.navigateToComponent('service-group-list');
         this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
@@ -77,6 +83,17 @@ export class ServiceGroupListComponent implements OnInit {
                 this.selectedRowIndex = null;
                 this.dataSource.sort = this.sort;
             }
+        });
+    }
+
+    createForm() {
+        this.formGroup = this.formBuilder.group({
+            'activityGroupId': [''],
+            'activityGroupName': ['', Validators.required],
+            'activityGroupType': ['', Validators.required],
+            'activityCalculateHoursforActivityGroup': [''],
+            'activityReportActivityGroup': [''],
+            'activityGroupTypeName': ['']
         });
     }
 
@@ -98,12 +115,19 @@ export class ServiceGroupListComponent implements OnInit {
     setValuesToUpdate() {
         if (this.selectedRow) {
             this.isEdit = true;
-            this.activityGrpListEnum.activityGroupId = this.selectedRow.activityGroupId;
-            this.activityGrpListEnum.activityGroupName = this.selectedRow.activityGroupName;
-            this.activityGrpListEnum.activityCalculateHoursforActivityGroup = this.selectedRow.activityCalculateHoursforActivityGroup;
-            this.activityGrpListEnum.activityReportActivityGroup = this.selectedRow.activityReportActivityGroup;
-            this.activityGrpListEnum.activityGroupTypeName = this.selectedRow.activityGroupTypeName;
-            this.activityGrpListEnum.activityGroupType = this.selectedRow.activityGroupType;
+            // this.activityGrpListEnum.activityGroupId = this.selectedRow.activityGroupId;
+            // this.activityGrpListEnum.activityGroupName = this.selectedRow.activityGroupName;
+            // this.activityGrpListEnum.activityCalculateHoursforActivityGroup = this.selectedRow.activityCalculateHoursforActivityGroup;
+            // this.activityGrpListEnum.activityReportActivityGroup = this.selectedRow.activityReportActivityGroup;
+            // this.activityGrpListEnum.activityGroupTypeName = this.selectedRow.activityGroupTypeName;
+            // this.activityGrpListEnum.activityGroupType = this.selectedRow.activityGroupType;
+
+            this.formGroup.get('activityGroupId')?.setValue(this.selectedRow.activityGroupId);
+            this.formGroup.get('activityGroupName')?.setValue(this.selectedRow.activityGroupName);
+            this.formGroup.get('activityCalculateHoursforActivityGroup')?.setValue(this.selectedRow.activityCalculateHoursforActivityGroup);
+            this.formGroup.get('activityReportActivityGroup')?.setValue(this.selectedRow.activityReportActivityGroup);
+            this.formGroup.get('activityGroupTypeName')?.setValue(this.selectedRow.activityGroupTypeName);
+            this.formGroup.get('activityGroupType')?.setValue(this.selectedRow.activityGroupType);
             this.openModal(this.activityServiceGroupListPopupRef);
         } else {
             this.toastr.info('Please select a row to update', '', {
@@ -118,11 +142,15 @@ export class ServiceGroupListComponent implements OnInit {
     }
 
     resetFields() {
+        this.createForm();
         this.isEdit = false;
         this.activityGrpListEnum = new ActivityGroupListEnum();
         this._activityGroupServicesService.getActivityGroupMaxId().subscribe(result => {
-            if (result) {
-                this.activityGrpListEnum.activityGroupId = result + 1;
+            if (!this.validationClass.isNullOrUndefined(result)) {
+                this.formGroup.get('activityGroupId')?.setValue(result + 1);
+                // this.activityGrpListEnum.activityGroupId = result + 1;
+            } else {
+                this.formGroup.get('activityGroupId')?.setValue(1);
             }
             this.openModal(this.activityServiceGroupListPopupRef);
         });
@@ -151,34 +179,48 @@ export class ServiceGroupListComponent implements OnInit {
     }
 
     addNewGroupName() {
-        this.showLoader();
-        this.requestData.activityGroupId = this.activityGrpListEnum.activityGroupId;
-        this.requestData.activityGroupName = this.activityGrpListEnum.activityGroupName;
-        this.requestData.activityCalculateHoursforActivityGroup = this.activityGrpListEnum.activityCalculateHoursforActivityGroup;
-        this.requestData.activityReportActivityGroup = this.activityGrpListEnum.activityReportActivityGroup;
-        this.requestData.activityGroupTypeName = this.activityGrpListEnum.activityGroupTypeName;
-        this.requestData.activityGroupType = this.activityGrpListEnum.activityGroupType;
-        this.requestData.activityAdd = '';
-        this.requestData.activityBoltService = '';
-        this._activityGroupServicesService.postActivityGroupList(this.requestData).subscribe(result => {
-            if (result) {
-                document.getElementById('closePopup')?.click();
-                this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
-                    this.hideLoader();
-                    if (result) {
-                        this.dataSource = new MatTableDataSource(result);
-                        this.dataSource.paginator = this.paginator;
-                        this.dataSource.sort = this.sort;
-                        this.selectedRowIndex = null;
+        if (this.formGroup.valid) {
+            this.showLoader();
+            // this.requestData.activityGroupId = this.activityGrpListEnum.activityGroupId;
+            // this.requestData.activityGroupName = this.activityGrpListEnum.activityGroupName;
+            // this.requestData.activityCalculateHoursforActivityGroup = this.activityGrpListEnum.activityCalculateHoursforActivityGroup;
+            // this.requestData.activityReportActivityGroup = this.activityGrpListEnum.activityReportActivityGroup;
+            // this.requestData.activityGroupTypeName = this.activityGrpListEnum.activityGroupTypeName;
+            // this.requestData.activityGroupType = this.activityGrpListEnum.activityGroupType;
+            // this.requestData.activityAdd = '';
+            // this.requestData.activityBoltService = '';
 
-                        this.toastr.success('Saved successfully!', '', {
-                            timeOut: 5000,
-                            closeButton: true
-                        });
-                    }
-                });
-            }
-        })
+            this.requestData.activityGroupId = this.formGroup?.get('activityGroupId')?.value;
+            this.requestData.activityGroupName = this.formGroup?.get('activityGroupName')?.value;
+            this.requestData.activityCalculateHoursforActivityGroup = this.formGroup?.get('activityCalculateHoursforActivityGroup')?.value;
+            this.requestData.activityReportActivityGroup = this.formGroup?.get('activityReportActivityGroup')?.value;
+            this.requestData.activityGroupTypeName = this.formGroup?.get('activityGroupTypeName')?.value;
+            this.requestData.activityGroupType = this.formGroup?.get('activityGroupType')?.value;
+            this.requestData.activityAdd = '';
+            this.requestData.activityBoltService = '';
+
+            this._activityGroupServicesService.postActivityGroupList(this.requestData).subscribe(result => {
+                if (result) {
+                    this.modalRef.hide();
+                    this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
+                        this.hideLoader();
+                        if (result) {
+                            this.dataSource = new MatTableDataSource(result);
+                            this.dataSource.paginator = this.paginator;
+                            this.dataSource.sort = this.sort;
+                            this.selectedRowIndex = null;
+
+                            this.toastr.success('Saved successfully!', '', {
+                                timeOut: 5000,
+                                closeButton: true
+                            });
+                        }
+                    });
+                }
+            });
+        } else {
+            this.formGroup.markAllAsTouched();
+        }
     }
 
     deleteSelectedRow() {
@@ -224,18 +266,28 @@ export class ServiceGroupListComponent implements OnInit {
     }
 
     updateSelectedRow() {
-        if (this.selectedRow) {
+        if (this.selectedRow && this.formGroup.valid) {
             this.showLoader();
-            this.requestData.activityGroupId = this.activityGrpListEnum.activityGroupId;
-            this.requestData.activityGroupName = this.activityGrpListEnum.activityGroupName;
-            this.requestData.activityCalculateHoursforActivityGroup = this.activityGrpListEnum.activityCalculateHoursforActivityGroup;
-            this.requestData.activityReportActivityGroup = this.activityGrpListEnum.activityReportActivityGroup;
-            this.requestData.activityGroupTypeName = this.activityGrpListEnum.activityGroupTypeName;
-            this.requestData.activityGroupType = this.activityGrpListEnum.activityGroupType;
+            // this.requestData.activityGroupId = this.activityGrpListEnum.activityGroupId;
+            // this.requestData.activityGroupName = this.activityGrpListEnum.activityGroupName;
+            // this.requestData.activityCalculateHoursforActivityGroup = this.activityGrpListEnum.activityCalculateHoursforActivityGroup;
+            // this.requestData.activityReportActivityGroup = this.activityGrpListEnum.activityReportActivityGroup;
+            // this.requestData.activityGroupTypeName = this.activityGrpListEnum.activityGroupTypeName;
+            // this.requestData.activityGroupType = this.activityGrpListEnum.activityGroupType;
+            // this.requestData.activityAdd = '';
+            // this.requestData.activityBoltService = '';
+
+            this.requestData.activityGroupId = this.formGroup?.get('activityGroupId')?.value;
+            this.requestData.activityGroupName = this.formGroup?.get('activityGroupName')?.value;
+            this.requestData.activityCalculateHoursforActivityGroup = this.formGroup?.get('activityCalculateHoursforActivityGroup')?.value;
+            this.requestData.activityReportActivityGroup = this.formGroup?.get('activityReportActivityGroup')?.value;
+            this.requestData.activityGroupTypeName = this.formGroup?.get('activityGroupTypeName')?.value;
+            this.requestData.activityGroupType = this.formGroup?.get('activityGroupType')?.value;
             this.requestData.activityAdd = '';
             this.requestData.activityBoltService = '';
             this._activityGroupServicesService.updateActivityGroupList(this.requestData).subscribe(response => {
-                document.getElementById('closePopup')?.click();
+                this.modalRef.hide();
+                this.selectedRow = null;
                 this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
                     this.hideLoader();
                     if (result) {
@@ -244,7 +296,6 @@ export class ServiceGroupListComponent implements OnInit {
                         this.dataSource.sort = this.sort;
                         this.selectedRowIndex = null;
                         this.isEdit = false;
-                        this.selectedRow = null;
                         this.toastr.success('Updated successfully!', '', {
                             timeOut: 5000,
                             closeButton: true
@@ -252,6 +303,8 @@ export class ServiceGroupListComponent implements OnInit {
                     }
                 });
             });
+        } else {
+            this.formGroup.markAllAsTouched();
         }
     }
 }

@@ -71,7 +71,7 @@
             </tr>
         </table>
     </div>
-        <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
     <!-- Data Table End-->
 </div>
 
@@ -114,121 +114,121 @@
     <!-- Modal -->
     <div class="modal-header popHeaderBG">
         <span class="modal-title popHeader" id="exampleModalLabel">Customize Activity/Service Group</span>
-        <button type="button" class="btn-close" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()"
+        <button type="button" class="btn-close" (click)="selectedRowIndex = null; formGroup?.markAsUntouched(); selectedRow = null; modalRef.hide()"
             aria-label="Close"></button>
     </div>
     <div class="modal-body">
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group ">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Activity/Service ID</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{activityGrpListEnum.activityGroupId}}"
-                                    [(ngModel)]="activityGrpListEnum.activityGroupId"
-                                    [ngModelOptions]="{standalone: true}" readonly>
-                            </mat-form-field>
+                <form [formGroup]="formGroup" class="form">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group ">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Activity/Service ID</mat-label>
+                                    <input matInput placeholder="" value="" formControlName="activityGroupId" readonly>
+                                </mat-form-field>
+                                <!-- <mat-form-field class="mat-select-width" appearance="fill">
+                                    <mat-label>Activity/Service ID</mat-label>
+                                    <input matInput
+                                        value="{{activityGrpListEnum.activityGroupId}}"
+                                        [(ngModel)]="activityGrpListEnum.activityGroupId"
+                                        [ngModelOptions]="{standalone: true}" readonly>
+                                </mat-form-field> -->
+                            </div>
 
-                            <!-- <label for="usr">Activity/Service ID:</label>
-                            <input type="text" class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupId"
-                                id="groupId" readonly> -->
-                        </div>
+                            <div class="form-group">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Activity/Service Group Name</mat-label>
+                                    <input matInput value="" formControlName="activityGroupName" minlength="3" required>
+                                    <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                                        {{getError('gradeGroupName')}}
+                                    </mat-error> -->
+                                </mat-form-field>
+                                <!-- <mat-form-field class="mat-select-width" appearance="fill">
+                                    <mat-label>Activity/Service Group Name</mat-label>
+                                    <input matInput placeholder="Ex. ABC"
+                                        value="{{activityGrpListEnum.activityGroupName}}"
+                                        [(ngModel)]="activityGrpListEnum.activityGroupName"
+                                        [ngModelOptions]="{standalone: true}">
+                                </mat-form-field> -->
+                            </div>
 
-                        <div class="form-group mt-3">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Activity/Service Group Name</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{activityGrpListEnum.activityGroupName}}"
-                                    [(ngModel)]="activityGrpListEnum.activityGroupName"
-                                    [ngModelOptions]="{standalone: true}">
-                            </mat-form-field>
-                            <!-- <label for="usr">Activity/Service Group Name:</label>
-                            <input type="text" class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupName"
-                                id="groupName"> -->
-                        </div>
+                            <div class="form-group">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Activity/Service Group Name</mat-label>
+                                    <input matInput list="groups" value="" formControlName="activityGroupType" minlength="3" required>
+                                    <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                                        {{getError('gradeGroupName')}}
+                                    </mat-error> -->
+                                </mat-form-field>
+                                <!-- <mat-form-field class="mat-select-width" appearance="fill">
+                                    <mat-label> Group Type</mat-label>
+                                    <input matInput list="groups" placeholder="Ex. ABC"
+                                        value="{{activityGrpListEnum.activityGroupType}}"
+                                        [(ngModel)]="activityGrpListEnum.activityGroupType"
+                                        [ngModelOptions]="{standalone: true}">
+                                </mat-form-field> -->
 
-                        <div class="form-group mt-3">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label> Group Type</mat-label>
-                                <input matInput list="groups" placeholder="Ex. ABC"
-                                    value="{{activityGrpListEnum.activityGroupType}}"
-                                    [(ngModel)]="activityGrpListEnum.activityGroupType"
-                                    [ngModelOptions]="{standalone: true}">
-                            </mat-form-field>
+                                <datalist id="groups">
+                                    <option *ngFor="let actGroup of activityGroupTypes" [ngValue]="actGroup.name">
+                                        {{actGroup.name}}</option>
+                                </datalist>
+                            </div>
 
-                            <datalist id="groups">
-                                <option *ngFor="let actGroup of activityGroupType" [ngValue]="actGroup.name">
-                                    {{actGroup.name}}</option>
-                            </datalist>
+                            <div class="form-group">
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <section class="example-section">
+                                            <mat-checkbox
+                                            formControlName="activityCalculateHoursforActivityGroup"
+                                                class="example-margin">
+                                                Calculate Hours for Active Group
+                                            </mat-checkbox>
+                                        </section>
+                                    </div>
+                                    <div class="col-md-12">
 
-                            <!-- <label for="usr">Group Type</label>
-                            <select class="form-control" [(ngModel)]="activityGrpListEnum.activityGroupType"
-                                id="groupType">
-                                <option selected>Count All Contact on Same Day As One Event | 1</option>
-                                <option selected>Count All Contact on Same Day As Separate Sessions | 2</option>
-                            </select> -->
-                        </div>
-
-
-                        <div class="form-group mt-3">
-                            <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <section class="example-section">
-                                        <mat-checkbox
-                                            [(ngModel)]="activityGrpListEnum.activityCalculateHoursforActivityGroup"
-                                            class="example-margin">
-                                            Calculate Hours for Active Group
-                                        </mat-checkbox>
-                                    </section>
-                                    <!-- <label class="radio-inline">
-                                        <input type="checkbox"
-                                            [(ngModel)]="activityGrpListEnum.activityCalculateHoursforActivityGroup"
-                                            name="optradio"> Calculate Hours for Active Group
-                                    </label> -->
-                                </div>
-                                <div class="col-md-12">
-
-                                    <section class="example-section">
-                                        <mat-checkbox [(ngModel)]="activityGrpListEnum.activityReportActivityGroup"
-                                            class="example-margin">
-                                            Report Activity Group </mat-checkbox>
-                                    </section>
-                                    <!-- <label class="radio-inline">
-                                        <input type="checkbox"
-                                            [(ngModel)]="activityGrpListEnum.activityReportActivityGroup"
-                                            name="optradio"> Report Activity Group
-                                    </label> -->
-
+                                        <section class="example-section">
+                                            <mat-checkbox formControlName="activityReportActivityGroup"
+                                                class="example-margin">
+                                                Report Activity Group </mat-checkbox>
+                                        </section>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="form-group mt-3">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Group Type Name</mat-label>
-                                <input matInput placeholder="Ex. ABC"
-                                    value="{{activityGrpListEnum.activityGroupTypeName}}"
-                                    [(ngModel)]="activityGrpListEnum.activityGroupTypeName"
-                                    [ngModelOptions]="{standalone: true}">
-                            </mat-form-field>
-                            <!-- <label for="usr">Group Type Name</label>
-                            <input type="text" class="form-control"
-                                [(ngModel)]="activityGrpListEnum.activityGroupTypeName" id="groupName"> -->
+                            <div class="form-group">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Activity/Service Group Name</mat-label>
+                                    <input matInput value="" formControlName="activityGroupTypeName" minlength="3" required>
+                                    <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                                        {{getError('gradeGroupName')}}
+                                    </mat-error> -->
+                                </mat-form-field>
+                                <!-- <mat-form-field class="mat-select-width" appearance="fill">
+                                    <mat-label>Group Type Name</mat-label>
+                                    <input matInput placeholder="Ex. ABC"
+                                        value="{{activityGrpListEnum.activityGroupTypeName}}"
+                                        [(ngModel)]="activityGrpListEnum.activityGroupTypeName"
+                                        [ngModelOptions]="{standalone: true}">
+                                </mat-form-field> -->
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-v .primary" *ngIf="!isEdit"
-            (click)="addNewGroupName();modalRef.hide()">Save &
+            (click)="addNewGroupName();">Save &
             Close</button>
         <button type="button" class="btn btn-primary" *ngIf="isEdit"
-            (click)="updateSelectedRow();modalRef.hide()">Update &
+            (click)="updateSelectedRow();">Update &
             Close</button>
         <button type="button" class="btn btn-secondary" id="closePopup"
-            (click)="isEdit = false; selectedRowIndex = null; modalRef.hide()">Cancel</button>
+            (click)="isEdit = false; selectedRowIndex = null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>
     </div>
 </ng-template>
 <!-- Modal End-->
