@@ -1,5 +1,6 @@
-import { Component, TemplateRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { LoginService } from '../../services/login.service';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -7,33 +8,73 @@ import { LoginService } from '../../services/login.service';
   styleUrls: ['./login.component.css'],
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   @Output() validateLogin = new EventEmitter();
   requestData = {
     username: '',
     password: ''
+  };
+  formGroup: FormGroup;
+  isInvalidCredentials: boolean = false;
+  isLoading: boolean = false;
+
+  constructor(private _loginService: LoginService
+    , private formBuilder: FormBuilder) { }
+
+  ngOnInit(): void {
+    this.createForm();
   }
-  orgCode: string ='mcn-demo';
-  uname: string = 'mcn-demo.user1';
-  password: string = 'mcn-demo.password1';
 
-  constructor(private _loginService: LoginService) {}
+  createForm() {
+    this.formGroup = this.formBuilder.group({
+      'orgCode': ['', Validators.required],
+      'username': ['', Validators.required],
+      'password': ['', Validators.required],
+    });
+  }
 
-  validate() {
-    if (this.orgCode) {
-      this.requestData.username = this.uname;
-      this.requestData.password = this.password;
-      this._loginService.validateLogin(this.requestData, this.orgCode).subscribe(result => {
+  getError(el: any) {
+    this.isInvalidCredentials = false;
+    switch (el) {
+      case 'orgCode':
+        if (this.formGroup.get('orgCode')?.hasError('required')) {
+          return 'Organization Code required';
+        }
+        break;
+      case 'user':
+        if (this.formGroup.get('username')?.hasError('required')) {
+          return 'Username required';
+        }
+        break;
+      case 'pass':
+        if (this.formGroup.get('password')?.hasError('required')) {
+          return 'Password required';
+        }
+        break;
+      default:
+        return '';
+    }
+    return null;
+  }
+
+  validate(data: any) {
+    if (this.formGroup.valid) {
+      this.isLoading = true;
+      this.requestData.username = this.formGroup?.get('username')?.value;
+      this.requestData.password = this.formGroup?.get('password')?.value;
+
+      this._loginService.validateLogin(this.requestData, this.formGroup?.get('orgCode')?.value).subscribe(result => {
+        this.isLoading = false;
         if (result) {
-          sessionStorage.setItem("realmId", this.orgCode);
-          sessionStorage.setItem("username", this.uname);
-          sessionStorage.setItem("state", result);
-         
           this.validateLogin.emit(result);
         }
-      });
+      },
+        (error: any) => {
+          this.isLoading = false;
+          this.isInvalidCredentials = true;
+        });
     } else {
-      alert('Please enter Organization Code');
+      this.formGroup.markAllAsTouched();
     }
   }
 }

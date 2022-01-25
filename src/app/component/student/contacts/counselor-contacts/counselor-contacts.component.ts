@@ -66,6 +66,11 @@ export class CounselorContactsComponent {
     public counselorsList: any = [];
     public studentData: any;
     public activityServiceList: any = [];
+    public  allSelected: boolean = false;
+    public siteLocation = [
+      { value: 'Undefined', viewValue: 'Undefined' },
+      { value: 'Not Entered', viewValue: 'Not Entered' },
+    ];
 
     constructor(
       private modalService: BsModalService,
@@ -132,6 +137,27 @@ export class CounselorContactsComponent {
       totalTime: [{value: 0, disabled: true}],
       notes: ['']
     });
+  }
+
+  /**
+   * @method toggleAllSelection
+   */
+   public toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    if (this.allSelected) {
+      this.counselorContactsForm.controls.siteLocation.patchValue([
+        ...this.siteLocation.map((item) => item.value)]);
+    } else {
+      this.counselorContactsForm.controls.siteLocation.patchValue([]);
+    }
+  }
+
+  /**
+   * @method togglePerOne
+   */
+  public togglePerOne(selected: string) {
+    this.allSelected = this.counselorContactsForm.controls.siteLocation.value.length ==
+    this.siteLocation.length;
   }
 
     /**

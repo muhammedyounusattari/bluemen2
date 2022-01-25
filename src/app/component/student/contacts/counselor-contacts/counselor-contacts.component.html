@@ -513,19 +513,14 @@
                             </div>
                         </div>
                         <div class="col-md-5">
-                            <label> Site Location: </label>
-                            <div class="form-group mt-2">
-                                <label class="radio-inline">
-                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="Undefined" selected> Undefined
-                                </label>
-                                <label class="radio-inline">
-                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="Not Entered"> Not Entered
-                                </label>
-                                <label class="radio-inline">
-                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="All"> All
-                                </label>
-                            </div>
-                        </div>
+                          <label> Site Location: </label>
+                            <mat-select  placeholder="Site Location" formControlName="siteLocation" multiple>
+                              <mat-option (click)="toggleAllSelection()" [value]="allSelected">All</mat-option>
+                              <mat-option (click)="togglePerOne(location.value)" *ngFor="let location of siteLocation" [value]="location.value">
+                                {{location.viewValue}}
+                              </mat-option>
+                            </mat-select>
+                      </div>
                     </div>
                 </div>
                 <div class="row">

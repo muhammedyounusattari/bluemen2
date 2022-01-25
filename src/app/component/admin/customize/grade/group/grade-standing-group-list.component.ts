@@ -9,14 +9,17 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 
 @Component({
     selector: 'app-grade-standing-group-list',
-    templateUrl: './grade-standing-group-list.component.html'
-    // styleUrls: ['./pulldown-list.component.css']
+    templateUrl: './grade-standing-group-list.component.html',
+    styleUrls: ['./grade-standing-group.component.css']
 })
 
 export class GradeStandingGroupListComponent implements OnInit {
+    formGroup: FormGroup;
     gradeGroupListData: any = [];
     requestData = {
         gradeGroupId: 0,
@@ -31,7 +34,7 @@ export class GradeStandingGroupListComponent implements OnInit {
     modalConfigSM = {
         backdrop: true,
         ignoreBackdropClick: true,
-        class: 'modal-lg'
+        class: 'modal-md'
     }
     selectedRow: any = '';
     isEdit: boolean = false;
@@ -49,18 +52,22 @@ export class GradeStandingGroupListComponent implements OnInit {
     }
     isLoading: boolean = true;
     gradeGroupGradeTypeList = [
-        {'name' : 'APR Column #1 | 1'},
-        {'name' : 'APR Column #2 | 2'},
-        {'name' : 'APR Column #3 | 3'},
-        {'name' : 'APR Column #4 | 4'}
+        { 'name': 'APR Column #1 | 1' },
+        { 'name': 'APR Column #2 | 2' },
+        { 'name': 'APR Column #3 | 3' },
+        { 'name': 'APR Column #4 | 4' }
     ];
+    validationClass: ValidationClass = new ValidationClass();
+
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog
         , private _gradingGroupStandingService: GradingGroupStandingService
-        , private toastr: ToastrService) { }
+        , private toastr: ToastrService
+        , private formBuilder: FormBuilder) { }
 
     ngOnInit() {
+        this.createForm();
         this.myElement = window.document.getElementById('loading');
         this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
             this.hideLoader();
@@ -75,6 +82,32 @@ export class GradeStandingGroupListComponent implements OnInit {
                 this.dataSource.sort = this.sort;
             }
         });
+    }
+
+    createForm() {
+        this.formGroup = this.formBuilder.group({
+            'gradeGroupId': [''],
+            'gradeGroupName': ['', Validators.required],
+            'gradeGroupGradeType': ['', Validators.required],
+        });
+    }
+
+    getError(el: any) {
+        switch (el) {
+            case 'gradeGroupName':
+                if (this.formGroup.get('gradeGroupName')?.hasError('required')) {
+                    return 'Group name required';
+                }
+                break;
+            case 'gradeGroupGradeType':
+                if (this.formGroup.get('gradeGroupGradeType')?.hasError('required')) {
+                    return 'Group type required';
+                }
+                break;
+            default:
+                return '';
+        }
+        return null;
     }
 
     navigateToComponent(componentName: string) {
@@ -95,10 +128,15 @@ export class GradeStandingGroupListComponent implements OnInit {
     setValuesToUpdate() {
         if (this.selectedRow) {
             this.isEdit = true;
-            this._gradeGroupStandingList.gradeGroupId = this.selectedRow.gradeGroupId;
-            this._gradeGroupStandingList.gradeGroupName = this.selectedRow.gradeGroupName;
-            this._gradeGroupStandingList.gradeGroupGradeType = this.selectedRow.gradeGroupGradeType;
-            this._gradeGroupStandingList.gradeGroupAprColumn = this.selectedRow.gradeGroupGradeType;
+            this.formGroup.get('gradeGroupId')?.setValue(this.selectedRow.gradeGroupId);
+            this.formGroup.get('gradeGroupName')?.setValue(this.selectedRow.gradeGroupName);
+            this.formGroup.get('gradeGroupGradeType')?.setValue(this.selectedRow.gradeGroupGradeType);
+            this.formGroup.get('gradeGroupAprColumn')?.setValue(this.selectedRow.gradeGroupGradeType);
+
+            // this._gradeGroupStandingList.gradeGroupId = this.selectedRow.gradeGroupId;
+            // this._gradeGroupStandingList.gradeGroupName = this.selectedRow.gradeGroupName;
+            // this._gradeGroupStandingList.gradeGroupGradeType = this.selectedRow.gradeGroupGradeType;
+            // this._gradeGroupStandingList.gradeGroupAprColumn = this.selectedRow.gradeGroupGradeType;
             this.openModal(this.gradeGroupListPopupRef);
         } else {
             this.toastr.info('Please select a record to update', '', {
@@ -114,12 +152,17 @@ export class GradeStandingGroupListComponent implements OnInit {
     }
 
     resetFields() {
+        this.createForm();
         this.isEdit = false;
         this._gradeGroupStandingList = new GradeGroupStandingList();
         this.selectedRowIndex = null;
         this._gradingGroupStandingService.getGradingGroupMaxId().subscribe(result => {
-            if (result) {
-                this._gradeGroupStandingList.gradeGroupId = result + 1;
+            if (!this.validationClass.isNullOrUndefined(result)) {
+                this.formGroup.get('gradeGroupId')?.setValue(result + 1);
+                // this.formGroup.patchValue({ 'gradeGroupId': (result + 1) });
+                // this._gradeGroupStandingList.gradeGroupId = result + 1;
+            } else {
+                this.formGroup.get('gradeGroupId')?.setValue(1);
             }
             this.openModal(this.gradeGroupListPopupRef);
         });
@@ -147,32 +190,42 @@ export class GradeStandingGroupListComponent implements OnInit {
         this.selectedRow = selectedRowItem;
     }
 
-    addGradeGroup() {
-        this.showLoader();
-        this.requestData.gradeGroupId = this._gradeGroupStandingList.gradeGroupId;
-        this.requestData.gradeGroupName = this._gradeGroupStandingList.gradeGroupName;
-        this.requestData.gradeGroupGradeType = this._gradeGroupStandingList.gradeGroupGradeType;
-        this.requestData.gradeGroupAprColumn = this._gradeGroupStandingList.gradeGroupGradeType;
-        this._gradingGroupStandingService.postGradingGroupList(this.requestData).subscribe(result => {
-            if (result) {
-                this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
-                    this.hideLoader();
-                    this.modalRef.hide();
-                    this.selectedRowIndex = null;
-                    if (result) {
-                        this.dataSource = new MatTableDataSource(result);
-                        this.dataSource.paginator = this.paginator;
-                        this.selectedRow = null;
-                        this.dataSource.sort = this.sort;
-                        this.toastr.success('Saved successfully!', '', {
-                            timeOut: 5000,
-                            closeButton: true
-                        });
+    // validateForm() {
+    //     if (this.formGroup.invalid) {
 
-                    }
-                });
-            }
-        });
+    //     }
+    // }
+
+    addGradeGroup() {
+        if (this.formGroup.valid) {
+            this.showLoader();
+            this.requestData.gradeGroupId = this.formGroup?.get('gradeGroupId')?.value;
+            this.requestData.gradeGroupName = this.formGroup?.get('gradeGroupName')?.value;
+            this.requestData.gradeGroupGradeType = this.formGroup?.get('gradeGroupGradeType')?.value;
+            this.requestData.gradeGroupAprColumn = this.formGroup?.get('gradeGroupGradeType')?.value;
+            this._gradingGroupStandingService.postGradingGroupList(this.requestData).subscribe(result => {
+                if (result) {
+                    this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
+                        this.hideLoader();
+                        this.modalRef.hide();
+                        this.selectedRowIndex = null;
+                        if (result) {
+                            this.dataSource = new MatTableDataSource(result);
+                            this.dataSource.paginator = this.paginator;
+                            this.selectedRow = null;
+                            this.dataSource.sort = this.sort;
+                            this.toastr.success('Saved successfully!', '', {
+                                timeOut: 5000,
+                                closeButton: true
+                            });
+
+                        }
+                    });
+                }
+            });
+        } else {
+            this.formGroup.markAllAsTouched();
+        }
     }
 
     deleteSelectedRow() {
@@ -218,14 +271,13 @@ export class GradeStandingGroupListComponent implements OnInit {
     }
 
     updateSelectedRow() {
-        if (this.selectedRow) {
+        if (this.selectedRow && this.formGroup.valid) {
             this.showLoader();
             this.isEdit = true;
-            this.requestData.gradeGroupId = this._gradeGroupStandingList.gradeGroupId;
-            this.requestData.gradeGroupName = this._gradeGroupStandingList.gradeGroupName;
-            this.requestData.gradeGroupGradeType = this._gradeGroupStandingList.gradeGroupGradeType;
-            this.requestData.gradeGroupAprColumn = this._gradeGroupStandingList.gradeGroupGradeType;
-            this._gradingGroupStandingService.updateGradingGroupList(this.requestData).subscribe(response => {
+            this.requestData.gradeGroupId = this.formGroup?.get('gradeGroupId')?.value;
+            this.requestData.gradeGroupName = this.formGroup?.get('gradeGroupName')?.value;
+            this.requestData.gradeGroupGradeType = this.formGroup?.get('gradeGroupGradeType')?.value;
+            this.requestData.gradeGroupAprColumn = this.formGroup?.get('gradeGroupGradeType')?.value; this._gradingGroupStandingService.updateGradingGroupList(this.requestData).subscribe(response => {
                 this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
                     this.hideLoader();
                     this.modalRef.hide();

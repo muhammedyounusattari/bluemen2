@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { StudentRoutingModule } from './student-routing.module';
 
 import { AttendanceLogsComponent } from './logs/attendance/attendance-logs.component';
@@ -31,6 +31,9 @@ import { DisplayCounselorContactsComponent } from './contacts/display-counselor-
 import { DisplayStaffContactsComponent } from './contacts/display-staff-contacts/display-staff-contacts.component';
 import { DisplayTeacherContactsComponent } from './contacts/display-teacher-contacts/display-teacher-contacts.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 @NgModule({
     declarations: [
         AttendanceLogsComponent,
@@ -66,9 +69,12 @@ import { MatTabsModule } from '@angular/material/tabs';
         MatDialogModule,
         FormsModule,
         ReactiveFormsModule,
-        MatTabsModule
+        MatTabsModule,
+        MatSelectModule,
+        MatCheckboxModule
     ],
-    providers: []
+    providers: [],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
   })
 
   export class StudentModule { }

@@ -558,3 +558,9 @@ footer.page-footer .footer-copyright {
     box-shadow: none !important;
 }
 
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+    height: 0px !important;
+}
+.txtMatHeight{
+    margin-bottom: 5% !important;
+}

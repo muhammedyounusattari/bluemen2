@@ -1,92 +1,88 @@
-<div class="content">
-    <div class="container-fluid">
-        <div class="row">
-           
-            <div class="col-md-6 ">
-                <img src="../../../assets/img/left-img.png"  alt="Image" style="margin-top: 159px; margin-left: 94px;">
-              
-            </div>
-            
-            <div class="col-md-5 contents" style="margin-left:30px;">
-                <div class="row justify-content-center">
-                    <div class="col-md-9">
-                        <img src="../../../assets/img/bot_logo.jpg" alt="Bot-Logo" style="margin-bottom: 33px;  margin-top: 50px;
-">
-                        <div class="mt-2">
-                            <h4 style="color: #1672B7; font-weight: 500; font-size: 40px; font-family: 'Montserrat', sans-serif; letter-spacing: 1px; margin-bottom: 43px;" >Welcome! </h4>
-                            <p class="mt-5  " style="color: #222222; font-family: 'Montserrat', sans-serif; margin: 0px 0 5px 0!important; font-size: 15px; font-weight: 500; ">Please Login with your credentials…</p>
-                        </div>
-                        <form action="#" method="post">
-                            <div class="form-group first">
-                                <mat-form-field class="example-full-width" appearance="fill">
-                                    <mat-label>Organization Code</mat-label>
-                                    <input matInput placeholder="Ex. EOC_DEMO" value="" [(ngModel)]="orgCode" [ngModelOptions]="{standalone: true}">
-                                  </mat-form-field>
-                                
-                                <!-- <input type="text" class="form-control" placeholder=Organization&nbsp;Code
-                                    style="border: 1px solid #1672B7;  padding-left: 20px; height:50px; width: 433px; border-radius: 0px; font-family: 'Montserrat', sans-serif; font-size: 16px;"
-                                    id="username"> -->
+<div class="container-fluid">
+    <!-- Full Screen Loader Start -->
+    <div id="loading" *ngIf="isLoading"></div>
+    <!-- Full Screen Loader End -->
 
-                            </div>
-                            <div class="form-group first">
-                                <mat-form-field class="example-full-width" appearance="fill">
-                                    <mat-label>Username</mat-label>
-                                    <input matInput placeholder="Ex. Kastech" value="" [(ngModel)]="uname" [ngModelOptions]="{standalone: true}">
-                                  </mat-form-field>
-                                
-                                <!-- <input type="text"  placeholder=Username class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="uname"
-                                    style="border: 1px solid #1672B7;  border-radius: 0px;width: 433px;font-family: 'Montserrat', sans-serif; height:50px; padding-left: 20px; font-size: 16px;"
-                                    id="username"> -->
+    <!-- Spinner Start-->
+    <div class="spinner-container" *ngIf="isLoading">
+        <mat-spinner id="spinner"></mat-spinner>
+    </div>
+    <!-- Spinner End-->
 
-                            </div>
-                            <div class="form-group last mb-5">
-                                <mat-form-field class="example-full-width" appearance="fill">
-                                    <mat-label>Password</mat-label>
-                                    <input type="password" matInput placeholder="Ex. ***" value="" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
-                                  </mat-form-field>
-                               
-                                <!-- <input type="password"  placeholder=Password class="form-control" [(ngModel)]="password" [ngModelOptions]="{standalone: true}"
-                                    style="border: 1px solid #1672B7;  border-radius: 0px; width: 433px;font-family: 'Montserrat', sans-serif; height:50px; padding-left: 20px; font-size: 16px;"
-                                    id="password"> -->
+    <div class="row">
+        <div class="col-md-6 ">
+            <img src="../../../assets/img/left-img.png" alt="Image" style="margin-top: 10%; margin-left: 10%;">
+        </div>
 
-                            </div>
-
-                            <div class="d-flex mb-3 align-items-center">
-                                <span class="mr-auto"><a href="#" class="forgot-pass" style="color: #1671B6;  font-family:Montserrat, sans-serif; font-size: 15px;">Forgot
-                                        Password ?</a></span>
-                                <!-- <label class="control control--checkbox ">
-                                    <div class="container">
-                                    <input type="checkbox" checked  class="largerCheckbox" />
-                                    <span class="checkmark"></span></div>
-                                    <span class="caption"
-                                        style="color: #1671B6; margin-left: 30px; font-family: 'Montserrat', sans-serif; font-size: 15px; ">Remember my device</span>
-                                   
-                                    <div class="control__indicator" style="background: #1671B6; "></div>
-                                </label> -->
-                            </div>
-
-                            <input type="submit" value="LOGIN" (click)="validate()" style="background: #3c88c2; border-radius: 0px!important; font-weight: 600; font-size: 16px; background: #1672B7!important; font-family: 'Montserrat', sans-serif; width: 140px; height: 40px;"
-                                class="btn text-white btn-block btn-primary">
-                        </form>
+        <div class="col-md-5" style="margin-left:30px;">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <img src="../../../assets/img/bot_logo.png" alt="Bot-Logo" 
+                    style="margin-bottom: 7%;  margin-top: 5%;">
+                    <div>
+                        <h4
+                            style="color: #1672B7; font-weight: 500; font-size: 40px; font-family: 'Montserrat', sans-serif; 
+                            letter-spacing: 1px; margin-bottom: 10%;">
+                            Welcome! </h4>
+                        <p
+                            style="color: #222222; font-family: 'Montserrat', sans-serif; margin: 0px 0 5px 0!important; font-size: 15px; font-weight: 500; ">
+                            Please login with your credentials…</p>
                     </div>
+                    <form [formGroup]="formGroup" (ngSubmit)="validate(formGroup.value)" class="form">
+                        <div class="form-group first txtAlign">
+                            <mat-form-field class="example-full-width" appearance="fill">
+                                <mat-label>Organization Code</mat-label>
+                                <input matInput placeholder="Ex. EOC_DEMO" value="" formControlName="orgCode"
+                                    minlength="3" required>
+                                <mat-error *ngIf="formGroup.controls['orgCode'].invalid">
+                                    {{getError('orgCode')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group first txtAlign">
+                            <mat-form-field class="example-full-width" appearance="fill">
+                                <mat-label>Username</mat-label>
+                                <input matInput placeholder="Ex. Kastech" value="" required formControlName="username">
+                                <mat-error *ngIf="formGroup.controls['username'].invalid">
+                                    {{getError('user')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group last mb-login txtAlign">
+                            <mat-form-field class="example-full-width" appearance="fill">
+                                <mat-label>Password</mat-label>
+                                <input type="password" matInput placeholder="Ex. ***" value=""
+                                    formControlName="password" required>
+                                <mat-error *ngIf="!formGroup.controls['password'].valid">
+                                    {{getError('pass')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <button mat-raised-button color="primary" type="submit"
+                            style="background: #3c88c2; border-radius: 0px!important; font-weight: 600; font-size: 16px; background: #1672B7!important; font-family: 'Montserrat', sans-serif; width: 140px; height: 40px;"
+                            class="btn text-white btn-block btn-primary button">LOGIN</button>
+                        <mat-error *ngIf="isInvalidCredentials">
+                            Please enter valid credentials & Organization code.
+                        </mat-error>
+
+                        <div class="d-flex align-items-center" style="margin-top: 15px;">
+                            <span class="mr-auto"><a href="#" class="forgot-pass"
+                                    style="color: #1671B6;  font-family:Montserrat, sans-serif; font-size: 15px;">Forgot
+                                    Password ?</a></span>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="container-fluid">
-    <dvi class="row">
-        <div class="col-6 mb-5">
-            <button type="button" class="btn btn-warning" 
-                style="color: #fff; margin-left: 20px; border-radius: 38px; height: 38px; margin-top: 45px; font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 500; background-color: #55C404!important">Like to
-                see who logged in?</button>
-        </div> 
-    </dvi>
-
-    <div class="row">
-     
-        <div class="col-6 mb-4" style="font-family: 'Montserrat', sans-serif; margin-left: 20px; font-size: 15px; font-weight: 500;">©All rights reserved 2021</div>
-        <div class="col-5 text-right" style="font-family: 'Montserrat', sans-serif;  font-size: 15px; font-weight: 500;"><a href="https://www.websecurity.symantec.com/ssl-certificate" style="text-decoration: underline; color: #222222!important;">SSL Certificate </a> | <a href="#" style="text-decoration: underline; color: #222222!important;">Contact Us</a></div>
-        
+    <div class="row mt-5">
+        <div class="col-6"
+            style="font-family: 'Montserrat', sans-serif; margin-left: 20px; font-size: 15px; font-weight: 500;">©All
+            rights reserved 2022</div>
+        <div class="col-5 text-right"
+            style="font-family: 'Montserrat', sans-serif;  font-size: 15px; font-weight: 500;"><a
+                href="https://www.websecurity.symantec.com/ssl-certificate"
+                style="text-decoration: underline; color: #222222!important;">SSL Certificate </a></div>
     </div>
 </div>

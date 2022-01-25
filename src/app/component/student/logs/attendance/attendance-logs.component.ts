@@ -55,6 +55,11 @@ export class AttendanceLogsComponent implements OnInit {
   public selectedEditModalRowData: any = null;
   public spinner: boolean = true;
   public studentData: any;
+  public  allSelected: boolean = false;
+  public siteLocation = [
+    { value: 'Undefined', viewValue: 'Undefined' },
+    { value: 'Not Entered', viewValue: 'Not Entered' },
+  ];
 
   constructor(
     private modalService: BsModalService,
@@ -173,6 +178,26 @@ export class AttendanceLogsComponent implements OnInit {
     });
   }
 
+  /**
+   * @method toggleAllSelection
+   */
+   public toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    if (this.allSelected) {
+      this.studentAttendanceModalForm.controls.siteLocation.patchValue([
+        ...this.siteLocation.map((item) => item.value)]);
+    } else {
+      this.studentAttendanceModalForm.controls.siteLocation.patchValue([]);
+    }
+  }
+
+  /**
+   * @method togglePerOne
+   */
+  public togglePerOne(selected: string) {
+    this.allSelected = this.studentAttendanceModalForm.controls.siteLocation.value.length ==
+    this.siteLocation.length;
+  }
 
   /**
    * @method addStudentAttendance

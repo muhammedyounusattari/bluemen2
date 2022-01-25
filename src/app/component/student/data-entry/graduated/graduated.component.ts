@@ -1,47 +1,69 @@
 import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Utility } from 'src/app/shared/global-constants/utility';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog-box/confirm-dialog-box.component';
 import { StudentService } from 'src/app/services/student/student.service';
-
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatOption } from '@angular/material/core';
 
 @Component({
-    selector: 'app-graduated',
-    templateUrl: './graduated.component.html',
-    styleUrls: ['./graduated.component.css']
+  selector: 'app-graduated',
+  templateUrl: './graduated.component.html',
+  styleUrls: ['./graduated.component.css'],
 })
-
 export class GraduatedComponent implements OnInit {
-  public columnsToDisplay: string[] =
-    ['firstName', 'lastName', 'track', 'graduated', 'counselor', 'phone1', 'major', 'employer'];
-  public modalColumnsToDisplay: string[] =
-    ['ssno', 'firstName', 'lastName', 'phoneNumber', 'fiscalYear', 'active', 'served', 'reported', 'counselor', 'school', 'standing'];
+  public columnsToDisplay: string[] = [
+    'firstName',
+    'lastName',
+    'track',
+    'graduated',
+    'counselor',
+    'phone1',
+    'major',
+    'employer',
+  ];
+  public modalColumnsToDisplay: string[] = [
+    'ssno',
+    'firstName',
+    'lastName',
+    'phoneNumber',
+    'fiscalYear',
+    'active',
+    'served',
+    'reported',
+    'counselor',
+    'school',
+    'standing',
+  ];
   public dataSource: MatTableDataSource<any>;
   public modalDataSource: MatTableDataSource<any>;
-  @ViewChild('graduatedStudentPopup') graduatedStudentPopupRef: TemplateRef<any>;
+  @ViewChild('graduatedStudentPopup')
+  graduatedStudentPopupRef: TemplateRef<any>;
   public modalRef: BsModalRef;
-  @ViewChild('graduatedStudentEditPopup') graduatedStudentEditPopupRef: TemplateRef<any>;
+  @ViewChild('graduatedStudentEditPopup')
+  graduatedStudentEditPopupRef: TemplateRef<any>;
   public editModalRef: BsModalRef;
   modalConfigSM = {
     backdrop: true,
     ignoreBackdropClick: true,
-    class: 'modal-xl'
-  }
+    class: 'modal-xl',
+  };
 
   studentModalConfigSM = {
     backdrop: true,
     ignoreBackdropClick: true,
-    class: 'modal-xl'
-  }
+    class: 'modal-xl',
+  };
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild('editPopupPage', { read: MatPaginator, static: true }) editPopupPaginator: MatPaginator;
+  @ViewChild('editPopupPage', { read: MatPaginator, static: true })
+  editPopupPaginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild('editPopup', { read: MatSort, static: true }) editPopupSort: MatSort;
+  @ViewChild('editPopup', { read: MatSort, static: true })
+  editPopupSort: MatSort;
 
   public studentGraduatedModalForm: FormGroup;
   public studentGraduatedEditModalForm: FormGroup;
@@ -58,13 +80,18 @@ export class GraduatedComponent implements OnInit {
   public counselorsList: any = [];
   public cityList: any = [];
   public stateList: any = [];
-
+  public  allSelected: boolean = false;
+  public siteLocation = [
+    { value: 'Undefined', viewValue: 'Undefined' },
+    { value: 'Not Entered', viewValue: 'Not Entered' },
+  ];
 
   constructor(
     private modalService: BsModalService,
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private _liveAnnouncer: LiveAnnouncer
   ) {
     this.dataSource = new MatTableDataSource();
     this.modalDataSource = new MatTableDataSource();
@@ -78,11 +105,47 @@ export class GraduatedComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.modalDataSource.paginator = this.editPopupPaginator;
+    console.log(this.editPopupSort);
+    setTimeout(() => {
+      this.dataSource.paginator = this.paginator;
+      this.modalDataSource.paginator = this.editPopupPaginator;
 
-    this.dataSource.sort = this.sort;
-    this.modalDataSource.sort = this.editPopupSort;
+      this.dataSource.sort = this.sort;
+      this.modalDataSource.sort = this.editPopupSort;
+    }, 100);
+  }
+
+  announceSortChange(sortState: Sort, dataSource: MatTableDataSource<any>) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
+
+  /**
+   * @method toggleAllSelection
+   */
+  public toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    if (this.allSelected) {
+      this.studentGraduatedModalForm.controls.siteLocation.patchValue([
+        ...this.siteLocation.map((item) => item.value)]);
+    } else {
+      this.studentGraduatedModalForm.controls.siteLocation.patchValue([]);
+    }
+  }
+
+  /**
+   * @method togglePerOne
+   */
+  public togglePerOne(selected: string) {
+    this.allSelected = this.studentGraduatedModalForm.controls.siteLocation.value.length ==
+    this.siteLocation.length;
   }
 
   /**
@@ -94,7 +157,7 @@ export class GraduatedComponent implements OnInit {
       served: [''],
       siteLocation: [''],
       active: [''],
-      reported: ['']
+      reported: [''],
     });
 
     this.initializeGraduatedForm();
@@ -111,9 +174,9 @@ export class GraduatedComponent implements OnInit {
       employer: [''],
       titleOrPosition: [''],
       militaryType: [''],
-      graduatedYear:[new Date().getFullYear()],
+      graduatedYear: [new Date().getFullYear()],
       militaryRank: [''],
-      track:[false],
+      track: [false],
       major: [''],
       graduatedEducationStatus: [''],
       employmentType: [''],
@@ -127,7 +190,7 @@ export class GraduatedComponent implements OnInit {
   /**
    * @method initializeAddressForm
    */
-   public initializeAddressForm() {
+  public initializeAddressForm() {
     this.studentAddressNotesForm = this.fb.group({
       address: [''],
       city: [''],
@@ -137,7 +200,7 @@ export class GraduatedComponent implements OnInit {
       phone2: [''],
       website: [''],
       email: [''],
-      notes: ['']
+      notes: [''],
     });
   }
 
@@ -155,7 +218,10 @@ export class GraduatedComponent implements OnInit {
    * @method openModal
    */
   public openModal() {
-    this.modalRef = this.modalService.show(this.graduatedStudentPopupRef, this.studentModalConfigSM);
+    this.modalRef = this.modalService.show(
+      this.graduatedStudentPopupRef,
+      this.studentModalConfigSM
+    );
   }
 
   /**
@@ -163,15 +229,20 @@ export class GraduatedComponent implements OnInit {
    */
   public openEditModal() {
     this.getStaffList();
-    this.studentData = this.selectedOption === 'Edit' && this.selectedRowData.ssno
-      ? this.selectedRowData : this.selectedModalRowData;
+    this.studentData =
+      this.selectedOption === 'Edit' && this.selectedRowData.ssno
+        ? this.selectedRowData
+        : this.selectedModalRowData;
     if (this.selectedOption === 'Edit') {
       this.patchValuesToForm();
     } else {
       this.initializeGraduatedForm();
       this.initializeAddressForm();
     }
-    this.editModalRef = this.modalService.show(this.graduatedStudentEditPopupRef, this.modalConfigSM);
+    this.editModalRef = this.modalService.show(
+      this.graduatedStudentEditPopupRef,
+      this.modalConfigSM
+    );
   }
 
   /**
@@ -184,9 +255,11 @@ export class GraduatedComponent implements OnInit {
         this.spinner = false;
         this.selectedModalRow = null;
         this.studentsList = result;
-        this.dataSource = this.modalDataSource = new MatTableDataSource(this.studentsList);
-        this.dataSource.paginator = this.modalDataSource.paginator = this.editPopupPaginator;
-        this.dataSource.sort = this.modalDataSource.sort = this.editPopupSort;
+        this.dataSource = this.modalDataSource = new MatTableDataSource(
+          this.studentsList
+        );
+        // this.dataSource.paginator = this.modalDataSource.paginator = this.editPopupPaginator;
+        // this.dataSource.sort = this.modalDataSource.sort = this.editPopupSort;
         this.getSelectedRow(this.studentsList[0], 0);
         this.getSelectedModalRow(this.studentsList[0], 0);
       }
@@ -196,12 +269,12 @@ export class GraduatedComponent implements OnInit {
   /**
    * @method getStaffList
    */
-   public getStaffList() {
+  public getStaffList() {
     this.studentService.getStaffList().subscribe((result: any) => {
       if (result && result.length > 0) {
         result.forEach((element: any) => {
           if (element && element.name && element.code) {
-            this.stateList.push({name: element.name, code: element.code});
+            this.stateList.push({ name: element.name, code: element.code });
           }
         });
       }
@@ -211,12 +284,12 @@ export class GraduatedComponent implements OnInit {
   /**
    * @method getStateList
    */
-   public getStateList() {
+  public getStateList() {
     this.studentService.getPulldownState().subscribe((result: any) => {
       if (result && result.length > 0) {
         result.forEach((element: any) => {
           if (element && element.name && element.code) {
-            this.stateList.push({name: element.name, code: element.code});
+            this.stateList.push({ name: element.name, code: element.code });
           }
         });
       }
@@ -226,12 +299,12 @@ export class GraduatedComponent implements OnInit {
   /**
    * @method getCityList
    */
-   public getCityList() {
+  public getCityList() {
     this.studentService.getPulldownCity().subscribe((result: any) => {
       if (result && result.length > 0) {
         result.forEach((element: any) => {
           if (element && element.name && element.code) {
-            this.cityList.push({name: element.name, code: element.code});
+            this.cityList.push({ name: element.name, code: element.code });
           }
         });
       }
@@ -244,35 +317,35 @@ export class GraduatedComponent implements OnInit {
   public addStudentGraduated() {
     let request: any = this.requestPayload();
     if (request['ssno'] == undefined) {
-      request['ssno'] = this.selectedModalRowData.ssno
+      request['ssno'] = this.selectedModalRowData.ssno;
     }
     console.log(request, 'request request');
 
-    this.studentService.editStudentsList(request)
-      .subscribe((result: any) => {
-        if (result) {
-          this.getStudentsList();
-        }
-      });
+    this.studentService.editStudentsList(request).subscribe((result: any) => {
+      if (result) {
+        this.getStudentsList();
+      }
+    });
   }
 
   /**
    * @method editStudentGraduated
    */
   public editStudentGraduated(): any {
-    if (this.selectedRowData == null) { return true; };
+    if (this.selectedRowData == null) {
+      return true;
+    }
     let request: any = this.requestPayload();
     if (request['ssno'] == undefined) {
-      request['ssno'] = this.selectedRowData.ssno
+      request['ssno'] = this.selectedRowData.ssno;
     }
     console.log(request, 'request');
 
-    this.studentService.editStudentsList(request)
-      .subscribe((result: any) => {
-        if (result) {
-          this.getStudentsList();
-        }
-      });
+    this.studentService.editStudentsList(request).subscribe((result: any) => {
+      if (result) {
+        this.getStudentsList();
+      }
+    });
   }
 
   /**
@@ -283,12 +356,13 @@ export class GraduatedComponent implements OnInit {
       data: {
         title: 'Confirm remove record',
         message: `Are you sure, you want to delete ${this.selectedRowData?.firstName}
-        ${this.selectedRowData?.lastName} information?`
-      }
+        ${this.selectedRowData?.lastName} information?`,
+      },
     });
-    confirmDialog.afterClosed().subscribe(result => {
+    confirmDialog.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.studentService.deleteStudentsList({ ssno: this.selectedRowData.ssno })
+        this.studentService
+          .deleteStudentsList({ ssno: this.selectedRowData.ssno })
           .subscribe((result: any) => {
             if (result) {
               this.getStudentsList();
@@ -353,25 +427,32 @@ export class GraduatedComponent implements OnInit {
       counselor: this.selectedRowData?.graduatedInformation?.counselor,
       degreeIn: this.selectedRowData?.graduatedInformation?.degreeIn,
       employer: this.selectedRowData?.graduatedInformation?.employer,
-      titleOrPosition: this.selectedRowData?.graduatedInformation?.titleOrPosition,
+      titleOrPosition:
+        this.selectedRowData?.graduatedInformation?.titleOrPosition,
       militaryType: this.selectedRowData?.graduatedInformation?.militaryType,
       graduatedYear: this.selectedRowData?.graduatedInformation?.graduatedYear,
       militaryRank: this.selectedRowData?.graduatedInformation?.militaryRank,
-      track: this.selectedRowData?.graduatedInformation?.track ?
-        JSON.parse(this.selectedRowData?.graduatedInformation?.track) : false,
+      track: this.selectedRowData?.graduatedInformation?.track
+        ? JSON.parse(this.selectedRowData?.graduatedInformation?.track)
+        : false,
       major: this.selectedRowData?.graduatedInformation?.major,
-      graduatedEducationStatus: this.selectedRowData?.graduatedInformation?.graduatedEducationStatus,
-      employmentType: this.selectedRowData?.graduatedInformation?.employmentType,
+      graduatedEducationStatus:
+        this.selectedRowData?.graduatedInformation?.graduatedEducationStatus,
+      employmentType:
+        this.selectedRowData?.graduatedInformation?.employmentType,
     });
 
     this.studentAddressNotesForm.patchValue({
-      address: this.selectedRowData?.graduatedInformation?.addressNotes?.address,
+      address:
+        this.selectedRowData?.graduatedInformation?.addressNotes?.address,
       city: this.selectedRowData?.graduatedInformation?.addressNotes?.city,
       state: this.selectedRowData?.graduatedInformation?.addressNotes?.state,
-      zipcode: this.selectedRowData?.graduatedInformation?.addressNotes?.zipcode,
+      zipcode:
+        this.selectedRowData?.graduatedInformation?.addressNotes?.zipcode,
       phone1: this.selectedRowData?.graduatedInformation?.addressNotes?.phone1,
       phone2: this.selectedRowData?.graduatedInformation?.addressNotes?.phone2,
-      website: this.selectedRowData?.graduatedInformation?.addressNotes?.website,
+      website:
+        this.selectedRowData?.graduatedInformation?.addressNotes?.website,
       email: this.selectedRowData?.graduatedInformation?.addressNotes?.email,
       notes: this.selectedRowData?.graduatedInformation?.addressNotes?.notes,
     });
@@ -383,10 +464,13 @@ export class GraduatedComponent implements OnInit {
    */
   public requestPayload() {
     let formValue = this.studentGraduatedEditModalForm.value;
-    formValue = {...formValue, ...{ addressNotes: this.studentAddressNotesForm.value}}
+    formValue = {
+      ...formValue,
+      ...{ addressNotes: this.studentAddressNotesForm.value },
+    };
     return {
       ...this.selectedRowData,
-      ...{ graduatedInformation: formValue}
-    }
+      ...{ graduatedInformation: formValue },
+    };
   }
 }

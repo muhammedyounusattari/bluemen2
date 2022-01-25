@@ -116,56 +116,74 @@
     <div class="modal-body">
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group mt-3">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Grade/Standing Group ID</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{_gradeGroupStandingList.gradeGroupId}}"
-                                    [(ngModel)]="_gradeGroupStandingList.gradeGroupId"
-                                    [ngModelOptions]="{standalone: true}" readonly>
-                            </mat-form-field>
-                            <!-- <label for="usr" class="lable-style">Grade/Standing Group ID:</label>
-                            <input type="text" class="form-control" id="gradeGroupID"
-                                [(ngModel)]="_gradeGroupStandingList.gradeGroupId" readonly> -->
-                        </div>
+                <form [formGroup]="formGroup" class="form">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Grade/Standing Group ID</mat-label>
+                                    <input matInput placeholder="" value="" formControlName="gradeGroupId" readonly>
+                                </mat-form-field>
+                            </div>
+                            
+                            <!-- <div class="form-group mt-3">
+                                <mat-form-field class="mat-select-width" appearance="fill">
+                                    <mat-label>Grade/Standing Group ID</mat-label>
+                                    <input matInput placeholder="Ex. ABC" value="{{_gradeGroupStandingList.gradeGroupId}}"
+                                        [(ngModel)]="_gradeGroupStandingList.gradeGroupId"
+                                        [ngModelOptions]="{standalone: true}" readonly>
+                                </mat-form-field>
+                            </div> -->
 
-                        <div class="form-group mt-3">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Grade/Standing Group Name</mat-label>
-                                <textarea matInput placeholder="Ex. ABC"
-                                    [(ngModel)]="_gradeGroupStandingList.gradeGroupName"> </textarea>
-                            </mat-form-field>
-                            <!-- <label for="usr" class="lable-style">Grade/Standing Group Name:</label>
-                            <textarea type="text" class="form-control" cols="100" rows="5" id="gradeGroupName"
-                                [(ngModel)]="_gradeGroupStandingList.gradeGroupName"></textarea> -->
-                        </div>
+                            <div class="form-group txtMatHeight">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Grade/Standing Group Name</mat-label>
+                                    <input matInput value="" formControlName="gradeGroupName"
+                                        minlength="3" required>
+                                    <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                                        {{getError('gradeGroupName')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <!-- <div class="form-group mt-3">
+                                <mat-form-field class="mat-select-width" appearance="fill">
+                                    <mat-label>Grade/Standing Group Name</mat-label>
+                                    <textarea matInput placeholder="Ex. ABC"
+                                        [(ngModel)]="_gradeGroupStandingList.gradeGroupName"> </textarea>
+                                </mat-form-field>
+                            </div> -->
 
+                            <div class="form-group txtMatHeight">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Group Type</mat-label>
+                                    <input matInput list="groups" value="" formControlName="gradeGroupGradeType"
+                                        minlength="1" required>
+                                    <mat-error *ngIf="formGroup.controls['gradeGroupGradeType'].invalid">
+                                        {{getError('gradeGroupGradeType')}}
+                                    </mat-error>
+                                </mat-form-field>
+                                <datalist id="groups">
+                                    <option *ngFor="let gType of gradeGroupGradeTypeList" [ngValue]="gType.name">
+                                        {{gType.name}}</option>
+                                </datalist>
+                            </div>
+                            <!-- <div class="form-group mt-3">
+                                <mat-form-field class="mat-select-width" appearance="legacy">
+                                    <mat-label>Group Type</mat-label>
+                                    <input matInput list="groups" placeholder="Ex. ABC"
+                                        value="{{_gradeGroupStandingList.gradeGroupGradeType}}"
+                                        [(ngModel)]="_gradeGroupStandingList.gradeGroupGradeType"
+                                        [ngModelOptions]="{standalone: true}">
+                                </mat-form-field>
 
-                        <div class="form-group mt-3">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Group Type</mat-label>
-                                <input matInput list="groups" placeholder="Ex. ABC"
-                                    value="{{_gradeGroupStandingList.gradeGroupGradeType}}"
-                                    [(ngModel)]="_gradeGroupStandingList.gradeGroupGradeType"
-                                    [ngModelOptions]="{standalone: true}">
-                            </mat-form-field>
-
-                            <datalist id="groups">
-                                <option *ngFor="let gType of gradeGroupGradeTypeList" [ngValue]="gType.name">
-                                    {{gType.name}}</option>
-                            </datalist>
-                            <!-- <label for="usr" class="lable-style">Group Type:</label>
-                            <select class="form-control" id="grpType"
-                                [(ngModel)]="_gradeGroupStandingList.gradeGroupGradeType">
-                                <option selected>APR Column #1 | 1</option>
-                                <option selected>APR Column #2 | 2</option>
-                                <option selected>APR Column #3 | 3</option>
-                                <option selected>APR Column #4 | 4</option>
-                            </select> -->
+                                <datalist id="groups">
+                                    <option *ngFor="let gType of gradeGroupGradeTypeList" [ngValue]="gType.name">
+                                        {{gType.name}}</option>
+                                </datalist>
+                            </div> -->
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

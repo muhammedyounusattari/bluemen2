@@ -66,6 +66,11 @@ export class DisplayStaffContactsComponent implements OnInit {
   public staffsList: any = [];
   public studentData: any;
   public activityServiceList: any = [];
+  public  allSelected: boolean = false;
+  public siteLocation = [
+    { value: 'Undefined', viewValue: 'Undefined' },
+    { value: 'Not Entered', viewValue: 'Not Entered' },
+  ];
 
   constructor(
     private modalService: BsModalService,
@@ -111,6 +116,27 @@ export class DisplayStaffContactsComponent implements OnInit {
     });
 
     this.initializeContactForm();
+  }
+
+  /**
+   * @method toggleAllSelection
+   */
+   public toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    if (this.allSelected) {
+      this.staffContactsModalForm.controls.siteLocation.patchValue([
+        ...this.siteLocation.map((item) => item.value)]);
+    } else {
+      this.staffContactsModalForm.controls.siteLocation.patchValue([]);
+    }
+  }
+
+  /**
+   * @method togglePerOne
+   */
+  public togglePerOne(selected: string) {
+    this.allSelected = this.staffContactsModalForm.controls.siteLocation.value.length ==
+    this.siteLocation.length;
   }
 
   /**

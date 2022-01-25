@@ -419,7 +419,8 @@
                 <div class="mat-elevation-z8 data-table-height mb-4"
                     style="border:1px solid #1366A0;overflow-y: auto; overflow-x: auto">
                     <table mat-table #editPopup="matSort" [dataSource]="modalDataSource" class="mat-elevation-z8"
-                        [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
+                        [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort
+                        (matSortChange)="announceSortChange($event, modalDataSource)">
                         <ng-container matColumnDef="ssno">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> S.S. No </th>
                             <td mat-cell *matCellDef="let entry"> {{entry.ssno}} </td>
@@ -512,19 +513,12 @@
                         </div>
                         <div class="col-md-5">
                             <label> Site Location: </label>
-                            <div class="form-group mt-2">
-                                <label class="radio-inline">
-                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="Undefined"
-                                        selected> Undefined
-                                </label>
-                                <label class="radio-inline">
-                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="Not Entered">
-                                    Not Entered
-                                </label>
-                                <label class="radio-inline">
-                                    <input formControlName="siteLocation" class="ml-2" type="radio" value="All"> All
-                                </label>
-                            </div>
+                              <mat-select  placeholder="Site Location" formControlName="siteLocation" multiple>
+                                <mat-option (click)="toggleAllSelection()" [value]="allSelected">All</mat-option>
+                                <mat-option (click)="togglePerOne(location.value)" *ngFor="let location of siteLocation" [value]="location.value">
+                                  {{location.viewValue}}
+                                </mat-option>
+                              </mat-select>
                         </div>
                     </div>
                 </div>

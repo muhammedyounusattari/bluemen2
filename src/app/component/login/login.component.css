@@ -10,6 +10,12 @@
     display: grid;
   }
  
+  .txtAlign{
+    margin-bottom: 0 !important;
+  }
+  .mb-login {
+    margin-bottom: 0 !important;
+  }
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap'); 
   input.largerCheckbox {
     width: 17px;

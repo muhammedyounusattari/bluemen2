@@ -66,6 +66,11 @@ export class DisplayTutorContactsComponent implements OnInit {
   public tutorsList: any = [];
   public studentData: any;
   public activityServiceList: any = [];
+  public  allSelected: boolean = false;
+  public siteLocation = [
+    { value: 'Undefined', viewValue: 'Undefined' },
+    { value: 'Not Entered', viewValue: 'Not Entered' },
+  ];
 
   constructor(
     private modalService: BsModalService,
@@ -91,6 +96,27 @@ export class DisplayTutorContactsComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.modalDataSource.sort = this.editPopupSort;
     this.serviceDataSource.sort = this.activitySort;
+  }
+
+  /**
+   * @method toggleAllSelection
+   */
+   public toggleAllSelection() {
+    this.allSelected = !this.allSelected;
+    if (this.allSelected) {
+      this.tutorContactsModalForm.controls.siteLocation.patchValue([
+        ...this.siteLocation.map((item) => item.value)]);
+    } else {
+      this.tutorContactsModalForm.controls.siteLocation.patchValue([]);
+    }
+  }
+
+  /**
+   * @method togglePerOne
+   */
+  public togglePerOne(selected: string) {
+    this.allSelected = this.tutorContactsModalForm.controls.siteLocation.value.length ==
+    this.siteLocation.length;
   }
 
   /**

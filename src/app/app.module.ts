@@ -26,7 +26,7 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -54,7 +54,8 @@ import { MatMenuModule } from '@angular/material/menu';
     ToastrModule.forRoot(),
     MatInputModule,
     MatFormFieldModule,
-    MatMenuModule
+    MatMenuModule,
+    ReactiveFormsModule
   ],
   entryComponents: [ConfirmationComponent],
   providers: [ToastrService, PendingChangesGuard],
