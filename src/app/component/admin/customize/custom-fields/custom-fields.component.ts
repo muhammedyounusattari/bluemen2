@@ -2,19 +2,18 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { CustomFieldService } from 'src/app/services/admin/custom-fields.service';
-
-
-import {MatDialog} from '@angular/material/dialog';
-import {ConfirmDialogComponent} from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
   selector: 'app-custom-fields',
   templateUrl: './custom-fields.component.html',
-  // styleUrls: ['./pulldown-list.component.css']
+  styleUrls: ['./custom-fields.component.css']
 })
 export class CustomFieldsComponent implements OnInit {
   @ViewChild('customFieldValuePopup') customFieldValuePopupRef: TemplateRef<any>;
@@ -22,7 +21,8 @@ export class CustomFieldsComponent implements OnInit {
   modalConfigSM = {
     backdrop: true,
     ignoreBackdropClick: true,
-    class: 'modal-sm',
+    // class: 'modal-sm',
+    class: 'modal-dialog-centered'
   };
   public customFieldsForm: FormGroup;
   public customFields: any;
@@ -35,31 +35,30 @@ export class CustomFieldsComponent implements OnInit {
   myElement: any = null;
   isLoading: boolean = true;
   public customFieldList: any = [];
-  public id:string;
-  public pullDownName:string;
-  public isEdit:boolean;
+  public id: string;
+  public pullDownName: string;
+  public isEdit: boolean;
 
   columnsToDisplay: string[] = ['customId', 'pullDownName'];
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   @ViewChild(MatSort) set matSort(sort: MatSort) {
     if (this.dataSource && !this.dataSource.sort) {
       this.dataSource.sort = sort;
     }
   }
-
-  constructor(
-    private modalService: BsModalService,
-    private fb: FormBuilder,
-    private customFieldService: CustomFieldService
-  ) {
-    this.getCustomFieldNameType();
-  }
+  // customFieldListArray = [{'name': '1 - Best time to call', 'value': 1}, {'name': 'T-shirt size', 'value': 2}]
+  constructor(private modalService: BsModalService
+    , private fb: FormBuilder
+    , private customFieldService: CustomFieldService
+    , private dialog: MatDialog
+    , private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.myElement = window.document.getElementById('loading');
+    this.getCustomFieldNameType();
     this.initialiseForm();
   }
 
@@ -84,26 +83,44 @@ export class CustomFieldsComponent implements OnInit {
    * @method addCustomFieldNameType
    */
   public addCustomFieldNameType() {
-    this.customFieldService.addToCustomFieldsNameType(this.requestPayload()).subscribe((result) => {
-      if (result) {
-        this.getCustomFieldNameType();
-      }
-    });
+    if (this.customFieldsForm.valid) {
+      this.customFieldService.addToCustomFieldsNameType(this.requestPayload()).subscribe((result) => {
+        if (result) {
+          this.modalRef.hide();
+          this.selectedRow = null;
+          this.toastr.success('Saved Successfully !', '', {
+            timeOut: 5000,
+            closeButton: true
+          });
+          this.getCustomFieldNameType();
+        }
+      });
+    } else {
+      this.customFieldsForm.markAllAsTouched();
+    }
   }
 
   /**
    * @method editCustomFieldNameType
    */
   public editCustomFieldNameType() {
-    let request: any = this.requestPayload();
-    if (request['id'] == undefined) {
-      request['id'] = this.selectedRow.customId
-    }
-    this.customFieldService.editCustomFieldsNameType(request).subscribe((result) => {
-      if (result) {
-        this.getCustomFieldNameType();
+    if (this.selectedRow && this.customFieldsForm.valid) {
+      let request: any = this.requestPayload();
+      if (request['id'] == undefined) {
+        request['id'] = this.selectedRow.customId
       }
-    });
+      this.customFieldService.editCustomFieldsNameType(request).subscribe((result) => {
+        if (result) {
+          this.modalRef.hide();
+          this.selectedRow = null;
+          this.toastr.success('Updated Successfully !', '', {
+            timeOut: 5000,
+            closeButton: true
+          });
+          this.getCustomFieldNameType();
+        }
+      });
+    }
   }
 
   /**
@@ -146,11 +163,33 @@ export class CustomFieldsComponent implements OnInit {
    * @method deleteCustomFieldNameType
    */
   public deleteCustomFieldNameType() {
-    this.customFieldService.deleteCustomFieldsNameType({customId: this.selectedRow.customId}).subscribe((result) => {
-      if (result) {
-        this.getCustomFieldNameType();
-      }
-    });
+    if (this.selectedRow) {
+      this.showLoader();
+      const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          title: 'Confirm remove record',
+          message: 'Are you sure, you want to remove this record: ' + this.customFieldsForm.get('pullDownName')?.value
+        }
+      });
+      confirmDialog.afterClosed().subscribe(result => {
+        if (result === true) {
+          this.customFieldService.deleteCustomFieldsNameType({ customId: this.selectedRow.customId }).subscribe((result) => {
+            if (result) {
+              this.selectedRow = null;
+              this.getCustomFieldNameType();
+            }
+          });
+
+        } else {
+          this.hideLoader();
+        }
+      });
+    } else {
+      this.toastr.info('Please select a row to delete', '', {
+        timeOut: 5000,
+        closeButton: true
+      });
+    }
   }
 
   /**
@@ -171,13 +210,23 @@ export class CustomFieldsComponent implements OnInit {
   public getSelectedOption(selectedOption: string) {
     this.selectedOption = selectedOption;
     if (selectedOption === 'Edit') {
-      this.customFieldsForm.get('customId')?.setValue(this.selectedRow.customId);
-      this.customFieldsForm.get('pullDownName')?.setValue(this.selectedRow.pullDownName);
+      if (this.selectedRow) {
+        this.customFieldsForm.get('customId')?.setValue(this.selectedRow.customId);
+        this.customFieldsForm.get('pullDownName')?.setValue(this.selectedRow.pullDownName);
+        this.openModal(this.customFieldValuePopupRef);
+      } else {
+        this.toastr.info('Please select a row to update ', '', {
+          timeOut: 5000,
+          closeButton: true
+        });
+      }
     } else {
       this.customFieldsForm.reset();
+      this.selectedRow = null;
       this.customFieldsForm.updateValueAndValidity();
+      this.openModal(this.customFieldValuePopupRef);
     }
-    this.openModal(this.customFieldValuePopupRef);
+
   }
 
   /**
@@ -224,8 +273,8 @@ export class CustomFieldsComponent implements OnInit {
    */
   public requestPayload() {
     return {
-      customId: (this.selectedRow &&this.selectedRow.customId)?this.selectedRow.customId:0,
-      pullDownName: this.customFieldsForm.value.pullDownName
+      customId: (this.selectedRow && this.selectedRow.customId) ? this.selectedRow.customId : 0,
+      pullDownName: this.customFieldsForm.get('pullDownName')?.value
     }
   }
 

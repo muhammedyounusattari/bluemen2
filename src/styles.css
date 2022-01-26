@@ -626,3 +626,6 @@ footer.page-footer .footer-copyright {
   }
   .bordertop{border-top: 1px solid #fff;}
   .logoleft{margin-left: -14px;}
+  .mat-checkbox-inner-container{
+      background: #fff !important;
+  }

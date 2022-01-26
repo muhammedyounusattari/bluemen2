@@ -188,7 +188,6 @@
                                         </section>
                                     </div>
                                     <div class="col-md-12">
-
                                         <section class="example-section">
                                             <mat-checkbox formControlName="activityReportActivityGroup"
                                                 class="example-margin">
@@ -228,7 +227,7 @@
             (click)="updateSelectedRow();">Update &
             Close</button>
         <button type="button" class="btn btn-secondary" id="closePopup"
-            (click)="isEdit = false; selectedRowIndex = null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>
+            (click)="isEdit = false; selectedRowIndex = null; selectedRow=null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>
     </div>
 </ng-template>
 <!-- Modal End-->

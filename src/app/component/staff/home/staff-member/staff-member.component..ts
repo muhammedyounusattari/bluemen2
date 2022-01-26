@@ -1,14 +1,15 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { StaffMembersService } from 'src/app/services/staff/staff-members.service';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-
+import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 
 @Component({
   selector: 'app-staff-member',
@@ -79,39 +80,62 @@ export class StaffMemberComponent {
     }
   }
 
+  codeListArray = [{ 'name': '111' }, { 'name': '222' }];
+  customFieldListArray1 = [{ 'name': 'Custom 1' }, { 'name': 'Custom 2' }, { 'name': 'Custom 3' }];
+  customFieldListArray2 = [{ 'name': 'Custom 1' }, { 'name': 'Custom 2' }, { 'name': 'Custom 3' }];
+  customFieldListArray3 = [{ 'name': 'Custom 1' }, { 'name': 'Custom 2' }, { 'name': 'Custom 3' }];
+  customFieldListArray4 = [{ 'name': 'Custom 1' }, { 'name': 'Custom 2' }, { 'name': 'Custom 3' }];
+  formGroup: FormGroup;
+  validationClass: ValidationClass = new ValidationClass();
   constructor(
-    private modalService: BsModalService,
-    private fb: FormBuilder,
-    private staffMembersService: StaffMembersService
+    private modalService: BsModalService
+    , private fb: FormBuilder
+    , private formBuilder: FormBuilder
+    , private staffMembersService: StaffMembersService
+    , private dialog: MatDialog
+    , private toastr: ToastrService
   ) {
+  }
+
+  ngOnInit(): void {
+    this.createForm();
     this.getStaffMembers();
     this.isEdit = false;
   }
 
-  ngOnInit(): void {
-    this.initialiseForm();
-  }
-
-  /**
-   * @method initialiseForm
-   */
-  public initialiseForm() {
-    this.staffMembersForm = this.fb.group({
-      hireDateFrom: [''],
-      hireDateTo: [''],
-      staffActive: [''],
-      codes: [''],
-      zipCode: [''],
-    });
-
-    this.staffMembersModalForm = this.fb.group({
-      name: [''],
+  createForm() {
+    this.formGroup = this.formBuilder.group({
+      'id': [''],
+      'staffName': ['', Validators.required],
+      'staff': [false],
+      'title': [''],
+      'staffActive': [true],
+      'staffTutor': [false],
+      'ssn': ['', Validators.required],
+      'staffCounselor': [false],
+      'staffTeacher': [false],
+      'staffLab': [false],
+      'codes': ['', Validators.required],
+      'dob': [new Date(), Validators.required],
+      'spouse': [''],
+      'staffHireDate': [new Date(), Validators.required],
+      'license': [''],
+      'terminationDate': [new Date(), Validators.required],
+      'customField1': [''],
+      'customField2': [''],
+      'customField3': [''],
+      'customField4': [''],
+      'notes': [''],
+      'picture': [''],
+      'staffPhoneNumber': [''],
+      'staffBolt': [false]
     });
   }
 
   addNewDropdown() {
     this.openModal(this.staffDataEntryPopupRef);
   }
+
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, this.modalConfigSM);
   }
@@ -120,28 +144,45 @@ export class StaffMemberComponent {
    * @method addStaffMembers
    */
   public addStaffMembers() {
-
-    this.isEdit = false;
-    this.staffMembersService
-      .addStaffMembers(this.requestPayload())
-      .subscribe((result: any) => {
-        if (result) {
-          this.getStaffMembers();
-        }
-      });
+    if (this.formGroup.valid) {
+      this.isEdit = false;
+      this.staffMembersService
+        .addStaffMembers(this.requestPayload())
+        .subscribe((result: any) => {
+          if (result) {
+            this.toastr.success('Saved Successfully !', '', {
+              timeOut: 5000,
+              closeButton: true
+            });
+            this.modalRef.hide();
+            this.getStaffMembers();
+          }
+        }); 
+    } else {
+      this.formGroup.markAllAsTouched();
+    }
   }
 
   updateSelectedRow() {
-    this.isEdit = true;
-    this.staffMembersService
-      .addStaffMembers(this.requestPayload())
-      .subscribe((result: any) => {
-        if (result) {
-          this.getStaffMembers();
-        }
-      });
+    if (this.formGroup.valid) {
+      this.isEdit = true;
+      this.staffMembersService
+        .addStaffMembers(this.requestPayload())
+        .subscribe((result: any) => {
+          if (result) {
+            this.selectedRow = null;
+            this.toastr.success('Updated Successfully !', '', {
+              timeOut: 5000,
+              closeButton: true
+            });
+            this.modalRef.hide();
+            this.getStaffMembers();
+          }
+        });
+    } else {
+      this.formGroup.markAllAsTouched();
+    }
   }
-
 
   /**
    * @method editStaffMembers
@@ -151,21 +192,21 @@ export class StaffMemberComponent {
     if (request['id'] == undefined) {
       request['id'] = this.selectedRowData.id
     }
-    this.staffMembersService
-      .editStaffMembers(request)
-      .subscribe((result: any) => {
-        if (result) {
-          this.getStaffMembers();
-
-        }
-      });
+    this.formGroup.get('id')?.setValue(this.selectedRowData.id);
+    // this.staffMembersService
+    //   .editStaffMembers(request)
+    //   .subscribe((result: any) => {
+    //     if (result) {
+    //       this.getStaffMembers();
+    //     }
+    //   });
   }
 
   /**
    * @method getStaffMembers
    */
   public getStaffMembers() {
-    this.spinner = true;
+    this.showLoader();
     this.staffMembersService.getStaffMembers().subscribe((result: any) => {
       this.hideLoader();
       if (result) {
@@ -185,13 +226,39 @@ export class StaffMemberComponent {
    * @method deleteStaffMembers
    */
   public deleteStaffMembers() {
-    this.staffMembersService
-      .deleteStaffMembers({ id: this.selectedRow.id })
-      .subscribe((result: any) => {
-        if (result) {
-          this.getStaffMembers();
+    if (this.selectedRow) {
+      this.showLoader();
+      const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          title: 'Confirm remove record',
+          message: 'Are you sure, you want to remove this record: ' + this.selectedRow.staffName
         }
       });
+      confirmDialog.afterClosed().subscribe(result => {
+        if (result === true) {
+          this.staffMembersService
+            .deleteStaffMembers({ id: this.formGroup.get('id')?.value })
+            .subscribe((result: any) => {
+              if (result) {
+                this.selectedRow = null;
+                this.toastr.success('Deleted Successfully !', '', {
+                  timeOut: 5000,
+                  closeButton: true
+                });
+                this.getStaffMembers();
+              }
+            });
+
+        } else {
+          this.hideLoader();
+        }
+      });
+    } else {
+      this.toastr.info('Please select a row to delete', '', {
+        timeOut: 5000,
+        closeButton: true
+      });
+    }
   }
 
   /**
@@ -213,40 +280,48 @@ export class StaffMemberComponent {
    */
   public getSelectedOption(selectedOption: string) {
     this.selectedOption = selectedOption;
-    this.staffMembersModalForm.reset();
-    this.staffMembersModalForm.updateValueAndValidity();
+    // this.staffMembersModalForm.reset();
+    // this.staffMembersModalForm.updateValueAndValidity();
     if (this.selectedOption === 'Edit') {
-      this.isEdit = true;
-      //this.staffMembersModalForm.get('name')?.setValue(this.selectedRow.staffName);
-      this.staffName = this.selectedRow.staffName;
-      this.id = this.selectedRow.id;
-      this.title = this.selectedRow.staffTitle;
-      this.staffActive = this.selectedRow.staffActive;
-      this.staffTutor = this.selectedRow.staffTutor;
-      this.ssn = this.selectedRow.staffSSNO;
-      this.staffCounselor = this.selectedRow.staffCounselor;
-      this.staffTeacher = this.selectedRow.staffTeacher;
-      this.staffLab = this.selectedRow.staffLab;
-      this.codes = this.selectedRow.staffCodes;
-      this.dob = this.selectedRow.staffDOB;
-      this.spouse = this.selectedRow.staffSpouseName;
-      this.staffHireDate = this.selectedRow.staffHireDate;
-      this.license = this.selectedRow.staffDriverLicense;
-      this.terminationDate = this.selectedRow.staffTerminationDate;
-      this.customField1 = this.selectedRow.staffCustomFieldOne;
-      this.customField2 = this.selectedRow.staffCustomFieldTwo;
-      this.customField3 = this.selectedRow.staffCustomFieldThree;
-      this.customField4 = this.selectedRow.staffCustomFieldFour;
-      this.notes = this.selectedRow.staffNotes;
-      this.picture = this.selectedRow.staffPicture;
-      this.staffBolt = this.selectedRow.staffBolt;
-      this.staff = this.selectedRow.staff;
-      this.staffMembersModalForm.updateValueAndValidity();
+      if (this.selectedRow) {
+        this.isEdit = true;
+        //this.staffMembersModalForm.get('name')?.setValue(this.selectedRow.staffName);
+        this.formGroup.get('staffName')?.setValue(this.selectedRow.staffName);
+        this.formGroup.get('id')?.setValue(this.selectedRow.id);
+        this.formGroup.get('title')?.setValue(this.selectedRow.staffTitle);
+        this.formGroup.get('staffActive')?.setValue(this.selectedRow.staffActive);
+        this.formGroup.get('staffTutor')?.setValue(this.selectedRow.staffTutor);
+        this.formGroup.get('ssn')?.setValue(this.selectedRow.staffSSNO);
+        this.formGroup.get('staffCounselor')?.setValue(this.selectedRow.staffCounselor);
+        this.formGroup.get('staffTeacher')?.setValue(this.selectedRow.staffTeacher);
+        this.formGroup.get('staffLab')?.setValue(this.selectedRow.staffLab);
+        this.formGroup.get('codes')?.setValue(this.selectedRow.staffCodes);
+        this.formGroup.get('dob')?.setValue(this.selectedRow.staffDOB);
+        this.formGroup.get('spouse')?.setValue(this.selectedRow.staffSpouseName);
+        this.formGroup.get('staffHireDate')?.setValue(this.selectedRow.staffHireDate);
+        this.formGroup.get('license')?.setValue(this.selectedRow.staffDriverLicense);
+        this.formGroup.get('customField1')?.setValue(this.selectedRow.staffCustomFieldOne);
+        this.formGroup.get('customField2')?.setValue(this.selectedRow.staffCustomFieldTwo);
+        this.formGroup.get('customField3')?.setValue(this.selectedRow.staffCustomFieldThree);
+        this.formGroup.get('customField4')?.setValue(this.selectedRow.staffCustomFieldFour);
+        this.formGroup.get('notes')?.setValue(this.selectedRow.staffNotes);
+        this.formGroup.get('picture')?.setValue(this.selectedRow.staffPicture);
+        this.formGroup.get('staffBolt')?.setValue(this.selectedRow.staffBolt);
+        this.formGroup.get('staff')?.setValue(this.selectedRow.staff);
+        this.formGroup.get('staffPhoneNumber')?.setValue(this.selectedRow.staffPhoneNumber);
+        this.openModal(this.staffDataEntryPopupRef);
+        // this.staffMembersModalForm.updateValueAndValidity();
+      } else { 
+        this.toastr.info('Please select a row to update', '', {
+          timeOut: 5000,
+          closeButton: true
+        });
+      }
     } else {
       this.isEdit = false;
       this.resetFields();
+      this.openModal(this.staffDataEntryPopupRef);
     }
-    this.openModal(this.staffDataEntryPopupRef);
   }
 
   /**
@@ -290,30 +365,30 @@ export class StaffMemberComponent {
    */
   public requestPayload() {
     return {
-      id: this.id,
-      staffName: this.staffName,
-      staffTitle: this.title,
-      staffActive: this.staffActive,
-      staffTutor: this.staffTutor,
-      staffSSNO: this.ssn,
-      staffCounselor: this.staffCounselor,
-      staffTeacher: this.staffTeacher,
-      staffLab: this.staffLab,
-      staffCodes: this.codes,
-      staffDOB: this.dob,
-      staffSpouseName: this.spouse,
-      staffHireDate: this.staffHireDate,
-      staffDriverLicense: this.license,
-      staffTerminationDate: this.terminationDate,
-      staffCustomFieldOne: this.customField1,
-      staffCustomFieldTwo: this.customField2,
-      staffCustomFieldThree: this.customField3,
-      staffCustomFieldFour: this.customField4,
-      staffNotes: this.notes,
-      staffPicture: this.picture,
-      staffBolt: this.staffBolt,
-      staffPhoneNumber: this.staffPhoneNumber,
-      staff: this.staff
+      id: this.formGroup?.get('id')?.value,
+      staffName: this.formGroup?.get('staffName')?.value,
+      staffTitle: this.formGroup?.get('title')?.value,
+      staffActive: this.formGroup?.get('staffActive')?.value,
+      staffTutor: this.formGroup?.get('staffTutor')?.value,
+      staffSSNO: this.formGroup?.get('ssn')?.value,
+      staffCounselor: this.formGroup?.get('staffCounselor')?.value,
+      staffTeacher: this.formGroup?.get('staffTeacher')?.value,
+      staffLab: this.formGroup?.get('staffLab')?.value,
+      staffCodes: this.formGroup?.get('codes')?.value,
+      staffDOB: this.formGroup?.get('dob')?.value,
+      staffSpouseName: this.formGroup?.get('spouse')?.value,
+      staffHireDate: this.formGroup?.get('staffHireDate')?.value,
+      staffDriverLicense: this.formGroup?.get('license')?.value,
+      staffTerminationDate: this.formGroup?.get('terminationDate')?.value,
+      staffCustomFieldOne: this.formGroup?.get('customField1')?.value,
+      staffCustomFieldTwo: this.formGroup?.get('customField2')?.value,
+      staffCustomFieldThree: this.formGroup?.get('customField3')?.value,
+      staffCustomFieldFour: this.formGroup?.get('customField4')?.value,
+      staffNotes: this.formGroup?.get('notes')?.value,
+      staffPicture: this.formGroup?.get('picture')?.value,
+      staffBolt: this.formGroup?.get('staffBold')?.value,
+      staffPhoneNumber: this.formGroup?.get('staffPhoneNumber')?.value,
+      staff: this.formGroup?.get('staff')?.value,
     };
   }
 
@@ -350,6 +425,7 @@ export class StaffMemberComponent {
   }
 
   resetFields() {
-    this.id = ''; this.staffName = ''; this.title = ''; this.staffActive = 'true'; this.staffTutor = ''; this.ssn = ''; this.staffCounselor = ''; this.staffTeacher = ''; this.staffLab = ''; this.codes = ''; this.dob = ''; this.spouse = ''; this.staffHireDate = ''; this.license = ''; this.terminationDate = ''; this.customField1 = ''; this.customField2 = ''; this.customField3 = ''; this.customField4 = ''; this.notes = ''; this.picture = ''; this.staffBolt = '';
+    this.createForm();
+    // this.id = ''; this.staffName = ''; this.title = ''; this.staffActive = 'true'; this.staffTutor = ''; this.ssn = ''; this.staffCounselor = ''; this.staffTeacher = ''; this.staffLab = ''; this.codes = ''; this.dob = ''; this.spouse = ''; this.staffHireDate = ''; this.license = ''; this.terminationDate = ''; this.customField1 = ''; this.customField2 = ''; this.customField3 = ''; this.customField4 = ''; this.notes = ''; this.picture = ''; this.staffBolt = '';
   }
 }

@@ -48,10 +48,6 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Pulldown Name</th>
         <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.pullDownName}} </td>
       </ng-container>
-
-      <ng-template [ngIf]="dataSource.data.length === 0">
-        <tr mat-footer-row *matFooterRowDef="['noRecord']"></tr>
-      </ng-template>
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
       <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
           [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
@@ -78,22 +74,22 @@
             <a class="nav-link" (click)="getSelectedOption('Edit')">Edit</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>
+            <a class="nav-link">Rename</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="getSelectedOption('Move')">Move</a>
+            <a class="nav-link">Move</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="getSelectedOption('Merge')">Merge</a>
+            <a class="nav-link">Merge</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" (click)="deleteCustomFieldNameType()">Delete</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="getSelectedOption('Print')">Print</a>
+            <a class="nav-link">Print</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="getSelectedOption('Submit')">Submit</a>
+            <a class="nav-link">Submit</a>
           </li>
         </ul>
 
@@ -224,10 +220,16 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group mt-3">
-                        <label for="usr" class="lable-style">Enter Pulldown Name:</label>
-                        <input type="text" formControlName="pullDownName" class="form-control" id="usr">
+                        <mat-form-field class="example-full-width" appearance="fill">
+                          <mat-label>Enter Pulldown Name</mat-label>
+                          <input matInput value="" formControlName="pullDownName" minlength="3" required>
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                              {{getError('gradeGroupName')}}
+                          </mat-error> -->
+                      </mat-form-field>
+                        <!-- <label for="usr" class="lable-style">Enter Pulldown Name:</label>
+                        <input type="text" formControlName="pullDownName" class="form-control" id="usr" required> -->
                       </div>
-
                     </div>
                   </div>
                 </div>
@@ -238,8 +240,8 @@
   </div>
   <div class="modal-footer">
       <button type="button" class="btn btn-secondary" id="closePopup"
-          (click)="isEdit = false; selectedRowIndex = null;modalRef.hide()">Close</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="handleMethodToCall(); modalRef.hide()">
+          (click)="isEdit = false; selectedRow = null; selectedRowIndex = null;modalRef.hide()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="handleMethodToCall();">
             {{selectedOption === 'Edit' ? 'Update & Close' : 'Save & Close'}}</button>
 
   </div>

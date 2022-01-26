@@ -17,33 +17,33 @@
   <div class="table-responsive" style="border:1px solid #1366A0;">
     <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
       <thead>
-      <tr style="background: #F5F6FA;">
-        <th scope="col">Staff ID</th>
-        <th scope="col">Name</th>
-        <th scope="col">Title</th>
-        <th scope="col">Active</th>
-        <th scope="col">Counselor</th>
-        <th scope="col">Tutor</th>
-        <th scope="col">Teacher</th>
-        <th scope="col">Lab</th>
-        <th scope="col">Phone Number</th>
-        <th scope="col">Hire Date</th>
-      </tr>
+        <tr style="background: #F5F6FA;">
+          <th scope="col">Staff ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Title</th>
+          <th scope="col">Active</th>
+          <th scope="col">Counselor</th>
+          <th scope="col">Tutor</th>
+          <th scope="col">Teacher</th>
+          <th scope="col">Lab</th>
+          <th scope="col">Phone Number</th>
+          <th scope="col">Hire Date</th>
+        </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let teacherData of teachersList; let idx = index;"
-          (click)="setSelectedRow(teacherData, idx)" [ngClass]="{'selected-row' : this.selectedRowIndex == idx}">
-        <th scope="row">{{teacherData.id}}</th>
-        <td>{{teacherData.staffTeacher}}</td>
-        <td>{{teacherData.staffTitle}}</td>
-        <td>{{teacherData.staffActive}}</td>
-        <td>{{teacherData.staffCounselor}}</td>
-        <td>{{teacherData.staffTutor}}</td>
-        <td>{{teacherData.staffName}}</td>
-        <td>{{teacherData.staffLab}}</td>
-        <td>{{teacherData.staffSSNO}}</td>
-        <td>{{teacherData.staffHireDate}}</td>
-      </tr>
+        <tr *ngFor="let teacherData of teachersList; let idx = index;" (click)="setSelectedRow(teacherData, idx)"
+          [ngClass]="{'selected-row' : this.selectedRowIndex == idx}">
+          <th scope="row">{{teacherData.id}}</th>
+          <td>{{teacherData.staffTeacher}}</td>
+          <td>{{teacherData.staffTitle}}</td>
+          <td>{{teacherData.staffActive}}</td>
+          <td>{{teacherData.staffCounselor}}</td>
+          <td>{{teacherData.staffTutor}}</td>
+          <td>{{teacherData.staffName}}</td>
+          <td>{{teacherData.staffLab}}</td>
+          <td>{{teacherData.staffSSNO}}</td>
+          <td>{{teacherData.staffHireDate}}</td>
+        </tr>
 
       </tbody>
     </table>
@@ -73,16 +73,16 @@
   <div class="col-md-12">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
-        <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"
-           aria-controls="home" aria-selected="true">Normal Filter</a>
+        <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home"
+          aria-selected="true">Normal Filter</a>
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#advanceFilter" role="tab"
-           aria-controls="profile" aria-selected="false">Advance Filder</a>
+          aria-controls="profile" aria-selected="false">Advance Filder</a>
       </li>
       <li class="nav-item" role="presentation">
-        <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab"
-           aria-controls="contact" aria-selected="false">More Filter</a>
+        <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+          aria-selected="false">More Filter</a>
       </li>
     </ul>
     <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
@@ -151,7 +151,7 @@
 <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
@@ -160,12 +160,10 @@
           <a class="nav-link active" aria-current="page" href="#">Reset</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal"
-             data-bs-target="#exampleModal">New</a>
+          <a class="nav-link" href="javascript:void(0);" (click)="openTeacherPopup()">New</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="javascript:void(0);" data-bs-toggle="modal"
-             data-bs-target="#exampleModal" (click)="setSelectedRowToUpdate()">Edit</a>
+          <a class="nav-link " href="javascript:void(0);" (click)="setSelectedRowToUpdate()">Edit</a>
         </li>
         <li class="nav-item">
           <a class="nav-link " href="#">Rename</a>
@@ -191,8 +189,51 @@
   </div>
 </nav>
 
+
+<!-- Modal Start-->
+<ng-template #teacherPopup>
+  <!-- Modal -->
+  <div class="modal-header popHeaderBG">
+    <span class="modal-title popHeader" id="exampleModalLabel">Add Teacher</span>
+    <button type="button" class="btn-close"
+      (click)="selectedRowIndex = null; formGroup?.markAsUntouched(); selectedRow = null; modalRef.hide()"
+      aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <form [formGroup]="formGroup" class="form">
+          <div class="row">
+            <div class="form-group">
+              <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                <mat-label>Enter Teacher Name</mat-label>
+                <input matInput value="" formControlName="name" minlength="3" required>
+                <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                    {{getError('gradeGroupName')}}
+                </mat-error> -->
+              </mat-form-field>
+
+              <!-- <label for="sel1">Enter Teacher Name: </label>
+                  <input type="text" class="form-control" [(ngModel)]="name"> -->
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-v .primary" *ngIf="!isEdit" (click)="saveTeacher();">Save &
+      Close</button>
+    <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();">Update &
+      Close</button>
+    <button type="button" class="btn btn-secondary" id="closePopup"
+      (click)="isEdit = false; selectedRowIndex = null; selectedRow=null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>
+  </div>
+</ng-template>
+<!-- Modal End-->
+
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -202,22 +243,23 @@
       <div class="modal-body">
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
           <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <div class="row">
-              <div class="form-group">
-                <label for="sel1">Enter Teacher Name: </label>
-                <input type="text" class="form-control" [(ngModel)]="name">
+            <form [formGroup]="formGroup" class="form">
+              <div class="row">
+                <div class="form-group">
+                  <label for="sel1">Enter Teacher Name: </label>
+                  <input type="text" class="form-control" [(ngModel)]="name">
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="saveTeacher()">Save & Close</button>
-          <button type="button" class="btn btn-primary" *ngIf="isEdit"
-                  (click)="updateSelectedRow()">Update & Close
+          <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow()">Update & Close
           </button>
         </div>
       </div>
     </div>
   </div>
-</div>
+</div> -->

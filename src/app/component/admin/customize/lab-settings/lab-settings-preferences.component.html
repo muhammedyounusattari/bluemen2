@@ -1,302 +1,255 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
+    <!-- Full Screen Loader Start -->
+    <div id="loading"></div>
+    <!-- Full Screen Loader End -->
+
     <div class="row bg-white">
         <div class="col-md-12">
             <h3>Lab Settings</h3>
         </div>
     </div>
     <div class="container-fluid">
-        <div class="row mt-4">
-            <div class="col-6">
-            <div class="form-group">
-                <mat-form-field class="mat-select-width" appearance="fill">
-                    <mat-label>Search Priority</mat-label>
-                    <input matInput list="laps" placeholder="Ex. ABC" value="{{lLabSettingsEnum.lapSearchPriority}}"
-                        [(ngModel)]="lLabSettingsEnum.lapSearchPriority" [ngModelOptions]="{standalone: true}">
-                </mat-form-field>
+        <form [formGroup]="formGroup" class="form">
+            <div class="row mt-4">
+                <div class="col-6">
+                    <div class="form-group">
+                        <mat-form-field class="mat-select-width" appearance="fill">
+                            <mat-label>Search Priority</mat-label>
+                            <input matInput list="laps" formControlName="lapSearchPriority" required>
+                        </mat-form-field>
 
-                <datalist id="laps">
-                    <option *ngFor="let lap of lapSearchPriorityList" [ngValue]="lap.name">
-                        {{lap.name}}</option>
-                </datalist>
-                <!-- <label for="usr">Search Priority</label>
-            <span class="form-group">
-                <select class="form-control" [(ngModel)] = "lLabSettingsEnum.lapSearchPriority">
-                    <option>Student ID, Scan ID, System Serial Number</option>
-                    <option>Student ID, System Serial Number, Scan ID</option>
-                    <option>Scan ID, Student ID, System Serial Number</option>
-                    <option>Scan ID, System Serial Number, Student ID,</option>
-                    <option>System Serial Number, Student ID, Scan ID</option>
-                    <option>System Serial Number, Scan ID, Student ID</option>
-                </select>
-            </span> -->
-            </div></div>
-
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <mat-form-field class="mat-select-width" appearance="fill">
-                        <mat-label>Component</mat-label>
-                        <input matInput list="labs" placeholder="Ex. ABC" value="{{lLabSettingsEnum.labComponents}}"
-                            [(ngModel)]="lLabSettingsEnum.labComponents" [ngModelOptions]="{standalone: true}">
-                    </mat-form-field>
-
-                    <datalist id="labs">
-                        <option *ngFor="let lab of labComponentsList" [ngValue]="lab.name">
-                            {{lab.name}}</option>
-                    </datalist>
-                    <!-- <label for="usr">Component</label>
-                    <span class="form-group">
-                        <select name="sel3" class="form-control" [(ngModel)]="lLabSettingsEnum.labComponents" id="sel4">
-                            <option>Academic</option>
-                            <option>Both</option>
-                            <option>Not Applicable</option>
-                            <option>Summer</option>
-                        </select>
-                    </span> -->
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="form-group">
-                    <mat-form-field class="mat-select-width" appearance="fill">
-                        <mat-label>Fiscal Year</mat-label>
-                        <input matInput placeholder="Ex. ABC" value="{{lLabSettingsEnum.labFiscalYear}}"
-                            [(ngModel)]="lLabSettingsEnum.labFiscalYear" [ngModelOptions]="{standalone: true}">
-                    </mat-form-field>
-                    <!-- <label for="usr">Fiscal Year</label>
-                    <span class="form-group">
-                        <input class="form-control" type="text" [(ngModel)]="lLabSettingsEnum.labFiscalYear"
-                            value="2021" />
-                    </span> -->
-                </div>
-            </div>
-            <div class="col-md-4">
-                <mat-form-field appearance="fill">
-                    <mat-label>Wait Window Time</mat-label>
-                    <input matInput placeholder="Ex. ABC" value="{{lLabSettingsEnum.labWaitWindowTime}}"
-                        [(ngModel)]="lLabSettingsEnum.labWaitWindowTime" #windowWaitTime="ngModel" required
-                        minlength="1" [ngModelOptions]="{standalone: true}">
-                    <!-- <mat-error [hidden]="windowWaitTime.valid">Please input here</mat-error> -->
-                </mat-form-field>
-                <!-- <label for="form23">Wait Window Time:</label>
-                <input class="form-control" type="text" [(ngModel)]="lLabSettingsEnum.labWaitWindowTime" value="30" /> -->
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group ">
-                    <label for="usr">Hide Options
-                    </label>
-                    <div class="row">
-                        <section class="example-section">
-                            <mat-checkbox [(ngModel)]="lLabSettingsEnum.labHideStudentList" class="example-margin">
-                                Hide Student List </mat-checkbox>
-                        </section>
-                        <section class="example-section">
-                            <mat-checkbox [(ngModel)]="lLabSettingsEnum.labHideCheckOutList" class="example-margin">
-                                Hide Check Out Button in list </mat-checkbox>
-                        </section>
-                        <!-- <label class="radio-inline">
-                            <input type="checkbox" [(ngModel)]="lLabSettingsEnum.labHideStudentList"
-                                name="optradio"> Hide Student List
-                        </label> -->
-                        <!-- <label class="radio-inline">
-                            <input type="checkbox" [(ngModel)]="lLabSettingsEnum.labHideCheckOutList"
-                                name="optradio"> Hide Check Out Button in list
-                        </label> -->
+                        <datalist id="laps">
+                            <option *ngFor="let lap of lapSearchPriorityList" [ngValue]="lap.name">
+                                {{lap.name}}</option>
+                        </datalist>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="form-group ">
-                    <mat-form-field class="mat-select-width" appearance="fill">
-                        <mat-label>Maximum Checkout Time</mat-label>
-                        <input matInput placeholder="Ex. ABC" value="{{lLabSettingsEnum.labMaxCheckoutTime}}"
-                            [(ngModel)]="lLabSettingsEnum.labMaxCheckoutTime" [ngModelOptions]="{standalone: true}">
+
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <mat-form-field class="mat-select-width" appearance="fill">
+                            <mat-label>Component</mat-label>
+                            <input matInput list="labs" formControlName="labComponents" required>
+                        </mat-form-field>
+
+                        <datalist id="labs">
+                            <option *ngFor="let lab of labComponentsList" [ngValue]="lab.name">
+                                {{lab.name}}</option>
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <mat-form-field class="mat-select-width" appearance="fill">
+                            <mat-label>Fiscal Year</mat-label>
+                            <input matInput formControlName="labFiscalYear" required>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Wait Window Time</mat-label>
+                        <input matInput formControlName="labWaitWindowTime" required minlength="1">
+                        <!-- <mat-error [hidden]="windowWaitTime.valid">Please input here</mat-error> -->
                     </mat-form-field>
-                    <!-- <label for="usr">
-                    Maximum Checkout Time</label>
-                <input type="text" id=start class="form-control" [(ngModel)]="lLabSettingsEnum.labMaxCheckoutTime"
-                    required> -->
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="form-group ">
-                    <mat-form-field class="mat-select-width" appearance="fill">
-                        <mat-label>Forced Time Spent</mat-label>
-                        <input matInput placeholder="Ex. ABC" value="{{lLabSettingsEnum.labForcedTimeSpent}}"
-                            [(ngModel)]="lLabSettingsEnum.labForcedTimeSpent" [ngModelOptions]="{standalone: true}">
-                    </mat-form-field>
-                    <!-- <label for="usr">Forced Time Spent</label>
-                <span class="form-group">
-                    <input type="text" id=start class="form-control"
-                        [(ngModel)]="lLabSettingsEnum.labForcedTimeSpent" required>
-                </span> -->
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group ">
+                        <label for="usr">Hide Options
+                        </label>
+                        <div class="row">
+                            <section class="example-section">
+                                <mat-checkbox formControlName="labHideStudentList" class="example-margin">
+                                    Hide Student List </mat-checkbox>
+                            </section>
+                            <section class="example-section">
+                                <mat-checkbox formControlName="labHideCheckOutList" class="example-margin">
+                                    Hide Check Out Button in list </mat-checkbox>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group ">
+                        <mat-form-field class="mat-select-width" appearance="fill">
+                            <mat-label>Maximum Checkout Time</mat-label>
+                            <input matInput formControlName="labMaxCheckoutTime">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group ">
+                        <mat-form-field class="mat-select-width" appearance="fill">
+                            <mat-label>Forced Time Spent</mat-label>
+                            <input matInput formControlName="labForcedTimeSpent">
+                        </mat-form-field>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
 
-                <table width="100%" style="background: #E1EFF8" border="0" class="text-new labtable" cellspacing="0"
-                    cellpadding="0">
-                    <tbody>
-                        <tr>
-                            <td bgcolor="#EFF4F8">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#EFF4F8" class="labeltext">Automatically Check In/Out</td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#EFF4F8">
-                                <section class="example-section">
-                                    <mat-checkbox [(ngModel)]="lLabSettingsEnum.labAutomaticallyCheckInCheckOut"
-                                        class="example-margin">
-                                        Yes, Student will be automatically checked in/out when ID is scanned
-                                    </mat-checkbox>
-                                </section>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#EFF4F8" height="10px"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <table width="100%" border="0" cellspacing="2" cellpadding="2">
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="2" class="labeltext">If Automatically Check-In/out Box is
-                                                checked, the following options will not display at Check-In/Out.Lab
-                                                Services</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" class="labeltext">Lab Services</td>
-                                        </tr>
-                                        <tr>
-                                            <td width="50%">
-                                                <section class="example-section">
-                                                    <mat-checkbox (change)="setEnableDisable()"
-                                                        [(ngModel)]="lLabSettingsEnum.labServicesVisibile"
-                                                        class="example-margin">
-                                                        Yes, Lab service is visible</mat-checkbox>
-                                                </section>
-                                            </td>
-                                            <td>
-                                                <section class="example-section">
-                                                    <mat-checkbox (change)="setEnableDisable()"
-                                                        [(ngModel)]="lLabSettingsEnum.labServicerRequired"
-                                                        class="example-margin"
-                                                        [attr.disabled]="!isDisabled ? '' : null">
-                                                        Yes, Lab service is a required input</mat-checkbox>
-                                                </section>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td height="119">
-                                <table width="100%" border="0" cellspacing="2" cellpadding="2">
-                                    <tbody>
+            <div class="row">
+                <div class="col-12">
+                    <table width="100%" style="background: #E1EFF8" border="0" class="text-new labtable" cellspacing="0"
+                        cellpadding="0">
+                        <tbody>
+                            <tr>
+                                <td bgcolor="#EFF4F8">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td bgcolor="#EFF4F8" class="labeltext">Automatically Check In/Out</td>
+                            </tr>
+                            <tr>
+                                <td bgcolor="#EFF4F8">
+                                    <section class="example-section">
+                                        <mat-checkbox formControlName="labAutomaticallyCheckInCheckOut"
+                                            class="example-margin">
+                                            Yes, Student will be automatically checked in/out when ID is scanned
+                                        </mat-checkbox>
+                                    </section>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td bgcolor="#EFF4F8" height="10px"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2" class="labeltext">If Automatically Check-In/out Box is
+                                                    checked, the following options will not display at Check-In/Out.Lab
+                                                    Services</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="labeltext">Lab Services</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="50%">
+                                                    <section class="example-section">
+                                                        <mat-checkbox (change)="setEnableDisable()"
+                                                            formControlName="labServicesVisibile"
+                                                            [attr.disabled]="!isDisabled" class="example-margin">
+                                                            Yes, Lab service is visible</mat-checkbox>
+                                                    </section>
+                                                </td>
+                                                <td>
+                                                    <section class="example-section">
+                                                        <mat-checkbox formControlName="labServicerRequired"
+                                                            [attr.disabled]="!isDisabled" class="example-margin">
+                                                            Yes, Lab service is a required input</mat-checkbox>
+                                                    </section>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="119">
+                                    <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2" width="50%" align="left" valign="top">
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td width="64%" valign="top">
+                                                                    <mat-form-field class="mat-select-width"
+                                                                        appearance="fill">
+                                                                        <mat-label>Default Lab Service</mat-label>
+                                                                        <input matInput list="defLabServices"
+                                                                            [attr.disabled]="!isDisabled ? 'required' : null"
+                                                                            formControlName="labDefaultService">
+                                                                    </mat-form-field>
 
-                                        <tr>
-                                            <td colspan="2" width="50%" align="left" valign="top">
-                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td width="64%" valign="top">
-                                                                <mat-form-field class="mat-select-width"
-                                                                    appearance="fill">
-                                                                    <mat-label>Default Lab Service</mat-label>
-                                                                    <input matInput list="defLabServices"
-                                                                        placeholder="Ex. ABC" [disabled]="!isDisabled"
-                                                                        value="{{lLabSettingsEnum.labDefaultService}}"
-                                                                        [(ngModel)]="lLabSettingsEnum.labDefaultService"
-                                                                        [ngModelOptions]="{standalone: true}">
-                                                                </mat-form-field>
+                                                                    <datalist id="defLabServices">
+                                                                        <option *ngFor="let defLab of labComponentsList"
+                                                                            [ngValue]="defLab.name">
+                                                                            {{defLab.name}}</option>
+                                                                    </datalist>
 
-                                                                <datalist id="defLabServices">
-                                                                    <option *ngFor="let defLab of labComponentsList"
-                                                                        [ngValue]="defLab.name">
-                                                                        {{defLab.name}}</option>
-                                                                </datalist>
+                                                                </td>
+                                                                <td width="36%">&nbsp;</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <section class="example-section">
+                                                        <mat-checkbox
+                                                            formControlName="labStudentsCanChooseMultipleService"
+                                                            class="example-margin"
+                                                            [attr.disabled]="!isDisabled ? '' : null">
+                                                            Students
+                                                            can
+                                                            choose multiple lab services</mat-checkbox>
+                                                    </section>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                                        <tbody>
+                                            <tr>
+                                                <td class="labeltext">Reason for Visit</td>
+                                                <td class="labeltext">Staff Member</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="50%">
+                                                    <section class="example-section">
+                                                        <mat-checkbox formControlName="labReasonForVisitOptionVisible"
+                                                            class="example-margin">Yes,
+                                                            this
+                                                            option is
+                                                            visible</mat-checkbox>
+                                                    </section>
+                                                </td>
+                                                <td>
+                                                    <section class="example-section">
+                                                        <mat-checkbox formControlName="labStaffMemberOptionVisible"
+                                                            class="example-margin">Yes,
+                                                            this
+                                                            option is
+                                                            visible</mat-checkbox>
+                                                    </section>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td bgcolor="#EFF4F8">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td bgcolor="#EFF4F8">
+                                    <section class="example-section">
+                                        <mat-checkbox formControlName="labAcknowledgement" class="example-margin">
+                                            acknowledge
+                                            and understand the settings and have made the
+                                            appropriate changes for my program.</mat-checkbox>
+                                    </section>
 
-                                                            </td>
-                                                            <td width="36%">&nbsp;</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                            <td>
-                                                <section class="example-section">
-                                                    <mat-checkbox
-                                                        [(ngModel)]="lLabSettingsEnum.labStudentsCanChooseMultipleService"
-                                                        class="example-margin" [attr.disabled]="!isDisabled">Students
-                                                        can
-                                                        choose multiple lab services</mat-checkbox>
-                                                </section>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <table width="100%" border="0" cellspacing="2" cellpadding="2">
-                                    <tbody>
-                                        <tr>
-                                            <td class="labeltext">Reason for Visit</td>
-                                            <td class="labeltext">Staff Member</td>
-                                        </tr>
-                                        <tr>
-                                            <td width="50%">
-                                                <section class="example-section">
-                                                    <mat-checkbox
-                                                        [(ngModel)]="lLabSettingsEnum.labReasonForVisitOptionVisible"
-                                                        class="example-margin" [attr.disabled]="!isDisabled">Yes, this
-                                                        option is
-                                                        visible</mat-checkbox>
-                                                </section>
-                                            </td>
-                                            <td>
-                                                <section class="example-section">
-                                                    <mat-checkbox
-                                                        [(ngModel)]="lLabSettingsEnum.labStaffMemberOptionVisible"
-                                                        class="example-margin" [attr.disabled]="!isDisabled">Yes, this
-                                                        option is
-                                                        visible</mat-checkbox>
-                                                </section>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#EFF4F8">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#EFF4F8">
-                                <section class="example-section">
-                                    <mat-checkbox [(ngModel)]="lLabSettingsEnum.labAcknowledgement"
-                                        class="example-margin">acknowledge
-                                        and understand the settings and have made the
-                                        appropriate changes for my program.</mat-checkbox>
-                                </section>
-
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        </form>
 
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"

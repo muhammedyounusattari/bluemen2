@@ -15,6 +15,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatProgressSpinnerModule,
         MatTableModule,
         MatSortModule,
-        MatDialogModule
+        MatDialogModule,
+        MatCheckboxModule
         ],
           providers: [
             MatDatepickerModule,

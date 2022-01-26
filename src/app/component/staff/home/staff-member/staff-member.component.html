@@ -12,12 +12,12 @@
 
   <div class="row ">
     <div class="col-md-6 mt-3 mb-3 ">
-        <form class="example">
-            <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
-            <i class="fa fa-search search"></i>
-        </form>
+      <form class="example">
+        <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
+        <i class="fa fa-search search"></i>
+      </form>
     </div>
-</div>
+  </div>
 
   <!-- Spinner Start-->
   <div class="spinner-container" *ngIf="isLoading">
@@ -99,7 +99,7 @@
       </tr>
     </table>
   </div>
-    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
 
 
   <div class="no-record">
@@ -131,19 +131,19 @@
             <a class="nav-link" (click)="getSelectedOption('Edit')">Edit</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>
+            <a class="nav-link">Rename</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="getSelectedOption('Move')">Move</a>
+            <a class="nav-link">Move</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="getSelectedOption('Merge')">Merge</a>
+            <a class="nav-link">Merge</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" (click)="deleteStaffMembers()">Delete</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="getSelectedOption('Print')">Print</a>
+            <a class="nav-link">Print</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" (click)="getSelectedOption('Submit')">Submit</a>
@@ -154,195 +154,6 @@
     </div>
 
   </nav>
-
-
-  <!-- Modal -->
-<!--
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Staff Data Entry</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="form-group ">
-                    <label for="usr">Name:</label>
-                    <input type="text" class="form-control" [(ngModel)]="staffName" id="usr">
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="usr">Title</label>
-                    <input type="text" class="form-control" [(ngModel)]="title" id="usr">
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="usr">SS.No</label>
-                    <input type="text" class="form-control" [(ngModel)]="ssn" id="usr">
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="usr">Codes</label>
-                    <select class="form-control" id="sel1" [(ngModel)]="codes">
-                      <option>111</option>
-                      <option>222</option>
-                    </select>
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="usr">Spouse Name</label>
-                    <input type="text" class="form-control" id="usr" [(ngModel)]="spouse">
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="usr">Driver License#</label>
-                    <input type="text" class="form-control" id="usr" [(ngModel)]="license">
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="usr">Custom Field 1</label>
-                    <select class="form-control" id="sel1" [(ngModel)]="customField1">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                    </select>
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="usr">Custom Field 2</label>
-                    <select class="form-control" id="sel1" [(ngModel)]="customField2">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="usr">Notes</label>
-                    <input type="text" class="form-control" id="usr" [(ngModel)]="notes">
-                  </div>
-                </div>
-
-                <div class="col-md-4 mt-3">
-                  <div class="form-group">
-                    <label for="sel1">Staff ID</label>
-                    <input type="text" disabled class="form-control" value="130" id="usr" [(ngModel)]="id">
-                  </div>
-                  <div class="row mt-3">
-                    <div class="col-md-3">
-                      <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staffActive"> Active
-                      </label>
-                    </div>
-                    <div class="col-md-3">
-                      <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staffTutor"> Tutor
-                      </label>
-                    </div>
-                    <div class="col-md-3">
-                      <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staffBolt"> Bolt
-                      </label>
-                    </div>
-                    <div class="col-md-3">
-                      <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staff"> Staff
-                      </label>
-                    </div>
-                  </div>
-
-                  <div class="row mt-3">
-                    <div class="col-md-4">
-                      <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staffCounselor"> Counselor
-                      </label>
-                    </div>
-                    <div class="col-md-4">
-                      <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staffTeacher"> Teacher
-                      </label>
-                    </div>
-                    <div class="col-md-4">
-                      <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staffLab"> Lab
-                      </label>
-                    </div>
-                  </div>
-                  <div class="form-group mt-3">
-                    <label for="sel1">Date of Birth</label>
-                    <div class="form-group">
-                      <input type=date class="form-control" [(ngModel)]="dob" required>
-                    </div>
-                  </div>
-                  <div class="form-group mt-3">
-                    <label for="sel1">Hire Date </label>
-                    <div class="form-group">
-                      <input type=date class="form-control" [(ngModel)]="staffHireDate" required>
-                    </div>
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="usr">Termination Date</label>
-                    <input type=date class="form-control" [(ngModel)]="terminationDate" required>
-
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="usr">Custom field 3</label>
-                    <select class="form-control" id="sel1" [(ngModel)]="customField3">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                    </select>
-                  </div>
-                  <div class="form-group mt-3">
-                    <label for="usr">Custom field 4</label>
-                    <select class="form-control" id="sel1" [(ngModel)]="customField4">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-md-4">
-                  <div class="container">
-                    <div class="col-md-12 text-center"><img src="images/photo.png"></div>
-                    <div class="col-md-12 text-center">
-                      <input type="submit" value="Upload Files" class="btn btn-sm btn-primary text-center mt-3"
-                        [(ngModel)]="picture" />
-                    </div>
-                    <div class="col-md-4"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">sdfdsafdsaf</div>
-            <div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-v .primary" *ngIf="!isEdit" data-bs-dismiss="modal"
-            (click)="addStaffMembers();modalRef.hide()">Save & Close</button>
-          <button type="button" class="btn btn-primary" *ngIf="isEdit" data-bs-dismiss="modal"
-            (click)="updateSelectedRow();modalRef.hide()">Update &
-            Close</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
 
   <!-- Modal Start-->
   <ng-template #staffDataEntryPopup>
@@ -355,174 +166,332 @@
     <div class="modal-body">
       <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group ">
-                <label for="usr">Name:</label>
-                <input type="text" class="form-control" [(ngModel)]="staffName" id="usr">
-              </div>
+          <form [formGroup]="formGroup" class="form">
+            <div class="row flex">
+              <div class="col-md-12 flex">
+                <div class="col-md-10 flex">
+                  <div class="col-md-4">
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Name</mat-label>
+                          <input matInput value="" formControlName="staffName" minlength="3" required>
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Title</mat-label>
+                          <input matInput value="" formControlName="title">
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                        </mat-form-field>
+                      </div>
+                      <!-- <div class="form-group mt-3">
+                  <label for="usr">Title</label>
+                  <input type="text" class="form-control" [(ngModel)]="title" id="usr">
+                </div> -->
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>SS.No</mat-label>
+                          <input matInput value="" formControlName="ssn" minlength="3" required>
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                        </mat-form-field>
+                      </div>
+                      <!-- <div class="form-group mt-3">
+                  <label for="usr">SS.No</label>
+                  <input type="text" class="form-control" [(ngModel)]="ssn" id="usr">
+                </div> -->
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Codes</mat-label>
+                          <input matInput list="codeList" value="" formControlName="codes" minlength="3" required>
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                        </mat-form-field>
+                        <datalist id="codeList">
+                          <option *ngFor="let code of codeListArray" [ngValue]="code.name">
+                            {{code.name}}</option>
+                        </datalist>
+                      </div>
+                      <!-- <div class="form-group mt-3">
+                  <label for="usr">Codes</label>
+                  <select class="form-control" id="sel1" [(ngModel)]="codes">
+                    <option>111</option>
+                    <option>222</option>
+                  </select>
+                </div> -->
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Spouse Name</mat-label>
+                          <input matInput value="" formControlName="spouse">
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                        </mat-form-field>
+                      </div>
+                      <!-- <div class="form-group mt-3">
+                  <label for="usr">Spouse Name</label>
+                  <input type="text" class="form-control" id="usr" [(ngModel)]="spouse">
+                </div> -->
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Notes</mat-label>
+                          <input matInput value="" formControlName="notes">
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                        </mat-form-field>
+                      </div>
 
-              <div class="form-group mt-3">
-                <label for="usr">Title</label>
-                <input type="text" class="form-control" [(ngModel)]="title" id="usr">
-              </div>
-
-              <div class="form-group mt-3">
-                <label for="usr">SS.No</label>
-                <input type="text" class="form-control" [(ngModel)]="ssn" id="usr">
-              </div>
-
-              <div class="form-group mt-3">
-                <label for="usr">Codes</label>
-                <select class="form-control" id="sel1" [(ngModel)]="codes">
-                  <option>111</option>
-                  <option>222</option>
-                </select>
-              </div>
-
-              <div class="form-group mt-3">
-                <label for="usr">Spouse Name</label>
-                <input type="text" class="form-control" id="usr" [(ngModel)]="spouse">
-              </div>
-
-              <div class="form-group mt-3">
-                <label for="usr">Driver License#</label>
-                <input type="text" class="form-control" id="usr" [(ngModel)]="license">
-              </div>
-
-              <div class="form-group mt-3">
-                <label for="usr">Custom Field 1</label>
-                <select class="form-control" id="sel1" [(ngModel)]="customField1">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
-              </div>
-
-              <div class="form-group mt-3">
-                <label for="usr">Custom Field 2</label>
-                <select class="form-control" id="sel1" [(ngModel)]="customField2">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="usr">Notes</label>
-                <input type="text" class="form-control" id="usr" [(ngModel)]="notes">
-              </div>
-            </div>
-
-            <div class="col-md-4 mt-3">
-              <div class="form-group">
+                      <!-- <div class="form-group">
+                  <label for="usr">Notes</label>
+                  <input type="text" class="form-control" id="usr" [(ngModel)]="notes">
+                </div>
+              </div> -->
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Custom Field 1</mat-label>
+                          <input matInput list="customFieldList1" value="" formControlName="customField1">
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                        </mat-form-field>
+                        <datalist id="customFieldList1">
+                          <option *ngFor="let code of customFieldListArray1" [ngValue]="code.name">
+                            {{code.name}}</option>
+                        </datalist>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Custom Field 2</mat-label>
+                          <input matInput list="customFieldList2" value="" formControlName="customField2">
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                        </mat-form-field>
+                        <datalist id="customFieldList2">
+                          <option *ngFor="let code of customFieldListArray2" [ngValue]="code.name">
+                            {{code.name}}</option>
+                        </datalist>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Custom Field 3</mat-label>
+                          <input matInput list="customFieldList3" value="" formControlName="customField3">
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                        </mat-form-field>
+                        <datalist id="customFieldList3">
+                          <option *ngFor="let code of customFieldListArray3" [ngValue]="code.name">
+                            {{code.name}}</option>
+                        </datalist>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Custom Field 4</mat-label>
+                          <input matInput list="customFieldList4" value="" formControlName="customField4">
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                        </mat-form-field>
+                        <datalist id="customFieldList4">
+                          <option *ngFor="let code of customFieldListArray4" [ngValue]="code.name">
+                            {{code.name}}</option>
+                        </datalist>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Driver License#</mat-label>
+                          <input matInput value="" formControlName="license">
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Phone Number</mat-label>
+                          <input matInput value="" formControlName="staffPhoneNumber">
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <mat-form-field class="example-full-width" appearance="fill">
+                        <mat-label>Staff ID</mat-label>
+                        <input matInput value="" formControlName="id" readonly>
+                        <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                        {{getError('gradeGroupName')}}
+                    </mat-error> -->
+                      </mat-form-field>
+                    </div>
+                    <!-- <div class="form-group">
                 <label for="sel1">Staff ID</label>
                 <input type="text" disabled class="form-control" value="130" id="usr" [(ngModel)]="id">
-              </div>
-              <div class="row mt-3">
-                <div class="col-md-3">
-                  <label class="radio-inline">
+              </div> -->
+                    <div class="form-group">
+                      <div class="row mt-3">
+                        <div class="col-md-3">
+                          <section class="example-section">
+                            <mat-checkbox formControlName="staffActive" class="example-margin">
+                              Active
+                            </mat-checkbox>
+                          </section>
+                          <!-- <section class="example-section">
+                        <mat-checkbox formControlName="staffActive" class="example-margin">
+                          Active
+                        </mat-checkbox>
+                      </section> -->
+                          <!-- <label class="radio-inline">
                     <input type="checkbox" name="optradio" [(ngModel)]="staffActive"> Active
-                  </label>
+                  </label> -->
+                        </div>
+                        <div class="col-md-3">
+                          <section class="example-section">
+                            <mat-checkbox formControlName="staffTutor" class="example-margin">
+                              Tutor
+                            </mat-checkbox>
+                          </section>
+                          <!-- <label class="radio-inline">
+                        <input type="checkbox" name="optradio" [(ngModel)]="staffTutor"> Tutor
+                      </label> -->
+                        </div>
+                        <div class="col-md-3">
+                          <section class="example-section">
+                            <mat-checkbox formControlName="staffBolt" class="example-margin">
+                              Bolt
+                            </mat-checkbox>
+                          </section>
+                          <!-- <label class="radio-inline">
+                        <input type="checkbox" name="optradio" [(ngModel)]="staffBolt"> Bolt
+                      </label> -->
+                        </div>
+                        <div class="col-md-3">
+                          <section class="example-section">
+                            <mat-checkbox formControlName="staff" class="example-margin">
+                              Staff
+                            </mat-checkbox>
+                          </section>
+                          <!-- <label class="radio-inline">
+                        <input type="checkbox" name="optradio" [(ngModel)]="staff"> Staff
+                      </label> -->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="row mt-3">
+                        <div class="col-md-4">
+                          <!-- <label class="radio-inline">
+                        <input type="checkbox" name="optradio" [(ngModel)]="staffCounselor"> Counselor
+                      </label> -->
+                          <section class="example-section">
+                            <mat-checkbox formControlName="staffCounselor" class="example-margin">
+                              Counselor
+                            </mat-checkbox>
+                          </section>
+                        </div>
+                        <div class="col-md-4">
+                          <!-- <label class="radio-inline">
+                        <input type="checkbox" name="optradio" [(ngModel)]="staffTeacher"> Teacher
+                      </label> -->
+                          <section class="example-section">
+                            <mat-checkbox formControlName="staffTeacher" class="example-margin">
+                              Teacher
+                            </mat-checkbox>
+                          </section>
+                        </div>
+                        <div class="col-md-4">
+                          <!-- <label class="radio-inline">
+                        <input type="checkbox" name="optradio" [(ngModel)]="staffLab"> Lab
+                      </label> -->
+                          <section class="example-section">
+                            <mat-checkbox formControlName="staffLab" class="example-margin">
+                              Lab
+                            </mat-checkbox>
+                          </section>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group mt-3">
+                      <label for="sel1">Date of Birth</label>
+                      <div class="form-group">
+                        <input type=date class="form-control" formControlName="dob" required>
+                      </div>
+                    </div>
+                    <div class="form-group mt-3">
+                      <label for="sel1">Hire Date </label>
+                      <div class="form-group">
+                        <input type=date class="form-control" formControlName="staffHireDate" required>
+                      </div>
+                    </div>
+                    <div class="form-group mt-3">
+                      <label for="usr">Termination Date</label>
+                      <input type=date class="form-control" formControlName="terminationDate" required>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-3">
-                  <label class="radio-inline">
-                    <input type="checkbox" name="optradio" [(ngModel)]="staffTutor"> Tutor
-                  </label>
+                <div class="col-md-2">
+                  <div class="row text-center"><img src="../../../../../assets/img/photo.png"></div>
+                  <!-- <div class="col-md-12 text-center">
+                      <input type="submit" value="Upload Files" class="btn btn-sm btn-primary text-center mt-3"
+                        formControlName="picture" />
+                    </div> -->
+                  <div class="row">
+                    <button type="button" class="btn btn-v .primary">Upload Profile</button>
+                  </div>
                 </div>
-                <div class="col-md-3">
-                  <label class="radio-inline">
-                    <input type="checkbox" name="optradio" [(ngModel)]="staffBolt"> Bolt
-                  </label>
-                </div>
-                <div class="col-md-3">
-                  <label class="radio-inline">
-                    <input type="checkbox" name="optradio" [(ngModel)]="staff"> Staff
-                  </label>
-                </div>
-              </div>
-
-              <div class="row mt-3">
-                <div class="col-md-4">
-                  <label class="radio-inline">
-                    <input type="checkbox" name="optradio" [(ngModel)]="staffCounselor"> Counselor
-                  </label>
-                </div>
-                <div class="col-md-4">
-                  <label class="radio-inline">
-                    <input type="checkbox" name="optradio" [(ngModel)]="staffTeacher"> Teacher
-                  </label>
-                </div>
-                <div class="col-md-4">
-                  <label class="radio-inline">
-                    <input type="checkbox" name="optradio" [(ngModel)]="staffLab"> Lab
-                  </label>
-                </div>
-              </div>
-              <div class="form-group mt-3">
-                <label for="sel1">Date of Birth</label>
-                <div class="form-group">
-                  <input type=date class="form-control" [(ngModel)]="dob" required>
-                </div>
-              </div>
-              <div class="form-group mt-3">
-                <label for="sel1">Hire Date </label>
-                <div class="form-group">
-                  <input type=date class="form-control" [(ngModel)]="staffHireDate" required>
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label for="usr">Termination Date</label>
-                <input type=date class="form-control" [(ngModel)]="terminationDate" required>
-
-              </div>
-
-              <div class="form-group mt-3">
-                <label for="usr">Custome field 3</label>
-                <select class="form-control" id="sel1" [(ngModel)]="customField3">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
-              </div>
-              <div class="form-group mt-3">
-                <label for="usr">Custome field 4</label>
-                <select class="form-control" id="sel1" [(ngModel)]="customField4">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
               </div>
             </div>
-
-            <div class="col-md-4">
-              <div class="container">
-                <div class="col-md-12 text-center"><img src="images/photo.png"></div>
-                <div class="col-md-12 text-center">
-                  <input type="submit" value="Upload Files" class="btn btn-sm btn-primary text-center mt-3"
-                    [(ngModel)]="picture" />
-                </div>
-                <div class="col-md-4"></div>
-              </div>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" id="closePopup"
-        (click)="isEdit = false; selectedRowIndex = null;modalRef.hide()">Close</button>
-      <button type="button" class="btn btn-v .primary" *ngIf="!isEdit"
-        (click)="addStaffMembers();modalRef.hide()">Save &
-        Close</button>
-      <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();modalRef.hide()">Update
+
+      <button type="button" class="btn btn-v .primary" *ngIf="!isEdit" (click)="addStaffMembers();">Save
         &
         Close</button>
+      <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();">Update
+        &
+        Close</button>
+      <button type="button" class="btn btn-secondary" id="closePopup"
+        (click)="isEdit = false; selectedRowIndex = null;selectedRow = null;modalRef.hide()">Cancel</button>
     </div>
   </ng-template>
   <!-- Modal End-->

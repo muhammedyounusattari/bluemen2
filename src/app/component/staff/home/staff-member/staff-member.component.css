@@ -1,0 +1,12 @@
+.marg-right-10 {
+    margin-right: 10%;
+}
+.flex{
+    display: flex;
+}
+.example-full-width {
+    width: 100% !important;
+}
+.mb-m-6{
+    margin-bottom: -6%;
+}

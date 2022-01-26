@@ -24,6 +24,7 @@ import { TimeClockManagerComponent } from './system-tools/time-clock-mgr/time-cl
 import { TutorClassesComponent } from '../tutor/home/classes/tutor-classes.component';
 import { StaffClassesComponent } from '../staff/home/classes/staff-classes.component';
 
+
 const routes: Routes = [
   {
     path: 'admin/pulldown-list',
@@ -109,9 +110,9 @@ const routes: Routes = [
     path: 'admin/tutor-classes',
     component: TutorClassesComponent
   },
-   {
-     path: 'admin/staff-classes',
-     component: StaffClassesComponent
+  {
+    path: 'admin/staff-classes',
+    component: StaffClassesComponent
    }
 
 ];
