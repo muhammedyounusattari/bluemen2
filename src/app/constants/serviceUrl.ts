@@ -180,8 +180,25 @@ export class ServiceUrls {
     public static GET_PULLDOWN_CITY = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/City';
 
     // Student Attendance Log
-    public static GET_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/utilities/generate-similar/attendance/log/v1';
-    public static ADD_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/utilities/generate-similar/attendance/log/v1';
-    public static UPDATE_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/utilities/generate-similar/attendance/log/v1';
-    public static DELETE_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/utilities/generate-similar/attendance/log/v1';
+    public static GET_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/student-logs/getStudentAttendanceLog/v1';
+    public static ADD_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/student-logs/studentAttendanceLogList/v1';
+    public static UPDATE_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/student-logs/updateStudentAttendanceLogList/v1';
+    public static DELETE_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/student-logs/deleteStudentAttendanceLogList/v1';
+
+    // Time Clock API URL's
+    public static GET_TIME_CLOCK = environment.apiUrl + '/blumen-api/getStaffTimeById/v1';
+    public static ADD_TIME_CLOCK = environment.apiUrl + '/blumen-api/postStaffTime/v1';
+    public static UPDATE_TIME_CLOCK = environment.apiUrl + '/blumen-api/admin/systemtools/updateTimeClockManagerList/v1';
+
+    // Student Exam Log
+    public static GET_STUDENT_EXAM_LOG = environment.apiUrl + '/blumen-api/student-logs/getStudentExamsLogList/v1';
+    public static ADD_STUDENT_EXAM_LOG = environment.apiUrl + '/blumen-api/student-logs/studentExamsLogList/v1';
+    public static UPDATE_STUDENT_EXAM_LOG = environment.apiUrl + '/blumen-api/student-logs/updateStudentExamsLogList/v1';
+    public static DELETE_STUDENT_EXAM_LOG = environment.apiUrl + '/blumen-api/student-logs/deleteStudentExamsLogList/v1';
+
+    // Student Notes Log
+    public static GET_STUDENT_NOTES_LOG = environment.apiUrl + '/blumen-api/student-logs/getStudentNotesLogList/v1';
+    public static ADD_STUDENT_NOTES_LOG = environment.apiUrl + '/blumen-api/student-logs/studentNotesLogList/v1';
+    public static UPDATE_STUDENT_NOTES_LOG = environment.apiUrl + '/blumen-api/student-logs/updateStudentNotesLogList/v1';
+    public static DELETE_STUDENT_NOTES_LOG = environment.apiUrl + '/blumen-api/student-logs/deleteStudentNotesLogList/v1';
 }

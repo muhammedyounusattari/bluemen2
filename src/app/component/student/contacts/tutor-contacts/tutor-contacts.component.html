@@ -488,7 +488,7 @@
                         </div>
                         <div class="col-md-5">
                           <label> Site Location: </label>
-                            <mat-select  placeholder="Site Location" formControlName="siteLocation" multiple>
+                            <mat-select  placeholder="Site Location" class="form-control" formControlName="siteLocation" multiple>
                               <mat-option (click)="toggleAllSelection()" [value]="allSelected">All</mat-option>
                               <mat-option (click)="togglePerOne(location.value)" *ngFor="let location of siteLocation" [value]="location.value">
                                 {{location.viewValue}}

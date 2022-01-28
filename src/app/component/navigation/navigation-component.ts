@@ -125,6 +125,8 @@ export class NavigationComponent {
       this.router.navigate(['admin/tutor-classes'])
     }else if (componentName === 'staff-classes') {
      this.router.navigate(['admin/staff-classes'])
+    } else if (componentName === 'time-clock') {
+      this.router.navigate(['/'], { queryParams: { popup: 'time-clock' } })
     }
   }
 }

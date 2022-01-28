@@ -20,11 +20,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import {ShowLoggedUsersComponent} from '../myhome/home/show-logged-users/show-logged-users';
 import {ChangePasswordComponent} from '../myhome/home/change-my-password/change-password';
+import { TimeClockComponent } from './home/time-clock/time-clock.component';
 
 @NgModule({
   declarations: [
     ShowLoggedUsersComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    TimeClockComponent
   ],
   imports: [
     HomeRoutingModule,

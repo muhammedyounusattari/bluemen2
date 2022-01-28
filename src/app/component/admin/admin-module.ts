@@ -38,6 +38,7 @@ import { TeacherClassesComponent } from '../teacher/home/classes/teachers-classe
 import { CounselorClassesComponent } from '../counselor/home/classes/counselors-classes.component';
 import { TutorClassesComponent } from '../tutor/home/classes/tutor-classes.component';
 import { StaffClassesComponent } from '../staff/home/classes/staff-classes.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -82,7 +83,8 @@ import { StaffClassesComponent } from '../staff/home/classes/staff-classes.compo
     MatTableModule,
     MatSortModule,
     MatDialogModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSelectModule
   ],
   providers: [
     MatDatepickerModule,

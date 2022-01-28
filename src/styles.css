@@ -19,7 +19,7 @@ a {
     text-decoration: none;
 }
 .loginlogo{margin-bottom: 7%;  margin-top: 5%;}
-.welcome{color: #1672b7 !important;; font-weight: 500!important; font-size: 40px!important; font-family: 'Montserrat', sans-serif!important; 
+.welcome{color: #1672b7 !important;; font-weight: 500!important; font-size: 40px!important; font-family: 'Montserrat', sans-serif!important;
                             letter-spacing: 1px!important; margin-bottom: 10%!important;}
 .crediential{color: #222222; font-family: 'Montserrat', sans-serif; margin: 0px 0 5px 0!important; font-size: 15px; font-weight: 500;}
 .submit{background: #3c88c2; border-radius: 0px!important; font-weight: 600; font-size: 16px; background: #1672B7!important; font-family: 'Montserrat', sans-serif; width: 140px; height: 40px;}
@@ -41,7 +41,7 @@ a {
     color:#fff!important;
     text-decoration: underline;
     letter-spacing: -.5px;
-    
+
 }
 .mat-checkbox-inner-container{ border:1px solid #1672b7!important; background: #1672b7!important;}
 .bgtop {
@@ -81,7 +81,7 @@ tr.mat-header-row {
 } */
  .grayleft {
     border-left: 1px solid #BCBCBC!important;
-} 
+}
 
 .navbar-nav{margin: 0 auto!important;}
 .header-li {
@@ -475,6 +475,16 @@ footer.page-footer .footer-copyright {
     color: black;
 }
 
+.time-clock-container .mat-dialog-container {
+  padding: 0 !important;
+}
+
+.cdk-overlay-connected-position-bounding-box,
+.cdk-global-overlay-wrapper, .cdk-overlay-container{
+  z-index: 99999 !important;
+}
+
+
 @-webkit-keyframes spin {
     0% {
         -webkit-transform: rotate(0deg);
@@ -604,22 +614,22 @@ footer.page-footer .footer-copyright {
     padding: 3px ;
     margin-left: 15px;
   }
-  
+
   .right {
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
   }
-  
+
   .left {
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
   }
-  
+
   .up {
     transform: rotate(-135deg);
     -webkit-transform: rotate(-135deg);
   }
-  
+
   .down {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);

@@ -1,0 +1,29 @@
+<div class="modal-header popHeaderBG">
+  <span class="modal-title popHeader" id="exampleModalLabel"> Staff Time Clock </span>
+  <button type="button" class="btn-close" (click)="closeModal()"></button>
+</div>
+<form class="p-4" [formGroup]="timeClockForm">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <label> Staff Name </label>
+        <mat-select formControlName="staffName" class="form-control">
+          <mat-option value="" selected> Please select </mat-option>
+          <mat-option (click)="selectedStaff(timeClockForm.value.staffName)" *ngFor="let staffMember of staffMembersList"
+            [value]="staffMember">{{staffMember?.name}}</mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="row">
+      <strong class="ml-3">{{staffClock?.message}} {{(staffClock?.date ? (staffClock?.date | date: 'dd/MM/y h:mm:ss a') : '')}}</strong>
+      <div class="col-md-2 mt-3 mb-3"></div>
+      <div class="col-md-3 mt-3 mb-3">
+        <button type="button" (click)="submitTime()" class="btn btn-primary active float-left">{{clockLabel}}</button>
+      </div>
+      <div class="col-md-2 mt-3 mb-3">
+        <button type="button" (click)="timeClockForm.reset(); closeModal()"
+          class="btn btn-primary active float-left">Close</button>
+      </div>
+    </div>
+  </div>
+</form>

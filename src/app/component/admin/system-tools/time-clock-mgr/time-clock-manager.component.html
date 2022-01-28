@@ -76,13 +76,11 @@
                 <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="sel1">Staff Name:</label>
-                            <select formControlName="staffName" class="form-control" id="sel1">
-                <option value="Morris">Morris</option>
-                <option value="James">James</option>
-                <option value="Henry">Henry</option>
-                <option value="William">William</option>
-              </select>
+                          <label> Staff Name </label>
+                          <mat-select formControlName="staffName" class="form-control">
+                            <mat-option value="" selected> Please select </mat-option>
+                            <mat-option *ngFor="let staffMember of staffMembersList" [value]="staffMember">{{staffMember?.staffName}}</mat-option>
+                          </mat-select>
                         </div>
                     </div>
                 </div>
@@ -204,15 +202,13 @@
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="row">
                             <div class="col-md-10">
-                                <div class="form-group">
-                                    <label for="sel1">Staff Name</label>
-                                    <select formControlName="staffName" class="form-control" id="sel1">
-                    <option value="Morris">Morris</option>
-                    <option value="James">James</option>
-                    <option value="Henry">Henry</option>
-                    <option value="William">William</option>
-                  </select>
-                                </div>
+                              <div class="form-group">
+                                <label> Staff Name </label>
+                                <mat-select formControlName="staffName" class="form-control">
+                                  <mat-option value="" selected> Please select </mat-option>
+                                  <mat-option *ngFor="let staffMember of staffMembersList" [value]="staffMember">{{staffMember?.staffName}}</mat-option>
+                                </mat-select>
+                              </div>
                             </div>
                             <div class="col-md-10">
                                 <div class="form-group">

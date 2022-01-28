@@ -23,6 +23,7 @@ export class TimeClockManagerComponent {
   public selectedRow: any = null;
   public selectedData: any;
   public spinner: boolean = true;
+  public staffMembersList: any = [];
 
   constructor(private modalService: BsModalService, private fb: FormBuilder,
     private timeClockManagerService: TimeClockManagerService) {
@@ -31,6 +32,7 @@ export class TimeClockManagerComponent {
 
   ngOnInit(): void {
     this.initialiseForm();
+    this.getStaffMembers();
   }
 
 
@@ -110,6 +112,20 @@ export class TimeClockManagerComponent {
         this.timeClockManagerList = result;
       }
     });
+  }
+
+  /**
+   * @method getStaffMembers
+   */
+   public getStaffMembers() {
+    this.timeClockManagerService.getStaffMember().subscribe((resp: any) => {
+      if (resp)
+      resp.forEach((element: any) => {
+        if (element.id && element.staffName) {
+          this.staffMembersList.push({id: element.id, staffName: element.staffName});
+        }
+      });
+    })
   }
 
   /**
@@ -202,7 +218,8 @@ export class TimeClockManagerComponent {
       checkOutTime: new Date(this.timeClockManagerForm.value.checkOutTime).toISOString(),
       duration: checkOut.diff(checkIn, 'days') + ' days ' + checkOut.diff(checkIn, 'days') + ' hours',
       id: 0,
-      staffName: this.timeClockManagerForm.value.staffName
+      staffName: this.timeClockManagerModalForm.value.staffName?.staffName,
+      staffId: this.timeClockManagerModalForm.value.staffName?.id
     }
   }
 
@@ -217,7 +234,8 @@ export class TimeClockManagerComponent {
       checkInTime: new Date(this.timeClockManagerModalForm.value.checkInTime).toISOString(),
       checkOutTime: new Date(this.timeClockManagerModalForm.value.checkOutTime).toISOString(),
       duration: checkOut.diff(checkIn, 'days') + ' days ' + checkOut.diff(checkIn, 'days') + ' hours',
-      staffName: this.timeClockManagerModalForm.value.staffName
+      staffName: this.timeClockManagerModalForm.value.staffName?.staffName,
+      staffId: this.timeClockManagerModalForm.value.staffName?.id
     }
   }
 }

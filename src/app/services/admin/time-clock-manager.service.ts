@@ -40,6 +40,14 @@ export class TimeClockManagerService {
   }
 
   /**
+   * @method getStaffMember
+   */
+   public getStaffMember() {
+    return this.dataService.callGetService(
+      ServiceUrls.GET_STAFF_MEMBERS);
+  }
+
+  /**
    * @method filterTimeClockManager
    * @param request
    */

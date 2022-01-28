@@ -10,37 +10,57 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
 import { AttendaceLogService } from 'src/app/services/student/attendance-log.service';
 
 @Component({
-    selector: 'app-attendance-logs',
-    templateUrl: './attendance-logs.component.html',
-    styleUrls: ['./attendance-logs.component.css']
+  selector: 'app-attendance-logs',
+  templateUrl: './attendance-logs.component.html',
+  styleUrls: ['./attendance-logs.component.css'],
 })
-
 export class AttendanceLogsComponent implements OnInit {
-  public columnsToDisplay: string[] =
-    ['firstName', 'lastName', 'phoneNumber', 'attendanceDate', 'attendanceAmount', 'attendanceChecked'];
-  public modalColumnsToDisplay: string[] =
-    ['ssno', 'firstName', 'lastName', 'phoneNumber', 'fiscalYear', 'active', 'served', 'reported', 'counselor', 'school', 'standing'];
+  public columnsToDisplay: string[] = [
+    'firstName',
+    'lastName',
+    'phoneNumber',
+    'attendanceDate',
+    'attendanceAmount',
+    'attendanceLogged',
+  ];
+  public modalColumnsToDisplay: string[] = [
+    'ssno',
+    'firstName',
+    'lastName',
+    'phoneNumber',
+    'fiscalYear',
+    'active',
+    'served',
+    'reported',
+    'counselor',
+    'school',
+    'standing',
+  ];
   public dataSource: MatTableDataSource<any>;
   public modalDataSource: MatTableDataSource<any>;
-  @ViewChild('attendanceStudentPopup') attendanceStudentPopupRef: TemplateRef<any>;
+  @ViewChild('attendanceStudentPopup')
+  attendanceStudentPopupRef: TemplateRef<any>;
   public modalRef: BsModalRef;
-  @ViewChild('attendanceStudentEditPopup') attendanceStudentEditPopupRef: TemplateRef<any>;
+  @ViewChild('attendanceStudentEditPopup')
+  attendanceStudentEditPopupRef: TemplateRef<any>;
   public editModalRef: BsModalRef;
   modalConfigSM = {
     backdrop: true,
     ignoreBackdropClick: true,
-    class: 'modal-xl'
-  }
+    class: 'modal-xl',
+  };
 
   studentModalConfigSM = {
     backdrop: true,
     ignoreBackdropClick: true,
-    class: 'modal-xl'
-  }
+    class: 'modal-xl',
+  };
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild('editPopupPage', { read: MatPaginator, static: true }) editPopupPaginator: MatPaginator;
+  @ViewChild('editPopupPage', { read: MatPaginator, static: true })
+  editPopupPaginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild('editPopup', { read: MatSort, static: true }) editPopupSort: MatSort;
+  @ViewChild('editPopup', { read: MatSort, static: true })
+  editPopupSort: MatSort;
 
   public studentAttendanceModalForm: FormGroup;
   public studentAttendanceEditModalForm: FormGroup;
@@ -55,7 +75,7 @@ export class AttendanceLogsComponent implements OnInit {
   public selectedEditModalRowData: any = null;
   public spinner: boolean = true;
   public studentData: any;
-  public  allSelected: boolean = false;
+  public allSelected: boolean = false;
   public siteLocation = [
     { value: 'Undefined', viewValue: 'Undefined' },
     { value: 'Not Entered', viewValue: 'Not Entered' },
@@ -93,7 +113,7 @@ export class AttendanceLogsComponent implements OnInit {
       served: [''],
       siteLocation: [''],
       active: [''],
-      reported: ['']
+      reported: [''],
     });
 
     this.initializeAttendanceForm();
@@ -107,7 +127,7 @@ export class AttendanceLogsComponent implements OnInit {
       attendanceAmount: [''],
       attendanceChecked: [false],
       attendanceDate: [''],
-      attendanceNote: ['']
+      attendanceNotes: [''],
     });
   }
 
@@ -125,27 +145,37 @@ export class AttendanceLogsComponent implements OnInit {
    * @method openModal
    */
   public openModal() {
-    this.modalRef = this.modalService.show(this.attendanceStudentPopupRef, this.studentModalConfigSM);
+    this.modalRef = this.modalService.show(
+      this.attendanceStudentPopupRef,
+      this.studentModalConfigSM
+    );
   }
 
   /**
    * @method openEditModal
    */
   public openEditModal() {
-    this.studentData = this.selectedOption === 'Edit' && this.selectedRowData.id &&
-    this.selectedRowData.student ? this.selectedRowData.student : this.selectedModalRowData;
+    this.studentData =
+      this.selectedOption === 'Edit' &&
+      this.selectedRowData.id &&
+      this.selectedRowData.student
+        ? this.selectedRowData.student
+        : this.selectedModalRowData;
     if (this.selectedOption === 'Edit') {
       this.patchValuesToForm();
     } else {
       this.initializeAttendanceForm();
     }
-    this.editModalRef = this.modalService.show(this.attendanceStudentEditPopupRef, this.modalConfigSM);
+    this.editModalRef = this.modalService.show(
+      this.attendanceStudentEditPopupRef,
+      this.modalConfigSM
+    );
   }
 
   /**
    * @method getAttendanceLog
    */
-   public getAttendanceLog() {
+  public getAttendanceLog() {
     this.spinner = true;
     this.attendanceLogService.getAttendanceLog().subscribe((result: any) => {
       if (result) {
@@ -181,11 +211,12 @@ export class AttendanceLogsComponent implements OnInit {
   /**
    * @method toggleAllSelection
    */
-   public toggleAllSelection() {
+  public toggleAllSelection() {
     this.allSelected = !this.allSelected;
     if (this.allSelected) {
       this.studentAttendanceModalForm.controls.siteLocation.patchValue([
-        ...this.siteLocation.map((item) => item.value)]);
+        ...this.siteLocation.map((item) => item.value),
+      ]);
     } else {
       this.studentAttendanceModalForm.controls.siteLocation.patchValue([]);
     }
@@ -195,15 +226,17 @@ export class AttendanceLogsComponent implements OnInit {
    * @method togglePerOne
    */
   public togglePerOne(selected: string) {
-    this.allSelected = this.studentAttendanceModalForm.controls.siteLocation.value.length ==
-    this.siteLocation.length;
+    this.allSelected =
+      this.studentAttendanceModalForm.controls.siteLocation.value.length ==
+      this.siteLocation.length;
   }
 
   /**
    * @method addStudentAttendance
    */
   public addStudentAttendance() {
-    this.attendanceLogService.addAttendanceLog(this.requestPayload())
+    this.attendanceLogService
+      .addAttendanceLog(this.requestPayload())
       .subscribe((result: any) => {
         if (result) {
           this.getAttendanceLog();
@@ -215,12 +248,16 @@ export class AttendanceLogsComponent implements OnInit {
    * @method editStudentAttendance
    */
   public editStudentAttendance(): any {
-    if (this.selectedRowData == null) { return true; };
+    if (this.selectedRowData == null) {
+      return true;
+    }
     let request: any = this.requestPayload();
     if (request['id'] == undefined) {
-      request['id'] = this.selectedRowData.id
+      request['id'] = this.selectedRowData.id;
+      request['ssno'] = this.selectedRowData.ssno;
     }
-    this.attendanceLogService.editAttendanceLog(request)
+    this.attendanceLogService
+      .editAttendanceLog(request)
       .subscribe((result: any) => {
         if (result) {
           this.getAttendanceLog();
@@ -235,12 +272,13 @@ export class AttendanceLogsComponent implements OnInit {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Confirm remove record',
-        message: `Are you sure you want to delete this Attendance information?`
-      }
+        message: `Are you sure you want to delete this Attendance information?`,
+      },
     });
-    confirmDialog.afterClosed().subscribe(result => {
+    confirmDialog.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.attendanceLogService.deleteAttendanceLog({ id: this.selectedRowData.id })
+        this.attendanceLogService
+          .deleteAttendanceLog({ id: this.selectedRowData.id })
           .subscribe((result: any) => {
             if (result) {
               this.getAttendanceLog();
@@ -313,10 +351,10 @@ export class AttendanceLogsComponent implements OnInit {
   public patchValuesToForm() {
     this.studentAttendanceEditModalForm.patchValue({
       attendanceAmount: this.selectedRowData?.attendanceAmount,
-      attendanceChecked: this.selectedRowData?.attendanceChecked ?
-      JSON.parse(this.selectedRowData?.attendanceChecked) : false,
+      attendanceChecked: this.selectedRowData?.attendanceLogged == 'YES'
+        ? true : false,
       attendanceDate: Utility.formatDate(this.selectedRowData?.attendanceDate),
-      attendanceNote: this.selectedRowData?.attendanceNote
+      attendanceNotes: this.selectedRowData?.attendanceNotes,
     });
   }
 
@@ -326,13 +364,25 @@ export class AttendanceLogsComponent implements OnInit {
    */
   public requestPayload() {
     const formValue = this.studentAttendanceEditModalForm.value;
+    const student = this.selectedOption === 'Edit' && this.selectedRowData.id
+      ? this.selectedRowData : this.selectedModalRowData;
+
     return {
+      active: student?.active,
       attendanceAmount: formValue?.attendanceAmount,
-      attendanceChecked: formValue?.attendanceChecked,
       attendanceDate: formValue?.attendanceDate,
-      attendanceNote: formValue?.attendanceNote,
-      student: this.selectedOption === 'Edit' && this.selectedRowData.id &&
-        this.selectedRowData.student ? this.studentsList[0] : this.selectedModalRowData
-    }
+      attendanceLogged: formValue?.attendanceChecked ? 'YES' : 'NO',
+      attendanceNotes: formValue?.attendanceNotes,
+      councelor: student?.graduatedInformation?.counselor,
+      dontApplyStipend: '',
+      firstName: student?.firstName,
+      fiscalYear: student?.fiscalYear,
+      lastName: student?.lastName,
+      phoneNumber: student?.phoneNumber,
+      reported: student?.reported,
+      school: student?.school,
+      served: student?.served,
+      standing: student?.standing,
+    };
   }
 }

@@ -33,6 +33,9 @@ import { DisplayTeacherContactsComponent } from './contacts/display-teacher-cont
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { TextFieldModule } from '@angular/cdk/text-field';
+
 
 @NgModule({
     declarations: [
@@ -71,7 +74,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         ReactiveFormsModule,
         MatTabsModule,
         MatSelectModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatInputModule,
+        TextFieldModule
     ],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
