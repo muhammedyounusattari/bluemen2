@@ -1,217 +1,165 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
-    <div class="row bg-white">
-        <div class="col-md-12">
-            <h3>Pulldown List</h3>
-        </div>
+
+  <div class="row bg-white">
+    <div class="col-md-12">
+      <h3>Pulldown List</h3>
     </div>
-    <div class="row ">
-        <div class="col-md-6 mt-3 mb-3 ">
-            <form class="example" action="/action_page.php">
-                <input type="text" placeholder="Search.." name="search2">
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        </div>
+  </div>
+
+  <br/>
+  <form [formGroup]="myForm" autocomplete="off">
+    <div>
+
+      <mat-form-field style="background-color:white">
+        <mat-select placeholder="'Filter'" [disableOptionCentering]="true"
+                    (selectionChange)="getPullItems($event.value)" formControlName="formType"
+                    placeholder="Pulldown Type">
+          <mat-select-filter placeholder="Filter" [displayMember]="'name'" [array]="pulldownType"
+                             (keyup)="search($event)"></mat-select-filter>
+          <mat-option *ngFor="let pulldown of pulldownTypeList" [value]="pulldown.id">
+            {{pulldown.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <form [formGroup]="pulldownListForm" class="row">
-        <div class="form-group col-md-3">
-            <label for="sel1" class="lable-style">Status</label>
-            <select formControlName="active" class="form-control" id="Status">
-                <option selected>Active</option>
-                <option>InActive</option>
-            </select>
-        </div>
-        <div class="form-group col-md-3">
-            <label for="sel1" class="lable-style">APR</label>
-            <select formControlName="apr" class="form-control" id="APR">
-                <option selected>Yes</option>
-                <option>No</option>
-            </select>
-        </div>
+  </form>
+  <!--  <div class="spinner-container" *ngIf="showLoader">-->
+  <!--    <mat-spinner id="spinner"></mat-spinner>-->
+  <!--  </div>-->
 
-        <div class="form-group col-md-3">
-            <label for="sel1" class="lable-style">ORG Type</label>
-            <select formControlName="orgType" class="form-control" id="OrgType">
-                <option>SSS</option>
-                <option>VUB</option>
-                <option>MCN</option>
-                <option>TS</option>
-            </select>
-        </div>
-        <div class="form-group col-md-3">
-            <label for="sel1" class="lable-style">Org Id</label>
-            <input formControlName="orgId" type="text" class="form-control" id="OrgId">
-        </div>
-    </form>
-    <div class="border-bot" style="margin-top: 2%;"></div>
+  <div class="border-bot" style="margin-top: 2%;"></div>
 
-    <div class="table-responsive" style="border:1px solid #1366A0;">
-        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-            <thead>
-                <tr style="background: #F5F6FA;">
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Selection Type</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">APR</th>
-                    <th scope="col">ORG Type</th>
-                    <th scope="col">ORG ID</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngIf="!spinner">
-                    <tr *ngFor="let data of pulldownList; let i = index" (click)="getSelectedRow(data, i)" [ngClass]="{'selected-row' : this.selectedRow == i}">
-                        <th scope="row">{{data.id}}</th>
-                        <td>{{data.name}}</td>
-                        <td>{{data.selectionType}}</td>
-                        <td>{{data.active}}</td>
-                        <td>{{data.apr}}</td>
-                        <td>{{data.orgType}}</td>
-                        <td>{{data.orgId}}</td>
-                    </tr>
-                </ng-container>
-                <div class="no-record">
-                    <div *ngIf="spinner" class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div *ngIf="!spinner && pulldownList?.length == 0">
-                        <span>No Data Found</span>
-                    </div>
-                </div>
-            </tbody>
-        </table>
-    </div>
+  <div class="mat-elevation-z8 data-table-height">
+    <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table matSort>
 
+      <ng-container matColumnDef="pullId">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> id</th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell> {{(classObj.pullId==0 ||
+          classObj.pullId)?classObj.pullId:"N/A"}}
+        </td>
+      </ng-container>
 
-    <div class="row">
-        <div class="col-md-12 mt-3">
+      <ng-container matColumnDef="name">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Name</th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell> {{classObj.name}}</td>
+      </ng-container>
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination pagination-sm justify-content-right">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</div>
-<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
+      <ng-container matColumnDef="active">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Soft Delete</th>
+        <td *matCellDef="let classObj; let row = dataIndex;" mat-cell> {{classObj.active}}</td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
+      <tr (click)="setSelectedRow(row, idx)" *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
+          [ngClass]="{'selected-row' : selectedRowIndex == idx}" mat-row>
+      </tr>
+    </table>
+  </div>
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]" [pageSize]="10"></mat-paginator>
+  <!-- Data Table End-->
+
+  <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+              aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page">Reset</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('New')" data-bs-toggle="modal" data-bs-target="#exampleModal">New</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Edit')" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Rename')">Rename</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Move')">Move</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Merge')">Merge</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="deletePullDownList()">Delete</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Print')">Print</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" (click)="getSelectedOption('Submit')">Submit</a>
-                </li>
-            </ul>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page">Reset</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="openModal()" data-bs-toggle="modal" data-bs-target="#exampleModal">New</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="editPullDownList()" data-bs-toggle="modal"
+               data-bs-target="#exampleModal">Edit</a>
+          </li>
 
-        </div>
+          <li class="nav-item">
+            <a class="nav-link" (click)="deletePullDownList()">Delete</a>
+          </li>
+
+        </ul>
+
+      </div>
     </div>
-</nav>
+  </nav>
 
-<!-- Modal -->
-<div class="modal fade" #addDropDownValue id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pulldown Name</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form [formGroup]="pulldownListModalForm" class="modal-body">
-                <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group mt-3">
-                                    <label for="usr">Enter the Pulldown Name:</label>
-                                    <input formControlName="name" type="text" class="form-control" id="pullDownName">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sel1" class="lable-style">Status</label>
-                                    <label class="radio-inline">
-                                        <input class="ml-2" formControlName="active" value="Active" type="radio"> Active </label>
-                                    <label class="radio-inline">
-                                        <input class="ml-2" formControlName="active" value="InActive" type="radio"> InActive
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label for="sel1" class="lable-style">APR</label>
-                                    <select formControlName="apr" class="form-control" id="APR">
-                                        <option selected>Yes</option>
-                                        <option>No</option>
-                                    </select>
-                                </div>
-                                <div class="form-group ">
-                                    <label for="usr">APR Name</label>
-                                    <input formControlName="aprName" type="text" class="form-control" id="pullDownNumber">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sel1" class="lable-style">Pull Down Type</label>
-                                    <select formControlName="selectionType" class="form-control" id="APR">
-                                    <option selected>Multi Selection</option>
-                                    <option>Single Selection</option>
-                                </select>
-                                </div>
-                                <div class="form-group ">
-                                    <label for="usr">ORG ID</label>
-                                    <input formControlName="orgId" type="text" class="form-control" id="orgId">
-                                </div>
-                                <div class="form-group">
-                                    <div class="form-group mt-4">
-                                        <label for="usr">ORG Type
-                                        </label>
-                                        <div class="row mt-3">
-                                            <div formArrayName="orgType" class="col-md-12">
-                                                <label class="radio-inline" *ngFor="let item of orgTypeFormArray.controls; let i = index">
-                                                  <input type="checkbox" [formControlName]="i">
-                                                  {{orgTypes[i].name}} &nbsp;&nbsp;
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="handleMethodToCall()">{{selectedOption === 'Edit' ? 'Update & Close' : 'Save & Close'}}</button>
-            </div>
-        </div>
+
+  <!--Modal for pulldown -->
+
+  <ng-template #pullDownPopup>
+    <div class="modal-header popHeaderBG">
+      <span class="modal-title popHeader" id="exampleModalLabel">Add Pulldown Item</span>
+      <button type="button" class="btn-close" (click)="modalRef.hide()"></button>
     </div>
+    <div class="modal-body">
+      <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+        <form [formGroup]="pulldownItem" class="tab-pane fade show active" id="home" role="tabpanel"
+              aria-labelledby="home-tab">
+          <div class="col-md-8">
+            <h4>Pulldown Type : {{pulldownType}}</h4>
+          </div>
+          <div class="col-md-8">
+            <h4>Enter the Pulldown Number: <input type="number" formControlName="pullId"/></h4>
+            <h4 *ngIf="pulldownNumValidateMsg" class="alert alert-danger">{{pulldownNumValidateMsg}}</h4>
+            <h4 *ngIf="addPullDownItem">Enter the Pulldown Name: <input class="pullDownName" type="text"
+                                                                        formControlName="pulldownName"/></h4>
+            <input class="btn btn-primary" *ngIf="!addPullDownItem" (click)="getPullIdValidated()" type="button"
+                   value="Next"/>
+            <input class="btn btn-primary" *ngIf="addPullDownItem && !isEditable" (click)="savePulldownItem()"
+                   type="button" value="Save"/>
+            <input class="btn btn-primary" *ngIf="isEditable" (click)="updatePulldownItem()" type="button"
+                   value="Update"/>
+            &nbsp;<input class="btn btn-secondary" type="button" (click)="closeModal()" value="Cancel"/>
+          </div>
+
+
+        </form>
+      </div>
+    </div>
+  </ng-template>
+
+  <!--End of Modal -->
+
+
+  <!--Modal for NON-Numeric pulldown -->
+
+  <ng-template #nonNumericPullDownPopup>
+    <div class="modal-header popHeaderBG">
+      <span class="modal-title popHeader" id="exampleModalLabel">Add Pulldown Item</span>
+      <button type="button" class="btn-close" (click)="modalRef.hide()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+        <form [formGroup]="nonNumericPulldownItem" class="tab-pane fade show active" id="home" role="tabpanel"
+              aria-labelledby="home-tab">
+          <div class="col-md-8">
+            <h4>Pulldown Type : {{pulldownType}}</h4>
+          </div>
+          <div class="col-md-8">
+
+            <h4>Enter the Pulldown Name: <input class="pullDownName" type="text"
+                                                formControlName="pulldownName"/></h4>
+
+            <input class="btn btn-primary" *ngIf="!isNonNumericEditable" (click)="saveNonNumericPulldownItem()"
+                   type="button" value="Save"/>
+            <input class="btn btn-primary" *ngIf="isNonNumericEditable" (click)="updatePulldownItemForNonNumericField()"
+                   type="button"
+                   value="Update"/>
+            &nbsp;<input class="btn btn-secondary" type="button" (click)="closeModal()" value="Cancel"/>
+          </div>
+
+
+        </form>
+      </div>
+    </div>
+  </ng-template>
+
+  <!--End of Modal -->
+
+
 </div>

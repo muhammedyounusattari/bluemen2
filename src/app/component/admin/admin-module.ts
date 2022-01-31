@@ -39,7 +39,7 @@ import { CounselorClassesComponent } from '../counselor/home/classes/counselors-
 import { TutorClassesComponent } from '../tutor/home/classes/tutor-classes.component';
 import { StaffClassesComponent } from '../staff/home/classes/staff-classes.component';
 import { MatSelectModule } from '@angular/material/select';
-
+import { MatSelectFilterModule } from 'mat-select-filter';
 
 @NgModule({
   declarations: [
@@ -84,7 +84,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatSortModule,
     MatDialogModule,
     MatCheckboxModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSelectFilterModule
   ],
   providers: [
     MatDatepickerModule,

@@ -57,9 +57,16 @@ export class ServiceUrls {
     // Pull Down List API URL's
     public static GET_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/getPullDownList/v1';
     public static UPDATE_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/updatePullDownList/v1';
-    public static ADD_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/pullDownList/v1';
+    public static UPDATE_PULL_DOWN_ITEM = environment.apiUrl + '/blumen-api/customize/updatePullDownItem/v1';
+    public static ADD_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/pullDownItems/v1';
+    public static ADD_NON_NUMERIC_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/nonNumericPullDownItems/v1';
     public static DELETE_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/deletePullDownList/v1';
     public static FILTER_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/filter/filterPullDownList/v1';
+    public static GET_PULL_DOWN_ITEMS = environment.apiUrl + '/blumen-api/customize/pullDownItems/v1/';
+    public static GET_PULL_DOWN_ITEM = environment.apiUrl + '/blumen-api/customize/pullDownList/v1/';
+    public static GET_PULL_DOWN_ID_VALIDATE = environment.apiUrl + '/blumen-api/customize/getPulldownValidate/v1';
+
+
 
     // Counselors API URL's
     public static GET_COUNSELORS = environment.apiUrl + '/blumen-api/counselor/getCounselorList/v1';

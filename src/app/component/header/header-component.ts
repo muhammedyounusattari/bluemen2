@@ -14,8 +14,8 @@ export class HeaderComponent implements OnInit {
       }
   }
   logout() {
-    localStorage.setItem('accessToken', 'null');
-    localStorage.setItem('userName', 'null');
-    window.location.reload();
+  sessionStorage.clear();
+  localStorage.clear();
+  window.location.reload();
   }
 }

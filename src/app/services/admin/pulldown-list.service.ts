@@ -21,18 +21,34 @@ export class PullDownListService {
    * @method addPullDownList
    * @param request
    */
-  public addPullDownList(request: any): Observable<any> {
-    return this.dataService.callPostService(
-      ServiceUrls.ADD_PULL_DOWN_LIST,
-      JSON.stringify(request)
-    );
+  public addPullDownList(pullDownType:string, payload:any): Observable<any> {
+    const URL = ServiceUrls.ADD_PULL_DOWN_LIST+"/"+pullDownType;
+    return this.dataService.callPostService(URL, JSON.stringify(payload));
   }
+
+  /**
+   * @method addPullDownList
+   * @param request
+   */
+  public addNonNumericPullDownList(pullDownType:string, payload:any): Observable<any> {
+    const URL = ServiceUrls.ADD_NON_NUMERIC_PULL_DOWN_LIST+"/"+pullDownType;
+    return this.dataService.callPostService(URL, JSON.stringify(payload));
+  }
+
+  /**
+   * @method updatePullDownList
+   * @param request
+   */
+  public updatePullDownList(pullDownType:string, payload:any): Observable<any> {
+    return this.dataService.callPutService(ServiceUrls.UPDATE_PULL_DOWN_ITEM, JSON.stringify(payload));
+  }
+
 
   /**
    * @method deletePullDownList
    * @param request
    */
-  public deletePullDownList(request: any): Observable<any> {
+  public deletePullDownList(pullDownType:string, request: any): Observable<any> {
     return this.dataService.callDeleteService(
       ServiceUrls.DELETE_PULL_DOWN_LIST,
       request
@@ -60,4 +76,21 @@ export class PullDownListService {
       request
     );
   }
+
+  public getPullDownItems(id:any): Observable<any> {
+    return this.dataService.callGetService(
+      ServiceUrls.GET_PULL_DOWN_ITEMS+id);
+  }
+
+  public getPullDownItem(id:any): Observable<any> {
+      return this.dataService.callGetService(
+        ServiceUrls.GET_PULL_DOWN_ITEM+id);
+    }
+
+  public getPullDownIdValidated(pullDownId:string, pullDownType:string): Observable<any> {
+    const URL = ServiceUrls.GET_PULL_DOWN_ID_VALIDATE+"/"+pullDownId+"/"+pullDownType;
+    return this.dataService.callGetService(URL);
+  }
+
+
 }
