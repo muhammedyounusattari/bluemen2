@@ -95,7 +95,7 @@
       </ng-template> -->
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
       <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
-          [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
+        [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
       </tr>
     </table>
   </div>
@@ -116,7 +116,7 @@
   <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-              aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
@@ -161,7 +161,7 @@
     <div class="modal-header popHeaderBG">
       <span class="modal-title popHeader" id="exampleModalLabel">Staff Data Entry</span>
       <button type="button" class="btn-close" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()"
-              aria-label="Close"></button>
+        aria-label="Close"></button>
     </div>
     <div class="modal-body">
       <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
@@ -491,8 +491,7 @@
         &
         Close</button>
       <button type="button" class="btn btn-secondary" id="closePopup"
-              (click)="isEdit = false; selectedRowIndex = null;selectedRow = null;modalRef.hide()">Cancel</button>
+        (click)="isEdit = false; selectedRowIndex = null;selectedRow = null;modalRef.hide()">Cancel</button>
     </div>
   </ng-template>
   <!-- Modal End-->
-</div>

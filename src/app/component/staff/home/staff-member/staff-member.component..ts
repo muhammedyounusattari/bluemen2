@@ -157,7 +157,7 @@ export class StaffMemberComponent {
             this.modalRef.hide();
             this.getStaffMembers();
           }
-        }); 
+        });
     } else {
       this.formGroup.markAllAsTouched();
     }
@@ -311,7 +311,7 @@ export class StaffMemberComponent {
         this.formGroup.get('staffPhoneNumber')?.setValue(this.selectedRow.staffPhoneNumber);
         this.openModal(this.staffDataEntryPopupRef);
         // this.staffMembersModalForm.updateValueAndValidity();
-      } else { 
+      } else {
         this.toastr.info('Please select a row to update', '', {
           timeOut: 5000,
           closeButton: true
