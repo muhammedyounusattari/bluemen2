@@ -17,6 +17,13 @@ export class StudentService {
   }
 
   /**
+   * @method getStudentByFiscalYear
+   */
+  public getStudentByFiscalYear(fiscalYear: any) {
+    return this.dataService.callGetService(`${ServiceUrls.GET_STUDENTS_BY_FISCAL_YEAR}?fiscalYear=${fiscalYear}`);
+  }
+
+  /**
    * @method getStaffList
    */
    public getStaffList(): Observable<any> {

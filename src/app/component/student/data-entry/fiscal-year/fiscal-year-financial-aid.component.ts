@@ -25,23 +25,25 @@ export class FiscalYearAndFinancialAidComponent {
         this.modalRef = this.modalService.show(template, this.modalConfigSM)
     }
 
-    openCity(evt:any, cityName:any) {
-        switch(cityName) { 
-            case 'Student': { 
+    openSelectedPage(event: any) {
+      console.log(event);
+
+        switch(event?.page) {
+            case 'Student': {
                 document.getElementById('Student')?.classList.add('Active');
-                //statements; 
-               break; 
+                //statements;
+               break;
             }
-            case 'Mark': { 
+            case 'Mark': {
                 document.getElementById('Mark')?.classList.add('Active');
-                //statements; 
-               break; 
-            } 
-            default: { 
-               //statements; 
-               break; 
-            } 
-         } 
-        
+                //statements;
+               break;
+            }
+            default: {
+               //statements;
+               break;
+            }
+         }
+
     }
 }

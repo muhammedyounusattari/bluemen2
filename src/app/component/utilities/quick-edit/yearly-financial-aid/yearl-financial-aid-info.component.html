@@ -1,120 +1,130 @@
-<div class="container-fluid mt-3" style="background:#EFF4F8;">
-    <div class="row bg-white">
-        <div class="col-md-12">
-            <h3>Semester and GPA information</h3>
-        </div>
-    </div>
-    <div class="row ">
-        <div class="col-md-6 mt-3 mb-3 ">
-            <form class="example" action="/action_page.php">
-                <input type="text" placeholder="Search.." name="search2">
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        </div>
-    </div>
+<form [formGroup]="yearlyAndFinancialForm" autocomplete="off">
+  <div class="col-md-4">
+    <h4>Student's Name : <span>{{selectedStudent?.firstName}} {{selectedStudent?.lastName}}</span></h4>
+    <h4>Student's SSNO : <span>{{selectedStudent?.ssno}}</span></h4>
+  </div>
+  <ng-container formArrayName="row">
+    <div class="mat-elevation-z8 data-table-height mb-4" style="border:1px solid #1366A0;overflow-y: auto; overflow-x: auto">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"
+      [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
 
-    <div class="table-responsive" style="border:1px solid #1366A0;">
-        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-            <thead>
-                <tr style="background: #F5F6FA;">
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <th scope="col">S.S.NO Semester</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                  </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <ng-container matColumnDef="ssno">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> S.S. No </th>
+          <td mat-cell *matCellDef="let entry"> {{entry.ssno}} </td>
+      </ng-container>
+      <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+          <td mat-cell *matCellDef="let entry"> {{entry.firstName | titlecase}} </td>
+      </ng-container>
+      <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+          <td mat-cell *matCellDef="let entry"> {{entry.lastName | titlecase}} </td>
+      </ng-container>
+      <ng-container matColumnDef="phoneNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number </th>
+          <td mat-cell *matCellDef="let entry"> {{entry.phoneNumber}} </td>
+      </ng-container>
+      <ng-container matColumnDef="fiscalYear">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fiscal Year </th>
+          <td mat-cell *matCellDef="let entry"> {{entry.fiscalYear}} </td>
+      </ng-container>
+      <ng-container matColumnDef="active">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Active </th>
+          <td mat-cell *matCellDef="let entry"> {{entry.active | titlecase}} </td>
+      </ng-container>
+      <ng-container matColumnDef="served">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Served </th>
+          <td mat-cell *matCellDef="let entry"> {{entry.served | titlecase}} </td>
+      </ng-container>
+      <ng-container matColumnDef="reported">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Reported </th>
+          <td mat-cell *matCellDef="let entry"> {{entry.reported | titlecase}} </td>
+      </ng-container>
+      <ng-container matColumnDef="counselor">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Counselor </th>
+          <td mat-cell *matCellDef="let entry"> {{entry?.graduatedInformation?.counselor | titlecase}} </td>
+      </ng-container>
+      <ng-container matColumnDef="school">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> School </th>
+          <td mat-cell *matCellDef="let entry"> {{entry.school | titlecase}} </td>
+      </ng-container>
+      <ng-container matColumnDef="standing">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Standing </th>
+          <td mat-cell *matCellDef="let entry"> {{entry.standing | titlecase}} </td>
+      </ng-container>
 
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="javascript:void(0);" data-bs-toggle="modal"
-                    >Save&Close</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)">Save</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)">Cancel</a>
-                </li>
-            </ul>
+        <!-- Name Column -->
+        <!-- <ng-container [matColumnDef]="col" *ngFor="let col of columnsToDisplay">
+          <th mat-header-cell *matHeaderCellDef> {{col}} </th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <mat-form-field appearance="outline">
+              <input matInput type="text" [formControlName]="col" [readonly]="yearlyAndFinancialRow.value[i].isEditable">
+            </mat-form-field>
+          </td>
+        </ng-container> -->
 
+        <!-- Weight Column -->
+        <!-- <ng-container matColumnDef="weight">
+          <th mat-header-cell *matHeaderCellDef> Weight </th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <mat-form-field appearance="outline">
+              <input matInput type="text" formControlName="weight" [readonly]="yearlyAndFinancialRow.value[i].isEditable">
+            </mat-form-field>
+          </td>
+        </ng-container> -->
+
+        <!-- Symbol Column -->
+        <!-- <ng-container matColumnDef="symbol">
+          <th mat-header-cell *matHeaderCellDef> Symbol </th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <mat-form-field appearance="outline">
+              <input matInput type="text" formControlName="symbol" [readonly]="yearlyAndFinancialRow.value[i].isEditable">
+            </mat-form-field>
+          </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Action </th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <button mat-icon-button class="material-icons app-toolbar-menu save-button" matTooltip="Save Changes"
+              *ngIf="!yearlyAndFinancialRow.value[i].isEditable" color="primary">
+              <mat-icon>check_circle</mat-icon>
+            </button>
+
+            <button mat-icon-button class="material-icons app-toolbar-menu cancel-button" matTooltip="Cancel Changes"
+              color="warn" *ngIf="!yearlyAndFinancialRow.value[i].isEditable">
+              <mat-icon>cancel</mat-icon>
+            </button>
+
+            <button mat-icon-button class="material-icons app-toolbar-menu save-button"
+              *ngIf="yearlyAndFinancialRow.value[i].isEditable" matTooltip="Edit" color="primary">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button class="material-icons app-toolbar-menu delete-button"
+              *ngIf="yearlyAndFinancialRow.value[i].isEditable" matTooltip="Delete" color="warn">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <!-- <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr> -->
+      </table>
+      <div *ngIf="spinner" class="spinner-container bg-colr-wht py-4">
+        <mat-progress-spinner class="center" [diameter]="50" color="default" mode="indeterminate">
+        </mat-progress-spinner>
+      </div>
+      <div *ngIf="!spinner && dataSource.data?.length == 0" class="bg-colr-wht py-4">
+        <div class="center">
+          <h3>No Data Found</h3>
         </div>
+      </div>
     </div>
-</nav>
+  </ng-container>
+</form>

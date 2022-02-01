@@ -1,193 +1,295 @@
-<div class="container-fluid mt-3" style="background:#EFF4F8;">
-    <div class="row bg-white">
-        <div class="col-md-12">
-            <h3>National Student Clearing House Data Interface</h3>
-        </div>
-    </div>
-    <div class="row ">
-        <div class="col-md-6 mt-3 mb-3 ">
-            <form class="example" action="/action_page.php">
-                <input type="text" placeholder="Search.." name="search2">
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        </div>
-    </div>
-
-    <div class="table-responsive" style="border:1px solid #1366A0;">
-        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-            <thead>
-                <tr style="background: #F5F6FA;">
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <th scope="col">S.S.NO</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                  </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-                <tr>
-                    <th scope="col"><input type="checkbox" name="chk"></th>
-                    <td>265-85-9568</td>
-                    <td>Craig</td>
-                    <td>adams</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div>
+  <h3>This Wizard will add the students to the following year</h3>
+  <div class="container min-height">
+    <div class="row">
+      <div class="col-xs-12 col-sm-8 col-md-5">
+        <mat-form-field class="mat-select-width" appearance="fill">
+          <mat-label>Graduated Year</mat-label>
+          <input [formControl]="graduatedYear" value="2017"
+            matInput type="number" placeholder="Graduated year">
+        </mat-form-field>
+      </div>
+  </div>
 </div>
+
 <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="javascript:void(0);" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">Next</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)">Cancel</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+  <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+          aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                  <a class="nav-link" (click)="navigateToStudentPage.emit()">Previous</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="updateGraduatedYearForStudents()">Finish</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" (click)="navigateToHome()">Cancel</a>
+              </li>
+          </ul>
+      </div>
+  </div>
 </nav>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Information needed for the national student clearing house</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+<ng-template #graduatedStudentEditPopup>
+  <div class="modal-header popHeaderBG">
+      <span class="modal-title popHeader" id="exampleModalLabel">Graduated Data Entry</span>
+      <button type="button" class="btn-close" (click)="modalRef.hide(); navigateToHome()"></button>
+  </div>
+  <div class="modal-body">
+      <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+          <div class="tab-pane fade show active" id="home"
+              role="tabpanel" aria-labelledby="home-tab">
+              <div class="col-md-4">
+                  <h4>Student's Name : <span>{{studentList[0]?.firstName}} {{studentList[0]?.lastName}}</span></h4>
+                  <h4>Student's SSNO : <span>{{studentList[0]?.ssno}}</span></h4>
+              </div>
+              <div class="mb-3">
+                  <mat-tab-group mat-align-tabs="start">
+                      <mat-tab label="Graduated Information">
+                          <form [formGroup]="studentGraduatedEditModalForm" class="mt-2 demo-tab-content">
+                              <div class="row row-vertical">
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                          <label for="usr">Tracking Counselor</label>
+                                          <select formControlName="counselor" class="form-control" id="sel1">
+                                              <option selected value="">Please select</option>
+                                              <option *ngFor="let counselor of counselorsList" [value]="counselor">
+                                                  {{counselor}}</option>
+                                          </select>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                          <label for="sel1">Graduated Year</label>
+                                          <input formControlName="graduatedYear" type="number" class="form-control"
+                                              id="usr">
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <label class="radio-inline"> Track
+                                          <input formControlName="track" class="ml-3 mr-1" type="checkbox"
+                                              value="true"> Yes
+                                      </label>
+                                  </div>
+                              </div>
+                              <div class="row row-vertical">
+                                  <div class="col-md-4 mt-3">
+                                      <div class="form-group">
+                                          <label for="usr">Degree In</label>
+                                          <select formControlName="degreeIn" class="form-control" id="sel1">
+                                              <option selected value="">Please select</option>
+                                              <option value="Arts">Arts</option>
+                                              <option value="Business">Business</option>
+                                              <option value="English">English</option>
+                                              <option value="Science">Science</option>
+                                          </select>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4 mt-3">
+                                      <div class="form-group">
+                                          <label for="sel1">Major</label>
+                                          <select formControlName="major" class="form-control" id="sel1">
+                                              <option selected value="">Please select</option>
+                                              <option value="Comp Sci">Comp Sci.</option>
+                                              <option value="MBA">MBA</option>
+                                              <option value="AAS/EARLY CHILDHOOD">AAS/EARLY CHILDHOOD</option>
+                                              <option value="AAS/BUS-OFFICE TECH-EXEC">AAS/BUS-OFFICE TECH-EXEC
+                                              </option>
+                                              <option value="AS/LIB ARTS & SCI">AS/LIB ARTS & SCI</option>
+                                          </select>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row row-vertical">
+                                  <div class="col-md-4 mt-3">
+                                      <div class="form-group">
+                                          <label for="usr">Employer</label>
+                                          <input formControlName="employer" type="text" class="form-control" id="usr">
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4 mt-3">
+                                      <div class="form-group">
+                                          <label for="sel1">Graduated Educational Status</label>
+                                          <select formControlName="graduatedEducationStatus" class="form-control"
+                                              id="sel1">
+                                              <option selected value="">Please select</option>
+                                              <option value="Completed Freshman year of College">Completed Freshman
+                                                  year of College</option>
+                                              <option value="Completed Junior year of College">Completed Junior year
+                                                  of College</option>
+                                              <option value="Completed Senior year of College">Completed Senior year
+                                                  of College</option>
+                                              <option value="Dropped Out of College, Freshman year">Dropped Out of
+                                                  College, Freshman year
+                                              </option>
+                                              <option value="Dropped Out of College, Junior year">Dropped Out of
+                                                  College, Junior year</option>
+                                              <option value="Dropped Out of College, Senior year">Dropped Out of
+                                                  College, Senior year</option>
+                                          </select>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row row-vertical">
+
+                                  <div class="col-md-4 mt-3">
+                                      <div class="form-group">
+                                          <label for="usr">Title/Position</label>
+                                          <input formControlName="titleOrPosition" type="text" class="form-control"
+                                              id="usr">
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4 mt-3">
+                                      <div class="form-group">
+                                          <label for="sel1">Employment Type</label>
+                                          <select formControlName="employmentType" class="form-control" id="sel1">
+                                              <option selected value="">Please select</option>
+                                              <option value="Full Time">Full Time</option>
+                                              <option value="Part Time">Part Time</option>
+                                              <option value="Unemployed">Unemployed</option>
+                                          </select>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row row-vertical">
+
+                                  <div class="col-md-4 mt-3">
+                                      <div class="form-group">
+                                          <label for="usr">Military Type</label>
+                                          <select formControlName="militaryType" class="form-control" id="sel1">
+                                              <option selected value="">Please select</option>
+                                              <option value="Air Force">Air Force</option>
+                                              <option value="Army">Army</option>
+                                              <option value="Navy">Navy</option>
+                                          </select>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4 mt-3">
+                                      <div class="form-group">
+                                          <label for="sel1">Military Rank</label>
+                                          <input formControlName="militaryRank" type="text" class="form-control"
+                                              id="usr">
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </mat-tab>
+
+                      <mat-tab label="Address/Notes">
+                          <form [formGroup]="studentAddressNotesForm" class="mt-2 demo-tab-content">
+                              <div class="row row-vertical">
+                                  <div class="col-4">
+                                      <div class="form-group">
+                                          <label for="usr">Address</label><br>
+                                          <textarea formControlName="address" id="w3review" name="w3review" rows="8"
+                                              cols="70">
+                                          </textarea>
+                                      </div>
+
+                                  </div>
+                                  <div class="col-4">&nbsp;</div>
+                                  <div class="col-4">
+                                      <div class="form-group">
+                                          <label for="sel1">City</label>
+                                          <select formControlName="city" class="form-control" id="sel1">
+                                            <option selected value="">Please select</option>
+                                            <option *ngFor="let city of cityList" [value]="city?.name">
+                                                {{city?.name | titlecase}}</option>
+                                          </select>
+                                      </div><br>
+                                      <div class="form-group">
+                                          <label for="sel1">State</label>
+                                          <select formControlName="state" class="form-control" id="sel1">
+                                            <option selected value="">Please select</option>
+                                            <option *ngFor="let state of stateList" [value]="state?.name">
+                                                {{state?.name | titlecase}}</option>
+                                          </select>
+                                      </div>
+                                      <br>
+                                      <div class="form-group">
+                                          <label for="sel1">Zip code</label>
+                                          <input formControlName="zipcode" type="text" class="form-control" id="usr">
+                                      </div>
+
+                                  </div>
+
+                              </div>
+                              <div class="row row-vertical">
+
+                                  <div class="col-md-3 mt-3">
+                                      <div class="form-group">
+                                          <label for="usr">Phone1</label>
+                                          <input formControlName="phone1" type="number" class="form-control" id="usr">
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 mt-3">
+                                      <div class="form-group">
+                                          <label for="sel1">Phone2</label>
+                                          <input formControlName="phone2" type="text" class="form-control" id="usr">
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 mt-3">
+                                      <div class="form-group">
+                                          <label for="sel1">Website</label>
+                                          <input formControlName="website" type="url" class="form-control" id="usr">
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3 mt-3">
+                                      <div class="form-group">
+                                          <label for="sel1">Email</label>
+                                          <input formControlName="email" type="email" class="form-control" id="usr">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row row-vertical">
+                                  <div class="col-12">
+
+                                      <div class="form-group mt-3">
+                                          <label for="usr">Notes</label><br>
+                                          <textarea formControlName="notes" id="w3review" name="w3review" rows="2" cols="45">
+                                          </textarea>
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </mat-tab>
+                  </mat-tab-group>
+              </div>
+              <nav class="navbar navbar-expand-lg navbar-light "
+                  style="background-color: #d7e8f5; position:relative;">
+                  <div class="container-fluid">
+                      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#navbarTogglerDemo" aria-controls="navbarTogglerDemo" aria-expanded="false"
+                          aria-label="Toggle navigation">
+                          <span class="navbar-toggler-icon"></span>
+                      </button>
+                      <div class="collapse navbar-collapse" id="navbarTogglerDemo">
+                          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                              <li class="nav-item">
+                                  <a class="nav-link active" (click)="deleteStudentRecord()">Delete</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link ">Print</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link " (click)="updateStudentGraduatedInformation()">Save</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link " (click)="updateStudentGraduatedInformation();modalRef.hide()">Save &
+                                      Close</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link " (click)="modalRef.hide(); navigateToHome()">Cancel</a>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </nav>
             </div>
-            <div class="modal-body">
-                <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row">
-                            <div class="col-md-12 flex">
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Account Type:</label>
-                                    <select class="form-control" id="CFN">
-                                        <option selected>Pune</option>
-                                        <option>Mumbai</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Institution Name:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Account number:</label>
-                                    <input type="text" class="form-control" id="serviceId"> &nbsp;
-                                </div>
-                            </div>
-                            <div class="row">
-                                <h4>Step 1. Create student tracker research file to be uploaded</h4>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Creation date:</label>
-                                    <select class="form-control" id="CFN">
-                                        <option selected>Pune</option>
-                                        <option>Mumbai</option>
-                                    </select>
-                        
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="usr">Search begin date:</label>
-                                    <select class="form-control" id="CFN">
-                                        <option selected>Maharashtra</option>
-                                        <option>Goa</option>
-                                    </select>
-                        
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <h4>Step 2. Upload student tracker research file to the nsch website</h4>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <h4>Step 3. Download the student tracker detail file from the nsch website</h4>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <h4>Step 4. Import data from student tracker detail file into blumen</h4>
-                            </div>
-                            <div class="col-md-12 form-group flex">
-                                <h4>Step 5. Update APR fields from blumen tracking data</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Previous</button>
-            </div>
-        </div>
-    </div>
-</div>
+      </div>
+  </div>
+</ng-template>

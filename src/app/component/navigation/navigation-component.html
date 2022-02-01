@@ -301,21 +301,19 @@
                                                                                 information</a>
                                                                 </li>
                                                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('yearly-financial-aid-info')">Yearly
-                                                                                and financial
-                                                                                aid
-                                                                                information</a>
+                                                                                (click)="navigateToComponent('global-filter', 'yearly-financial-aid-info')">Yearly
+                                                                                and financial aid information</a>
                                                                 </li>
                                                         </ul>
                                                 </li>
                                                 <li> <a class="dropdown-item" href="#"> ADD TO &raquo;</a>
                                                         <ul class="submenu dropdown-menu" style="z-index: 10001;">
                                                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('fiscal-year')">Fiscal
+                                                                  (click)="navigateToComponent('global-filter', 'fiscal-year')">Fiscal
                                                                                 Year</a>
                                                                 </li>
                                                                 <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('graduated-list')">Graduated
+                                                                                (click)="navigateToComponent('global-filter', 'graduated-year')">Graduated
                                                                                 List</a>
                                                                 </li>
                                                                 <li><a class="dropdown-item" href="javascript:void(0)"
@@ -395,13 +393,13 @@
                                         </mat-menu>
                                         <mat-menu #addToList="matMenu">
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('graduated-list')">GRADUATED
+                                                        (click)="navigateToComponent('global-filter', 'graduated-year')">GRADUATED
                                                         LIST</button>
                                                 <button mat-menu-item
                                                         (click)="navigateToComponent('semester')">SEMESTER</button>
 
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('fiscal-year')">FISCAL
+                                                        (click)="navigateToComponent('global-filter', 'fiscal-year')">FISCAL
                                                         YEAR</button>
                                         </mat-menu>
                                         <mat-menu #quickEditList="matMenu">

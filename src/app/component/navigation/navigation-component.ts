@@ -10,7 +10,7 @@ export class NavigationComponent {
   constructor(private router: Router) {
   }
 
-  navigateToComponent(componentName: string) {
+  navigateToComponent(componentName: string, subComponent: string = '') {
     if (componentName === 'logged-user') {
       this.router.navigate(['home/logged-user']);
     } else if (componentName === 'change-password') {
@@ -127,6 +127,8 @@ export class NavigationComponent {
      this.router.navigate(['admin/staff-classes'])
     } else if (componentName === 'time-clock') {
       this.router.navigate(['/'], { queryParams: { popup: 'time-clock' } })
+    } else if (componentName === 'global-filter' && subComponent != '') {
+      this.router.navigate(['utilities/global-filter'], {queryParams: {page: subComponent}});
     }
   }
 }

@@ -1,4 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 import { AprFilterComponent } from './apr/apr-filter-infocomponent';
 import { AttendanceFilterComponent } from './attendance/attendance-filter-info.component';
 import { ContactFilterComponent } from './contact/contact-filter-info.component';
@@ -20,6 +23,15 @@ import { SubFilterComponent } from './sub/sub-filter-info.component';
 import { TextMessageFilterComponent } from './textmessage/textmessage-filter-info.component';
 import { WalletFilterComponent } from './wallet/wallet-filter-info.component';
 import { YearlyFilterComponent } from './yearly/yearly-filter-info.component';
+import { StudentListComponent } from './student-list/student-list.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { UtilitiesModule } from '../utilities/utilities.module';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
     exports: [GlobalFilterComponent],
@@ -44,9 +56,22 @@ import { YearlyFilterComponent } from './yearly/yearly-filter-info.component';
         SubFilterComponent,
         TextMessageFilterComponent,
         WalletFilterComponent,
-        YearlyFilterComponent
+        YearlyFilterComponent,
+        StudentListComponent
     ],
     imports: [
+      BrowserModule,
+      CommonModule,
+      FormsModule,
+      ReactiveFormsModule,
+      MatInputModule,
+      MatFormFieldModule,
+      MatTableModule,
+      MatSortModule,
+      MatPaginatorModule,
+      MatProgressSpinnerModule,
+      MatCheckboxModule,
+      UtilitiesModule
     ],
     providers: [],
     bootstrap: []

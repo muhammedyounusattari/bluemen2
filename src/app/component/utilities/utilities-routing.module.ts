@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FiscalYearAndFinancialAidComponent } from '../student/data-entry/fiscal-year/fiscal-year-financial-aid.component';
 import { FiscalYearComponent } from './add-to/fiscal-year/fiscal-year.component';
 import { GraduatedListComponent } from './add-to/graduated-list/graduated-list.component';
 import { SemesterComponent } from './add-to/semester/semester.component';
@@ -56,7 +57,11 @@ const routes: Routes = [
     {
         path: 'utilities/custom-field-value',
         component: CustomFieldValueComponent
-    }    
+    },
+    {
+      path: 'utilities/global-filter',
+      component: FiscalYearAndFinancialAidComponent
+    }
 ];
 
 @NgModule({

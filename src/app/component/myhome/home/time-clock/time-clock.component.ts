@@ -58,15 +58,15 @@ export class TimeClockComponent implements OnInit {
    * @method selectedStaff
    */
   public selectedStaff(staffMember: any) {
-    this.selectedStaffName = staffMember.staffName;
-    this.service.getTimeClock(staffMember.id).subscribe((resp: any) => {
+    this.selectedStaffName = staffMember.name;
+    this.service.getTimeClock(staffMember.id, this.selectedStaffName).subscribe((resp: any) => {
       if (resp && resp.code == 200 && resp.msg) {
         this.clockLabel = resp.msg?.toLowerCase()?.includes('clocked out') ? 'Clock In' : 'Clock Out';
         const data = resp.msg.split(' ');
         this.staffClock = {
           date: data[data.length-1].includes('Z') ? data[data.length-1].replace('Z','') : ''
         };
-        if (data[data.length-1].includes('Z') || data[data.length-1].includes('null')) {
+        if (data[data.length-1].includes('Z') || data[data.length-1].includes(' ')) {
           delete data[data.length-1];
         }
         this.staffClock.message = data.join(' ');

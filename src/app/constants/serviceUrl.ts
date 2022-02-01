@@ -189,23 +189,38 @@ export class ServiceUrls {
     public static ADD_TIME_CLOCK = environment.apiUrl + '/blumen-api/postStaffTime/v1';
     public static UPDATE_TIME_CLOCK = environment.apiUrl + '/blumen-api/admin/systemtools/updateTimeClockManagerList/v1';
 
-    // Student Exam Log
+    // Student Exam Log API URL's
     public static GET_STUDENT_EXAM_LOG = environment.apiUrl + '/blumen-api/student-logs/getStudentExamsLogList/v1';
     public static ADD_STUDENT_EXAM_LOG = environment.apiUrl + '/blumen-api/student-logs/studentExamsLogList/v1';
     public static UPDATE_STUDENT_EXAM_LOG = environment.apiUrl + '/blumen-api/student-logs/updateStudentExamsLogList/v1';
     public static DELETE_STUDENT_EXAM_LOG = environment.apiUrl + '/blumen-api/student-logs/deleteStudentExamsLogList/v1';
 
-    // Student Notes Log
+    // Student Notes Log API URL's
     public static GET_STUDENT_NOTES_LOG = environment.apiUrl + '/blumen-api/student-logs/getStudentNotesLogList/v1';
     public static ADD_STUDENT_NOTES_LOG = environment.apiUrl + '/blumen-api/student-logs/studentNotesLogList/v1';
     public static UPDATE_STUDENT_NOTES_LOG = environment.apiUrl + '/blumen-api/student-logs/updateStudentNotesLogList/v1';
     public static DELETE_STUDENT_NOTES_LOG = environment.apiUrl + '/blumen-api/student-logs/deleteStudentNotesLogList/v1';
 
+    // Custom Field Value API URL's
+    public static GET_CUSTOM_FIELD_VALUE_LIST = environment.apiUrl + '/blumen-api/utilities/generate-similar/getCustomFieldValueList/v1';
+    public static GET_CONTINUE_CUSTOM_FIELD_VALUE_LIST = environment.apiUrl + '/blumen-api/utilities/generate-similar/getOkToContinueCustomFieldValueList/v1';
+    public static ADD_CUSTOM_FIELD_VALUE = environment.apiUrl + '/blumen-api/utilities/generate-similar/addCustomField/v1';
+    public static ADD_FINISH_CUSTOM_FIELD_VALUE = environment.apiUrl + '/blumen-api/utilities/generate-similar/clickFinishCustomFieldValueList/v1';
+    public static DELETE_CUSTOM_FIELD_VALUE = environment.apiUrl + '/blumen-api/utilities/generate-similar/deleteCustomField/v1';
+
+    // Utilities Fiscal Year API URL's
+    public static GET_STUDENTS_BY_FISCAL_YEAR = environment.apiUrl + '/blumen-api/utilities/addto/getAllStudentsByFiscalYear/v1';
+    public static UPDATE_FISCAL_YEAR = environment.apiUrl + '/blumen-api/utilities/addto/moveSelectedStudentListToFiscalYear/v1';
+
+    // Utilities Graduated Year API URL's
+    public static GET_STUDENTS_BY_GRADUATED_YEAR = environment.apiUrl + '/blumen-api/utilities/addto/getAllStudentsByFiscalYearForGraduatedList/v1';
+    public static UPDATE_GRADUATED_YEAR = environment.apiUrl + '/blumen-api/utilities/addto/moveSelectedStudentListFromFiscalYearToGraduatedYear/v1';
+    public static UPDATE_GRADUATION_INFORMATION = environment.apiUrl + '/blumen-api/utilities/addto/updateGraduatedEntryForStudent/v1';
     // public static GET_PULL_DOWN_LIST_BASED_ON_TYPE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/';
     public static GET_PULL_DOWN_LIST_BASED_ON_CODE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/';
     // PULL DOWN STATE
-    public static GET_PULLDOWN_STATE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/142';
+    public static GET_PULLDOWN_STATE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/State';
     // PULL DOWN CITY
-    public static GET_PULLDOWN_CITY = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/39';
+    public static GET_PULLDOWN_CITY = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/City';
 
 }

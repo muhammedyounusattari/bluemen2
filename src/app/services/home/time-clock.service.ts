@@ -13,9 +13,10 @@ export class TimeClockService {
   /**
    * @method getTimeClock
    */
-  public getTimeClock(staffId: string): Observable<any> {
+  public getTimeClock(staffId: string, staffName: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('staffId', staffId);
+    params = params.append('staffName', staffName);
     return this.dataService.callGetService(
       ServiceUrls.GET_TIME_CLOCK, {params: params});
   }

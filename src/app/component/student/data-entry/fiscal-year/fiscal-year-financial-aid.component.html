@@ -1,5 +1,5 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
-    <app-global-filter></app-global-filter>
+    <app-global-filter (openSelectedPage)="openSelectedPage($event)"></app-global-filter>
 </div>
 
 <div *ngIf="isVisible">
