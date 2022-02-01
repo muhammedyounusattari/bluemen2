@@ -18,4 +18,14 @@ export class LabSettingsPreferencesService {
     postLabSettingsPreferences(request: any): Observable<any> {
         return this.dataService.callPostService(ServiceUrls.POST_LAB_SETTINGS_PREFERENCES, request);
     }
+
+    public getPullDownList(): Observable<any> {
+        return this.dataService.callGetService(
+            ServiceUrls.GET_PULL_DOWN_LIST);
+    }
+
+    public getPullDownItems(id: any): Observable<any> {
+        return this.dataService.callGetService(
+            ServiceUrls.GET_PULL_DOWN_ITEMS + id);
+    }
 }

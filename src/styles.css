@@ -12,13 +12,14 @@ h6 {
     font-size: 14px!important;
     font-weight: normal!important;   
 }
-/*body{background: #eff4f8!important;}*/
+body{background: #eff4f8!important;}
 .bottom-fotter{position: fixed; bottom: 0; border-top:1px solid #dee2e6; background: #eff4f8;}
 
 h3 {
     font-family: "Montserrat", sans-serif!important;
     font-size: 20px!important;
-    font-weight: bolder!important; 
+    font-weight: bolder!important;
+    margin-top: 15px!important; 
     
 }
 .bg-bottom{background: #d7e8f5!important; margin-bottom: 20px;}
@@ -30,23 +31,30 @@ a {
     color: #1366A0!important;
     text-decoration: none;
 }
+.bottom-left{margin-left:22px;}
 .loginlogo{margin-bottom: 7%;  margin-top: 5%;}
-.welcome{color: #1672b7 !important;; font-weight: 500!important; font-size: 40px!important; font-family: 'Montserrat', sans-serif!important; 
+.welcome{color: #00396b !important;; font-weight: 500!important; font-size: 40px!important; font-family: 'Montserrat', sans-serif!important; 
                             letter-spacing: 1px!important; margin-bottom: 10%!important;}
 .crediential{color: #222222; font-family: 'Montserrat', sans-serif; margin: 0px 0 5px 0!important; font-size: 15px; font-weight: 500;}
-.submit{background: #3c88c2; border-radius: 0px!important; font-weight: 600; font-size: 16px; background: #1672B7!important; font-family: 'Montserrat', sans-serif; width: 140px; height: 40px;}
+.submit{background: #00396b!important; border-radius: 0px!important; font-weight: 600; font-size: 16px; background: #1672B7!important; font-family: 'Montserrat', sans-serif; width: 140px; height: 40px;}
 .forgot{color: #1671B6;  font-family:Montserrat, sans-serif; font-size: 15px;}
 .reserved{font-family: 'Montserrat', sans-serif; margin-left: 20px; font-size: 15px; font-weight: 500;}
 .ssl{text-decoration: underline; color: #222222!important; font-family: 'Montserrat', sans-serif;  font-size: 15px; font-weight: 500;}
 .boderleft{border-left: 1px solid #fff;}
+.boderright{border-right: 1px solid #fff;}
 
+.logo{margin:0px; padding: 0px 40px 0 0; float: left;}
+.university{margin:0px auto; text-align: center; font-size: 13px; height: 62px; padding: 10px 20px 0 20px; color: #fff; float: left;  margin-top:5px; border-left:1px #fff solid;}
+.fiscal{margin:0px; border-right: 1px #fff solid; text-align: center; font-size: 13px; height: 62px; padding: 1px 20px 0 20px; color: #fff; float: left;  margin-top:5px; border-left:1px #fff solid;}
+.fiscal a{color: #fff!important; }
+.huston-logo{float:left; border-left:1px #fff solid; height: 62px; margin-top: 5px; padding: 0px 20px 0 20px;}
 .textwhite{
     font-family: "Montserrat", sans-serif!important;
     font-size: 14px!important;
     font-weight: 600!important;
     color:#fff!important;
 }
-.footer-link{color:#222222!important; text-decoration:underline; padding: 0 13px 0 13px;}
+.footer-link{color:#222222!important; text-decoration:underline; padding: 0 0px 0 0px;}
 
 
 .tablebg{background: #E1EFF8!important;}
@@ -59,13 +67,18 @@ a {
     letter-spacing: -.5px;
     
 }
+.text-size{font-size: 20px !important; color: #00396b!important;}
+/*.mat-form-field-empty.mat-form-field-label, .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{font-size: 16px!important; color: #00396b!important;}*/
+.mat-form-field-type-mat-select .mat-form-field-label{margin-left: 15px!important; margin-top: 2px!important;}
+.mat-select-min-line{margin-left: 15px!important;}
 .mt-m1 {
     margin-bottom: 41px !important;
   }
 .mat-checkbox-inner-container{ }
 .bgtop {
-    background: #1672B7!important;
+    background: #00396b!important;
     padding: 0px;
+   
 }
 tr.mat-header-row {
     height: 35px!important;
@@ -136,9 +149,8 @@ tr.mat-header-row {
 
 .btn {
     border-radius: 0px;
-    background: #1672B7!important;
-    ;
-    color: #fff!important;
+    background: #00396b!important;
+     color: #fff!important;
 }
 
 .btn:hover {
@@ -204,11 +216,36 @@ tr.mat-header-row {
 }
 /* Dropdown Button */
 .dropbtn {
-  background: #1672B7;
+  width: 20px;
+  background: none;
   color: #fff;
   font-size: 15px;
   border: none;
 }
+.svg{width: 23px;}
+
+
+.bolt{padding: 0 10px 0 10px; border-right: .5px solid #fff; color: #fff!important;}
+    a.bolt:link {
+    color:#fff!important;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  a.bolt:visited {
+    color: pink!important;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  a.bolt:hover {
+    color:#FECB2E!important;
+    background-color: transparent;
+    text-decoration: underline!important;
+  }
+  .bolt a:active {
+    color: yellow!important;
+    background-color: transparent;
+    text-decoration: underline!important;
+  }
 
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
@@ -223,11 +260,14 @@ tr.mat-header-row {
   background-color: #f2f2f2;
   min-width: 140px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  right: 0px;
   z-index: 1;
 }
 
 /* Links inside the dropdown */
 .dropdown-content a {
+    display: flex;
+    box-sizing: border-box;
   color: black;
   padding: 12px 16px;
   text-decoration: none;
@@ -241,7 +281,7 @@ tr.mat-header-row {
 .dropdown:hover .dropdown-content {display: block;}
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {background-color: #1672b7;}
+.dropdown:hover .dropbtn {background-color: none; }
 form.example input[type=text] {
     padding: 4px;
     font-size: 17px;
@@ -301,7 +341,7 @@ table {
     font-size: 15px !important;
 }
 
-.mat-input-element { 
+.mat-input-element {
     font-size: 15px !important;
 }
 
@@ -613,11 +653,12 @@ footer.page-footer .footer-copyright {
     display: block !important;
     text-align: center;
 }
-
-.mat-elevation-z8 {
+.mat-paginator-container{
+box-shadow:  2px 2px 5px #888888!important;}
+/*.mat-elevation-z8 {
     overflow: hidden !important;
     box-shadow:  2px 2px 5px #888888!important;
-}
+}*/
 
 .mat-form-field-appearance-legacy .mat-form-field-underline {
     height: 0px !important;

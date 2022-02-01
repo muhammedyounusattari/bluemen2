@@ -1,4 +1,5 @@
-<div class="container-fluid mt-3" style="background:#EFF4F8;">
+<div class="main-container">
+<div class="container-fluid">
 
   <div class="row bg-white">
     <div class="col-md-12">
@@ -10,11 +11,11 @@
   <form [formGroup]="myForm" autocomplete="off">
     <div>
 
-      <mat-form-field style="background-color:white">
+      <mat-form-field style="background-color: white;width: 40%;height: 48px;padding: 0px;border: 1px solid #ced4da;">
         <mat-select placeholder="'Filter'" [disableOptionCentering]="true"
                     (selectionChange)="getPullItems($event.value)" formControlName="formType"
                     placeholder="Pulldown Type">
-          <mat-select-filter placeholder="Filter" [displayMember]="'name'" [array]="pulldownType"
+          <mat-select-filter  placeholder="Filter" [displayMember]="'name'" [array]="pulldownType"
                              (keyup)="search($event)"></mat-select-filter>
           <mat-option *ngFor="let pulldown of pulldownTypeList" [value]="pulldown.id">
             {{pulldown.name}}
@@ -45,7 +46,7 @@
       </ng-container>
 
       <ng-container matColumnDef="active">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header> Active</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Soft Delete</th>
         <td *matCellDef="let classObj; let row = dataIndex;" mat-cell> {{classObj.active}}</td>
       </ng-container>
 
@@ -58,7 +59,7 @@
   <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]" [pageSize]="10"></mat-paginator>
   <!-- Data Table End-->
 
-  <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
+  <nav class="navbar navbar-expand-lg navbar-light bg-bottom">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
               aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +88,7 @@
       </div>
     </div>
   </nav>
-
+</div>
 
   <!--Modal for pulldown -->
 

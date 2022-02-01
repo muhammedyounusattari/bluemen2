@@ -60,6 +60,7 @@ export class LabSettingsPreferencesComponent implements OnInit {
 
     ngOnInit(): void {
         this.createForm();
+        this.bindDropDownValues();
         this.myElement = window.document.getElementById('loading');
         this._labSettingsPreferencesService.getLabSettingsPreferencesData().subscribe(result => {
             if (result) {
@@ -87,6 +88,21 @@ export class LabSettingsPreferencesComponent implements OnInit {
                     this.isDisabled = false;
                 }
                 this.hideLoader();
+            }
+        });
+    }
+    bindDropDownValues() {
+        this._labSettingsPreferencesService.getPullDownList().subscribe((result: any) => {
+            if (result) {
+                if (result.filter((item: any) => item.code === 'ComponentType')
+                    && result.filter((item: any) => item.code === 'ComponentType').length > 0) {
+                    this._labSettingsPreferencesService.getPullDownItems(result.filter((item: any) => item.code === 'ComponentType')[0].id)
+                        .subscribe(data => {
+                            if (data) {
+                                this.labComponentsList = data;
+                            }
+                        });
+                }
             }
         });
     }

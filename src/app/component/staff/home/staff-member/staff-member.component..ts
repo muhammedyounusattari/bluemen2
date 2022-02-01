@@ -103,9 +103,9 @@ export class StaffMemberComponent {
   @ViewChild(MatPaginator, { static: true }) paginator1: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort1: MatSort;
   @ViewChild(MatSort) set matSort1(sort1: MatSort) {
-      if (this.dataSource1 && !this.dataSource1.sort) {
-          this.dataSource1.sort = sort1;
-      }
+    if (this.dataSource1 && !this.dataSource1.sort) {
+      this.dataSource1.sort = sort1;
+    }
   }
   permanentAddress: any;
   addressData: any;
@@ -125,9 +125,79 @@ export class StaffMemberComponent {
     this.isStaffDetail = true;
     this.createForm();
     this.getStaffMembers();
+    this.bindDropDownValues();
     this.isEdit = false;
   }
 
+  bindDropDownValues() {
+    this.staffMembersService.getPullDownList().subscribe((result: any) => {
+      if (result) {
+        if (result.filter((item: any) => item.code === 'City')
+          && result.filter((item: any) => item.code === 'City').length > 0) {
+          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'City')[0].id)
+            .subscribe(data => {
+              if (data) {
+                this.cityList = data;
+              }
+            });
+        }
+        if (result.filter((item: any) => item.code === 'State_PostalAddress')
+          && result.filter((item: any) => item.code === 'State_PostalAddress').length > 0) {
+          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'State_PostalAddress')[0].id)
+            .subscribe(data => {
+              if (data) {
+                this.stateList = data;
+              }
+            });
+        }
+        if (result.filter((item: any) => item.code === 'Codes')
+          && result.filter((item: any) => item.code === 'Codes').length > 0) {
+          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'Codes')[0].id)
+            .subscribe(data => {
+              if (data) {
+                this.codeListArray = data;
+              }
+            });
+        }
+        if (result.filter((item: any) => item.code === 'CustomField1')
+          && result.filter((item: any) => item.code === 'CustomField1').length > 0) {
+          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'CustomField1')[0].id)
+            .subscribe(data => {
+              if (data) {
+                this.customFieldListArray1 = data;
+              }
+            });
+        }
+        if (result.filter((item: any) => item.code === 'CustomField2')
+          && result.filter((item: any) => item.code === 'CustomField2').length > 0) {
+          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'CustomField2')[0].id)
+            .subscribe(data => {
+              if (data) {
+                this.customFieldListArray2 = data;
+              }
+            });
+        }
+        if (result.filter((item: any) => item.code === 'CustomField3')
+          && result.filter((item: any) => item.code === 'CustomField3').length > 0) {
+          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'CustomField3')[0].id)
+            .subscribe(data => {
+              if (data) {
+                this.customFieldListArray3 = data;
+              }
+            });
+        }
+        if (result.filter((item: any) => item.code === 'CustomField4')
+          && result.filter((item: any) => item.code === 'CustomField4').length > 0) {
+          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'CustomField4')[0].id)
+            .subscribe(data => {
+              if (data) {
+                this.customFieldListArray4 = data;
+              }
+            });
+        }
+      }
+    });
+  }
   switchBetweenTabs(activeTab: string) {
     if (!this.validationClass.isNullOrUndefined(activeTab) && !this.validationClass.isEmpty(activeTab)) {
       this.isStaffDetail = activeTab === 'staff-detail' ? true : activeTab === 'address' ? false : true;
@@ -380,7 +450,7 @@ export class StaffMemberComponent {
         this.formGroup.get('staffPhoneNumber')?.setValue(this.selectedRow.staffPhoneNumber);
         if (this.selectedRow.address && this.selectedRow.address.length > 0) {
           this.addressData = this.selectedRow.address;
-          this.permanentAddress = this.selectedRow.address.filter((item:any) => item.permanentAddress)[0];
+          this.permanentAddress = this.selectedRow.address.filter((item: any) => item.permanentAddress)[0];
           this.bindAddressValueToFB();
         }
         this.openModal(this.staffDataEntryPopupRef);

@@ -60,4 +60,14 @@ export class StaffMembersService {
       request
     );
   }
+
+  public getPullDownList(): Observable<any> {
+    return this.dataService.callGetService(
+      ServiceUrls.GET_PULL_DOWN_LIST);
+  }
+  
+  public getPullDownItems(id:any): Observable<any> {
+    return this.dataService.callGetService(
+      ServiceUrls.GET_PULL_DOWN_ITEMS+id);
+  }
 }

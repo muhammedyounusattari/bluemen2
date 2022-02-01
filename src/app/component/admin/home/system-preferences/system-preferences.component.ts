@@ -23,6 +23,8 @@ export class SystemPreferencesComponent implements OnInit {
     defaultSetting: DefaultSetting = new DefaultSetting();
     reportSetting: ReportSetting = new ReportSetting();
     defaultSettingTab: DefaultSettingTab = new DefaultSettingTab();
+    semisterList: [{'name': ''}];
+    componentsList: [{'name': ''}]
     constructor(private modalService: BsModalService
         , private _systemPreferencesService: SystemPreferencesService) {
 
@@ -36,6 +38,7 @@ export class SystemPreferencesComponent implements OnInit {
         this.systemPreferencesEnum.generalSetting.defaultSetting = new DefaultSetting();
         this.systemPreferencesEnum.generalSetting.reportSetting = new ReportSetting();
 
+        this.bindDropDownValues();
         this._systemPreferencesService.getSystemPreferencesData().subscribe(result => {
             this.activeTab('generalTab');
             if (result && result.length > 0) {
@@ -45,7 +48,32 @@ export class SystemPreferencesComponent implements OnInit {
         });
     }
 
-    activeTab(tabName: string){
+    bindDropDownValues() {
+        this._systemPreferencesService.getPullDownList().subscribe((result: any) => {
+            if (result) {
+                if (result.filter((item: any) => item.code === 'SemesterType')
+                    && result.filter((item: any) => item.code === 'SemesterType').length > 0) {
+                    this._systemPreferencesService.getPullDownItems(result.filter((item: any) => item.code === 'SemesterType')[0].id)
+                        .subscribe(data => {
+                            if (data) {
+                                this.semisterList = data;
+                            }
+                        });
+                }
+                if (result.filter((item: any) => item.code === 'ComponentType')
+                && result.filter((item: any) => item.code === 'ComponentType').length > 0) {
+                this._systemPreferencesService.getPullDownItems(result.filter((item: any) => item.code === 'ComponentType')[0].id)
+                    .subscribe(data => {
+                        if (data) {
+                            this.componentsList = data;
+                        }
+                    });
+            }
+            }
+        });
+    }
+
+    activeTab(tabName: string) {
         const element = window.document.getElementById(tabName);
         let activeTab = null;
         if (tabName === 'generalTab') {

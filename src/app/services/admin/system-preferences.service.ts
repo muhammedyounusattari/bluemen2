@@ -18,4 +18,14 @@ export class SystemPreferencesService {
     postSystemPreferences(request: any): Observable<any> {
         return this.dataService.callPostService(ServiceUrls.POST_SYSTEM_PREFERENCES, request);
     }
+
+    public getPullDownList(): Observable<any> {
+        return this.dataService.callGetService(
+            ServiceUrls.GET_PULL_DOWN_LIST);
+    }
+
+    public getPullDownItems(id: any): Observable<any> {
+        return this.dataService.callGetService(
+            ServiceUrls.GET_PULL_DOWN_ITEMS + id);
+    }
 }
