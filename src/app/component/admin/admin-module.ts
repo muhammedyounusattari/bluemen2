@@ -34,6 +34,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { TeacherClassesComponent } from '../teacher/home/classes/teachers-classes.component';
 import { CounselorClassesComponent } from '../counselor/home/classes/counselors-classes.component';
 import { TutorClassesComponent } from '../tutor/home/classes/tutor-classes.component';
@@ -85,7 +87,9 @@ import { MatSelectFilterModule } from 'mat-select-filter';
     MatDialogModule,
     MatCheckboxModule,
     MatSelectModule,
-    MatSelectFilterModule
+    MatSelectFilterModule,
+    MatCardModule,
+    MatIconModule
   ],
   providers: [
     MatDatepickerModule,

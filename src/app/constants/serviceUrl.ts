@@ -180,17 +180,11 @@ export class ServiceUrls {
     public static GET_STAFF_CLASSES_PER_RECORD = environment.apiUrl + '/blumen-api/admin/classes/getStaffClass/v1/';
     public static DELETE_STAFF_CLASSES = environment.apiUrl + '/blumen-api/admin/classes/deleteStaffClasses/v1';
 
-    // PULL DOWN STATE
-    public static GET_PULLDOWN_STATE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/State';
-
-    // PULL DOWN CITY
-    public static GET_PULLDOWN_CITY = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/City';
-
     // Student Attendance Log
-    public static GET_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/student-logs/getStudentAttendanceLog/v1';
-    public static ADD_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/student-logs/studentAttendanceLogList/v1';
-    public static UPDATE_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/student-logs/updateStudentAttendanceLogList/v1';
-    public static DELETE_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/student-logs/deleteStudentAttendanceLogList/v1';
+    public static GET_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/utilities/generate-similar/attendance/log/v1';
+    public static ADD_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/utilities/generate-similar/attendance/log/v1';
+    public static UPDATE_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/utilities/generate-similar/attendance/log/v1';
+    public static DELETE_STUDENT_ATTENDANCE_LOG = environment.apiUrl + '/blumen-api/utilities/generate-similar/attendance/log/v1';
 
     // Time Clock API URL's
     public static GET_TIME_CLOCK = environment.apiUrl + '/blumen-api/getStaffTimeById/v1';
@@ -208,4 +202,13 @@ export class ServiceUrls {
     public static ADD_STUDENT_NOTES_LOG = environment.apiUrl + '/blumen-api/student-logs/studentNotesLogList/v1';
     public static UPDATE_STUDENT_NOTES_LOG = environment.apiUrl + '/blumen-api/student-logs/updateStudentNotesLogList/v1';
     public static DELETE_STUDENT_NOTES_LOG = environment.apiUrl + '/blumen-api/student-logs/deleteStudentNotesLogList/v1';
+
+    // public static GET_PULL_DOWN_LIST_BASED_ON_TYPE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/';
+    // public static GET_PULL_DOWN_LIST_BASED_ON_CODE = environment.apiUrl + '/blumen-api/customize/getPullDownList/';
+    // PULL DOWN STATE
+    public static GET_PULLDOWN_STATE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/State';
+
+    // PULL DOWN CITY
+    public static GET_PULLDOWN_CITY = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/City';
+
 }

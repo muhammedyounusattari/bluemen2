@@ -49,8 +49,12 @@
                         <div class="form-group last mb-login txtAlign">
                             <mat-form-field class="example-full-width" appearance="fill">
                                 <mat-label>Password</mat-label>
-                                <input type="password" matInput value=""
+                                <input [type]="hide ? 'password' : 'text'" matInput value=""
                                     formControlName="password" required>
+                                    <mat-icon matSuffix (click)="hide = !hide">
+                                        <i *ngIf="!hide" class="fa fa-eye" id="eye-icon"></i>
+                                        <i *ngIf="hide" class="fa fa-eye-slash" id="eye-icon"></i>
+                                    </mat-icon>
                                 <!-- <mat-error *ngIf="!formGroup.controls['password'].valid">
                                     {{getError('pass')}}
                                 </mat-error> -->

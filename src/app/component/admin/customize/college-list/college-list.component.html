@@ -46,50 +46,136 @@
 
     <!-- Data Table Start-->
     <div class="mat-elevation-z8 data-table-height dt-max-height" *ngIf="!isLoading">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> College Name </th>
-                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.name}} </td>
-            </ng-container>
+        <form [formGroup]="CollegeForm" autocomplete="off">
+            <ng-container formArrayName="CollegeRows">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> College Name </th>
+                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
+                            <mat-form-field style="width: 70px;"
+                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
+                                <input matInput type="text" formControlName="name" [readonly]="true">
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
 
-            <ng-container matColumnDef="inPullDown">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> In Pulldown</th>
-                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.inPullDown ? 'YES' :
-                    'NO'}} </td>
+                    <ng-container matColumnDef="inPullDown">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> In Pulldown</th>
+                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
+                            <section class="example-section">
+                                <mat-checkbox formControlName="inPullDown" class="example-margin">
+                                    </mat-checkbox>
+                            </section>
+                            <!-- <mat-form-field style="width: 70px;"
+                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
+                                <input matInput type="text" formControlName="inPullDown"
+                                    [readonly]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable">
+                            </mat-form-field> -->
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="fafsaId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> FAFSA ID </th>
+                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
+                            <mat-form-field style="width: 70px;"
+                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
+                                <input matInput type="text" formControlName="fafsaId" [readonly]="true">
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="country">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> County Name</th>
+                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
+                            <mat-form-field style="width: 70px;"
+                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
+                                <input matInput type="text" formControlName="country"
+                                    [readonly]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable">
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="phone1">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 1 </th>
+                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
+                            <mat-form-field style="width: 70px;"
+                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
+                                <input matInput type="text" formControlName="phone1"
+                                    [readonly]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable">
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="phone2">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 2 </th>
+                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
+                            <mat-form-field style="width: 70px;"
+                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
+                                <input matInput type="text" formControlName="phone2"
+                                    [readonly]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable">
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="phone3">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 3 </th>
+                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
+                            <mat-form-field style="width: 70px;"
+                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
+                                <input matInput type="text" formControlName="phone3"
+                                    [readonly]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable">
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="fax">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> FAX </th>
+                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
+                            <mat-form-field style="width: 70px;"
+                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
+                                <input matInput type="text" formControlName="fax"
+                                    [readonly]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable">
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell *matCellDef="let collegeObj; let i = index" [formGroup]="collegeObj">
+                            <button mat-icon-button class="material-icons app-toolbar-menu save-button"
+                                matTooltip="Save Changes" (click)="saveVO(CollegeForm,i)"
+                                *ngIf="!CollegeForm.get('CollegeRows')?.value[i].isEditable" color="primary">
+                                <mat-icon>check_circle</mat-icon>
+                            </button>
+
+                            <button mat-icon-button class="material-icons app-toolbar-menu cancel-button"
+                                matTooltip="Cancel Changes" color="warn" (click)="cancelSVO(CollegeForm,i)"
+                                *ngIf="!CollegeForm.get('CollegeRows')?.value[i].isEditable">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+
+                            <button mat-icon-button class="material-icons app-toolbar-menu save-button"
+                                *ngIf="CollegeForm.get('CollegeRows')?.value[i].isEditable" matTooltip="Edit"
+                                color="primary" (click)="editSVO(CollegeForm,i)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+
+                            <button mat-icon-button class="material-icons app-toolbar-menu delete-button"
+                                *ngIf="CollegeForm.get('CollegeRows')?.value[i].isEditable"
+                                (click)="deleteRow(CollegeForm,i)" matTooltip="Delete" color="warn">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                    <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
+                        [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row.value, idx)">
+                    </tr>
+                </table>
             </ng-container>
-            <ng-container matColumnDef="fafsaId">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> FAFSA ID </th>
-                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.fafsaId}} </td>
-            </ng-container>
-            <ng-container matColumnDef="country">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Country Name </th>
-                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.country}} </td>
-            </ng-container>
-            <ng-container matColumnDef="phone1">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 1 </th>
-                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.phone1}} </td>
-            </ng-container>
-            <ng-container matColumnDef="phone2">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 2 </th>
-                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.phone2}} </td>
-            </ng-container>
-            <ng-container matColumnDef="phone3">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 3 </th>
-                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.phone3}} </td>
-            </ng-container>
-            <ng-container matColumnDef="fax">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> FAX </th>
-                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.fax}} </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-            <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
-                [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
-            </tr>
-        </table>
+        </form>
+        <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
+            <mat-progress-spinner color="primary" mode="indeterminate">
+            </mat-progress-spinner>
+        </mat-card>
     </div>
     <!-- Data Table End-->
 </div>
-        <mat-paginator [pageSize]="10"  [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+<mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
 
 <!-- Buttons Start-->
 <nav class="navbar navbar-expand-lg navbar-light bg-bottom">
@@ -145,7 +231,8 @@
                             <mat-form-field appearance="fill" class="mat-select-width">
                                 <mat-label>Name</mat-label>
                                 <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.name}}"
-                                    [(ngModel)]="collegeListEnum.name" [readonly]="isDisabled" [ngModelOptions]="{standalone: true}">
+                                    [(ngModel)]="collegeListEnum.name" [readonly]="isDisabled"
+                                    [ngModelOptions]="{standalone: true}">
                             </mat-form-field>
                             <section class="example-section">
                                 <mat-checkbox [(ngModel)]="collegeListEnum.inPullDown" class="example-margin">
@@ -184,7 +271,13 @@
                     <div class="col-md-12 form-group flex">
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Country</mat-label>
+                                <mat-label>County</mat-label>
+                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.country}"
+                                    [(ngModel)]="collegeListEnum.country" [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+
+                            <!-- <mat-form-field class="mat-select-width" appearance="fill">
+                                <mat-label>County</mat-label>
                                 <input matInput list="countries" placeholder="Ex. ABC"
                                     value="{{collegeListEnum.country}}" [(ngModel)]="collegeListEnum.country"
                                     [ngModelOptions]="{standalone: true}">
@@ -193,7 +286,7 @@
                             <datalist id="countries">
                                 <option *ngFor="let countryObj of countryList" [ngValue]="countryObj.name">
                                     {{countryObj.name}}</option>
-                            </datalist>
+                            </datalist> -->
 
                             <!-- <label for="usr">County:</label>
                             <input type="text" class="form-control" [(ngModel)]="collegeListEnum.country" id="country">
@@ -214,7 +307,7 @@
                             <!-- <label for="usr">State:</label>
                         <select class="form-control" id="state" [(ngModel)]="collegeListEnum.states">
                             <option selected>Maharashtra</option>
-                            <option>Goa</option>
+                            <option>Goa</option> 
                         </select> -->
                         </div>
                         <div class="form-group col-md-4">
@@ -253,7 +346,8 @@
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>FAFSA ID</mat-label>
                                 <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.fafsaId}}"
-                                    [(ngModel)]="collegeListEnum.fafsaId" [ngModelOptions]="{standalone: true}" [readonly]="isDisabled">
+                                    [(ngModel)]="collegeListEnum.fafsaId" [ngModelOptions]="{standalone: true}"
+                                    [readonly]="isDisabled">
                             </mat-form-field>
                             <!-- <label for="usr">FAFSA ID:</label>
                             <input type="text" class="form-control" id="fafsaId" [(ngModel)]="collegeListEnum.fafsaId"
@@ -373,7 +467,7 @@
         <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();">Update
             & Close</button>
         <button type="button" class="btn btn-secondary" id="closePopup"
-            (click)="selectedRowIndex = null; modalRef.hide();" data-bs-dismiss="modal">Cancel</button>
+            (click)="selectedRowIndex = null; modalRef.hide();selectedRow=null;" data-bs-dismiss="modal">Cancel</button>
     </div>
 </ng-template>
 <!-- Modal End-->

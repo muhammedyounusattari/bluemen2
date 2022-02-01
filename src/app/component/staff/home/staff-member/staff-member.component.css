@@ -1,12 +1,24 @@
 .marg-right-10 {
     margin-right: 10%;
 }
-.flex{
-    display: flex;
+.disp-content{
+    display: contents;
 }
 .example-full-width {
     width: 100% !important;
 }
 .mb-m-6{
     margin-bottom: -6%;
+}
+#Staff_Detail{
+    border-bottom: thick solid #0000FF;
+}
+.uploadImg{
+    position: absolute;
+    float: right;
+    right: 5%;
+    top: 12%;
+}
+.marg-left15{
+    margin-left: 15px;
 }

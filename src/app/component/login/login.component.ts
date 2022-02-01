@@ -17,11 +17,13 @@ export class LoginComponent implements OnInit {
   formGroup: FormGroup;
   isInvalidCredentials: boolean = false;
   isLoading: boolean = false;
+  hide: boolean = true;
 
   constructor(private _loginService: LoginService
     , private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.hide = true;
     this.createForm();
   }
 

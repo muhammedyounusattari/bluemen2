@@ -6,15 +6,14 @@
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                         <ul class="navbar-nav">
-                          <li class="nav-item dropdown grayleft" id="myDropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" >MY HOME</a>
-                                  <!--extra menu -->
-                                  <ul class="dropdown-menu">
-                                    <li> <a class="dropdown-item" href="#"> Home &raquo;</a>
+                                <!-- <li class="nav-item dropdown grayleft" id="myDropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">MY
+                                                HOME</a>
+                                        <ul class="dropdown-menu">
+                                                <li> <a class="dropdown-item" href="#"> Home &raquo;</a>
 
-                                      <ul class="submenu dropdown-menu" style="z-index: 10001;">
-
-                                      <li> <a class="dropdown-item" href="javascript:void(0)"
+                                                        <ul class="submenu dropdown-menu" style="z-index: 10001;">
+                                      <li> <a class="dr opdown-item" href="javascript:void(0)"
                                               (click)="navigateToComponent('logged-user')"> Show Logged User</a>
                                       </li>
                                       <li> <a class="dropdown-item" href="javascript:void(0)"
@@ -26,9 +25,35 @@
                                   </ul>
                                     </li>
                                   </ul>
-                                  <!--extra menu end -->
+                                                                <li> <a class="dropdown-item" href="javascript:void(0)"
+                                                                                (click)="navigateToComponent('logged-user')">
+                                                                                Show Logged User</a>
+                                                                </li>
+                                                                <li> <a class="dropdown-item" href="javascript:void(0)"
+                                                                                (click)="navigateToComponent('change-password')">
+                                                                                Change Password </a>
+                                                                </li>
+                                                        </ul>
+                                                </li>
+                                        </ul>
+                                </li> -->
+                                <li class="nav-item dropdown" id="myHomeDDL">
+                                        <button class="nav-link dropdown-toggle" mat-button
+                                                [matMenuTriggerFor]="homeModule">MY HOME</button>
+                                        <mat-menu #homeModule="matMenu">
+                                                <button mat-menu-item [matMenuTriggerFor]="myHomeList">HOME</button>
+                                        </mat-menu>
+                                        <mat-menu #myHomeList="matMenu">
+                                                <button mat-menu-item (click)="navigateToComponent('change-password')">
+                                                        CHANGE PASSWORD</button>
+                                                <button mat-menu-item (click)="navigateToComponent('logged-user')">
+                                                        SHOW LOGGED USERS</button>
+                                                <button mat-menu-item (click)="navigateToComponent('time-clock')"> Time
+                                                        Clock </button>
+                                        </mat-menu>
                                 </li>
-                                <li class="nav-item dropdown" id="myDropdown">
+
+                                <!-- <li class="nav-item dropdown" id="myDropdown">
                                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"> STUDENT
                                         </a>
                                         <ul class="dropdown-menu">
@@ -154,9 +179,90 @@
                                                         </ul>
                                                 </li>
                                         </ul>
+                                </li> -->
+
+                                <li class="nav-item dropdown" id="studentDDL">
+                                        <button class="nav-link dropdown-toggle" mat-button
+                                                [matMenuTriggerFor]="studentModule">STUDENT</button>
+                                        <mat-menu #studentModule="matMenu">
+                                                <button mat-menu-item
+                                                        [matMenuTriggerFor]="contactsList">CONTACTS</button>
+                                                <button mat-menu-item [matMenuTriggerFor]="dataEntryList">DATA
+                                                        ENTRY</button>
+                                                <button mat-menu-item
+                                                        [matMenuTriggerFor]="studentHomeList">HOME</button>
+                                                <button mat-menu-item [matMenuTriggerFor]="logsList">LOGS</button>
+                                        </mat-menu>
+                                        <mat-menu #studentHomeList="matMenu">
+                                                <button mat-menu-item>ASSET/INVENTORY MANAGEMENT</button>
+                                                <button mat-menu-item>DEMOGRAPHIC INFORMATION</button>
+                                                <button mat-menu-item>PERSONLIZED LETTERS</button>
+                                                <button mat-menu-item>SEND BULD E-MAILS</button>
+                                                <button mat-menu-item>SEND BULK TEXT MESSAGES</button>
+                                                <button mat-menu-item>STUDENT DATA</button>
+                                        </mat-menu>
+                                        <mat-menu #dataEntryList="matMenu">
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('graduated')">GRADUATED</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('semester-courses')">SEMESTER AND
+                                                        COURSES</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('fiscal-year-financial-aid')">FISCAL
+                                                        YEAR AND FINANCIAL AID</button>
+                                        </mat-menu>
+                                        <mat-menu #contactsList="matMenu">
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('counselor-contacts')">COUNSELOR
+                                                        CONTACTS</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('display-counselor-contacts')">DISPLAY
+                                                        COUNSELOR CONTACTS REMINDER</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('display-staff-contacts')">DISPLAY
+                                                        STAFF CONTACTS REMINDER</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('display-teacher-contacts')">DISPLAY
+                                                        TEACHER CONTACTS REMINDER</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('display-tutor-contacts')">DISPLAY
+                                                        TUTOR CONTACTS REMINDER</button>
+                                                <button mat-menu-item (click)="navigateToComponent('lab-contacts')">LAB
+                                                        CONTACTS</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('staff-contacts')">STAFF
+                                                        CONTACTS</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('teacher-contacts')">TTEACHER
+                                                        CONTACTS</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('tutor-contacts')">TUTOR
+                                                        CONTACTS</button>
+                                        </mat-menu>
+                                        <mat-menu #logsList="matMenu">
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('attendance-log')">ATTENDANCE
+                                                        LOG</button>
+                                                <button mat-menu-item>BOT FORM SUBMISSION LOG</button>
+                                                <button mat-menu-item (click)="navigateToComponent('exams-logs')">EXAMS
+                                                        LOG</button>
+                                                <button mat-menu-item (click)="navigateToComponent('notes-logs')">NOTES
+                                                        LOG</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('stipend-logs')">STIPEND
+                                                        LOG</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('text-message-logs')">TEXT MESSAGE
+                                                        LOG</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('text-message-replies')">TEXT
+                                                        MESSAGE REPLIES</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('wallet-logs')">WALLET</button>
+                                        </mat-menu>
                                 </li>
 
-                                <li class="nav-item dropdown" id="myDropdown">
+                                <!-- <li class="nav-item dropdown" id="myDropdown">
                                         <a class="nav-link dropdown-toggle" href="#"
                                                 data-bs-toggle="dropdown">UTILITIES</a>
                                         <ul class="dropdown-menu">
@@ -260,6 +366,72 @@
                                                 <li> <a class="dropdown-item" href="#"> Generate Contats &raquo;</a>
                                                 </li>
                                         </ul>
+                                </li> -->
+
+                                <li class="nav-item dropdown" id="studentDDL">
+                                        <button class="nav-link dropdown-toggle" mat-button
+                                                [matMenuTriggerFor]="utilityModule">UTILITIES</button>
+                                        <mat-menu #utilityModule="matMenu">
+                                                <button mat-menu-item [matMenuTriggerFor]="addToList">ADD
+                                                        TO</button>
+                                                <button mat-menu-item>GENERATE CONTACTS</button>
+                                                <button mat-menu-item>GENERATE SCHEDULE</button>
+                                                <button mat-menu-item [matMenuTriggerFor]="genSimillarList">GENERATE
+                                                        SIMILLAR</button>
+                                                <button mat-menu-item
+                                                        [matMenuTriggerFor]="utilityHomeList">HOME</button>
+                                                <button mat-menu-item [matMenuTriggerFor]="quickEditList">QUICK
+                                                        EDIT</button>
+                                        </mat-menu>
+                                        <mat-menu #utilityHomeList="matMenu">
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('change-ssno')">CNANGE
+                                                        SSNO</button>
+                                                <button mat-menu-item (click)="navigateToComponent('nsch')">NATIONAL
+                                                        STUDENT CLEARINGHOUSE DATA INTERFACE</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('quick-change-wizard')">QUICK
+                                                        CHANGE WIZARD</button>
+                                        </mat-menu>
+                                        <mat-menu #addToList="matMenu">
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('graduated-list')">GRADUATED
+                                                        LIST</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('semester')">SEMESTER</button>
+
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('fiscal-year')">FISCAL
+                                                        YEAR</button>
+                                        </mat-menu>
+                                        <mat-menu #quickEditList="matMenu">
+                                                <button mat-menu-item>COURSES INFORMATION</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('semester-gpa-info')">SEMESTER
+                                                        AND GPA INFORMATION</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('student-demographic-info')">STUDENT
+                                                        DEMOGRAPHIC INFORMATION</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('yearly-financial-aid-info')">YEARLY
+                                                        AND FINANCIAL AID INFORMATION</button>
+                                        </mat-menu>
+
+                                        <mat-menu #genSimillarList="matMenu">
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('gs-attendance-logs')">ATTENDANCE
+                                                        LOG</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('custom-field-value')">CUSTOM
+                                                        FIELD VALUE</button>
+                                                <button mat-menu-item>EXAMS LOG</button>
+                                                <button mat-menu-item>NOTES LOG</button>
+                                                <button mat-menu-item>STIPEND LOG</button>
+                                                <button mat-menu-item>WALLET</button>
+                                                <button mat-menu-item>YEARLY INFORMATION(ACTIVITIES)</button>
+                                                <button mat-menu-item>YEARLY INFORMATION(END STATUS)</button>
+                                                <button mat-menu-item>YEARLY INFORMATION(WALLET)</button>
+                                        </mat-menu>
                                 </li>
 
                                 <li class="nav-item">
@@ -270,334 +442,126 @@
                                         <button class="nav-link dropdown-toggle" mat-button
                                                 [matMenuTriggerFor]="adminModule">ADMIN</button>
                                         <mat-menu #adminModule="matMenu">
-                                                <button mat-menu-item [matMenuTriggerFor]="homeMenuList">Home</button>
+                                                <button mat-menu-item [matMenuTriggerFor]="homeMenuList">HOME</button>
                                                 <button mat-menu-item
-                                                        [matMenuTriggerFor]="customizeMenuList">Customize</button>
-                                                <button mat-menu-item [matMenuTriggerFor]="systemToolList">System
-                                                        Tools</button>
+                                                        [matMenuTriggerFor]="customizeMenuList">CUSTOMIZE</button>
+                                                <button mat-menu-item [matMenuTriggerFor]="systemToolList">SYSTEM
+                                                        TOOLS</button>
                                         </mat-menu>
                                         <mat-menu #homeMenuList="matMenu">
-                                                <button mat-menu-item>BOT Form
-                                                        Management</button>
+                                                <button mat-menu-item>BOT FORM MANAGEMENT</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('config-settings')">Config
-                                                        Settings</button>
-                                                <button mat-menu-item>E-Mail Setup</button>
-                                                <button mat-menu-item>Roles</button>
+                                                        (click)="navigateToComponent('config-settings')">CONFIG
+                                                        SETTINGS</button>
+                                                <button mat-menu-item>E-MAIL SETUP</button>
+                                                <button mat-menu-item>ROLES</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('system-preferences')">System
-                                                        Preferences</button>
+                                                        (click)="navigateToComponent('system-preferences')">SYSTEM
+                                                        PREFERENCES</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('user-names-pwd')">User Names And
-                                                        Passwords</button>
+                                                        (click)="navigateToComponent('user-names-pwd')">USER NAMES AND
+                                                        PASSWORDS</button>
                                         </mat-menu>
                                         <mat-menu #customizeMenuList="matMenu">
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('service-group-list')">Activity/Service
-                                                        List</button>
-                                                <button mat-menu-item [matMenuTriggerFor]="classes">Classes</button>
+                                                        (click)="navigateToComponent('service-group-list')">ACTIVITY/SERVICE
+                                                        LIST</button>
+                                                <button mat-menu-item [matMenuTriggerFor]="classes">CLASSES</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('college-list')">College/School
-                                                        List</button>
-                                                <button mat-menu-item [matMenuTriggerFor]="contacts">Contacts</button>
+                                                        (click)="navigateToComponent('college-list')">COLLEGE/SCHOOL
+                                                        LIST</button>
+                                                <button mat-menu-item [matMenuTriggerFor]="contacts">CONTACTS</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('custom-fields')">Custom
-                                                        Fields Values</button>
+                                                        (click)="navigateToComponent('custom-fields')">CUSTOM FIELD
+                                                        VALUES</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('grade-group-list')">Grade/Standing
-                                                        List</button>
-                                                <button mat-menu-item (click)="navigateToComponent('lab-settings')">Lab
-                                                        Setting Preferences</button>
+                                                        (click)="navigateToComponent('grade-group-list')">GRADE/STANDING
+                                                        LIST</button>
+                                                <button mat-menu-item (click)="navigateToComponent('lab-settings')">LAB
+                                                        SETTING PREFERENCES</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('pulldown-list')">Pulldown
-                                                        List</button>
-                                                <button mat-menu-item>Roles</button>
+                                                        (click)="navigateToComponent('pulldown-list')">PULLDOWN
+                                                        LIST</button>
+                                                <button mat-menu-item>ROLES</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('staff-members')">Staff
-                                                        Members</button>
+                                                        (click)="navigateToComponent('staff-members')">STAFF
+                                                        MEMBERS</button>
                                         </mat-menu>
                                         <mat-menu #classes="matMenu">
-                                                <button mat-menu-item [matMenuTriggerFor]="manageClasses">Manage Classes
+                                                <button mat-menu-item [matMenuTriggerFor]="manageClasses">MANAGE CLASSES
                                                 </button>
 
-                                                <button mat-menu-item [matMenuTriggerFor]="assignStudents">Assign
-                                                        Student(s)</button>
+                                                <button mat-menu-item [matMenuTriggerFor]="assignStudents">ASSIGN
+                                                        STUDENT(S)</button>
                                         </mat-menu>
                                         <mat-menu #manageClasses="matMenu">
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('counselors-classes')">Counselor
-                                                        Classes</button>
-                                                <button mat-menu-item (click)="navigateToComponent('staff-classes')">Staff
-                                                        Classes</button>
+                                                        (click)="navigateToComponent('counselors-classes')">COUNSELOR
+                                                        CLASSES</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('teacher-classes')">Teacher
-                                                        Classes</button>
+                                                        (click)="navigateToComponent('staff-classes')">STAFF
+                                                        CLASSES</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('tutor-classes')">Tutor
-                                                        Classes</button>
+                                                        (click)="navigateToComponent('teacher-classes')">TEACHER
+                                                        CLASSES</button>
+                                                <button mat-menu-item
+                                                        (click)="navigateToComponent('tutor-classes')">TUTOR
+                                                        CLASSES</button>
                                         </mat-menu>
 
                                         <mat-menu #contacts="matMenu">
-                                                <button mat-menu-item (click)="navigateToComponent('Contacts')">Bolt
-                                                        Contacts</button>
-                                                <button mat-menu-item (click)="navigateToComponent('lab-contacts')">Lab
-                                                        Contacts</button>
+                                                <button mat-menu-item (click)="navigateToComponent('Contacts')">BOT
+                                                        CONTACTS</button>
+                                                <button mat-menu-item (click)="navigateToComponent('lab-contacts')">LAB
+                                                        CONTACTS</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('counselor-contacts')">Counselor
-                                                        Contacts</button>
+                                                        (click)="navigateToComponent('counselor-contacts')">COUNSELOR
+                                                        CONTACTS</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('staff-contacts')">Staff
-                                                        Contacts</button>
+                                                        (click)="navigateToComponent('staff-contacts')">STAFF
+                                                        CONTACTS</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('teacher-contacts')">Teacher
-                                                        Contacts</button>
+                                                        (click)="navigateToComponent('teacher-contacts')">TEACHER
+                                                        CONTACTS</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('tutor-contacts')">Tutor
-                                                        Contacts</button>
+                                                        (click)="navigateToComponent('tutor-contacts')">TUTOR
+                                                        CONTACTS</button>
                                         </mat-menu>
                                         <mat-menu #assignStudents="matMenu">
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('assign-student-counselor-classes')">Assign
-                                                        Student(s) To Counselor
-                                                        Classes</button>
+                                                        (click)="navigateToComponent('assign-student-counselor-classes')">ASSIGN
+                                                        STUDENT(S) TO COUNSELOR CLASSES</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('assign-student-staff-classes')">Assign
-                                                        Student(s) To Staff
-                                                        Classes</button>
+                                                        (click)="navigateToComponent('assign-student-staff-classes')">ASSIGN
+                                                        STUDENT(S) TO STAFF CLASSES</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('assign-student-teacher-classes')">Assign
-                                                        Student(s) To Teacher
-                                                        Classes</button>
+                                                        (click)="navigateToComponent('assign-student-teacher-classes')">ASSIGN
+                                                        STUDENT(S) TO TEACHER CLASSES</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('assign-student-tutor-classes')">Assign
-                                                        Student(s) To Tutor
-                                                        Classes</button>
+                                                        (click)="navigateToComponent('assign-student-tutor-classes')">ASSIGN
+                                                        STUDENT(S) TO TUTOR CLASSES</button>
                                         </mat-menu>
                                         <mat-menu #systemToolList="matMenu">
-                                                <button mat-menu-item>Delete
-                                                        Students</button>
+                                                <button mat-menu-item>DELETE STUDENT(S)</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('recall-students')">Recall
-                                                        Students</button>
+                                                        (click)="navigateToComponent('recall-students')">RECALL
+                                                        STUDENT(S)</button>
                                                 <button mat-menu-item
-                                                        (click)="navigateToComponent('time-clock-manager')">Time
-                                                        Clock Manager</button>
-                                                <button mat-menu-item>Update Age</button>
-                                                <button mat-menu-item>Update GPA'S</button>
-                                                <button mat-menu-item>Upgrade Fiscal
-                                                        Year</button>
+                                                        (click)="navigateToComponent('time-clock-manager')">TIME CLOCK
+                                                        MANAGER</button>
+                                                <button mat-menu-item>UPDATE AGE</button>
+                                                <button mat-menu-item>UPDATE GPA'S</button>
+                                                <button mat-menu-item>UPGRADE FISCAL YEAR</button>
                                         </mat-menu>
                                 </li>
 
                                 <li class="nav-item">
                                         <a class="nav-link" href="#">APR</a>
                                 </li>
-                                <!-- <li class="nav-item dropdown" id="adminDDL">
-                                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">ADMIN</a>
-                                        <ul class="dropdown-menu">
-                                                <li> <a class="dropdown-item" href="javascript:void(0)"> Home &raquo;
-                                                        </a>
-                                                        <ul class="submenu-left dropdown-menu" style="z-index: 10001;">
-                                                                <li><a class="dropdown-item"
-                                                                                href="javascript:void(0)">BOT Form
-                                                                                Management</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('config-settings')">Config
-                                                                                Settings</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item"
-                                                                                href="javascript:void(0)">E-Mail
-                                                                                Setup</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item"
-                                                                                href="javascript:void(0)">Roles</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('system-preferences')">System
-                                                                                Preferences</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('user-names-pwd')">User
-                                                                                Names And Passwords</a>
-                                                                </li>
-                                                        </ul>
-                                                </li>
-                                                <li> <a class="dropdown-item" href="javascript:void(0)"> Customize
-                                                                &raquo; </a>
-                                                        <ul class="submenu-left dropdown-menu" style="z-index: 10001;">
-
-
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('staff-members')">Staff
-                                                                                Members</a></li>
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('lab-contacts')">Contacts
-                                                                                &raquo;</a>
-
-                                                                        <ul class="submenu-left dropdown-menu"
-                                                                                style="z-index: 10001;">
-                                                                                <li><a class="dropdown-item"
-                                                                                                href="javascript:void(0)"
-                                                                                                (click)="navigateToComponent('Contacts')">Bolt
-                                                                                                Contacts</a>
-                                                                                </li>
-                                                                                <li><a class="dropdown-item"
-                                                                                                href="javascript:void(0)"
-                                                                                                (click)="navigateToComponent('lab-contacts')">Lab
-                                                                                                Contacts</a>
-                                                                                </li>
-                                                                                <li><a class="dropdown-item"
-                                                                                                href="javascript:void(0)"
-                                                                                                (click)="navigateToComponent('counselor-contacts')">Counselor
-                                                                                                Contacts</a>
-                                                                                </li>
-                                                                                <li><a class="dropdown-item"
-                                                                                                href="javascript:void(0)"
-                                                                                                (click)="navigateToComponent('staff-contacts')">Staff
-                                                                                                Contacts</a>
-                                                                                </li>
-                                                                                <li><a class="dropdown-item"
-                                                                                                href="javascript:void(0)"
-                                                                                                (click)="navigateToComponent('teacher-contacts')">Teacher
-                                                                                                Contacts</a>
-                                                                                </li>
-                                                                                <li><a class="dropdown-item"
-                                                                                                href="javascript:void(0)"
-                                                                                                (click)="navigateToComponent('tutor-contacts')">Tutor
-                                                                                                Contacts</a>
-                                                                                </li>
-                                                                        </ul>
-                                                                </li>
-
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('service-group-list')">Classes
-                                                                                &raquo;</a>
-                                                                        <ul class="submenu-left dropdown-menu"
-                                                                                style="z-index: 10001;">
-
-                                                                                <li><a class="dropdown-item"
-                                                                                                href="javascript:void(0)"
-                                                                                                (click)="navigateToComponent('assign-student-teacher-class')">Manage
-                                                                                                Classes &raquo;</a>
-
-                                                                                        <ul class="submenu-left dropdown-menu"
-                                                                                                style="z-index: 10001;">
-
-
-                                                                                                <li><a class="dropdown-item"
-                                                                                                                href="javascript:void(0)"
-                                                                                                                (click)="navigateToComponent('counselors-classes')">Counselor
-                                                                                                                Classes</a>
-                                                                                                </li>
-                                                                                                <li><a class="dropdown-item"
-                                                                                                                href="javascript:void(0)"
-                                                                                                                (click)="navigateToComponent('Staff')">Staff
-                                                                                                                Classes</a>
-                                                                                                </li>
-                                                                                                <li><a class="dropdown-item"
-                                                                                                                href="javascript:void(0)"
-                                                                                                                (click)="navigateToComponent('tutor-classes')">Tutor
-                                                                                                                Classes</a>
-                                                                                                </li>
-                                                                                                <li><a class="dropdown-item"
-                                                                                                                href="javascript:void(0)"
-                                                                                                                (click)="navigateToComponent('teacher-classes')">Teacher
-                                                                                                                Classes</a>
-                                                                                                </li>
-                                                                                        </ul>
-
-                                                                                </li>
-
-                                                                                <li><a class="dropdown-item"
-                                                                                                href="javascript:void(0)"
-                                                                                                (click)="navigateToComponent('assign-tutor-student-class')">Assign
-                                                                                                Students &raquo;</a>
-                                                                                        <ul class="submenu-left dropdown-menu"
-                                                                                                style="z-index: 10001;">
-                                                                                                <li><a class="dropdown-item"
-                                                                                                                href="javascript:void(0)"
-                                                                                                                (click)="navigateToComponent('counselor-contacts')">Counselor
-                                                                                                                Classes</a>
-                                                                                                </li>
-                                                                                                <li><a class="dropdown-item"
-                                                                                                                href="javascript:void(0)"
-                                                                                                                (click)="navigateToComponent('staff-contacts')">Staff
-                                                                                                                Classes</a>
-                                                                                                </li>
-                                                                                                <li><a class="dropdown-item"
-                                                                                                                href="javascript:void(0)"
-                                                                                                                (click)="navigateToComponent('assign-tutor-student-class')">Tutor
-                                                                                                                Classes</a>
-                                                                                                </li>
-                                                                                                <li><a class="dropdown-item"
-                                                                                                                href="javascript:void(0)"
-                                                                                                                (click)="navigateToComponent('assign-tutor-student-class')">Teacher
-                                                                                                                Classes</a>
-                                                                                                </li>
-                                                                                        </ul>
-                                                                                </li>
-
-                                                                        </ul>
-                                                                </li>
-
-
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('service-group-list')">Activity/Service
-                                                                                List</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('college-list')">College/School
-                                                                                List</a></li>
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('custom-fields')">Custom
-                                                                                Fields Values</a></li>
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('grade-group-list')">Grade/Standing
-                                                                                List</a></li>
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('lab-settings')">Lab
-                                                                                Setting Preferences</a></li>
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('pulldown-list')">Pulldown
-                                                                                List </a>
-                                                                </li>
-                                                        </ul>
-                                                </li>
-                                                <li> <a class="dropdown-item" href="javascript:void(0)"> System Tools
-                                                                &raquo; </a>
-                                                        <ul class="submenu-left dropdown-menu">
-                                                                <li><a class="dropdown-item"
-                                                                                href="javascript:void(0)">Delete
-                                                                                Students</a></li>
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('recall-students')">Recall
-                                                                                Students</a></li>
-                                                                <li><a class="dropdown-item" href="javascript:void(0)"
-                                                                                (click)="navigateToComponent('time-clock-manager')">Time
-                                                                                Clock Manager </a>
-                                                                </li>
-                                                                <li><a class="dropdown-item"
-                                                                                href="javascript:void(0)">Update Age</a>
-                                                                </li>
-                                                                <li><a class="dropdown-item"
-                                                                                href="javascript:void(0)">Update GPA'S
-                                                                        </a>
-                                                                </li>
-                                                                <li><a class="dropdown-item"
-                                                                                href="javascript:void(0)">Upgrade Fiscal
-                                                                                Year </a>
-                                                                </li>
-                                                        </ul>
-                                                </li>
-                                        </ul>
-                                </li> -->
 
                                 <li class="nav-item">
                                         <a class="nav-link" href="#">PE POINTS</a>
                                 </li>
-
-
                         </ul>
                 </div>
         </div>
