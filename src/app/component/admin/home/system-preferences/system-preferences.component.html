@@ -1,4 +1,6 @@
-<div class="container-fluid mt-3" style="background:#EFF4F8;">
+
+<div class="main-container">
+<div class="container-fluid" style="background:#EFF4F8;">
   <div class="row bg-white">
     <div class="col-md-12">
       <h3>Set System Preferences</h3>
@@ -257,22 +259,36 @@
                         </div>
 
                         <div class="form-group mt-3">
-                          <label for="usr" class="text-danger">Funded To Serve</label>
-                          <input type="text" class="form-control" id="usr"
-                                 [(ngModel)]="annualPerformance.fundedToServe">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="usr" class="text-danger" >Funded To Serve</label>
+                         
+                            </div>
+                            <div class="col-md-6"> <input type="text" style="color: #000!important;" class="form-control" id="usr"
+                              [(ngModel)]="annualPerformance.fundedToServe"></div>
+
+                            
+                          </div>
 
                         </div>
 
+
+
+
+
                         <div class="form-group mt-3">
-                          <label for="usr" class="text-danger">Funded To Serve Ratio Threshold</label>
-                          <input type="text" class="form-control" id="usr"
-                                 [(ngModel)]="annualPerformance.fundToServeRatioThreshould" class="text-danger">%
+                          <div class="row"><div class="col-6"> <label for="usr" class="text-danger">Funded To Serve Ratio Threshold</label></div><div class="col-4">          
+                            <input type="text" style="color: #000!important;" class="form-control" id="usr"
+                                   [(ngModel)]="annualPerformance.fundToServeRatioThreshould" ></div><div class="col-2">%</div></div>
+                          
+               
 
                         </div>
                         <div class="form-group mt-3">
-                          <label for="usr" class="text-danger">To</label>
-                          <input type="text" class="form-control" id="usr"
-                                 [(ngModel)]="annualPerformance.fundToServeRatioThreshouldTo" class="text-danger">%
+                          <div class="row"><div class="col-6"> <label for="usr" class="text-danger">To</label></div><div class="col-4">  <input type="text" style="color: #000!important;"  class="form-control" id="usr"
+                            [(ngModel)]="annualPerformance.fundToServeRatioThreshouldTo" ></div><div class="col-2">%</div></div>
+                         
+                        
 
                         </div>
                       </div>
@@ -405,119 +421,119 @@
               </td>
             </tr>
 
-            <tr>
-              <td>
-                <table align="center" style="width: 60%">
-                  <tbody>
-                  <tr>
-                    <td style="width: 150px">
-                      GPA Scale:
-                    </td>
-                    <td>
-                      <div id="ctl00_head_cmbGpa_cbPulldown"
-                           class="RadComboBox RadComboBox_Office2007"
-                           style="white-space:normal;">
-                        <table summary="combobox"
-                               style="border-width:0;border-collapse:collapse;width:100%">
-                          <tbody>
-                          <tr>
-                            <td class="rcbInputCell rcbInputCellLeft"
-                                style="width:100%;">
-                              <select class="form-control"
-                                      [(ngModel)]="defaultSettingTab.gpaScale"
-                                      id="gpaScale">
-                                <option value= "1" selected>Select</option>
-                                <option value= "1" selected>4 Point Scale | 1</option>
-                                <option value= "2" selected>5 Point Scale | 2</option>
-                                <option value= "3" selected>No Response/Unknown | 0</option>
-                                <option value= "4" selected>Other | 3</option>
-                              </select>
-                            </td>
-
-                          </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="width: 94px">
-                      State Test:
-                    </td>
-                    <td>
-                      <div id="ctl00_head_cmbStateTest_cbPulldown"
-                           class="RadComboBox RadComboBox_Office2007"
-                           style="white-space:normal;">
-                        <table summary="combobox"
-                               style="border-width:0;border-collapse:collapse;width:100%">
-                          <tbody>
-                          <tr>
-                            <td class="rcbInputCell rcbInputCellLeft"
-                                style="width:100%;">
-
-                              <select class="form-control"
-                                      [(ngModel)]="defaultSettingTab.stateTest"
-                                      id="gpaScale">
-                                <option selected>   | 1</option>
-                                <option selected> | 2</option>
-                              </select>
-                            </td>
-
-                          </tr>
-                          </tbody>
-                        </table><input
-                        id="ctl00_head_cmbStateTest_cbPulldown_ClientState"
-                        name="ctl00_head_cmbStateTest_cbPulldown_ClientState"
-                        type="hidden" autocomplete="off">
-                      </div>
-
-
-
-
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="width: 94px">
-                      Age Calculator:
-                    </td>
-                    <td>
-                                                    <span id="ctl00_head_rtbAgeCal_wrapper"
-                                                        class="riSingle RadInput RadInput_Default"><input
-                                                            id="ctl00_head_rtbAgeCal" name="ctl00$head$rtbAgeCal"
-                                                            size="34" [(ngModel)]="defaultSettingTab.ageCalculator"
-                                                            class="riTextBox riEnabled" value="09/01" type="text"><input
-                                                      id="ctl00_head_rtbAgeCal_ClientState"
-                                                      name="ctl00_head_rtbAgeCal_ClientState" type="hidden"
-                                                      autocomplete="off"
-                                                      value="{&quot;enabled&quot;:true,&quot;emptyMessage&quot;:&quot;&quot;,&quot;validationText&quot;:&quot;09/01&quot;,&quot;valueAsString&quot;:&quot;09/01&quot;,&quot;lastSetTextBoxValue&quot;:&quot;09/01&quot;}"></span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="width: 94px">
-                      Site Location:
-                    </td>
-                    <td>
-                                                    <span id="ctl00_head_rdtxtSiteLocation_wrapper"
-                                                        class="riSingle RadInput RadInput_Default"><input
-                                                            id="ctl00_head_rdtxtSiteLocation"
-                                                            name="ctl00$head$rdtxtSiteLocation" size="34"
-                                                            [(ngModel)]="defaultSettingTab.siteLocation"
-                                                            class="riTextBox riDisabled" disabled="disabled" value="Off"
-                                                            type="text"><input
-                                                      id="ctl00_head_rdtxtSiteLocation_ClientState"
-                                                      name="ctl00_head_rdtxtSiteLocation_ClientState"
-                                                      type="hidden"
-                                                      value="{&quot;enabled&quot;:false,&quot;emptyMessage&quot;:&quot;&quot;,&quot;validationText&quot;:&quot;Off&quot;,&quot;valueAsString&quot;:&quot;Off&quot;,&quot;lastSetTextBoxValue&quot;:&quot;Off&quot;}"
-                                                      autocomplete="off"></span>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-
             </tbody>
           </table>
+          <div style="width: 858px;   margin-left: 300px;"> 
+            <table   class="tabletd" >
+              <tbody>
+              <tr>
+                <td style="width: 150px">
+                  GPA Scale:
+                </td>
+                <td>
+                  <div >
+                    <table summary="combobox"
+                           style="width:40%">
+                      <tbody>
+                      <tr>
+                        <td 
+                            >
+                          <select class="form-control"
+                                  [(ngModel)]="defaultSettingTab.gpaScale"
+                                  id="gpaScale" style="margin-left: -2px;">
+                            <option value= "1" selected>Select</option>
+                            <option value= "1" selected>4 Point Scale | 1</option>
+                            <option value= "2" selected>5 Point Scale | 2</option>
+                            <option value= "3" selected>No Response/Unknown | 0</option>
+                            <option value= "4" selected>Other | 3</option>
+                          </select>
+                        </td>
+
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 150px">
+                  State Test:
+                </td>
+                <td>
+                  <div>
+                    <table summary="combobox"
+                           style="width:40%; margin-left: -2px;">
+                      <tbody>
+                      <tr>
+                        <td>
+
+                          <select class="form-control"
+                                  [(ngModel)]="defaultSettingTab.stateTest"
+                                  id="gpaScale">
+                            <option selected>   | 1</option>
+                            <option selected> | 2</option>
+                          </select>
+                        </td>
+
+                      </tr>
+                      </tbody>
+                    </table><input
+                    id="ctl00_head_cmbStateTest_cbPulldown_ClientState"
+                    name="ctl00_head_cmbStateTest_cbPulldown_ClientState"
+                    type="hidden" autocomplete="off">
+                  </div>
+
+
+
+
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 94px">
+                  Age Calculator:
+                </td>
+                <td>
+                                                <span ><input
+                                                        id="ctl00_head_rtbAgeCal" name="ctl00$head$rtbAgeCal" style=" margin-left: 3px;
+                                                        width: 268px;
+                                                        border-radius: 3px;
+                                                        border: 1px solid #ced4da;
+                                                        height: 34px;"
+                                                        size="34" [(ngModel)]="defaultSettingTab.ageCalculator"
+                                                        class="riTextBox riEnabled" value="09/01" type="text"><input
+                                                 
+                                                  name="ctl00_head_rtbAgeCal_ClientState" type="hidden"
+                                                  autocomplete="off"
+                                                  value="{&quot;enabled&quot;:true,&quot;emptyMessage&quot;:&quot;&quot;,&quot;validationText&quot;:&quot;09/01&quot;,&quot;valueAsString&quot;:&quot;09/01&quot;,&quot;lastSetTextBoxValue&quot;:&quot;09/01&quot;}"></span>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 94px">
+                  Site Location:
+                </td>
+                <td>
+                                                <span id="ctl00_head_rdtxtSiteLocation_wrapper"
+                                                    class="riSingle RadInput RadInput_Default"><input style=" margin-left: 3px;
+                                                        width: 268px;
+                                                        border-radius: 3px;
+                                                        border: 1px solid #ced4da;
+                                                        height: 34px;"
+                                                        id="ctl00_head_rdtxtSiteLocation"
+                                                        name="ctl00$head$rdtxtSiteLocation" size="34"
+                                                        [(ngModel)]="defaultSettingTab.siteLocation"
+                                                        class="riTextBox riDisabled" disabled="disabled" value="Off"
+                                                        type="text"><input
+                                                  id="ctl00_head_rdtxtSiteLocation_ClientState"
+                                                  name="ctl00_head_rdtxtSiteLocation_ClientState"
+                                                  type="hidden"
+                                                  value="{&quot;enabled&quot;:false,&quot;emptyMessage&quot;:&quot;&quot;,&quot;validationText&quot;:&quot;Off&quot;,&quot;valueAsString&quot;:&quot;Off&quot;,&quot;lastSetTextBoxValue&quot;:&quot;Off&quot;}"
+                                                  autocomplete="off"></span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
         </div>
       </div>
     </div>
@@ -526,4 +542,5 @@
       <button type="button" class="btn btn-primary" (click)="addSystemPreferences()">Save & Close</button>
     </div>
   </div>
+</div>
 </div>

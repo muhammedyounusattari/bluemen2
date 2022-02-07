@@ -1,4 +1,4 @@
-<div class="container-fluid mt-3" style="background:#EFF4F8;">
+<div class="container-fluid " style="background:#EFF4F8;">
   <!-- Full Screen Loader Start -->
   <div id="loading"></div>
   <!-- Full Screen Loader End -->
@@ -26,7 +26,7 @@
   <!-- Spinner End-->
 
   <!-- Data Table Start-->
-  <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading">
+  <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading" style="margin-right: 6px;">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
 
       <ng-container matColumnDef="id">
@@ -99,7 +99,7 @@
       </tr>
     </table>
   </div>
-  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"  style="margin-right: 6px;"></mat-paginator>
 
 
   <div class="no-record">
@@ -113,7 +113,7 @@
 
 
 
-  <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
+  <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5; margin-right: 6px;">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
         aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">

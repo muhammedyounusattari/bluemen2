@@ -18,8 +18,8 @@ export class Config {
 
     return new HttpHeaders({
       "Content-Type": "application/json; charset=utf-8",
-      Accept: "application/json" /*,
-           'Authorization': 'Bearer '+ access_token */,
+       "Accept": "application/json" ,
+      'Authorization': 'Bearer '+ access_token
     });
   }
 }

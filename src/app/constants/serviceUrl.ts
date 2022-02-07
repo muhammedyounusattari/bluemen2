@@ -219,8 +219,8 @@ export class ServiceUrls {
     // public static GET_PULL_DOWN_LIST_BASED_ON_TYPE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/';
     public static GET_PULL_DOWN_LIST_BASED_ON_CODE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/';
     // PULL DOWN STATE
-    public static GET_PULLDOWN_STATE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/State';
+    public static GET_PULLDOWN_STATE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/142';
     // PULL DOWN CITY
-    public static GET_PULLDOWN_CITY = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/City';
+    public static GET_PULLDOWN_CITY = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/39';
 
 }
