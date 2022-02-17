@@ -12,7 +12,6 @@ const routes: Routes = [
     path: 'home/change-password',
     component: ChangePasswordComponent
    }
-
 ];
 
 @NgModule({

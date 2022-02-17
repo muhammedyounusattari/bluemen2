@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { ActivityGroupServicesService } from '../../../../services/admin/activity-group-services.service';
@@ -18,7 +18,7 @@ import { ValidationClass } from 'src/app/shared/validation/common-validation-cla
     styleUrls: ['./service-group-list.component.css']
 })
 
-export class ServiceGroupListComponent implements OnInit {
+export class ServiceGroupListComponent implements OnInit, AfterViewInit {
     activityGroupData: any = [];
     activityGrpListEnum: ActivityGroupListEnum = new ActivityGroupListEnum();
     requestData: any = {
@@ -84,6 +84,14 @@ export class ServiceGroupListComponent implements OnInit {
                 this.dataSource.sort = this.sort;
             }
         });
+    }
+
+    ngAfterViewInit(): void {
+        const element = window.document.getElementById('main-section');
+        if (element !== null) {
+            const height = (window.innerHeight) - 194;
+            element.style.minHeight = height + 'px !important';
+        }
     }
 
     createForm() {

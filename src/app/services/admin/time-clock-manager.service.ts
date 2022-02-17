@@ -53,7 +53,7 @@ export class TimeClockManagerService {
    */
   public filterTimeClockManager(request: any): Observable<any> {
     return this.dataService.callPutService(
-      ServiceUrls.FILTER_TIME_CLOCK_MANAGER,
+      `${ServiceUrls.FILTER_TIME_CLOCK_MANAGER}?name=${request.staffName}`,
       request
     );
   }

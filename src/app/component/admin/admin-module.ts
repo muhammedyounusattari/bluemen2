@@ -42,6 +42,7 @@ import { TutorClassesComponent } from '../tutor/home/classes/tutor-classes.compo
 import { StaffClassesComponent } from '../staff/home/classes/staff-classes.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSelectFilterModule } from 'mat-select-filter';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import { MatSelectFilterModule } from 'mat-select-filter';
     MatSelectModule,
     MatSelectFilterModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    MatRadioModule
   ],
   providers: [
     MatDatepickerModule,

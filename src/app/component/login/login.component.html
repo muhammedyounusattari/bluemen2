@@ -11,27 +11,26 @@
 
     <div class="row">
         <div class="col-md-6 text-center  ">
-            <img src="../../../assets/img/left-img.png" class="mt-5 ml-5" alt="Blumen Online for TRIO" title="Blumen Online for TRIO" >
+            <img src="../../../assets/img/left-img.png" class="mt-5 ml-5" alt="Blumen Online for TRIO"
+                title="Blumen Online for TRIO">
         </div>
 
-        <div class="col-md-6" >
+        <div class="col-md-6">
             <div class="row justify-content-center">
                 <div class="col-md-12">
-                    <img src="../../../assets/img/bot_logo.png" alt="Blumen Online for TRIO" title="Blumen Online for TRIO" 
-                   class="loginlogo">
+                    <img src="../../../assets/img/bot_logo.png" alt="Blumen Online for TRIO"
+                        title="Blumen Online for TRIO" class="loginlogo">
                     <div>
                         <h4 class="welcome">
                             Welcome! </h4>
-                        <p
-                            class="crediential">
+                        <p class="crediential">
                             Please login with your credentials…</p>
                     </div>
                     <form [formGroup]="formGroup" (ngSubmit)="validate(formGroup.value)" class="form">
                         <div class="form-group first txtAlign">
                             <mat-form-field class="example-full-width" appearance="fill">
                                 <mat-label>Organization Code</mat-label>
-                                <input matInput value="" formControlName="orgCode"
-                                    minlength="3" required>
+                                <input matInput value="" formControlName="orgCode" minlength="3" required>
                                 <!-- <mat-error *ngIf="formGroup.controls['orgCode'].invalid">
                                     {{getError('orgCode')}}
                                 </mat-error> -->
@@ -49,28 +48,27 @@
                         <div class="form-group last mb-login txtAlign">
                             <mat-form-field class="example-full-width" appearance="fill">
                                 <mat-label>Password</mat-label>
-                                <input [type]="hide ? 'password' : 'text'" matInput value=""
-                                    formControlName="password" required>
-                                    <mat-icon matSuffix (click)="hide = !hide">
-                                        <i *ngIf="!hide" class="fa fa-eye" id="eye-icon"></i>
-                                        <i *ngIf="hide" class="fa fa-eye-slash" id="eye-icon"></i>
-                                    </mat-icon>
+                                <input [type]="hide ? 'password' : 'text'" matInput value="" formControlName="password"
+                                    required>
+                                <mat-icon matSuffix (click)="hide = !hide">
+                                    <i *ngIf="!hide" class="fa fa-eye" id="eye-icon"></i>
+                                    <i *ngIf="hide" class="fa fa-eye-slash" id="eye-icon"></i>
+                                </mat-icon>
                                 <!-- <mat-error *ngIf="!formGroup.controls['password'].valid">
                                     {{getError('pass')}}
                                 </mat-error> -->
                             </mat-form-field>
                         </div>
 
-                        <button mat-raised-button color="primary" type="submit"
-                           
+                        <button mat-raised-button color="primary" type="submit" [disabled]="!isLoginEnabled"
                             class="submit btn text-white btn-block btn-primary button">LOGIN</button>
-                        <mat-error *ngIf="isInvalidCredentials">
-                            Please enter valid credentials & Organization code.
+                        <mat-error class="mts-5" *ngIf="isInvalidCredentials">
+                            {{errorMessage}}
                         </mat-error>
 
-                        <div class="d-flex align-items-center mt-3">
-                            <span class="mr-auto"><a href="#" class="forgot-pass forgot"
-                                    >Forgot
+                        <div class="d-flex align-items-center mts-5" *ngIf="isLoginEnabled">
+                            <span class="mr-auto"><a href="javascript:void(0)" (click)="forgotPwd()"
+                                    class="forgot-pass forgot">Forgot
                                     Password ?</a></span>
                         </div>
                     </form>
@@ -78,13 +76,105 @@
             </div>
         </div>
     </div>
-  </div>
-  <div class="container-fluid login-footer">
+</div>
+<div class="container-fluid login-footer">
     <div class="row">
         <div class="col-1 reserved text-center"></div>
         <div class="col-5 reserved ">©All
             rights reserved 2022</div>
-        <div class="col-6"><a href="https://www.websecurity.symantec.com/ssl-certificate"
-              class="ssl">SSL Certificate </a></div>
+        <div class="col-6"><a href="https://www.websecurity.symantec.com/ssl-certificate" class="ssl">SSL Certificate
+            </a></div>
     </div>
-  </div>
+</div>
+
+<!-- Modal Start-->
+<ng-template #forgotPasswordPopup>
+    <!-- Modal -->
+    <div class="modal-header popHeaderBG">
+        <span class="modal-title popHeader" id="exampleModalLabel">Forgot Password</span>
+        <button type="button" class="btn-close" (click)="modalRef.hide()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <form [formGroup]="formGroup1" class="form">
+                    <div class="form-group first txtAlign">
+                        <mat-form-field class="forgot-password-textbox" appearance="fill">
+                            <mat-label>Organization Code</mat-label>
+                            <input matInput value="" formControlName="fpOrgCode" minlength="3" required>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group first txtAlign">
+                        <mat-form-field class="forgot-password-textbox" appearance="fill">
+                            <mat-label>Username</mat-label>
+                            <input matInput value="" required (blur)="getSecQuestions()" formControlName="fpUsername">
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group last mb-login txtAlign" *ngIf="isVisible">
+                        <mat-form-field class="forgot-password-textbox" appearance="fill">
+                            <mat-label>Security Question 1</mat-label>
+                            <input matInput value="" formControlName="securityQuestion1" minlength="3" required
+                                readonly>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group last mb-login txtAlign" *ngIf="isVisible">
+                        <mat-form-field class="forgot-password-textbox" appearance="fill">
+                            <mat-label>Answer</mat-label>
+                            <input matInput value="" formControlName="securityAnswer1" minlength="3" required>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group last mb-login txtAlign" *ngIf="isVisible">
+                        <mat-form-field class="forgot-password-textbox" appearance="fill">
+                            <mat-label>Security Question 2</mat-label>
+                            <input matInput value="" formControlName="securityQuestion2" minlength="3" required
+                                readonly>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group last mb-login txtAlign" *ngIf="isVisible">
+                        <mat-form-field class="forgot-password-textbox" appearance="fill">
+                            <mat-label>Answer</mat-label>
+                            <input matInput value="" formControlName="securityAnswer2" minlength="3" required>
+                        </mat-form-field>
+                    </div>
+                    <mat-error class="mts-5" *ngIf="fpError">
+                        {{errorFPMessage}}
+                    </mat-error>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-v .primary" (click)="validateAnswer();"
+            [disabled]="!isVisible">Submit</button>
+        <button type="button" class="btn btn-secondary" id="closePopup" (click)="modalRef.hide();">Cancel</button>
+    </div>
+</ng-template>
+<!-- Modal End-->
+
+<!-- Modal Start-->
+<ng-template #twoFactorPopup>
+    <!-- Modal -->
+    <div class="modal-header popHeaderBG">
+        <span class="modal-title popHeader" id="exampleModalLabel">Two Factor Authentication</span>
+        <button type="button" class="btn-close" (click)="modalRef.hide()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="row">
+                    <div class="form-group first txtAlign">
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button value="1">Email</mat-radio-button>
+                            <mat-radio-button value="2">Phone</mat-radio-button>
+                          </mat-radio-group>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-v .primary" (click)="getSecurityCode();">Send</button>
+        <button type="button" class="btn btn-secondary" id="closePopup" (click)="modalRef.hide();">Cancel</button>
+    </div>
+</ng-template>
+<!-- Modal End-->

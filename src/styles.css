@@ -79,7 +79,27 @@ a {
 .mt-m1 {
     margin-bottom: 41px !important;
   }
-.mat-checkbox-inner-container{ }
+
+  .md-datepicker-calendar-pane {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    border-width: 1px;
+    border-style: solid;
+    background: transparent;
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+    transition: -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); 
+}
+.md-datepicker-calendar-pane.md-pane-open {
+    -webkit-transform: scale(1);
+    transform: scale(1); 
+}
+        
 .bgtop {
     background: #00396b!important;
     padding: 0px;

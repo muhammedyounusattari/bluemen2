@@ -1,184 +1,150 @@
-
-   <div class="main-container">
+<div class="main-container">
     <div class="container-fluid">
-       <div  class="row bg-white">
-    <div class="col-md-12 mb-2">
-       <h3>Dashboard</h3>
+        <div class="row bg-white">
+            <div class="col-md-12 mb-2">
+                <h3>Dashboard</h3>
+            </div>
+        </div>
+
+
+        <div class="container-fluid text-center " style="background:#EFF4F8;padding: 25px;padding-left: 3%;">
+
+
+            <div class="row">
+                <div class="col-sm-4 form-group">
+                    <label><img src="../../../assets/img/password.png" alt="icon"> Change My Password</label>
+                </div>
+                <div class="col-sm-8 form-group">
+                    <label><img src="../../../assets/img/password.png" alt="icon"> To change your existing
+                        password</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4 form-group">
+                    <label><img src="../../../assets/img/callendar.png"> My Calendar</label>
+                </div>
+                <div class="col-sm-8 form-group">
+                    <label><img src="../../../assets/img/callendar.png"> To view and modify tasks, reminders,
+                        appointments in a calendar format</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4 form-group">
+                    <label><img src="../../../assets/img/send-message.png"> Send Message</label>
+                </div>
+                <div class="col-sm-8 form-group">
+                    <label><img src="../../../assets/img/send-message.png"> To send message to selected users</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4 form-group">
+                    <label><img src="../../../assets/img/set-my-preference.png"> Set My Preferences</label>
+                </div>
+                <div class="col-sm-8 form-group">
+                    <label><img src="../../../assets/img/set-my-preference.png"> To customize your preferences like
+                        reminders, display last name first etc.</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4 form-group">
+                    <label><img src="../../../assets/img/show-logged.png"> Show Logged Users</label>
+                </div>
+                <div class="col-sm-8 form-group">
+                    <label><img src="../../../assets/img/show-logged.png"> To view a list of the currently logged-in
+                        users</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4 form-group">
+                    <label><img src="../../../assets/img/time-clock.png"> Time Clock</label>
+                </div>
+                <div class="col-sm-8 form-group">
+                    <label><img src="../../../assets/img/time-clock.png"> Clock-In/Clock-Out option for staff
+                        members</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4 form-group">
+                    <label><img src="../../../assets/img/view.png"> View Messages</label>
+                </div>
+                <div class="col-sm-8 form-group">
+                    <label><img src="../../../assets/img/view.png"> To view, reply to, delete or print messages from
+                        other users</label>
+                </div>
+            </div>
+            <button style="visibility: hidden;" id="hiddenBtn" (click)="openResetPwdPopup()"></button>
+        </div>
     </div>
 </div>
 
-
-<div class="container-fluid text-center " style="background:#EFF4F8;padding: 25px;padding-left: 3%;">
- 
-    
-    <div class="row">
-        <div class="col-sm-4 form-group">
-            <label><img src="../../../assets/img/password.png" alt="icon"> Change My Password</label>
-        </div>
-        <div class="col-sm-8 form-group">
-            <label><img src="../../../assets/img/password.png" alt="icon"> To change your existing password</label>
+<!-- Modal Start-->
+<ng-template #resetPasswordPopup>
+    <!-- Modal -->
+    <div class="modal-header popHeaderBG">
+        <span class="modal-title popHeader" id="exampleModalLabel">Reset Password</span>
+        <!-- <button type="button" class="btn-close" (click)="modalRef.hide()" aria-label="Close"></button> -->
+    </div>
+    <div class="modal-body">
+        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <form [formGroup]="formGroup" class="form">
+                    <div class="form-group last mb-login txtAlign">
+                        <mat-form-field appearance="fill" class="reset-password-textbox">
+                            <mat-label>Security Question 1</mat-label>
+                            <select matNativeControl formControlName="securityQuestion1">
+                                <option value="" selected></option>
+                                <option *ngFor="let secQ of question1List" [value]="secQ.value">
+                                    {{secQ.name}}
+                                </option>
+                            </select>
+                        </mat-form-field>
+                        <!-- <mat-form-field class="reset-password-textbox" appearance="fill">
+                            
+                            <mat-label>Security Question 1</mat-label>
+                            <input matInput value="" formControlName="securityQuestion1" minlength="3" required>
+                        </mat-form-field> -->
+                    </div>
+                    <div class="form-group last mb-login txtAlign">
+                        <mat-form-field class="reset-password-textbox" appearance="fill">
+                            <mat-label>Answer</mat-label>
+                            <input matInput value="" formControlName="securityAnswer1" minlength="3" required>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group last mb-login txtAlign">
+                        <mat-form-field appearance="fill" class="reset-password-textbox">
+                            <mat-label>Security Question 2</mat-label>
+                            <select matNativeControl formControlName="securityQuestion1">
+                                <option value="" selected></option>
+                                <option *ngFor="let secQ of question2List" [value]="secQ.value">
+                                    {{secQ.name}}
+                                </option>
+                            </select>
+                        </mat-form-field>
+                        <!-- <mat-form-field class="reset-password-textbox" appearance="fill">
+                            <mat-label>Security Question 2</mat-label>
+                            <input matInput value="" formControlName="securityQuestion2" minlength="3" required
+                                readonly>
+                        </mat-form-field> -->
+                    </div>
+                    <div class="form-group last mb-login txtAlign">
+                        <mat-form-field class="reset-password-textbox" appearance="fill">
+                            <mat-label>Answer</mat-label>
+                            <input matInput value="" formControlName="securityAnswer2" minlength="3" required>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-sm-4 form-group">
-            <label><img src="../../../assets/img/callendar.png"> My Calendar</label>
-        </div>
-        <div class="col-sm-8 form-group">
-            <label><img src="../../../assets/img/callendar.png"> To view and modify tasks, reminders, appointments in a calendar format</label>
-        </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-v .primary" (click)="validateAnswer();">Submit</button>
+        <!-- <button type="button" class="btn btn-secondary" id="closePopup" (click)="modalRef.hide();">Cancel</button> -->
     </div>
-
-    <div class="row">
-        <div class="col-sm-4 form-group">
-            <label><img src="../../../assets/img/send-message.png"> Send Message</label>
-        </div>
-        <div class="col-sm-8 form-group">
-            <label><img src="../../../assets/img/send-message.png"> To send message to selected users</label>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-4 form-group">
-            <label><img src="../../../assets/img/set-my-preference.png"> Set My Preferences</label>
-        </div>
-        <div class="col-sm-8 form-group">
-            <label><img src="../../../assets/img/set-my-preference.png"> To customize your preferences like reminders, display last name first etc.</label>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-4 form-group">
-            <label><img src="../../../assets/img/show-logged.png"> Show Logged Users</label>
-        </div>
-        <div class="col-sm-8 form-group">
-            <label><img src="../../../assets/img/show-logged.png"> To view a list of the currently logged-in users</label>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-4 form-group">
-            <label><img src="../../../assets/img/time-clock.png"> Time Clock</label>
-        </div>
-        <div class="col-sm-8 form-group">
-            <label><img src="../../../assets/img/time-clock.png"> Clock-In/Clock-Out option for staff members</label>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-4 form-group">
-            <label><img src="../../../assets/img/view.png"> View Messages</label>
-        </div>
-        <div class="col-sm-8 form-group">
-            <label><img src="../../../assets/img/view.png"> To view, reply to, delete or print messages from other users</label>
-        </div>
-    </div>
-</div>
-
-</div>
-</div>
-<!-- <div class="container-fluid mt-3" style="background:#EFF4F8;">
-
-    <div class="row">
-        <div class="col-12">
-
-            <table class="table-responsive" style="width: 100%">
-
-                <thead>
-                    <tr style="display:none;">
-                        <th scope="col">&nbsp;</th>
-                        <th scope="col">&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="rgRow" id="ctl00_head_ctrlMyHomeHome_rgMenus_ctl00__0">
-                        <td>
-
-                            <a href="javascript:void(0)"><img src="../../../../assets/img/password.jpg"> Change My Password</a>
-                        </td>
-                        <td>
-
-                            <a href="javascript:void(0)"> <img src="../../../../assets/img/password.jpg"> To change your existing password</a>
-                        </td>
-                    </tr>
-                    <tr class="rgAltRow" id="ctl00_head_ctrlMyHomeHome_rgMenus_ctl00__1">
-                        <td>
-
-                            <a href="javascript:void(0)"> <img src="../../../../assets/img/callendar.jpg"> My Calendar</a>
-                        </td>
-                        <td>
-
-                            <a href="javascript:void(0)"><img src="../../../../assets/img/callendar.jpg"> To view and modify tasks, reminders,
-                                appointments in a calendar format</a>
-                        </td>
-                    </tr>
-                    <tr class="rgRow" id="ctl00_head_ctrlMyHomeHome_rgMenus_ctl00__2">
-                        <td>
-
-                            <a href="javascript:void(0)"> <img src="../../../../assets/img/send-message.png"> Send Message</a>
-                        </td>
-                        <td>
-
-                            <a href="javascript:void(0)"><img src="../../../../assets/img/send-message.png"> To send message to selected users</a>
-                        </td>
-                    </tr>
-                    <tr class="rgAltRow" id="ctl00_head_ctrlMyHomeHome_rgMenus_ctl00__3">
-                        <td>
-
-                            <a href="javascript:void(0)"><img src="../../../../assets/img/set-my-preference.png"> Set My Preferences</a>
-                        </td>
-                        <td>
-
-                            <a href="javascript:void(0)"><img src="../../../../assets/img/set-my-preference.png"> To customize your preferences like
-                                reminders, display last name first etc.</a>
-                        </td>
-                    </tr>
-                    <tr class="rgRow" id="ctl00_head_ctrlMyHomeHome_rgMenus_ctl00__4">
-                        <td>
-
-                            <a href="javascript:void(0)"><img src="../../../../assets/img/show-logged.png"> Show Logged Users</a>
-                        </td>
-                        <td>
-
-                            <a href="javascript:void(0)"><img src="../../../../assets/img/show-logged.png"> To view a list of the currently logged-in
-                                users</a>
-                        </td>
-                    </tr>
-                    <tr class="rgAltRow" id="ctl00_head_ctrlMyHomeHome_rgMenus_ctl00__5">
-                        <td>
-
-                            <a href="javascript:void(0)"><img src="../../../../assets/img/time-clock.png"> Time Clock</a>
-                        </td>
-                        <td>
-
-                            <a href="javascript:void(0)"><img src="../../../../assets/img/time-clock.png"> Clock-In / Clock-Out option for staff
-                                members</a>
-                        </td>
-                    </tr>
-                    <tr class="rgRow" id="ctl00_head_ctrlMyHomeHome_rgMenus_ctl00__6">
-                        <td>
-
-                            <a href="javascript:void(0)"><img src="../../../../assets/img/view.png"> View Messages</a>
-                        </td>
-                        <td>
-
-                            <a href="javascript:void(0)"> <img src="../../../../assets/img/view.png"> To view, reply to, delete or print messages from
-                                other users</a>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td height="70px"> &nbsp;</td>
-                    </tr>
-                </tbody>
-
-            </table>
-
-
-        </div>
-
-
-
-
-    </div>
-</div> -->
+</ng-template>
+<!-- Modal End-->

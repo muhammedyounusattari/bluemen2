@@ -4,14 +4,16 @@
 </div>
 <form class="p-4" [formGroup]="timeClockForm">
   <div class="container">
-    <div class="row mb-4">
-      <div class="col-md-8">
-        <label> Staff Name </label>
-        <mat-select formControlName="staffName" class="form-control">
-          <mat-option value="" selected> Please select </mat-option>
-          <mat-option (click)="selectedStaff(timeClockForm.value.staffName)" *ngFor="let staffMember of staffMembersList"
-            [value]="staffMember">{{staffMember?.name}}</mat-option>
-        </mat-select>
+    <div class="row">
+      <div class="col-md-8 mt-3">
+        <mat-form-field class="mat-select-width" appearance="fill">
+            <mat-label>Activity/Service Group</mat-label>
+            <mat-select formControlName="staffName">
+              <mat-option value="" selected> Please select </mat-option>
+              <mat-option (click)="selectedStaff(timeClockForm.value.staffName)" *ngFor="let staffMember of staffMembersList"
+                [value]="staffMember">{{staffMember?.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
       </div>
     </div>
     <div class="row">

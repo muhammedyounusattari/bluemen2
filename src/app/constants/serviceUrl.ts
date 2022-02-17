@@ -222,5 +222,4 @@ export class ServiceUrls {
     public static GET_PULLDOWN_STATE = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/142';
     // PULL DOWN CITY
     public static GET_PULLDOWN_CITY = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/39';
-
 }

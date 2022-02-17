@@ -9,6 +9,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { HeaderComponent } from './component/header/header-component';
 import { NavigationComponent } from './component/navigation/navigation-component';
 import { FooterComponent } from './component/footer/footer-component';
+import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
 
 import { AdminModule } from './component/admin/admin-module';
 import { StudentModule } from './component/student/student.module';
@@ -27,6 +29,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -36,7 +41,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     FooterComponent,
     LoginComponent,
     HomeComponent,
-    ConfirmationComponent
+    ConfirmationComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    DialogBoxComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +63,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     MatFormFieldModule,
     MatMenuModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatRadioModule,
+    MatSelectModule
   ],
   entryComponents: [ConfirmationComponent],
   providers: [ToastrService, PendingChangesGuard],

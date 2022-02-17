@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-      const data = localStorage.getItem('accessToken');
+      const data = sessionStorage.getItem('accessToken');
       if(data && data !== 'null') {
         this.isLoggedIn = true;
       } else {
@@ -25,12 +25,11 @@ export class AppComponent implements OnInit {
       }
   }
   validate(event: any) {
-    localStorage.setItem('accessToken', 'null');
-    event = JSON.parse(event);
-    if (event && event.body && event.body.access_token) {
+    sessionStorage.setItem('accessToken', 'null');
+    if (event && event.access_token) {
       this.isLoggedIn = true;
       this.router.navigate(['']);
-      localStorage.setItem('accessToken', event.body.access_token);
+      sessionStorage.setItem('accessToken', event.access_token);
     } else {
       this.isLoggedIn = false;
     }

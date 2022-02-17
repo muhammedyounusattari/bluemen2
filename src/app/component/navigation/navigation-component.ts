@@ -10,6 +10,9 @@ export class NavigationComponent {
   constructor(private router: Router) {
   }
 
+validate() {
+  alert('hi');
+}
   navigateToComponent(componentName: string, subComponent: string = '') {
     if (componentName === 'logged-user') {
       this.router.navigate(['home/logged-user']);

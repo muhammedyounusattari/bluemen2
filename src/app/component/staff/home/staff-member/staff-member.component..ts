@@ -10,6 +10,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-staff-member',
@@ -73,7 +74,6 @@ export class StaffMemberComponent {
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-
   @ViewChild(MatSort) set matSort(sort: MatSort) {
     if (this.dataSource && !this.dataSource.sort) {
       this.dataSource.sort = sort;
@@ -98,7 +98,7 @@ export class StaffMemberComponent {
 
   selectedStudentRowIndex: any;
   selectedClassesStudentRow: any;
-  columnsToDisplay1: string[] = ['staffMaillingName', 'staffEmail', 'staffPhone1', 'staffPhone2', 'staffPhone3', 'staffFax'];
+  columnsToDisplay1: string[] = ['staffMaillingName', 'staffEmail', 'staffPhone1', 'staffPhone2', 'staffPhone3', 'staffFax', 'action'];
   dataSource1: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator1: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort1: MatSort;
@@ -110,7 +110,16 @@ export class StaffMemberComponent {
   permanentAddress: any;
   addressData: any;
   isLoading1: boolean = true;
-
+  addressList: any = [];
+  isEditAddress = false;
+  addressId = null;
+  stctlbName = '';
+  minHireDate: any;
+  minTermDate: any;
+  maxDob: any;
+  isDOBValid = true;
+  isHireValid = true;
+  addressListIndex = 0;
   constructor(
     private modalService: BsModalService
     , private fb: FormBuilder
@@ -122,6 +131,14 @@ export class StaffMemberComponent {
   }
 
   ngOnInit(): void {
+    const today = new Date();
+    this.maxDob = new Date(
+      today.getFullYear() - 18,
+      today.getMonth(),
+      today.getDate()
+    );
+    this.isDOBValid = true;
+    this.isHireValid = true;
     this.isStaffDetail = true;
     this.createForm();
     this.getStaffMembers();
@@ -241,11 +258,11 @@ export class StaffMemberComponent {
       'staffTeacher': [false],
       'staffLab': [false],
       'codes': [''],
-      'dob': [new Date()],
+      'dob': [''],
       'spouse': [''],
-      'staffHireDate': [new Date()],
+      'staffHireDate': [''],
       'license': [''],
-      'terminationDate': [new Date()],
+      'terminationDate': [''],
       'customField1': [''],
       'customField2': [''],
       'customField3': [''],
@@ -258,7 +275,7 @@ export class StaffMemberComponent {
       'staffCity': [''],
       'staffState': [''],
       'staffEmail': [''],
-      'staffWebSites': [''],
+      'staffWebsite': [''],
       'staffZipcodes': [''],
       'staffFax': [''],
       'staffPhone1': [''],
@@ -267,7 +284,9 @@ export class StaffMemberComponent {
       'staffPhoneType1': [''],
       'staffPhoneType2': [''],
       'staffPhoneType3': [''],
-      'staffAddress': ['']
+      'staffAddress': [''],
+      'permanentAddress': [''],
+      'usedForMailling': ['']
     });
 
     this.formGroup1 = this.formBuilder.group({
@@ -425,6 +444,7 @@ export class StaffMemberComponent {
       if (this.selectedRow) {
         this.isEdit = true;
         //this.staffMembersModalForm.get('name')?.setValue(this.selectedRow.staffName);
+        this.stctlbName = this.selectedRow.staffName;
         this.formGroup.get('staffName')?.setValue(this.selectedRow.staffName);
         this.formGroup.get('id')?.setValue(this.selectedRow.id);
         this.formGroup.get('title')?.setValue(this.selectedRow.staffTitle);
@@ -452,6 +472,10 @@ export class StaffMemberComponent {
           this.addressData = this.selectedRow.address;
           this.permanentAddress = this.selectedRow.address.filter((item: any) => item.permanentAddress)[0];
           this.bindAddressValueToFB();
+          this.addressList = this.selectedRow.address;
+          this.dataSource1 = new MatTableDataSource(this.selectedRow.address);
+          this.dataSource1.paginator = this.paginator1;
+          this.dataSource1.sort = this.sort1;
         }
         this.openModal(this.staffDataEntryPopupRef);
         // this.staffMembersModalForm.updateValueAndValidity();
@@ -463,26 +487,134 @@ export class StaffMemberComponent {
       }
     } else {
       this.isEdit = false;
+      this.isEditAddress = false;
+      this.stctlbName = '';
       this.resetFields();
+      this.dataSource1 = this.addressList;
       this.openModal(this.staffDataEntryPopupRef);
     }
   }
 
   bindAddressValueToFB() {
-    this.formGroup.get('staffMaillingName')?.setValue(this.permanentAddress.staffMaillingName);
-    this.formGroup.get('staffCity')?.setValue(this.permanentAddress.staffCity);
-    this.formGroup.get('staffState')?.setValue(this.permanentAddress.staffState);
-    this.formGroup.get('staffEmail')?.setValue(this.permanentAddress.staffEmail);
-    this.formGroup.get('staffWebSite')?.setValue(this.permanentAddress.staffWebSite);
-    this.formGroup.get('staffFax')?.setValue(this.permanentAddress.staffFax);
-    this.formGroup.get('staffZipcodes')?.setValue(this.permanentAddress.staffZipcodes);
-    this.formGroup.get('staffPhone1')?.setValue(this.permanentAddress.staffPhone1);
-    this.formGroup.get('staffPhone2')?.setValue(this.permanentAddress.staffPhone2);
-    this.formGroup.get('staffPhone3')?.setValue(this.permanentAddress.staffPhone3);
-    this.formGroup.get('staffPhoneType1')?.setValue(this.permanentAddress.staffPhoneType1);
-    this.formGroup.get('staffPhoneType2')?.setValue(this.permanentAddress.staffPhoneType2);
-    this.formGroup.get('staffPhoneType3')?.setValue(this.permanentAddress.staffPhoneType3);
-    this.formGroup.get('staffAddress')?.setValue(this.permanentAddress.staffAddress);
+    this.formGroup.get('staffMaillingName')?.setValue('');
+    this.formGroup.get('staffCity')?.setValue('');
+    this.formGroup.get('staffState')?.setValue('');
+    this.formGroup.get('staffEmail')?.setValue('');
+    this.formGroup.get('staffWebsite')?.setValue('');
+    this.formGroup.get('staffFax')?.setValue('');
+    this.formGroup.get('staffZipcodes')?.setValue('');
+    this.formGroup.get('staffPhone1')?.setValue('');
+    this.formGroup.get('staffPhone2')?.setValue('');
+    this.formGroup.get('staffPhone3')?.setValue('');
+    this.formGroup.get('staffPhoneType1')?.setValue('');
+    this.formGroup.get('staffPhoneType2')?.setValue('');
+    this.formGroup.get('staffPhoneType3')?.setValue('');
+    this.formGroup.get('staffAddress')?.setValue('');
+    this.formGroup.get('permanentAddress')?.setValue('');
+    this.formGroup.get('usedForMailling')?.setValue('');
+  }
+  addAddressToList() {
+    if (this.validateToAdd()) {
+      if (!this.isEditAddress) {
+        this.addressId = null;
+        const data = {
+          'staffMaillingName': this.formGroup.get('staffMaillingName')?.value,
+          'staffCity': this.formGroup.get('staffCity')?.value,
+          'staffState': this.formGroup.get('staffState')?.value,
+          'staffEmail': this.formGroup.get('staffEmail')?.value,
+          'staffWebsite': this.formGroup.get('staffWebsite')?.value,
+          'staffFax': this.formGroup.get('staffFax')?.value,
+          'staffZipcodes': this.formGroup.get('staffZipcodes')?.value,
+          'staffPhone1': this.formGroup.get('staffPhone1')?.value,
+          'staffPhone2': this.formGroup.get('staffPhone2')?.value,
+          'staffPhone3': this.formGroup.get('staffPhone3')?.value,
+          'staffPhoneType1': this.formGroup.get('staffPhoneType1')?.value,
+          'staffPhoneType2': this.formGroup.get('staffPhoneType2')?.value,
+          'staffPhoneType3': this.formGroup.get('staffPhoneType3')?.value,
+          'staffAddress': this.formGroup.get('staffAddress')?.value,
+          'permanentAddress': this.formGroup.get('permanentAddress')?.value,
+          'usedForMailling': this.formGroup.get('usedForMailling')?.value
+        }
+        this.addressList.push(data);
+      } else if (this.isEditAddress) {
+        if (!this.validationClass.isNullOrUndefined(this.addressId)) {
+          this.addressList.forEach((element: any) => {
+             if (element.id === this.addressId) {
+              element.staffMaillingName = this.formGroup.get('staffMaillingName')?.value;
+              element.staffCity = this.formGroup.get('staffCity')?.value;
+              element.staffState = this.formGroup.get('staffState')?.value;
+              element.staffEmail = this.formGroup.get('staffEmail')?.value;
+              element.staffWebsite = this.formGroup.get('staffWebsite')?.value;
+              element.staffFax = this.formGroup.get('staffFax')?.value;
+              element.staffZipcodes = this.formGroup.get('staffZipcodes')?.value;
+              element.staffPhone1 = this.formGroup.get('staffPhone1')?.value;
+              element.staffPhone2 = this.formGroup.get('staffPhone2')?.value;
+              element.staffPhone3 = this.formGroup.get('staffPhone3')?.value;
+              element.staffPhoneType1 = this.formGroup.get('staffPhoneType1')?.value;
+              element.staffPhoneType2 = this.formGroup.get('staffPhoneType2')?.value;
+              element.staffPhoneType3 = this.formGroup.get('staffPhoneType3')?.value;
+              element.staffAddress = this.formGroup.get('staffAddress')?.value;
+              element.permanentAddress = this.formGroup.get('permanentAddress')?.value;
+              element.usedForMailling = this.formGroup.get('usedForMailling')?.value;
+            }
+          });
+        } else {
+
+        }
+      }
+      this.dataSource1 = new MatTableDataSource(this.addressList);
+      this.bindAddressValueToFB();
+      this.toastr.success('Successfully added in list of addresses! To save it against record please click on Save & Close button.', '', {
+        timeOut: 5000,
+        closeButton: true
+      });
+      this.isEditAddress = false;
+    } else {
+      this.toastr.error('Empty details can not be added as address.', '', {
+        timeOut: 5000,
+        closeButton: true
+      });
+    }
+  }
+  validateToAdd() {
+    if (this.validationClass.isEmpty(this.formGroup.get('staffMaillingName')?.value)
+      && this.validationClass.isEmpty(this.formGroup.get('staffEmail')?.value)
+      && this.validationClass.isEmpty(this.formGroup.get('staffFax')?.value)
+      && this.validationClass.isEmpty(this.formGroup.get('staffPhone1')?.value)
+      && this.validationClass.isEmpty(this.formGroup.get('staffPhone2')?.value)
+      && this.validationClass.isEmpty(this.formGroup.get('staffPhone3')?.value)) {
+      return false
+    }
+    return true;
+  }
+  editAddress(element: any, index: number) {
+    this.isEditAddress = true;
+    this.addressId = element.id;
+    this.addressListIndex = index;
+    this.formGroup.get('staffMaillingName')?.setValue(element.staffMaillingName);
+    this.formGroup.get('staffCity')?.setValue(element.staffCity);
+    this.formGroup.get('staffState')?.setValue(element.staffState);
+    this.formGroup.get('staffEmail')?.setValue(element.staffEmail);
+    this.formGroup.get('staffWebsite')?.setValue(element.staffWebsite);
+    this.formGroup.get('staffFax')?.setValue(element.staffFax);
+    this.formGroup.get('staffZipcodes')?.setValue(element.staffZipCodes);
+    this.formGroup.get('staffPhone1')?.setValue(element.staffPhone1);
+    this.formGroup.get('staffPhone2')?.setValue(element.staffPhone2);
+    this.formGroup.get('staffPhone3')?.setValue(element.staffPhone3);
+    this.formGroup.get('staffPhoneType1')?.setValue(element.staffPhoneType1);
+    this.formGroup.get('staffPhoneType2')?.setValue(element.staffPhoneType2);
+    this.formGroup.get('staffPhoneType3')?.setValue(element.staffPhoneType3);
+    this.formGroup.get('staffAddress')?.setValue(element.staffAddress);
+    window.scrollTo(0, 0);
+  }
+
+  deleteAddress(element: any, index: number) {
+    if (!this.validationClass.isNullOrUndefined(this.addressId)) {
+      this.addressList = this.addressList.filter((item: any) => item.id !== this.addressId);
+    } else {
+      this.addressList = this.addressList.splice(0, index);
+    }
+    this.dataSource1 = new MatTableDataSource(this.addressList);
   }
 
   /**
@@ -550,24 +682,7 @@ export class StaffMemberComponent {
       staffBolt: this.formGroup?.get('staffBold')?.value,
       staffPhoneNumber: this.formGroup?.get('staffPhoneNumber')?.value,
       staff: this.formGroup?.get('staff')?.value,
-      address: [{
-        'staffMaillingName': this.formGroup?.get('staffMaillingName')?.value,
-        'staffCity': this.formGroup?.get('staffCity')?.value,
-        'staffState': this.formGroup?.get('staffState')?.value,
-        'staffEmail': this.formGroup?.get('staffEmail')?.value,
-        'staffZipCodes': this.formGroup?.get('staffZipCodes')?.value,
-        'staffWebSite': this.formGroup?.get('staffWebSite')?.value,
-        'staffAddress': this.formGroup?.get('staffAddress')?.value,
-        'staffPhone1': this.formGroup?.get('staffPhone1')?.value,
-        'staffPhone2': this.formGroup?.get('staffPhone2')?.value,
-        'staffPhone3': this.formGroup?.get('staffPhone3')?.value,
-        'staffPhoneType1': this.formGroup?.get('staffPhoneType1')?.value,
-        'staffPhoneType2': this.formGroup?.get('staffPhoneType2')?.value,
-        'staffPhoneType3': this.formGroup?.get('staffPhoneType3')?.value,
-        'staffFax': this.formGroup?.get('staffFax')?.value,
-        'usedForMailling': true,
-        'permanentAddress': true
-      }]
+      address: this.addressList
     };
   }
 
@@ -606,5 +721,34 @@ export class StaffMemberComponent {
   resetFields() {
     this.createForm();
     // this.id = ''; this.staffName = ''; this.title = ''; this.staffActive = 'true'; this.staffTutor = ''; this.ssn = ''; this.staffCounselor = ''; this.staffTeacher = ''; this.staffLab = ''; this.codes = ''; this.dob = ''; this.spouse = ''; this.staffHireDate = ''; this.license = ''; this.terminationDate = ''; this.customField1 = ''; this.customField2 = ''; this.customField3 = ''; this.customField4 = ''; this.notes = ''; this.picture = ''; this.staffBolt = '';
+  }
+
+  checkName(event: any) {
+    if (!this.validationClass.isNullOrUndefined(event)) {
+      const data = this.staffMembersList.filter((item: any) => (item.staffName).toLowerCase().trim() === (event.target.value).toLowerCase().trim());
+      if (data && data.length > 0) {
+        this.toastr.info('Name is already exist', '', {
+          timeOut: 5000,
+          closeButton: true
+        });
+        this.formGroup.get('staffName')?.setValue('');
+      } else {
+        this.stctlbName = event.target.value;
+      }
+    }
+  }
+  checkValidDate(event: any) {
+    const today = new Date(event.target.value);
+    this.minTermDate = new Date(
+      today.getFullYear(),
+      today.getMonth() + 1,
+      today.getDate()
+    );
+    this.isHireValid = false;
+  }
+  enabledHireDate(event: any) {
+    if (!this.validationClass.isEmpty(event.target.value) && !this.validationClass.isNullOrUndefined(event.target.value)) {
+      this.isDOBValid = false;
+    }
   }
 }

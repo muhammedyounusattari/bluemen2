@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from '../data-service';
 import { ServiceUrls } from '../../constants/serviceUrl';
-import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +13,8 @@ export class TimeClockService {
    * @method getTimeClock
    */
   public getTimeClock(staffId: string, staffName: string): Observable<any> {
-    let params = new HttpParams();
-    params = params.append('staffId', staffId);
-    params = params.append('staffName', staffName);
     return this.dataService.callGetService(
-      ServiceUrls.GET_TIME_CLOCK, {params: params});
+      `${ServiceUrls.GET_TIME_CLOCK}?staffId=${staffId}&staffName=${staffName}`);
   }
 
   /**

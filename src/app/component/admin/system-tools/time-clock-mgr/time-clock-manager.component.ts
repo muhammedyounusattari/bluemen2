@@ -1,5 +1,8 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { TimeClockManagerService } from 'src/app/services/admin/time-clock-manager.service';
@@ -9,6 +12,10 @@ import { TimeClockManagerService } from 'src/app/services/admin/time-clock-manag
   templateUrl: './time-clock-manager.component.html',
 })
 export class TimeClockManagerComponent {
+  public columnsToDisplay: string[] = ['staffName', 'checkInTime', 'checkOutTime', 'duration'];
+  public dataSource: MatTableDataSource<any>;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
   modalRef: BsModalRef;
   modalConfigSM = {
@@ -18,6 +25,7 @@ export class TimeClockManagerComponent {
   };
   public timeClockManagerForm: FormGroup;
   public timeClockManagerModalForm: FormGroup;
+  public staffType: FormGroup;
   public timeClockManagerList: any = [];
   public selectedOption: string = '';
   public selectedRow: any = null;
@@ -31,10 +39,15 @@ export class TimeClockManagerComponent {
   }
 
   ngOnInit(): void {
+    this.dataSource = new MatTableDataSource();
     this.initialiseForm();
     this.getStaffMembers();
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
   /**
    * @method initialiseForm
@@ -43,13 +56,14 @@ export class TimeClockManagerComponent {
     this.timeClockManagerForm = this.fb.group({
       fromDate: [''],
       toDate: [''],
-      staffName: [''],
+      staffName: ['']
+    });
+    this.staffType = this.fb.group({
       active: [''],
       counselor: [''],
       tutor: [''],
       teacher: ['']
     });
-
     this.timeClockManagerModalForm = this.fb.group({
       checkInTime: [''],
       checkOutTime: [''],
@@ -104,14 +118,35 @@ export class TimeClockManagerComponent {
     this.spinner = true;
     this.timeClockManagerService.getTimeClockManager().subscribe((result: any) => {
       if (result) {
-        result.forEach((element: any) => {
-          element.checkInTime = moment(element.checkInTime).format('DD/MM/yyyy h:mm:ss');
-          element.checkOutTime = moment(element.checkOutTime).format('DD/MM/yyyy h:mm:ss');
-        });
-        this.spinner = false;
-        this.timeClockManagerList = result;
+        this.setDataSorce(result);
       }
     });
+  }
+
+  /**
+   * @method setDataSorce
+   */
+  public setDataSorce(result: any) {
+    result.forEach((element: any) => {
+      element.checkInTime = element.checkInTime ? moment(element.checkInTime).format('DD/MM/yyyy h:mm:ss') : '';
+      element.checkOutTime = element.checkOutTime ? moment(element.checkOutTime).format('DD/MM/yyyy h:mm:ss') : '';
+    });
+    this.spinner = false;
+    this.timeClockManagerList = result;
+    this.dataSource = new MatTableDataSource(this.timeClockManagerList);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.getSelectedRow(this.timeClockManagerList[0], 0);
+  }
+
+  /**
+   * @method applyFilter
+   */
+  public applyFilter(filterValue: any, dataSource: MatTableDataSource<any>) {
+    dataSource.filter = filterValue?.target?.value?.trim()?.toLowerCase();
+    if (dataSource.paginator) {
+      dataSource.paginator.firstPage();
+    }
   }
 
   /**
@@ -145,11 +180,11 @@ export class TimeClockManagerComponent {
    * @method filterTimeClockManager
    */
   public filterTimeClockManager() {
-    this.timeClockManagerService
-      .filterTimeClockManager(this.requestPayloadForFilter())
+    this.spinner = true;
+    this.timeClockManagerService.filterTimeClockManager(this.filterPayload())
       .subscribe((result: any) => {
         if (result ) {
-          this.getTimeClockManager();
+          this.setDataSorce(JSON.parse(result));
         }
       });
   }
@@ -191,16 +226,6 @@ export class TimeClockManagerComponent {
       case 'Edit':
         this.editTimeClockManager()
         break;
-      case 'Rename':
-        break;
-      case 'Move':
-        break;
-      case 'Merge':
-        break;
-      case 'Print':
-        break;
-      case 'Submit':
-        break;
       default:
         break;
     }
@@ -237,5 +262,20 @@ export class TimeClockManagerComponent {
       staffName: this.timeClockManagerModalForm.value.staffName?.staffName,
       staffId: this.timeClockManagerModalForm.value.staffName?.id
     }
+  }
+
+  /**
+   * @method filterPayload
+   */
+  public filterPayload() {
+    return {
+      staffName: this.timeClockManagerForm.value.staffName.staffName,
+      fromDate: this.timeClockManagerForm.value.fromDate,
+      toDate: this.timeClockManagerForm.value.toDate,
+      active: this.staffType.value.active ? 'Yes' : 'No',
+      counselor: this.staffType.value.counselor ? 'Yes' : 'No',
+      tutor: this.staffType.value.tutor ? 'Yes' : 'No',
+      teacher: this.staffType.value.teacher ? 'Yes' : 'No',
+    };
   }
 }

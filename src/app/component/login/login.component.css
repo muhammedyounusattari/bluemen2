@@ -92,3 +92,9 @@
 .example-full-width {
   width: 70%;
 }
+.forgot-password-textbox {
+  width: 100%;
+}
+.mts-5{
+  margin-top: 1% !important;
+}

@@ -99,7 +99,7 @@
       </tr>
     </table>
   </div>
-  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"  style="margin-right: 6px;"></mat-paginator>
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]" style="margin-right: 6px;"></mat-paginator>
 
 
   <div class="no-record">
@@ -182,44 +182,45 @@
             <div class="row flex" *ngIf="isStaffDetail">
               <div class="col-md-10 disp-content">
                 <div class="col-md-3">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                  <div class="row">
+                    <div class="form-group">
+                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
                         <mat-label>Title</mat-label>
                         <input matInput value="" formControlName="title">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                        <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
                           {{getError('gradeGroupName')}}
                       </mat-error> -->
-                        </mat-form-field>
-                      </div>
+                      </mat-form-field>
                     </div>
+                  </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                  <div class="row">
+                    <div class="form-group">
+                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
                         <mat-label>Name</mat-label>
-                        <input matInput value="" formControlName="staffName" minlength="3" required>
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                          {{getError('gradeGroupName')}}
-                      </mat-error> -->
-                        </mat-form-field>
-                      </div>
-                  </div>
+                        <input matInput value="" formControlName="staffName" minlength="3" (blur)="checkName($event)"
+                          required>
+                        <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                        {{getError('gradeGroupName')}}
+                    </mat-error> -->
+                      </mat-form-field>
                     </div>
+                  </div>
+                </div>
                 <div class="col-md-3">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>SS.No</mat-label>
+                  <div class="row">
+                    <div class="form-group">
+                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                        <mat-label>SS.No</mat-label>
                         <input matInput value="" formControlName="ssn" minlength="3">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                        <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
                           {{getError('gradeGroupName')}}
                       </mat-error> -->
-                        </mat-form-field>
-                      </div>
-                  </div>
+                      </mat-form-field>
                     </div>
+                  </div>
+                </div>
                 <div class="col-md-3"></div>
 
                 <div class="col-md-3">
@@ -234,202 +235,86 @@
                   </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Codes</mat-label>
-                        <input matInput list="codeList" value="" formControlName="codes" minlength="3">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                          {{getError('gradeGroupName')}}
-                      </mat-error> -->
-                        </mat-form-field>
-                        <datalist id="codeList">
-                          <option *ngFor="let code of codeListArray" [ngValue]="code.name">
-                            {{code.name}}</option>
-                        </datalist>
-                      </div>
-                  </div>
-                    </div>
-                <div class="col-md-3">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Driver License#</mat-label>
-                        <input matInput value="" formControlName="license">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                          {{getError('gradeGroupName')}}
-                      </mat-error> -->
-                        </mat-form-field>
-                      </div>
-                  </div>
-                </div>
-                <div class="col-md-3"></div>
-
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label for="sel1">Date of Birth</label>
-                    <div class="form-group">
-                      <input type=date class="form-control" formControlName="dob">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label for="sel1">Hire Date </label>
-                    <div class="form-group">
-                      <input type=date class="form-control" formControlName="staffHireDate">
-                    </div>
-                  </div>
-                    </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label for="usr">Termination Date</label>
-                    <input type=date class="form-control" formControlName="terminationDate">
-                  </div>
-                </div>
-                <div class="col-md-3"></div>
-
-                <div class="col-md-3">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Spouse Name</mat-label>
-                        <input matInput value="" formControlName="spouse">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                          {{getError('gradeGroupName')}}
-                      </mat-error> -->
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                <div class="col-md-3">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Custom Field 1</mat-label>
-                          <input matInput list="customFieldList1" value="" formControlName="customField1">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                          {{getError('gradeGroupName')}}
-                      </mat-error> -->
-                        </mat-form-field>
-                        <datalist id="customFieldList1">
-                          <option *ngFor="let code of customFieldListArray1" [ngValue]="code.name">
-                            {{code.name}}</option>
-                        </datalist>
-                      </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Custom Field 2</mat-label>
-                          <input matInput list="customFieldList2" value="" formControlName="customField2">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                          {{getError('gradeGroupName')}}
-                      </mat-error> -->
-                        </mat-form-field>
-                        <datalist id="customFieldList2">
-                          <option *ngFor="let code of customFieldListArray2" [ngValue]="code.name">
-                            {{code.name}}</option>
-                        </datalist>
-                      </div>
-                    </div>
-                </div>
-                <div class="col-md-3"></div>
-
-                <div class="col-md-3">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Custom Field 3</mat-label>
-                          <input matInput list="customFieldList3" value="" formControlName="customField3">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                          {{getError('gradeGroupName')}}
-                      </mat-error> -->
-                        </mat-form-field>
-                        <datalist id="customFieldList3">
-                          <option *ngFor="let code of customFieldListArray3" [ngValue]="code.name">
-                            {{code.name}}</option>
-                        </datalist>
-                      </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Custom Field 4</mat-label>
-                          <input matInput list="customFieldList4" value="" formControlName="customField4">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                          {{getError('gradeGroupName')}}
-                      </mat-error> -->
-                        </mat-form-field>
-                        <datalist id="customFieldList4">
-                          <option *ngFor="let code of customFieldListArray4" [ngValue]="code.name">
-                            {{code.name}}</option>
-                        </datalist>
-                      </div>
-                    </div>
-                      </div>
-                <div class="col-md-3"></div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                      <div class="row mt-3">
-                        <div class="col-md-3">
-                          <section class="example-section">
-                            <mat-checkbox formControlName="staffActive" class="example-margin">
-                              Active
-                            </mat-checkbox>
-                          </section>
-                          <!-- <section class="example-section">
-                        <mat-checkbox formControlName="staffActive" class="example-margin">
-                          Active
-                        </mat-checkbox>
-                      </section> -->
-                          <!-- <label class="radio-inline">
-                    <input type="checkbox" name="optradio" [(ngModel)]="staffActive"> Active
-                  </label> -->
-                        </div>
-                        <div class="col-md-3">
-                          <section class="example-section">
-                            <mat-checkbox formControlName="staffTutor" class="example-margin">
-                              Tutor
-                            </mat-checkbox>
-                          </section>
-                          <!-- <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staffTutor"> Tutor
-                      </label> -->
-                        </div>
-                        <div class="col-md-3">
-                          <section class="example-section">
-                            <mat-checkbox formControlName="staffBolt" class="example-margin">
-                              Bolt
-                            </mat-checkbox>
-                          </section>
-                          <!-- <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staffBolt"> Bolt
-                      </label> -->
-                        </div>
-                        <div class="col-md-3">
-                          <section class="example-section">
-                            <mat-checkbox formControlName="staff" class="example-margin">
-                              Staff
-                            </mat-checkbox>
-                          </section>
-                          <!-- <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staff"> Staff
-                      </label> -->
-                        </div>
-                      </div>
-                    </div>
-                </div>
-                <div class="col-md-9">
                   <div class="row">
                     <div class="form-group">
                       <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Notes</mat-label>
-                        <input matInput value="" formControlName="notes">
+                        <mat-label>Codes</mat-label>
+                        <input matInput list="codeList" value="" formControlName="codes" minlength="3">
+                        <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                      </mat-form-field>
+                      <datalist id="codeList">
+                        <option *ngFor="let code of codeListArray" [ngValue]="code.name">
+                          {{code.name}}</option>
+                      </datalist>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="row">
+                    <div class="form-group">
+                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                        <mat-label>Driver License#</mat-label>
+                        <input matInput value="" formControlName="license">
+                        <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3"></div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <!-- <label for="sel1">Date of Birth</label>
+                    <div class="form-group">
+                      <input type=date class="form-control" formControlName="dob">
+                    </div> -->
+                    <mat-form-field appearance="fill" class="mb-m-6 example-full-width">
+                      <mat-label>Date Of Birth</mat-label>
+                      <input matInput [matDatepicker]="picker" formControlName="dob" [max]="maxDob" (dateChange)="enabledHireDate($event)">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <!-- <label for="sel1">Hire Date </label>
+                    <div class="form-group">
+                      <input type=date class="form-control" formControlName="staffHireDate">
+                    </div> -->
+                    <mat-form-field appearance="fill" class="mb-m-6 example-full-width">
+                      <mat-label>Hire Date</mat-label>
+                      <input matInput [matDatepicker]="picker1" [min]="minHireDate" (dateChange)="checkValidDate($event)" 
+                      formControlName="staffHireDate">
+                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mb-m-6 example-full-width">
+                      <mat-label>Termination Date</mat-label>
+                      <input matInput [matDatepicker]="picker2" [min]="minTermDate" formControlName="terminationDate">
+                      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                      <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+                    <!-- <label for="usr">Termination Date</label>
+                    <input type=date class="form-control" formControlName="terminationDate"> -->
+                  </div>
+                </div>
+                <div class="col-md-3"></div>
+
+                <div class="col-md-3">
+                  <div class="row">
+                    <div class="form-group">
+                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                        <mat-label>Spouse Name</mat-label>
+                        <input matInput value="" formControlName="spouse">
                         <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
                           {{getError('gradeGroupName')}}
                       </mat-error> -->
@@ -438,40 +323,175 @@
                   </div>
                 </div>
                 <div class="col-md-3">
+                  <div class="row">
                     <div class="form-group">
-                      <div class="row mt-3">
-                        <div class="col-md-4">
-                          <!-- <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staffCounselor"> Counselor
+                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                        <mat-label>Custom Field 1</mat-label>
+                        <input matInput list="customFieldList1" value="" formControlName="customField1">
+                        <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                      </mat-form-field>
+                      <datalist id="customFieldList1">
+                        <option *ngFor="let code of customFieldListArray1" [ngValue]="code.name">
+                          {{code.name}}</option>
+                      </datalist>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="row">
+                    <div class="form-group">
+                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                        <mat-label>Custom Field 2</mat-label>
+                        <input matInput list="customFieldList2" value="" formControlName="customField2">
+                        <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                      </mat-form-field>
+                      <datalist id="customFieldList2">
+                        <option *ngFor="let code of customFieldListArray2" [ngValue]="code.name">
+                          {{code.name}}</option>
+                      </datalist>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3"></div>
+
+                <div class="col-md-3">
+                  <div class="row">
+                    <div class="form-group">
+                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                        <mat-label>Custom Field 3</mat-label>
+                        <input matInput list="customFieldList3" value="" formControlName="customField3">
+                        <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                      </mat-form-field>
+                      <datalist id="customFieldList3">
+                        <option *ngFor="let code of customFieldListArray3" [ngValue]="code.name">
+                          {{code.name}}</option>
+                      </datalist>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="row">
+                    <div class="form-group">
+                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                        <mat-label>Custom Field 4</mat-label>
+                        <input matInput list="customFieldList4" value="" formControlName="customField4">
+                        <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                      </mat-form-field>
+                      <datalist id="customFieldList4">
+                        <option *ngFor="let code of customFieldListArray4" [ngValue]="code.name">
+                          {{code.name}}</option>
+                      </datalist>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <div class="row mt-3">
+                      <div class="col-md-3">
+                        <section class="example-section">
+                          <mat-checkbox formControlName="staffActive" class="example-margin">
+                            Active
+                          </mat-checkbox>
+                        </section>
+                        <!-- <section class="example-section">
+                        <mat-checkbox formControlName="staffActive" class="example-margin">
+                          Active
+                        </mat-checkbox>
+                      </section> -->
+                        <!-- <label class="radio-inline">
+                    <input type="checkbox" name="optradio" [(ngModel)]="staffActive"> Active
+                  </label> -->
+                      </div>
+                      <div class="col-md-3">
+                        <section class="example-section">
+                          <mat-checkbox formControlName="staffTutor" class="example-margin">
+                            Tutor
+                          </mat-checkbox>
+                        </section>
+                        <!-- <label class="radio-inline">
+                        <input type="checkbox" name="optradio" [(ngModel)]="staffTutor"> Tutor
                       </label> -->
-                          <section class="example-section">
-                            <mat-checkbox formControlName="staffCounselor" class="example-margin">
-                              Counselor
-                            </mat-checkbox>
-                          </section>
-                        </div>
-                        <div class="col-md-4">
-                          <!-- <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staffTeacher"> Teacher
+                      </div>
+                      <div class="col-md-3">
+                        <section class="example-section">
+                          <mat-checkbox formControlName="staffBolt" class="example-margin">
+                            Bolt
+                          </mat-checkbox>
+                        </section>
+                        <!-- <label class="radio-inline">
+                        <input type="checkbox" name="optradio" [(ngModel)]="staffBolt"> Bolt
                       </label> -->
-                          <section class="example-section">
-                            <mat-checkbox formControlName="staffTeacher" class="example-margin">
-                              Teacher
-                            </mat-checkbox>
-                          </section>
-                        </div>
-                        <div class="col-md-4">
-                          <!-- <label class="radio-inline">
-                        <input type="checkbox" name="optradio" [(ngModel)]="staffLab"> Lab
+                      </div>
+                      <div class="col-md-3">
+                        <section class="example-section">
+                          <mat-checkbox formControlName="staff" class="example-margin">
+                            Staff
+                          </mat-checkbox>
+                        </section>
+                        <!-- <label class="radio-inline">
+                        <input type="checkbox" name="optradio" [(ngModel)]="staff"> Staff
                       </label> -->
-                          <section class="example-section">
-                            <mat-checkbox formControlName="staffLab" class="example-margin">
-                              Lab
-                            </mat-checkbox>
-                          </section>
-                        </div>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div class="col-md-9">
+                  <div class="row">
+                    <div class="form-group">
+                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                        <mat-label>Notes</mat-label>
+                        <textarea matInput value="" formControlName="notes" rows="5"></textarea>
+                        <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                          {{getError('gradeGroupName')}}
+                      </mat-error> -->
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <div class="row mt-3">
+                      <div class="col-md-4">
+                        <!-- <label class="radio-inline">
+                        <input type="checkbox" name="optradio" [(ngModel)]="staffCounselor"> Counselor
+                      </label> -->
+                        <section class="example-section">
+                          <mat-checkbox formControlName="staffCounselor" class="example-margin">
+                            Counselor
+                          </mat-checkbox>
+                        </section>
+                      </div>
+                      <div class="col-md-4">
+                        <!-- <label class="radio-inline">
+                        <input type="checkbox" name="optradio" [(ngModel)]="staffTeacher"> Teacher
+                      </label> -->
+                        <section class="example-section">
+                          <mat-checkbox formControlName="staffTeacher" class="example-margin">
+                            Teacher
+                          </mat-checkbox>
+                        </section>
+                      </div>
+                      <div class="col-md-4">
+                        <!-- <label class="radio-inline">
+                        <input type="checkbox" name="optradio" [(ngModel)]="staffLab"> Lab
+                      </label> -->
+                        <section class="example-section">
+                          <mat-checkbox formControlName="staffLab" class="example-margin">
+                            Lab
+                          </mat-checkbox>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="col-md-2 uploadImg">
@@ -488,26 +508,31 @@
             <div class="row flex" *ngIf="!isStaffDetail">
               <div class="col-md-12">
                 <div class="row">
+                  <div class="col-md-4" *ngIf="stctlbName != ''">
+                    <label class="lblText">Name : &nbsp; <span class="lblValue">{{stctlbName}}</span></label>
+                  </div>
                   <div class="col-md-4">
+                    <section class="example-section">
+                      <mat-checkbox formControlName="usedForMailling" class="example-margin">
+                        Use this for mailling address
+                      </mat-checkbox>
+                    </section>
+                  </div>
+
+                  <div class="col-md-4">
+                    <section class="example-section">
+                      <mat-checkbox formControlName="permanentAddress" class="example-margin">
+                        Primary Address
+                      </mat-checkbox>
+                    </section>
+                  </div>
+                  <!-- <div class="col-md-4">
                     <div class="row">
                       <div class="form-group">
                         <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
                           <mat-label>Name</mat-label>
                           <input matInput value="" formControlName="staffName" minlength="3" readonly>
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                                {{getError('gradeGroupName')}}
-                          </mat-error> -->
                         </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <section class="example-section">
-                          <mat-checkbox formControlName="usedForMailling" class="example-margin">
-                            Use this address for Mailling </mat-checkbox>
-                        </section>
                       </div>
                     </div>
                   </div> -->
@@ -566,49 +591,8 @@
                     <div class="row">
                       <div class="form-group">
                         <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Zip Code</mat-label>
-                          <input matInput type="number" value="" formControlName="staffZipcodes" minlength="3">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                                {{getError('gradeGroupName')}}
-                          </mat-error> -->
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Fax</mat-label>
-                          <input matInput value="" formControlName="staffFax" minlength="3">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                                {{getError('gradeGroupName')}}
-                          </mat-error> -->
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Email</mat-label>
-                          <input matInput type="email" value="" formControlName="staffEmail">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                                {{getError('gradeGroupName')}}
-                          </mat-error> -->
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
                           <mat-label>Phone1</mat-label>
-                          <input matInput type="tel" value="" formControlName="staffPhone1">
+                          <input matInput type="number" value="" maxlength="10" formControlName="staffPhone1">
                           <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
                                 {{getError('gradeGroupName')}}
                           </mat-error> -->
@@ -633,12 +617,28 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="col-md-4">
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Email</mat-label>
+                          <input matInput type="email" value="" formControlName="staffEmail">
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                                {{getError('gradeGroupName')}}
+                          </mat-error> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
                   <div class="col-md-4">
                     <div class="row">
                       <div class="form-group">
                         <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
                           <mat-label>Phone2</mat-label>
-                          <input matInput type="tel" value="" formControlName="staffPhone2">
+                          <input matInput type="number" value="" maxlength="10" formControlName="staffPhone2">
                           <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
                               {{getError('gradeGroupName')}}
                         </mat-error> -->
@@ -646,8 +646,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="row">
+
                   <div class="col-md-4">
                     <div class="row">
                       <div class="form-group">
@@ -665,12 +664,28 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="col-md-4">
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Web Site</mat-label>
+                          <input matInput value="" formControlName="staffWebsite">
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                              {{getError('gradeGroupName')}}
+                        </mat-error> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
                   <div class="col-md-4">
                     <div class="row">
                       <div class="form-group">
                         <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
                           <mat-label>Phone3</mat-label>
-                          <input matInput type="tel" value="" formControlName="staffPhone3">
+                          <input matInput type="number" value="" maxlength="10" formControlName="staffPhone3">
                           <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
                               {{getError('gradeGroupName')}}
                         </mat-error> -->
@@ -695,56 +710,63 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="row">
+
                   <div class="col-md-4">
                     <div class="row">
                       <div class="form-group">
                         <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Web Site</mat-label>
-                          <input matInput value="" formControlName="staffWebsite">
-                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                              {{getError('gradeGroupName')}}
-                        </mat-error> -->
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-8">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Address</mat-label>
-                          <input matInput value="" formControlName="staffAddress" minlength="3" readonly>
+                          <mat-label>Zip Code</mat-label>
+                          <input matInput type="number" value="" formControlName="staffZipcodes" minlength="3">
                           <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
                                 {{getError('gradeGroupName')}}
                           </mat-error> -->
                         </mat-form-field>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Fax</mat-label>
+                          <input matInput value="" formControlName="staffFax" minlength="3">
+                          <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
+                                {{getError('gradeGroupName')}}
+                          </mat-error> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="form-group">
+                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                          <mat-label>Address</mat-label>
+                          <textarea matInput value="" formControlName="staffAddress" rows="1"></textarea>
+                        </mat-form-field>
+                      </div>
                     </div>
                   </div>
                 </div>
-              <!-- <div class="col-md-12 mt-5">
-                  <div class="row">
-                  <div class="col-md-4">
-                    <button type="button" class="btn btn-secondary">Add</button>
-                  </div>
-                  <div class="col-md-4">
-                    <button type="button" class="btn btn-secondary">Edit</button>
-                  </div>
-                  <div class="col-md-4">
-                    <button type="button" class="btn btn-secondary">Remove</button>
-                </div>
               </div>
+
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-1">
+                    <button type="button" class="btn btn-secondary cursor" *ngIf="!isEditAddress" (click)="bindAddressValueToFB()">Reset</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button type="button" class="btn btn-secondary cursor" (click)="addAddressToList()">{{!isEditAddress ? 'Add' : 'Update'}}</button>
+                  </div>
+                  <div class="col-md-10"></div>
+                </div>
               </div>
               <div class="col-md-12">
                 <div class="md-form form-group pink-textarea active-pink-textarea-2">
-                  <div class="spinner-container" *ngIf="isLoading1">
-                    <mat-spinner id="spinner"></mat-spinner>
-                  </div>
-
-                  <div class="mat-elevation-z8 data-table-height bgColorDT dt-max-height" *ngIf="!isLoading1">
+                  <div class="mat-elevation-z8 data-table-height bgColorDT dt-max-height">
                     <table mat-table [dataSource]="dataSource1" class="mat-elevation-z8" matSort>
                       <ng-container matColumnDef="staffMaillingName">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Mailling Name </th>
@@ -770,12 +792,20 @@
                       <ng-container matColumnDef="staffPhone3">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone3 </th>
                         <td mat-cell *matCellDef="let element; let row = dataIndex;">
-                          {{element.staffPhone1}} </td>
+                          {{element.staffPhone3}} </td>
                       </ng-container>
                       <ng-container matColumnDef="staffFax">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Fax </th>
                         <td mat-cell *matCellDef="let element; let row = dataIndex;">
                           {{element.staffFax}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+                          <i class="fas fa-edit cursor" (click)="editAddress(element, i)" title="Edit"></i>
+                          &nbsp; &nbsp;
+                          <i class="fas fa-remove cursor" (click)="deleteAddress(element, i)" title="Delete"></i>
+                        </td>
                       </ng-container>
                       <tr mat-header-row *matHeaderRowDef="columnsToDisplay1"></tr>
                       <tr mat-row *matRowDef="let row; let idx1 = index; columns: columnsToDisplay1;"
@@ -785,21 +815,20 @@
                   </div>
                   <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
                 </div>
-              </div> -->
+              </div>
             </div>
           </form>
         </div>
       </div>
     </div>
     <div class="modal-footer">
-
-      <button type="button" class="btn btn-v .primary" *ngIf="!isEdit" (click)="addStaffMembers();">Save
+      <button type="button" class="btn btn-v .primary cursor" *ngIf="!isEdit" (click)="addStaffMembers();">Save
         &
         Close</button>
-      <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();">Update
+      <button type="button" class="btn btn-primary cursor" *ngIf="isEdit" (click)="updateSelectedRow();">Update
         &
         Close</button>
-      <button type="button" class="btn btn-secondary" id="closePopup"
+      <button type="button" class="btn btn-secondary cursor" id="closePopup"
         (click)="isEdit = false; selectedRowIndex = null;selectedRow = null;modalRef.hide()">Cancel</button>
     </div>
   </ng-template>
