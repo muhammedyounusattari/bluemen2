@@ -87,7 +87,7 @@
 <ng-template #resetPasswordPopup>
     <!-- Modal -->
     <div class="modal-header popHeaderBG">
-        <span class="modal-title popHeader" id="exampleModalLabel">Reset Password</span>
+        <span class="modal-title popHeader" id="exampleModalLabel">Security Question</span>
         <!-- <button type="button" class="btn-close" (click)="modalRef.hide()" aria-label="Close"></button> -->
     </div>
     <div class="modal-body">
@@ -99,7 +99,7 @@
                             <mat-label>Security Question 1</mat-label>
                             <select matNativeControl formControlName="securityQuestion1">
                                 <option value="" selected></option>
-                                <option *ngFor="let secQ of question1List" [value]="secQ.value">
+                                <option *ngFor="let secQ of question1List" [value]="secQ.id">
                                     {{secQ.name}}
                                 </option>
                             </select>
@@ -113,15 +113,15 @@
                     <div class="form-group last mb-login txtAlign">
                         <mat-form-field class="reset-password-textbox" appearance="fill">
                             <mat-label>Answer</mat-label>
-                            <input matInput value="" formControlName="securityAnswer1" minlength="3" required>
+                            <input matInput value="" formControlName="securityAnswer1" minlength="1" required>
                         </mat-form-field>
                     </div>
                     <div class="form-group last mb-login txtAlign">
                         <mat-form-field appearance="fill" class="reset-password-textbox">
                             <mat-label>Security Question 2</mat-label>
-                            <select matNativeControl formControlName="securityQuestion1">
+                            <select matNativeControl formControlName="securityQuestion2">
                                 <option value="" selected></option>
-                                <option *ngFor="let secQ of question2List" [value]="secQ.value">
+                                <option *ngFor="let secQ of question2List" [value]="secQ.id">
                                     {{secQ.name}}
                                 </option>
                             </select>
@@ -135,7 +135,7 @@
                     <div class="form-group last mb-login txtAlign">
                         <mat-form-field class="reset-password-textbox" appearance="fill">
                             <mat-label>Answer</mat-label>
-                            <input matInput value="" formControlName="securityAnswer2" minlength="3" required>
+                            <input matInput value="" formControlName="securityAnswer2" minlength="1" required>
                         </mat-form-field>
                     </div>
                 </form>

@@ -48,36 +48,29 @@ export class HomeComponent {
     if (this.userData) {
       this.userData = JSON.parse(this.userData);
       if (this.userData.isFirstTime === 'true') {
-        setTimeout(() => {
-          document.getElementById('hiddenBtn')?.click();          
-        }, 500);
+        this._loginService.getSecurityQuestionList(sessionStorage.getItem('realmId')).subscribe((result: any) => {
+          if (result) {
+            this.question1List = result.body.question1;
+            this.question2List = result.body.question2;
+            this.openResetPwdPopup();
+          }
+        },
+        (error: any) => {
+          const errorResponse = JSON.parse(error.error);
+          this.toastr.error(errorResponse.message, '', {
+            timeOut: 5000,
+            closeButton: true
+          });
+        });
       }
     }
   }
   openResetPwdPopup() {
-    this._loginService.getSecurityQuestions1(sessionStorage.getItem('realmId')).subscribe((result: any) => {
-      if (result) {
-        result = JSON.parse(result);
-        this.question1List = result;
-      }
-    },
-    (error: any) => {
-    });
-
-    this._loginService.getSecurityQuestions2(sessionStorage.getItem('realmId')).subscribe((result: any) => {
-      if (result) {
-        result = JSON.parse(result);
-        this.question2List = result;
-      }
-    },
-    (error: any) => {
-    });
     this.openModal(this.resetPasswordPopupRef);
   }
 
   createForm() {
     this.formGroup = this.formBuilder.group({
-      'fpUsername': [''],
       'securityQuestion1': ['', Validators.required],
       'securityQuestion2': ['', Validators.required],
       'securityAnswer1': ['', Validators.required],
@@ -91,31 +84,38 @@ export class HomeComponent {
 
   validateAnswer() {
     if (this.formGroup.valid) {
-      const data = {
-        'username': this.formGroup?.get('fpUsername')?.value,
-        'securityQuestion1': this.formGroup?.get('securityQuestion1')?.value,
-        'securityQuestion2': this.formGroup?.get('securityQuestion2')?.value,
-        'securityAnswer1': this.formGroup?.get('securityAnswer1')?.value,
-        'securityAnswer2': this.formGroup?.get('securityAnswer2')?.value
-      };
-      this._loginService.resetPassword(data, this.formGroup?.get('fpOrgcode')?.value).subscribe((result: any) => {
-        if (result.status === '200') {
-          this.dialog.open(DialogBoxComponent, {
-            data: {
-              title: 'Reset Password',
-              message: 'You have successfully reset your password.'
-            }
-          });
-          this.modalRef.hide();
-          sessionStorage.clear();
-          window.location.reload();
-        } else {
-          this.toastr.success(result.message, '', {
+      const question1Name = this.question1List.filter((item:any) => item.id === Number(this.formGroup?.get('securityQuestion1')?.value));
+      const question2Name = this.question2List.filter((item:any) => item.id === Number(this.formGroup?.get('securityQuestion2')?.value));
+      if (question1Name && question2Name) {
+        const data = {
+          'orgCode': sessionStorage.getItem('realmId'),
+          'username': sessionStorage.getItem('username'),
+          'securityQuestion1': question1Name[0].name,
+          'securityQuestion1Id': this.formGroup?.get('securityQuestion1')?.value,
+          'securityQuestion2': question2Name[0].name,
+          'securityQuestion2Id': this.formGroup?.get('securityQuestion2')?.value,
+          'securityAnswer1': this.formGroup?.get('securityAnswer1')?.value,
+          'securityAnswer2': this.formGroup?.get('securityAnswer2')?.value
+        };
+        this._loginService.updateSecurityQuestions(data).subscribe((result: any) => {
+          if (result) {
+            result = JSON.parse(result);
+            this.toastr.success(result.message, '', {
+              timeOut: 5000,
+              closeButton: true
+            });
+            this.modalRef.hide();
+            // sessionStorage.clear();
+            // window.location.reload();
+          }
+        }, (error: any) => {
+          const errorResponse = JSON.parse(error);
+          this.toastr.error(errorResponse.message, '', {
             timeOut: 5000,
             closeButton: true
           });
-        }
-      });
+        });  
+      }
     } else {
       this.formGroup.markAllAsTouched();
     }

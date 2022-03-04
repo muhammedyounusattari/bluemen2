@@ -15,11 +15,12 @@ export class DataService {
         try {
             const response = this.http.get(url , {headers:this.config.getHeader()}).pipe(tap(response => {
                 const res: any = response;
-            }, error => {
-
+            }, (error:any) => {
+                console.log(error);
             }));
             return response;
         } catch (error) {
+            console.log(error);
             return new Observable<any>();
         }
     }

@@ -727,3 +727,11 @@ box-shadow:  2px 2px 5px #888888!important;}
   .mat-checkbox-inner-container{
      
   }
+
+#toast-container > .toast {
+    max-width: 1200px;
+    width: 90%;
+}
+.display-flex{
+    display: flex;
+}

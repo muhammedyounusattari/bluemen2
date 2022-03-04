@@ -135,22 +135,26 @@ export class LoginComponent implements OnInit {
               // this.isInvalidCredentials = true;
               // this.errorMessage = errorResponse.message;
               this.toastr.error(errorResponse.message, '', {
-                timeOut: 5000,
+                // timeOut: 5000,
                 closeButton: true
               });
             }
           } else if (errorResponse.status === '403') {
-            this.isInvalidCredentials = true;
+            // this.isInvalidCredentials = true;
             this.isLoginEnabled = false;
-            this.errorMessage = errorResponse.message;
+            // this.errorMessage = errorResponse.message;
+            this.toastr.error(errorResponse.message, '', {
+              // timeOut: 5000,
+              closeButton: true
+            });
           }
           else {
-            // this.toastr.error(errorResponse.message, '', {
-            //   timeOut: 5000,
-            //   closeButton: true
-            // });
-            this.isInvalidCredentials = true;
-            this.errorMessage = errorResponse.message;
+            this.toastr.error(errorResponse.message, '', {
+              // timeOut: 5000,
+              closeButton: true
+            });
+            // this.isInvalidCredentials = true;
+            // this.errorMessage = errorResponse.message;
           }
         });
     } else {

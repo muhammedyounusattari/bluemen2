@@ -19,6 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { TutorsComponent } from '../tutor/home/tutors/tutors.component';
 import { AssignStudentsToTeacherClassesComponent } from '../teacher/home/assign-student-teacher-classes/assign-student-teacher-classes.component';
 import { TeacherComponent } from '../teacher/home/teachers/teacher.component';
+import { RolesComponent } from './home/roles/roles.component';
+
 import { SharedComponentModule } from '../../shared/components/shared-components.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -43,7 +45,9 @@ import { StaffClassesComponent } from '../staff/home/classes/staff-classes.compo
 import { MatSelectModule } from '@angular/material/select';
 import { MatSelectFilterModule } from 'mat-select-filter';
 import { MatRadioModule } from '@angular/material/radio';
-
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTreeModule } from '@angular/material/tree';
+import { AdminHomeComponent } from './home/admin-home.component';
 @NgModule({
   declarations: [
     PulldownListComponent,
@@ -68,7 +72,9 @@ import { MatRadioModule } from '@angular/material/radio';
     TeacherClassesComponent,
     CounselorClassesComponent,
     TutorClassesComponent,
-    StaffClassesComponent
+    StaffClassesComponent,
+    RolesComponent,
+    AdminHomeComponent
   ],
   imports: [
     AdminRoutingModule,
@@ -91,7 +97,9 @@ import { MatRadioModule } from '@angular/material/radio';
     MatSelectFilterModule,
     MatCardModule,
     MatIconModule,
-    MatRadioModule
+    MatRadioModule,
+    MatExpansionModule,
+    MatTreeModule
   ],
   providers: [
     MatDatepickerModule,

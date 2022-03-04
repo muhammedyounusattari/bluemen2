@@ -5,15 +5,17 @@
   <!-- Full Screen Loader End -->
 
   <div class="row">
+
     <div class="col-md-4">
-      <div class="form-group">
-        <label for="sel1">User:</label>
-        <select class="form-control" id="sel1">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
+      <div class="form-group">ƒ
+        <span for="sel1">User:
+        <select class="form-control" id="serviceGrpName" (change)="getConfigValues($event)"
+                [(ngModel)]="userSelected">
+          <option *ngFor="let user of userList.body" value="{{user.username}}">
+            {{user.username}}</option>
         </select>
+        </span>
+
       </div>
     </div>
   </div>

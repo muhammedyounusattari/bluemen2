@@ -26,6 +26,8 @@ export class ConfigSettingsComponent implements OnInit {
   id: string;
   configValue: string;
   configType: string;
+  userList: any =[];
+  userSelected: string;
 
 
   columnsToDisplay: string[] = ['id', 'configType', 'configValue', 'description'];
@@ -53,11 +55,19 @@ export class ConfigSettingsComponent implements OnInit {
   constructor(private modalService: BsModalService,
               private configSettingsService: ConfigSettingsService
   ) {
+   this.configSettingsService.getUserList().subscribe((result:any) => {
+        if(result){
+        this.userList = result;
+          console.log("result", result);
+        }
+      });
     this.getConfigSettings();
   }
 
   ngOnInit() {
     this.myElement = window.document.getElementById('loading');
+
+
 
     this.configSettingsService.getConfigSettings().subscribe((result: any) => {
       this.hideLoader();
@@ -147,5 +157,9 @@ export class ConfigSettingsComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  getConfigValues(userEvent:any){
+    alert();
   }
 }

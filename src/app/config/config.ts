@@ -9,7 +9,7 @@ export class Config {
     const state = sessionStorage.getItem("state");
     let access_token = "";
     if (state) {
-      access_token = JSON.parse(state)?.body.access_token;
+      access_token = JSON.parse(state)?.access_token;
     } else {
       //here we need to add redirect call, if the session expired
       // alert("Please login again, your session got expired");

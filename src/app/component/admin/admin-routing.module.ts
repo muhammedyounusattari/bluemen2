@@ -23,7 +23,8 @@ import { RecallStudentsComponent } from './system-tools/recall-students/recall-s
 import { TimeClockManagerComponent } from './system-tools/time-clock-mgr/time-clock-manager.component';
 import { TutorClassesComponent } from '../tutor/home/classes/tutor-classes.component';
 import { StaffClassesComponent } from '../staff/home/classes/staff-classes.component';
-
+import { RolesComponent } from './home/roles/roles.component';
+import { AdminHomeComponent } from './home/admin-home.component';
 
 const routes: Routes = [
   {
@@ -59,15 +60,15 @@ const routes: Routes = [
     component: GradeStandingGroupListComponent
   },
   {
-    path: 'admin/config-settings',
+    path: 'admin/home/config-settings',
     component: ConfigSettingsComponent
   },
   {
-    path: 'admin/user-names-pwd',
+    path: 'admin/home/user-names-pwd',
     component: UserNamesAndPasswordComponent
   },
   {
-    path: 'admin/system-preferences',
+    path: 'admin/home/system-preferences',
     component: SystemPreferencesComponent
   },
   {
@@ -113,7 +114,16 @@ const routes: Routes = [
   {
     path: 'admin/staff-classes',
     component: StaffClassesComponent
-   }
+  },
+  {
+    path: 'admin/home/roles',
+    component: RolesComponent
+  },
+  {
+    path: 'admin/home',
+    component: AdminHomeComponent
+  }
+
 
 ];
 

@@ -1,147 +1,333 @@
-<div class="container-fluid" style="background:#EFF4F8;">
-    <div class="row bg-white">
-        <div class="col-md-12">
-            <h3>User Information</h3>
+<div class="main-container">
+    <div id="main-section" class="container-fluid ">
+        <!-- Full Screen Loader Start -->
+        <div id="loading"></div>
+        <!-- Full Screen Loader End -->
+
+        <!-- Header Start-->
+        <div class="row bg-white">
+            <div class="col-md-12">
+                <h3>User Information</h3>
+            </div>
         </div>
+        <!-- Header End-->
+
+        <!-- Spinner Start-->
+        <div class="spinner-container" *ngIf="isLoading">
+            <mat-spinner id="spinner"></mat-spinner>
+        </div>
+        <!-- Spinner End-->
+
+        <!-- Data Table Start-->
+        <div class="mat-elevation-z8 data-table-height dt-max-height marg-t2" *ngIf="!isLoading">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+                <ng-container matColumnDef="orgId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Organization Code </th>
+                    <td mat-cell *matCellDef="let userObj; let row = dataIndex;">{{userObj.orgId}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="username">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> User Name</th>
+                    <td mat-cell *matCellDef="let userObj; let row = dataIndex;">{{userObj.username}}</td>
+                </ng-container>
+                <ng-container matColumnDef="firstName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name</th>
+                    <td mat-cell *matCellDef="let userObj; let row = dataIndex;">{{userObj.firstName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="lastName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name</th>
+                    <td mat-cell *matCellDef="let userObj; let row = dataIndex;">{{userObj.lastName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+                    <td mat-cell *matCellDef="let userObj; let row = dataIndex;">{{userObj.email}}</td>
+                </ng-container>
+                <ng-container matColumnDef="roleName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Role Name</th>
+                    <td mat-cell *matCellDef="let userObj; let row = dataIndex;">{{userObj.roleName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="siteLocation">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Site Location </th>
+                    <td mat-cell *matCellDef="let userObj; let row = dataIndex;">{{userObj.siteLocation}}</td>
+                </ng-container>
+                <ng-container matColumnDef="active">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Active</th>
+                    <td mat-cell *matCellDef="let userObj; let row = dataIndex;">{{userObj.active}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> Password Reset </th>
+                    <td mat-cell *matCellDef="let userObj; let i = index">
+                        <a href="javascript:void(0)">Reset</a>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
+                    [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
+                </tr>
+            </table>
+        </div>
+        <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+        <!-- Data Table End-->
     </div>
 
-    <div class="row" style="margin-left: 0px!important; margin-right: 0px!important;">
-        <div class="col-md-4">
-            <div class="form-group">
-                Add button on type right of the following table
+    <!-- Buttons Start-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-bottom " id="navbarTag">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);" (click)="navigateToBackScreen()">Close</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);" (click)="resetFields()">Add</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);" (click)="setValuesToUpdate()">Edit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);" (click)="removeUser()">Remove</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<!-- Modal Start-->
+<ng-template #userNamesAndPasswordPopup>
+    <!-- Modal -->
+    <div class="modal-header popHeaderBG">
+        <span class="modal-title popHeader" id="exampleModalLabel">User Information</span>
+        <button type="button" class="btn-close" (click)="selectedRowIndex = null; formGroup?.markAsUntouched(); 
+            selectedRow = null; modalRef.hide()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="tab-content bg-white" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <form [formGroup]="formGroup" class="form">
+                    <div class="row">
+                        <div class="col-md-12 display-content">
+                            <div class="form-group col-md-4">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>User Name</mat-label>
+                                    <input matInput placeholder="" value="" formControlName="username" required>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Email</mat-label>
+                                    <input matInput placeholder="" type="email" value="" formControlName="email"
+                                        pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" required>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Mobile</mat-label>
+                                    <input matInput placeholder="" minlength="10" maxlength="12" value="" #mobile
+                                        (keyup)="imposeMinMax(mobile)" (keypress)="numericOnly($event)"
+                                        formControlName="mobile" required>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 display-content">
+                            <div class="form-group col-md-4">
+                                <mat-form-field appearance="fill" class="example-full-width">
+                                    <mat-label>Role</mat-label>
+                                    <select matNativeControl formControlName="roleName" required>
+                                        <option [value]="roleObj.name" *ngFor="let roleObj of roleList" selected>
+                                            {{roleObj.name}}
+                                        </option>
+                                    </select>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <mat-form-field appearance="fill" class="example-full-width">
+                                    <mat-label>Site Location</mat-label>
+                                    <select matNativeControl formControlName="siteLocation">
+                                        <option [value]="siteObj.name" *ngFor="let siteObj of siteLocationList"
+                                            selected>
+                                            {{siteObj.name}}
+                                        </option>
+                                    </select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-accordion>
+                        <mat-expansion-panel (opened)="userBasicInfo = true" (closed)="userBasicInfo = false">
+                            <mat-expansion-panel-header class="accordion-bg">
+                                <mat-panel-title>
+                                    User Personal Information
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="row marg-t2">
+                                <div class="col-md-12 display-content">
+                                    <div class="form-group col-md-4">
+                                        <mat-form-field class="example-full-width" appearance="fill">
+                                            <mat-label>First Name</mat-label>
+                                            <input matInput placeholder="" value="" formControlName="firstName"
+                                                required>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <mat-form-field class="example-full-width" appearance="fill">
+                                            <mat-label>Last Name</mat-label>
+                                            <input matInput placeholder="" value="" formControlName="lastName" required>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <section class="example-section">
+                                            <mat-checkbox formControlName="active" class="example-margin">
+                                                Active</mat-checkbox>
+                                        </section>
+                                        <section class="example-section">
+                                            <mat-checkbox formControlName="sendMail" class="example-margin">
+                                                Send Mail</mat-checkbox>
+                                        </section>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 display-content">
+                                    <div class="form-group col-md-4">
+                                        <mat-form-field appearance="fill" class="example-full-width">
+                                            <mat-label>City</mat-label>
+                                            <select matNativeControl formControlName="city">
+                                                <option [value]="cityObj.name" *ngFor="let cityObj of cityList"
+                                                    selected>
+                                                    {{cityObj.name}}
+                                                </option>
+                                            </select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <mat-form-field appearance="fill" class="example-full-width">
+                                            <mat-label>State</mat-label>
+                                            <select matNativeControl formControlName="state">
+                                                <option [value]="stateObj.name" *ngFor="let stateObj of stateList"
+                                                    selected>
+                                                    {{stateObj.name}}
+                                                </option>
+                                            </select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <mat-form-field class="example-full-width" appearance="fill">
+                                            <mat-label>Zip Code</mat-label>
+                                            <input matInput placeholder="" type="number" value=""
+                                                formControlName="zipcode">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 display-content">
+                                    <div class="form-group col-md-4">
+                                        <mat-form-field class="example-full-width" appearance="fill">
+                                            <mat-label>Phone 2</mat-label>
+                                            <input matInput placeholder="" minlength="10" maxlength="12" value="" #phone2
+                                                (keyup)="imposeMinMax(phone2)" (keypress)="numericOnly($event)"
+                                                formControlName="phone2">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <mat-form-field class="example-full-width" appearance="fill">
+                                            <mat-label>Fax</mat-label>
+                                            <input matInput placeholder="" value="" formControlName="fax">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 display-content">
+                                    <div class="form-group col-md-6">
+                                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                                            <mat-label>Address 1</mat-label>
+                                            <textarea matInput value="" formControlName="address1" rows="1"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                                            <mat-label>Address 2</mat-label>
+                                            <textarea matInput value="" formControlName="address2" rows="1"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                                        <mat-label>Notes</mat-label>
+                                        <textarea matInput value="" formControlName="notes" rows="4"></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                    <div class="row marg-t1 marg-b1"></div>
+                    <mat-accordion>
+                        <mat-expansion-panel (opened)="userAdvancedInfo" (closed)="userAdvancedInfo = false">
+                            <mat-expansion-panel-header class="accordion-bg">
+                                <mat-panel-title>
+                                    BOLT Link Configuration
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="row marg-t2">
+                                <div class="form-group col-md-12">
+                                    <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
+                                        <mat-label>BOLT Link</mat-label>
+                                        <textarea matInput value="" formControlName="link" rows="2" readonly></textarea>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-12 display-content">
+                                    <div class="form-group col-md-4">
+                                        <mat-form-field appearance="fill" class="mb-m-6 example-full-width">
+                                            <mat-label>Start Date</mat-label>
+                                            <input matInput [matDatepicker]="picker1" formControlName="startDate">
+                                            <mat-datepicker-toggle matSuffix [for]="picker1">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <mat-form-field appearance="fill" class="mb-m-6 example-full-width">
+                                            <mat-label>End Date</mat-label>
+                                            <input matInput [matDatepicker]="picker2" formControlName="endDate">
+                                            <mat-datepicker-toggle matSuffix [for]="picker2">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #picker2></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <section class="example-section">
+                                            <mat-checkbox formControlName="boltActive" class="example-margin">
+                                                Link is Active</mat-checkbox>
+                                        </section>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 display-content">
+                                    <div class="form-group col-md-4">
+                                        <mat-form-field class="example-full-width" appearance="fill">
+                                            <mat-label>Last Generated</mat-label>
+                                            <input matInput placeholder="" value="" formControlName="lastGenerated"
+                                                readonly>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-group col-md-8">
+                                        <button type="button" class="btn col-md-3">Generate Link</button>
+                                        &nbsp;&nbsp;
+                                        <button type="button" class="btn col-md-3">Copy Link</button>&nbsp;&nbsp;
+                                        <button type="button" class="btn col-md-3">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </form>
             </div>
         </div>
     </div>
-
-    <div class="table-responsive" style="border:1px solid #1366A0;">
-        <table class="table table-hover" style="background:#fff; color: #8f8a8a;">
-            <thead>
-                <tr style="background: #F5F6FA;">
-                    <th scope="col">Organization Code</th>
-                    <th scope="col">User Name</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Role Name</th>
-                    <th scope="col">Site Location</th>
-                    <th scope="col">Active</th>
-                    <th scope="col">Passord Reset</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">SSSDEMO_KT</th>
-                    <td>Viren</td>
-                    <td>Virendra</td>
-                    <td>Wankhede</td>
-                    <td>vwankhede@kastechssg.com</td>
-                    <td>Admin</td>
-                    <td>Pune</td>
-                    <td>Active</td>
-                    <td><a href="javascript:void(0)">Reset</a></td>
-                </tr>
-                <tr>
-                    <th scope="row">SSSDEMO_KT</th>
-                    <td>Viren</td>
-                    <td>Virendra</td>
-                    <td>Wankhede</td>
-                    <td>vwankhede@kastechssg.com</td>
-                    <td>Admin</td>
-                    <td>Pune</td>
-                    <td>Active</td>
-                    <td><a href="javascript:void(0)">Reset</a></td>
-                </tr>
-                <tr>
-                    <th scope="row">SSSDEMO_KT</th>
-                    <td>Viren</td>
-                    <td>Virendra</td>
-                    <td>Wankhede</td>
-                    <td>vwankhede@kastechssg.com</td>
-                    <td>Admin</td>
-                    <td>Pune</td>
-                    <td>Active</td>
-                    <td><a href="javascript:void(0)">Reset</a></td>
-                </tr>
-                <tr>
-                    <th scope="row">SSSDEMO_KT</th>
-                    <td>Viren</td>
-                    <td>Virendra</td>
-                    <td>Wankhede</td>
-                    <td>vwankhede@kastechssg.com</td>
-                    <td>Admin</td>
-                    <td>Pune</td>
-                    <td>Active</td>
-                    <td><a href="javascript:void(0)">Reset</a></td>
-                </tr>
-                <tr>
-                    <th scope="row">SSSDEMO_KT</th>
-                    <td>Viren</td>
-                    <td>Virendra</td>
-                    <td>Wankhede</td>
-                    <td>vwankhede@kastechssg.com</td>
-                    <td>Admin</td>
-                    <td>Pune</td>
-                    <td>Active</td>
-                    <td><a href="javascript:void(0)">Reset</a></td>
-                </tr>
-                <tr>
-                    <th scope="row">SSSDEMO_KT</th>
-                    <td>Viren</td>
-                    <td>Virendra</td>
-                    <td>Wankhede</td>
-                    <td>vwankhede@kastechssg.com</td>
-                    <td>Admin</td>
-                    <td>Pune</td>
-                    <td>Active</td>
-                    <td><a href="javascript:void(0)">Reset</a></td>
-                </tr>
-                <tr>
-                    <th scope="row">SSSDEMO_KT</th>
-                    <td>Viren</td>
-                    <td>Virendra</td>
-                    <td>Wankhede</td>
-                    <td>vwankhede@kastechssg.com</td>
-                    <td>Admin</td>
-                    <td>Pune</td>
-                    <td>Active</td>
-                    <td><a href="javascript:void(0)">Reset</a></td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-v .primary" (click)="addUpdateUser()" *ngIf="!isEdit">Save & Close</button>
+        <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="addUpdateUser()">Update & Close</button>
+        <button type="button" class="btn btn-secondary" id="closePopup"
+            (click)="isEdit = false; selectedRowIndex = null; selectedRow=null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>
     </div>
-
-    <div class="row">
-        <div class="col-md-12 mt-3">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination pagination-sm justify-content-right">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</div>
-
-<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Close</a>
-                </li>
-            </ul>
-
-        </div>
-    </div>
-</nav>
+</ng-template>
+<!-- Modal End-->

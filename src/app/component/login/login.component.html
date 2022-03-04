@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-md-6 text-center  ">
             <img src="../../../assets/img/left-img.png" class="mt-5 ml-5" alt="Blumen Online for TRIO"
-                title="Blumen Online for TRIO">
+                title="">
         </div>
 
         <div class="col-md-6">
@@ -23,13 +23,12 @@
                     <div>
                         <h4 class="welcome">
                             Welcome! </h4>
-                        <p class="crediential">
-                            Please login with your credentials…</p>
+                        <p>Please login with your credentials…</p>
                     </div>
                     <form [formGroup]="formGroup" (ngSubmit)="validate(formGroup.value)" class="form">
                         <div class="form-group first txtAlign">
                             <mat-form-field class="example-full-width" appearance="fill">
-                                <mat-label>Organization Code</mat-label>
+                                <mat-label>Organization  Code</mat-label>
                                 <input matInput value="" formControlName="orgCode" minlength="3" required>
                                 <!-- <mat-error *ngIf="formGroup.controls['orgCode'].invalid">
                                     {{getError('orgCode')}}
@@ -66,7 +65,7 @@
                             {{errorMessage}}
                         </mat-error>
 
-                        <div class="d-flex align-items-center mts-5" *ngIf="isLoginEnabled">
+                        <div class="d-flex align-items-center mts-5">
                             <span class="mr-auto"><a href="javascript:void(0)" (click)="forgotPwd()"
                                     class="forgot-pass forgot">Forgot
                                     Password ?</a></span>

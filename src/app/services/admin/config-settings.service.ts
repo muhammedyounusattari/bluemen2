@@ -19,4 +19,8 @@ export class ConfigSettingsService {
   public saveConfigSettings(request:any): Observable<any> {
     return this.dataService.callPostService(ServiceUrls.POST_CONFIG_SETTINGS,request);
   }
+
+  public getUserList(): Observable<any> {
+    return this.dataService.callGetService(ServiceUrls.GET_USER_LIST);
+  }
 }

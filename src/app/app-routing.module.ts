@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from 'src/app/component/myhome/home/home.component';
 import { PendingChangesGuard } from './shared/components/canDeactivate/can-deactivate.component';
 import { LoginComponent } from './component/login/login.component';
+import { ResetPasswordComponent } from 'src/app/component/reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent
   }
 ];
 

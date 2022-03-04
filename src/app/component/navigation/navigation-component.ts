@@ -79,13 +79,13 @@ validate() {
     } else if (componentName === 'staff-members') {
       this.router.navigate(['staff/staff-members']);
     } else if (componentName === 'config-settings') {
-      this.router.navigate(['admin/config-settings']);
+      this.router.navigate(['admin/home/config-settings']);
     } else if (componentName === 'user-names-pwd') {
-      this.router.navigate(['admin/user-names-pwd']);
+      this.router.navigate(['admin/home/user-names-pwd']);
     } else if (componentName === 'custom-field-value') {
       this.router.navigate(['utilities/custom-field-value']);
     } else if (componentName === 'system-preferences') {
-      this.router.navigate(['admin/system-preferences']);
+      this.router.navigate(['admin/home/system-preferences']);
     } else if (componentName === 'assign-tutor-student-class') {
       this.router.navigate(['tutor/assign-tutor-student-class']);
     } else if (componentName === 'tutors') {
