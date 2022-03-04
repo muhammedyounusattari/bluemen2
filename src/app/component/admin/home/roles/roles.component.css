@@ -1,0 +1,60 @@
+.example-tree-invisible {
+    display: none;
+}
+.example-tree ul,
+.example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+.display-content{
+    display:contents;
+}
+.marg-top1 {
+    margin-top: 1%;
+}
+.left-div{
+    background: white;
+    border: 1px solid;
+    margin-left: 1%;
+}
+.right-div{
+    background: white;
+    border: 1px solid;
+    overflow-y: scroll;
+    margin-left: 1%;
+}
+.list {
+    font-size: 1rem;
+    color: rgba(0, 0, 0, .87);
+    text-align: left;
+    height: 40px;
+    padding-top: 10px;
+    padding-left: 16px;
+    display: block;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+.list:hover {
+    font-weight: bold;
+    background-color: #4dd0e1;
+}
+.expand-icon{
+    margin-left: -10px;
+    margin-top: -5px;
+}
+.expand-btn{
+    width: 20px;
+    height: 20px;
+}
+.marg-top1 {
+    margin-top: 1%;
+}
+.marg-left2{
+    margin-left: 2%;
+}
+.marg-left3{
+    margin-left: 3%;
+}
+
+

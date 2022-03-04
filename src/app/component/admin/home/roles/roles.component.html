@@ -1,0 +1,68 @@
+<div class="main-container">
+    <div id="main-section" class="container-fluid ">
+        <!-- Full Screen Loader Start -->
+        <!-- <div id="loading"></div> -->
+        <!-- Full Screen Loader End -->
+
+        <!-- Header Start-->
+        <div class="row bg-white">
+            <div class="col-md-12">
+                <h3>Roles</h3>
+            </div>
+        </div>
+        <!-- Header End-->
+
+        <div class="row marg-top1">
+            <div class="col-md-12 display-content">
+                <div class="col-md-2 left-div" id="leftBlock">
+                    <div class="list" style="margin-top: 5%;">
+                        Admin(Default)
+                    </div>
+                    <div class="list">
+                        Manager(Default)
+                    </div>
+                </div>
+                <div class="col-md-9 right-div" id="rightBlock">
+                    <div class="row" *ngFor="let parentNode of roleList">
+                        <div class="col-md-12">
+                            <input type="checkbox" (click)="setValue()" />
+                            <mat-radio-button [checked]="parentNode.radActionVal == 'Y'" class="marg-top1 marg-left2">
+                                {{parentNode.rad1Name}}</mat-radio-button>&nbsp;&nbsp;&nbsp;
+                            <mat-radio-button [checked]="parentNode.radActionVal == 'R'" class="marg-top1">
+                                {{parentNode.rad2Name}}
+                            </mat-radio-button>&nbsp;&nbsp;&nbsp;
+                            <mat-radio-button [checked]="parentNode.radActionVal == 'N'" class="marg-top1">
+                                {{parentNode.rad3Name}}
+                            </mat-radio-button>
+                            &nbsp;&nbsp;&nbsp; ** {{parentNode.name}} **
+                        </div>
+                        <div *ngIf="isExpandChildren">
+                            <div class="col-md-12 marg-left2"
+                                *ngFor="let childrenNode of parentNode?.children; let ind = index">
+                                <input type="checkbox" (click)="setChildValue()" />
+                                <mat-radio-button [checked]="childrenNode.radActionVal == 'Y'" class="marg-left2"
+                                    name="{{ind}}">{{childrenNode.rad1Name}}</mat-radio-button>&nbsp;&nbsp;&nbsp;
+                                <mat-radio-button [checked]="childrenNode.radActionVal == 'R'" class="marg-left2"
+                                    name="{{ind}}">{{childrenNode.rad2Name}}</mat-radio-button>&nbsp;&nbsp;&nbsp;
+                                <mat-radio-button [checked]="childrenNode.radActionVal == 'N'" class="marg-left2"
+                                    name="{{ind}}">{{childrenNode.rad3Name}}</mat-radio-button>
+                                &nbsp;&nbsp;&nbsp; {{childrenNode.name}}
+                                <div *ngIf="isExpandChild">
+                                    <div class="marg-left3" *ngFor="let childNode of childrenNode?.children; let idx = index;">
+                                        <mat-radio-button [checked]="childNode.radActionVal == 'Y'" class="marg-left2"
+                                            name="child_{{idx}}">{{childNode.rad1Name}}</mat-radio-button>&nbsp;&nbsp;&nbsp;
+                                        <mat-radio-button [checked]="childNode.radActionVal == 'R'" class="marg-left2"
+                                            name="child_{{idx}}">{{childNode.rad2Name}}</mat-radio-button>&nbsp;&nbsp;&nbsp;
+                                        <mat-radio-button [checked]="childNode.radActionVal == 'N'" class="marg-left2"
+                                            name="child_{{idx}}">{{childNode.rad3Name}}</mat-radio-button>
+                                        &nbsp;&nbsp;&nbsp; {{childNode.name}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
