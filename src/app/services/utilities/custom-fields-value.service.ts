@@ -14,7 +14,7 @@ export class CustomFieldValueService {
    */
   public getCustomFieldValuesList(): Observable<any> {
     return this.dataService.callGetService(
-      ServiceUrls.GET_CUSTOM_FIELD_VALUE_LIST);
+      ServiceUrls.GET_CUSTOM_FIELD_VALUE_LIST+'/mumbai-university?user=mumbai-university');
   }
 
   /**

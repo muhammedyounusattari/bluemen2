@@ -28,9 +28,11 @@ export class ConfigSettingsComponent implements OnInit {
   configType: string;
   userList: any =[];
   userSelected: string;
+  username:string;
+  realmId:string;
 
 
-  columnsToDisplay: string[] = ['id', 'configType', 'configValue', 'description'];
+  columnsToDisplay: string[] = ['id','configId', 'configType', 'configValue', 'description'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -55,32 +57,18 @@ export class ConfigSettingsComponent implements OnInit {
   constructor(private modalService: BsModalService,
               private configSettingsService: ConfigSettingsService
   ) {
-   this.configSettingsService.getUserList().subscribe((result:any) => {
-        if(result){
-        this.userList = result;
-          console.log("result", result);
-        }
-      });
     this.getConfigSettings();
+
   }
 
   ngOnInit() {
     this.myElement = window.document.getElementById('loading');
-
-
-
-    this.configSettingsService.getConfigSettings().subscribe((result: any) => {
-      this.hideLoader();
-
-      if (result) {
-        this.configSettingsList = result;
-        this.dataSource = new MatTableDataSource(result);
-        this.dataSource.paginator = this.paginator;
-        this.selectedRowIndex = null;
-        this.dataSource.sort = this.sort;
-      }
-    });
+    this.username = sessionStorage.getItem('username') || '';
+    this.realmId = sessionStorage.getItem('realmId') || '';
+    this.getUserList(this.realmId);
+    this.getConfigSettingsValues(this.username, this.realmId);
   }
+
 
   addNewDropdown() {
     this.openModal(this.confiSettingPopupRef);
@@ -137,16 +125,15 @@ export class ConfigSettingsComponent implements OnInit {
     this.spinner = true;
     let payload = {
       id: this.id,
-      configValue: this.configValue,
-      configType: this.configType,
-      description: this.description
+      configValue: this.configValue
+
     }
 
     this.configSettingsService.saveConfigSettings(payload).subscribe((result: any) => {
       if (result) {
         this.spinner = false;
         this.configSettingsList = result;
-        window.location.reload();
+        this.getConfigSettingsValues(this.userSelected,this.realmId);
       }
     });
 
@@ -159,7 +146,33 @@ export class ConfigSettingsComponent implements OnInit {
     }
   }
 
+  getConfigSettingsValues(username:string, realmId:string){
+       this.configSettingsService.getConfigSettings(username, realmId).subscribe((result: any) => {
+          this.hideLoader();
+
+          if (result) {
+            this.configSettingsList = result;
+            this.dataSource = new MatTableDataSource(result);
+            this.dataSource.paginator = this.paginator;
+            this.selectedRowIndex = null;
+            this.dataSource.sort = this.sort;
+          }
+        });
+  }
+
   getConfigValues(userEvent:any){
-    alert();
+    var user = this.userSelected = userEvent.target.value;
+
+    if(user)
+       this.getConfigSettingsValues(user, this.realmId);
+  }
+
+  getUserList(realmId:string){
+   this.configSettingsService.getUserList(realmId).subscribe((result:any) => {
+          if(result){
+          this.userList = result;
+            console.log("result", result);
+          }
+        });
   }
 }

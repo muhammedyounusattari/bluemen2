@@ -12,15 +12,21 @@ export class ConfigSettingsService {
   /**
    * @method getConfigSettings
    */
-  public getConfigSettings(): Observable<any> {
-    return this.dataService.callGetService(ServiceUrls.GET_CONFIG_SETTINGS);
+  public getConfigSettings(username:string, releamId:string): Observable<any> {
+    return this.dataService.callGetService(ServiceUrls.GET_CONFIG_SETTINGS+'/'+releamId+'?user='+username);
   }
 
   public saveConfigSettings(request:any): Observable<any> {
     return this.dataService.callPostService(ServiceUrls.POST_CONFIG_SETTINGS,request);
   }
 
-  public getUserList(): Observable<any> {
-    return this.dataService.callGetService(ServiceUrls.GET_USER_LIST);
+  public getUserList(username:string): Observable<any> {
+    const URL = ServiceUrls.GET_USER_LIST+username+'/userList/v1';
+    return this.dataService.callGetService(URL);
+  }
+
+  public getConfigUserSettings(user:string): Observable<any> {
+    const url = ServiceUrls.GET_CONFIG_SETTINGS+'/mumbai-university?user='+user;
+    return this.dataService.callGetService(url);
   }
 }

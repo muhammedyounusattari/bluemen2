@@ -223,5 +223,5 @@ export class ServiceUrls {
     // PULL DOWN CITY
     public static GET_PULLDOWN_CITY = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/39';
 
-    public static GET_USER_LIST = environment.apiUrl + '/api/blumen-api/keycloak/tenant/mumbai-university/userList/v1';
+    public static GET_USER_LIST = environment.apiUrl + '/blumen-api/keycloak/tenant/';
 }
