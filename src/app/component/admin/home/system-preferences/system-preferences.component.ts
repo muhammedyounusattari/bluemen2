@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AnnualPerformance, DefaultSetting, DefaultSettingTab, GeneralSettingTab, ReportSetting, SystemPreferencesEnum } from '../../../../constants/enums/system-preferences.enum';
 import { SystemPreferencesService } from '../../../../services/admin/system-preferences.service';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
     selector: 'app-system-preferences',
@@ -26,11 +27,13 @@ export class SystemPreferencesComponent implements OnInit {
     semisterList: [{'name': ''}];
     componentsList: [{'name': ''}]
     constructor(private modalService: BsModalService
-        , private _systemPreferencesService: SystemPreferencesService) {
+        , private _systemPreferencesService: SystemPreferencesService
+        , private sharedService: SharedService) {
 
     }
 
     ngOnInit(): void {
+        this.sharedService.setPageTitle('System Preferences');
         const date = new FormControl(new Date());
         this.systemPreferencesEnum.generalSetting = new GeneralSettingTab();
         this.systemPreferencesEnum.defaultSetting = new DefaultSettingTab();

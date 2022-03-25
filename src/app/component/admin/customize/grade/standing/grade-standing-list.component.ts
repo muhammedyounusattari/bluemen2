@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
     selector: 'app-grade-standing-list',
@@ -79,9 +80,11 @@ export class GradeStandingListComponent implements OnInit {
         , private router: Router
         , private dialog: MatDialog
         , private _gradingGroupStandingService: GradingGroupStandingService
-        , private toastr: ToastrService) { }
+        , private toastr: ToastrService
+        , private sharedService: SharedService) { }
 
     ngOnInit() {
+        this.sharedService.setPageTitle('Grade/Standing List');
         this.myElement = window.document.getElementById('loading');
         this._gradingGroupStandingService.getGradingStandingList('').subscribe(result => {
             this.hideLoader();

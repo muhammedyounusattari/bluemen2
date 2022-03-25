@@ -11,6 +11,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
     selector: 'app-college-list',
@@ -83,14 +84,16 @@ export class CollegeListComponent implements OnInit {
         , private toastr: ToastrService
         , private _pullDownListService: PullDownListService
         , private fb: FormBuilder
-        , private _formBuilder: FormBuilder) { }
+        , private _formBuilder: FormBuilder
+        , private sharedService: SharedService) { }
 
     ngOnInit() {
+        this.sharedService.setPageTitle('College/School List');
         this.CollegeForm = this._formBuilder.group({
             CollegeRows: this._formBuilder.array([])
         });
 
-        this.navigateToComponent('service-group-list');
+        this.navigateToComponent('college-list');
         this.myElement = window.document.getElementById('loading');
         this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
             this.hideLoader();
@@ -138,9 +141,9 @@ export class CollegeListComponent implements OnInit {
 
     navigateToComponent(componentName: string) {
         if (componentName === 'college-list') {
-            this.router.navigate(['admin/college-list']);
+            this.router.navigate(['admin/customize/college-list']);
         } else if (componentName === 'school-list') {
-            this.router.navigate(['admin/school-list']);
+            this.router.navigate(['admin/customize/school-list']);
         }
     }
 

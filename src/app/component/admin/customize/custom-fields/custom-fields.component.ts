@@ -8,7 +8,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-custom-fields',
@@ -54,9 +54,11 @@ export class CustomFieldsComponent implements OnInit {
     , private fb: FormBuilder
     , private customFieldService: CustomFieldService
     , private dialog: MatDialog
-    , private toastr: ToastrService) { }
+    , private toastr: ToastrService
+    , private sharedService: SharedService) { }
 
   ngOnInit(): void {
+    this.sharedService.setPageTitle('Custom Fields');
     this.myElement = window.document.getElementById('loading');
     this.getCustomFieldNameType();
     this.initialiseForm();

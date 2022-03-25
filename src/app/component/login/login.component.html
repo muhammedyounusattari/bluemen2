@@ -49,7 +49,7 @@
                                 <mat-label>Password</mat-label>
                                 <input [type]="hide ? 'password' : 'text'" matInput value="" formControlName="password"
                                     required>
-                                <mat-icon matSuffix (click)="hide = !hide">
+                                <mat-icon matSuffix (mousedown)="hide = false;" (mouseup)="hide = true;">
                                     <i *ngIf="!hide" class="fa fa-eye" id="eye-icon"></i>
                                     <i *ngIf="hide" class="fa fa-eye-slash" id="eye-icon"></i>
                                 </mat-icon>

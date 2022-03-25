@@ -1,7 +1,8 @@
-import { Component, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 interface FoodNode {
   name: string;
@@ -37,7 +38,7 @@ const TREE_DATA: FoodNode[] = [
         rad1Name: 'Y',
         rad2Name: 'R',
         rad3Name: 'N'
-      },      
+      },
       {
         name: 'Orange',
         id: 8,
@@ -47,7 +48,7 @@ const TREE_DATA: FoodNode[] = [
         rad3Name: 'N',
         children: [
           {
-            name: 'Pumpkins', id: 9, 
+            name: 'Pumpkins', id: 9,
             radActionVal: 'Y',
             rad1Name: 'Y',
             rad2Name: 'R',
@@ -71,7 +72,7 @@ const TREE_DATA: FoodNode[] = [
   templateUrl: './roles.component.html',
   styleUrls: ['./roles.component.css']
 })
-export class RolesComponent implements AfterViewInit {
+export class RolesComponent implements AfterViewInit, OnInit {
   @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
   modalRef: BsModalRef;
   modalConfigSM = {
@@ -103,7 +104,7 @@ export class RolesComponent implements AfterViewInit {
           rad1Name: 'Y',
           rad2Name: 'R',
           rad3Name: 'N'
-        },      
+        },
         {
           name: 'Orange',
           id: 3,
@@ -113,15 +114,15 @@ export class RolesComponent implements AfterViewInit {
           rad3Name: 'N',
           children: [
             {
-              name: 'Pumpkins', 
-              id: 1, 
+              name: 'Pumpkins',
+              id: 1,
               radActionVal: 'Y',
               rad1Name: 'Y',
               rad2Name: 'R',
               rad3Name: 'N'
             },
             {
-              name: 'Carrots', 
+              name: 'Carrots',
               id: 2,
               radActionVal: 'Y',
               rad1Name: 'Y',
@@ -139,10 +140,14 @@ export class RolesComponent implements AfterViewInit {
   dataSource = new MatTreeNestedDataSource<FoodNode>();
   isExpandChildren = false;
   isExpandChild = false;
-  constructor(private modalService: BsModalService) {
+  constructor(private modalService: BsModalService
+    , private sharedService: SharedService) {
     this.dataSource.data = TREE_DATA;
   }
 
+  ngOnInit(): void {
+    this.sharedService.setPageTitle('Roles');
+  }
   hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
 
   ngAfterViewInit(): void {

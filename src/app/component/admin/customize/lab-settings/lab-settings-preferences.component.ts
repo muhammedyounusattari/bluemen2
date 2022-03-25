@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 import { ToastrService } from 'ngx-toastr';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
     selector: 'lab-settings',
@@ -56,9 +57,11 @@ export class LabSettingsPreferencesComponent implements OnInit {
         , private router: Router
         , private _labSettingsPreferencesService: LabSettingsPreferencesService
         , private formBuilder: FormBuilder
-        , private toastr: ToastrService) { }
+        , private toastr: ToastrService
+        , private sharedService: SharedService) { }
 
     ngOnInit(): void {
+        this.sharedService.setPageTitle('Lab Settings');
         this.createForm();
         this.bindDropDownValues();
         this.myElement = window.document.getElementById('loading');

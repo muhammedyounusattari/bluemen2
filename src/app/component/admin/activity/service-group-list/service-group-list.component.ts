@@ -11,7 +11,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
-
+import { SharedService } from 'src/app/shared/services/shared.service';
 @Component({
     selector: 'app-service-group-list',
     templateUrl: './service-group-list.component.html',
@@ -65,10 +65,12 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
         , private dialog: MatDialog
         , private _activityGroupServicesService: ActivityGroupServicesService
         , private toastr: ToastrService
-        , private formBuilder: FormBuilder) { }
+        , private formBuilder: FormBuilder
+        , private sharedService: SharedService) { }
 
     ngOnInit() {
         this.createForm();
+        this.sharedService.setPageTitle('Activity/Service List');
         this.myElement = window.document.getElementById('loading');
         this.navigateToComponent('service-group-list');
         this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
@@ -107,9 +109,9 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
 
     navigateToComponent(componentName: string) {
         if (componentName === 'service-group-list') {
-            this.router.navigate(['admin/service-group-list']);
+            this.router.navigate(['admin/customize/service-group-list']);
         } else if (componentName === 'services-list') {
-            this.router.navigate(['admin/services-list']);
+            this.router.navigate(['admin/customize/services-list']);
         }
     }
 

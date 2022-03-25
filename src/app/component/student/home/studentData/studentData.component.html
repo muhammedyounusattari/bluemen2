@@ -1,0 +1,1170 @@
+<div class="container-fluid" style="background:#EFF4F8;">
+  <div class="row ">
+    <div class="col-md-6 mt-3 mb-3 ">
+      <form class="example">
+        <input class="search-input" type="text" placeholder="Search..">
+        <i class="fa fa-search search"></i>
+      </form>
+    </div>
+    <div class="col-md-3 mt-3 mb-3"><button type="button" class="btn btn-primary  float-left">Card View </button>
+      <button type="button" class="btn btn-primary  float-end">Card Flow </button>
+    </div>
+  </div>
+
+  <div class="row no-gutters">
+    <div class="col-md-1">
+      <div class="student-global-filter">
+        <button class="tablinks" onclick="openCity(event, 'Student')" id="defaultOpen"><i
+            class="fa fa-graduation-cap"></i> </button>
+        <button class="tablinks" onclick="openCity(event, 'Exam')"><i class="fa fa-lock"></i> </button>
+        <button class="tablinks" onclick="openCity(event, 'Sub')"><i class="fa fa-location-arrow"></i> </button>
+        <button class="tablinks" onclick="openCity(event, 'Attendance')"><i class="fa fa-address-card"></i></button>
+        <button class="tablinks" onclick="openCity(event, 'Stipend')"><i class="fa fa-certificate"></i></button>
+        <button class="tablinks" onclick="openCity(event, 'Schedule')"><i class="fa fa-location-arrow"></i></button>
+        <button class="tablinks" onclick="openCity(event, 'CustomList')"><i class="fa fa-newspaper-o"></i></button>
+        <button class="tablinks" onclick="openCity(event, 'Yearly')"><i class="fa fa-location-arrow"></i> </button>
+        <button class="tablinks" onclick="openCity(event, 'Custom')"><i class="fa fa-location-arrow"></i></button>
+        <button class="tablinks" onclick="openCity(event, 'Text')"><i class="fa fa-location-arrow"></i></button>
+        <button class="tablinks" onclick="openCity(event, 'APR')"><i class="fa fa-location-arrow"></i></button>
+      </div>
+    </div>
+    <div class="col-md-11">
+      <div class="row">
+        <div class="col-md-12">
+          <!-- Data Table Start-->
+          <div class="mat-elevation-z8 data-table-height dt-max-height">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+              <ng-container matColumnDef="firstName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.firstName}} </td>
+              </ng-container>
+              <ng-container matColumnDef="lastName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.lastName}} </td>
+              </ng-container>
+              <ng-container matColumnDef="phoneNumber">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.phoneNumber}} </td>
+              </ng-container>
+              <ng-container matColumnDef="fiscalYear">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> fiscalYear </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.fiscalYear}} </td>
+              </ng-container>
+              <ng-container matColumnDef="active">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Active </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.active}} </td>
+              </ng-container>
+              <ng-container matColumnDef="served">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Served </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.served}} </td>
+              </ng-container>
+              <ng-container matColumnDef="reported">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Reported </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.reported}} </td>
+              </ng-container>
+              <ng-container matColumnDef="counselor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Counselor </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.counselor}} </td>
+              </ng-container>
+              <ng-container matColumnDef="school">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> School </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.school}} </td>
+              </ng-container>
+              <ng-container matColumnDef="standing">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Standing </th>
+                <td mat-cell *matCellDef="let entry"> {{entry?.standing}} </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+              <tr mat-row *matRowDef="let row; columns: columnsToDisplay;let i = index;"></tr>
+            </table>
+          </div>
+          <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+          <!-- Data Table End-->
+        </div>
+      </div>
+
+      <!--Normal, Advance, more Filters-->
+      <div class="row mt-2">
+        <div class="col-md-12">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home"
+                aria-selected="true">Normal Filter</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
+                aria-controls="profile" aria-selected="false">Advance Filder</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab"
+                aria-controls="contact" aria-selected="false">More Filter</a>
+            </li>
+          </ul>
+          <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div class="row">
+                <div class="col-md-12 ">
+                  <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>
+                </div>
+              </div>
+
+              <div class="row">
+
+                <div class="col-md-4">
+                  <div class="row">
+                    <div class="form-group">
+                      <mat-form-field class="mat-select-width" appearance="fill">
+                        <mat-label>Fiscal Year</mat-label>
+                        <input matInput required>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      Active
+                    </div>
+                    <div class="col-md-3">
+                      <label class="radio-inline">
+                        <input type="radio" name="optradio"> yes
+                      </label>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="radio-inline">
+                        <input type="radio" name="optradio"> NO
+                      </label>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="radio-inline">
+                        <input type="radio" name="optradio"> All
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      Served
+                    </div>
+                    <div class="col-md-3">
+                      <label class="radio-inline">
+                        <input type="radio" name="optradio"> yes
+                      </label>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="radio-inline">
+                        <input type="radio" name="optradio"> NO
+                      </label>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="radio-inline">
+                        <input type="radio" name="optradio"> All
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      Reported
+                    </div>
+                    <div class="col-md-3">
+                      <label class="radio-inline">
+                        <input type="radio" name="optradio"> yes
+                      </label>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="radio-inline">
+                        <input type="radio" name="optradio"> NO
+                      </label>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="radio-inline">
+                        <input type="radio" name="optradio"> All
+                      </label>
+                    </div>
+                  </div>
+
+
+                </div>
+
+                <div class="col-md-4">
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Status</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Status2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Ethnicity</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Ethnicity2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Standing</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Status2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Counselor</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Counselor">
+                          <option value="Status">All</option>
+                          <option value="Status">Status2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>School</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Ethnicity2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Eligibility</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Status2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Gender</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Status2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+
+
+
+              </div>
+
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+              <div class="row">
+
+              </div>
+
+              <div class="row">
+
+                <div class="col-md-4">
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Status</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Status2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Ethnicity</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Ethnicity2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Standing</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Status2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Status</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Status2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Ethnicity</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Ethnicity2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Standing</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Status2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Counselor</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Counselor">
+                          <option value="Status">All</option>
+                          <option value="Status">Status2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>School</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Ethnicity2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Eligibility</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Status2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Gender</mat-label>
+                      <select matNativeControl>
+                        <optgroup label="Status">
+                          <option value="Status">All</option>
+                          <option value="Status">Status2</option>
+                          <option value="Status">Status3</option>
+                          <option value="Status">Status4</option>
+                        </optgroup>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+
+
+
+              </div>
+
+
+            </div>
+            <div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+      </div>
+      <!--End Normal, Advance, more Filters-->
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-bottom">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+          aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Reset</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="javascript:void(0);" (click)="openStudentPopup()">New</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="#">Edit</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="#">Rename</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="#">Move</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="#">Merge</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="#">Delete</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="#">Print</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="#">Submit</a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<ng-template #studentDataPopup>
+  <div class="modal-header popHeaderBG">
+    <span class="modal-title popHeader" id="exampleModalLabel"> Student Quick Data Entry</span>
+    <button type="button" class="btn-close" (click)="modalRef.hide()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="tab-content bg-white" id="myTabContent">
+      <div class="row ">
+        <div class="col-md-6 mt-3 ">
+          <p><strong>Student's Name: Affleck John</strong></p>
+        </div>
+        <div class="col-md-6 mt-3">
+          <p><strong>Fiscal Year Selected: 2016</strong></p>
+        </div>
+      </div>
+      <div class="col-md-12 text-danger mb-3">Case Nmuber (3) :</div>
+      <!-- Tabs - Start -->
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" id="CurrentStatusTab" role="presentation">
+          <a class="nav-link active" href="javascript:void(0)" (click)="activeTab('CurrentStatusTab')"
+            aria-selected="true">Current Status</a>
+        </li>
+        <li class="nav-item active" id="EOYStatusTab" role="presentation">
+          <a class="nav-link" href="javascript:void(0)" (click)="activeTab('EOYStatusTab')" aria-selected="false">End of
+            Year Status</a>
+        </li>
+        <li class="nav-item active" id="ActivityTab" role="presentation">
+          <a class="nav-link" href="javascript:void(0)" (click)="activeTab('ActivityTab')"
+            aria-selected="false">Activities</a>
+        </li>
+        <li class="nav-item active" id="ParentsInfoTab" role="presentation">
+          <a class="nav-link" href="javascript:void(0)" (click)="activeTab('ParentsInfoTab')"
+            aria-selected="false">Parents Info</a>
+        </li>
+      </ul>
+      <!-- Tabs - End -->
+      <form [formGroup]="formGroup" class="form">
+        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+          <!-- First Tab - Start -->
+          <div *ngIf="isCurrentStatus">
+            <div class="row">
+              <div class="col-md-12 display-flex marg-left2">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label>First Name </mat-label>
+                      <input matInput formControlName="firstName" required>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label> MI </mat-label>
+                      <input matInput formControlName="mIValue" required>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label> Last Name </mat-label>
+                      <input matInput formControlName="lastName" required>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label>Email </mat-label>
+                      <input matInput formControlName="email" required>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 display-flex marg-left2">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Address</mat-label>
+                      <textarea rows="2" formControlName="address" matInput></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>City</mat-label>
+                      <select matNativeControl formControlName="city">
+                        <option value="" selected></option>
+                        <option value="volvo">Pune</option>
+                        <option value="saab">Mumbai</option>
+                        <option value="mercedes">Hyderabad</option>
+                        <option value="audi">Gujrat</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>State</mat-label>
+                      <select matNativeControl formControlName="state">
+                        <option value="" selected></option>
+                        <option value="volvo">Maharashtra</option>
+                        <option value="saab">AP</option>
+                        <option value="mercedes">Gujrat</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-10 disp-content">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label> Student ID</mat-label>
+                      <input matInput formControlName="studentId">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label> Scan ID</mat-label>
+                      <input matInput formControlName="scanId">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field class="mat-select-width" appearance="fill">
+                    <mat-label> Zip code</mat-label>
+                    <input matInput formControlName="zipcode">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3"></div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label> Phone 1</mat-label>
+                      <input matInput formControlName="phone1">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label>Phone Type</mat-label>
+                      <select matNativeControl formControlName="phone1Type">
+                        <option value="" selected></option>
+                        <option value="volvo">Office</option>
+                        <option value="saab">Work</option>
+                        <option value="mercedes">Home</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3 marg-top2">
+                  <section class="example-section">
+                    <mat-checkbox formControlName="sendTxtToPhone1" class="example-margin">
+                      Send Text Msg
+                    </mat-checkbox>
+                  </section>
+                </div>
+                <div class="col-md-3"></div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label> Phone 2</mat-label>
+                      <input matInput formControlName="phone2">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label>Phone Type</mat-label>
+                      <select matNativeControl formControlName="phone2Type">
+                        <option value="" selected></option>
+                        <option value="volvo">Office</option>
+                        <option value="saab">Work</option>
+                        <option value="mercedes">Home</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3 marg-top2">
+                  <section class="example-section">
+                    <mat-checkbox formControlName="sendTxtToPhone2" class="example-margin">
+                      Send Text Msg
+                    </mat-checkbox>
+                  </section>
+                </div>
+                <div class="col-md-3"></div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Site Location</mat-label>
+                      <select matNativeControl formControlName="siteLocation">
+                        <option value="" selected></option>
+                        <option value="volvo">Loc1</option>
+                        <option value="saab">Loc2</option>
+                        <option value="mercedes">Loc3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mb-m-6 mat-select-width">
+                      <mat-label>Date Of Birth (II E)</mat-label>
+                      <input matInput [matDatepicker]="picker" formControlName="dob">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mb-m-6 mat-select-width">
+                      <mat-label>Entry Date</mat-label>
+                      <input matInput [matDatepicker]="picker" formControlName="entryDate">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3"></div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Eligibility (II B)</mat-label>
+                      <select matNativeControl formControlName="eligibility">
+                        <option value="" selected></option>
+                        <option value="volvo">Eligible 1</option>
+                        <option value="saab">Eligible 2</option>
+                        <option value="mercedes">Eligible 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Ethinicity (II C)</mat-label>
+                      <select matNativeControl formControlName="ethinicity">
+                        <option value="" selected></option>
+                        <option value="volvo">Eligible 1</option>
+                        <option value="saab">Eligible 2</option>
+                        <option value="mercedes">Eligible 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Gender (II D)</mat-label>
+                      <select matNativeControl formControlName="gender">
+                        <option value="" selected></option>
+                        <option value="volvo">Male</option>
+                        <option value="saab">Female</option>
+                        <option value="mercedes">Undefined</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3"></div>
+              </div>
+              <div class="col-md-2 uploadImg">
+                <div class="col-md-4"> <img src="../../../../../assets/img/photo.png"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 display-flex marg-left2">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label>Fiscal Year </mat-label>
+                      <input matInput formControlName="fiscalYear">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-6 marg-top2 display-flex">
+                  <div class="col-md-3">
+                    <section class="example-section">
+                      <mat-checkbox formControlName="active" class="example-margin">
+                        Active
+                      </mat-checkbox>
+                    </section>
+                  </div>
+                  <div class="col-md-3">
+                    <section class="example-section">
+                      <mat-checkbox formControlName="served" class="example-margin">
+                        Served
+                      </mat-checkbox>
+                    </section>
+                  </div>
+                  <div class="col-md-3">
+                    <section class="example-section">
+                      <mat-checkbox formControlName="reported" class="example-margin">
+                        Reported
+                      </mat-checkbox>
+                    </section>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label>Age for this fiscal year (II E) </mat-label>
+                      <input matInput formControlName="ageOfFiscalYear">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 display-flex marg-left2">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label>Cohort Year </mat-label>
+                      <input matInput formControlName="cohortYear">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>School</mat-label>
+                      <select matNativeControl formControlName="school">
+                        <option value="" selected></option>
+                        <option value="volvo">Name 1</option>
+                        <option value="saab">Name 2</option>
+                        <option value="mercedes">Name 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>College</mat-label>
+                      <select matNativeControl formControlName="college">
+                        <option value="" selected></option>
+                        <option value="volvo">Name 1</option>
+                        <option value="saab">Name 2</option>
+                        <option value="mercedes">Name 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Participant Status (II A)</mat-label>
+                      <select matNativeControl formControlName="participantStatus">
+                        <option value="" selected></option>
+                        <option value="volvo">Part 1</option>
+                        <option value="saab">Part 2</option>
+                        <option value="mercedes">Part 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 display-flex marg-left2">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Counselor</mat-label>
+                      <select matNativeControl formControlName="counselor">
+                        <option value="" selected></option>
+                        <option value="volvo">Part 1</option>
+                        <option value="saab">Part 2</option>
+                        <option value="mercedes">Part 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Grade/Standing (III A,B)</mat-label>
+                      <select matNativeControl formControlName="gradeStanding">
+                        <option value="" selected></option>
+                        <option value="volvo">Grade 1</option>
+                        <option value="saab">Grade 2</option>
+                        <option value="mercedes">Grade 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>College Type (IV E)</mat-label>
+                      <select matNativeControl formControlName="collegeType">
+                        <option value="" selected></option>
+                        <option value="volvo">Part 1</option>
+                        <option value="saab">Part 2</option>
+                        <option value="mercedes">Part 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Military connected (II I)</mat-label>
+                      <select matNativeControl formControlName="military">
+                        <option value="" selected></option>
+                        <option value="volvo">Part 1</option>
+                        <option value="saab">Part 2</option>
+                        <option value="mercedes">Part 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 display-flex marg-left2">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Served by Other TRIO (II G)</mat-label>
+                      <select matNativeControl formControlName="trio">
+                        <option value="" selected></option>
+                        <option value="volvo">trio 1</option>
+                        <option value="saab">trio 2</option>
+                        <option value="mercedes">trio 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-9">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Notes</mat-label>
+                      <textarea rows="1" formControlName="notes" matInput></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- First Tab - End -->
+
+          <div *ngIf="isEOYStatus">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>End Status: Section IV</label>
+                  <br>
+                  Select the End Status Name to add to the student log:
+                </div>
+              </div>
+              <div class="col-md-12 marg-left2 display-flex">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>End Status</mat-label>
+                      <select matNativeControl>
+                        <option value="" selected></option>
+                        <option value="volvo">Status 1</option>
+                        <option value="saab">Status 2</option>
+                        <option value="mercedes">Status 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>                 
+                </div>
+                <div class="col-md-6 display-flex">
+                  <a class="nav-link " href="javascript:void(0)">Add</a> &nbsp;&nbsp;
+                  <a class="nav-link " href="javascript:void(0)">Search</a> &nbsp;&nbsp;        
+                  <a class="nav-link " href="javascript:void(0)">Remove</a> &nbsp;&nbsp;
+                  <a class="nav-link " href="javascript:void(0)">List</a>
+                </div>
+              </div>
+
+              <div class="col-md-12 marg-left1 marg-bot2">
+                <table class="mat-select-width">
+                  <thead class="tbl-header">
+                    <th>
+                      End Status
+                    </th>
+                  </thead>
+                  <tbody>
+                    <tr>test</tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isActivity">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Activities</label>
+                  <br>
+                  Select the Activity Name and the Component to add activities to the student log:
+                </div>
+              </div>
+              <div class="col-md-12 marg-left2 display-flex">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Activities</mat-label>
+                      <select matNativeControl>
+                        <option value="" selected></option>
+                        <option value="volvo">Status 1</option>
+                        <option value="saab">Status 2</option>
+                        <option value="mercedes">Status 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>                 
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field appearance="fill" class="mat-select-width">
+                      <mat-label>Component</mat-label>
+                      <select matNativeControl>
+                        <option value="" selected></option>
+                        <option value="volvo">Status 1</option>
+                        <option value="saab">Status 2</option>
+                        <option value="mercedes">Status 3</option>
+                      </select>
+                    </mat-form-field>
+                  </div>                 
+                </div>
+                <div class="col-md-6 display-flex">
+                  <a class="nav-link " href="javascript:void(0)">Add</a> &nbsp;&nbsp;
+                  <a class="nav-link " href="javascript:void(0)">Search</a> &nbsp;&nbsp;        
+                  <a class="nav-link " href="javascript:void(0)">Remove</a> &nbsp;&nbsp;
+                  <a class="nav-link " href="javascript:void(0)">List</a>
+                </div>
+              </div>
+
+              <div class="col-md-12 marg-left1 marg-bot2">
+                <table class="mat-select-width">
+                  <thead class="tbl-header">
+                    <th>
+                      Activities
+                    </th>
+                    <th>
+                      Component
+                    </th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        test
+                      </td>
+                      <td>
+                        test
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isParentInfo">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Parent/Guardian Contact Information</label>
+                  <br>
+                  Select the First Name and Last Name to add additional Parents/Guardians:
+                </div>
+              </div>
+              <div class="col-md-12 marg-left2 display-flex">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label>First Name </mat-label>
+                      <input matInput>
+                    </mat-form-field>
+                  </div>                 
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <mat-form-field class="mat-select-width" appearance="fill">
+                      <mat-label>Last Name </mat-label>
+                      <input matInput>
+                    </mat-form-field>
+                  </div>                 
+                </div>
+                <div class="col-md-6 display-flex">
+                  <a class="nav-link " href="javascript:void(0)">Add</a> &nbsp;&nbsp;
+                  <a class="nav-link " href="javascript:void(0)">Search</a> &nbsp;&nbsp;        
+                  <a class="nav-link " href="javascript:void(0)">Remove</a> &nbsp;&nbsp;
+                  <a class="nav-link " href="javascript:void(0)">List</a>
+                </div>
+              </div>
+
+              <div class="col-md-12 marg-left1 marg-bot2">
+                <table class="mat-select-width">
+                  <thead class="tbl-header">
+                    <th>
+                      First Name
+                    </th>
+                    <th>
+                      Last Name
+                    </th>
+                    <th>
+                      Relation
+                    </th>
+                    <th>
+                      Phone1
+                    </th>
+                    <th>
+                      Fax
+                    </th>
+                    <th>
+                      City
+                    </th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>test</td>
+                      <td>test</td>
+                      <td>test</td>
+                      <td>test</td>
+                      <td>test</td>
+                      <td>test</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link " href="#">Delete</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">Print</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="#">Save</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">Save & Close</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="#">Cancel</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</ng-template>

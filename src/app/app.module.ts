@@ -32,6 +32,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { NgDynamicBreadcrumbModule } from 'ng-dynamic-breadcrumb';
 
 @NgModule({
   declarations: [
@@ -64,8 +65,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatMenuModule,
     ReactiveFormsModule,
-    MatRadioModule, 
-    MatSelectModule
+    MatRadioModule,
+    MatSelectModule,
+    NgDynamicBreadcrumbModule
   ],
   entryComponents: [ConfirmationComponent],
   providers: [ToastrService, PendingChangesGuard],

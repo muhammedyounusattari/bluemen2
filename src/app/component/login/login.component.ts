@@ -5,7 +5,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DialogBoxComponent } from 'src/app/shared/components/dialog-box/dialog-box.component';
-
+import { SharedService } from 'src/app/shared/services/shared.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -48,7 +48,8 @@ export class LoginComponent implements OnInit {
     , private formBuilder: FormBuilder
     , private modalService: BsModalService
     , private dialog: MatDialog
-    , private toastr: ToastrService) { }
+    , private toastr: ToastrService
+    , private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.hide = true;
@@ -130,29 +131,31 @@ export class LoginComponent implements OnInit {
           this.isLoading = false;
           this.isInvalidCredentials = true;
           const errorResponse = JSON.parse(error.error);
+          this.sharedService.sendErrorMessage(errorResponse.message);
+          this.sharedService.showErrorMessage();
           if (errorResponse.status === '402') {
             if (errorResponse.wrongAttempt === 4) {
               // this.isInvalidCredentials = true;
               // this.errorMessage = errorResponse.message;
-              this.toastr.error(errorResponse.message, '', {
-                // timeOut: 5000,
-                closeButton: true
-              });
+              // this.toastr.error(errorResponse.message, '', {
+              //   // timeOut: 5000,
+              //   closeButton: true
+              // });
             }
           } else if (errorResponse.status === '403') {
             // this.isInvalidCredentials = true;
             this.isLoginEnabled = false;
             // this.errorMessage = errorResponse.message;
-            this.toastr.error(errorResponse.message, '', {
-              // timeOut: 5000,
-              closeButton: true
-            });
+            // this.toastr.error(errorResponse.message, '', {
+            //   // timeOut: 5000,
+            //   closeButton: true
+            // });
           }
           else {
-            this.toastr.error(errorResponse.message, '', {
-              // timeOut: 5000,
-              closeButton: true
-            });
+            // this.toastr.error(errorResponse.message, '', {
+            //   // timeOut: 5000,
+            //   closeButton: true
+            // });
             // this.isInvalidCredentials = true;
             // this.errorMessage = errorResponse.message;
           }
@@ -206,8 +209,10 @@ export class LoginComponent implements OnInit {
           //     message: errorResponse.message
           //   }
           // });
-          this.fpError = true;
-          this.errorFPMessage = errorResponse.message;
+          // this.fpError = true;
+          // this.errorFPMessage = errorResponse.message;
+          this.sharedService.sendErrorMessage(errorResponse.message);
+          this.sharedService.showErrorMessage();
         });
   }
 
@@ -237,17 +242,19 @@ export class LoginComponent implements OnInit {
           //   }
           // }
           // maskid = maskid + postfix;
-          this.dialog.open(DialogBoxComponent, {
-            data: {
-              title: 'Forgot Password',
-              message: result.message
-            }
-          });
+          // this.dialog.open(DialogBoxComponent, {
+          //   data: {
+          //     title: 'Forgot Password',
+          //     message: result.message
+          //   }
+          // });
+          this.sharedService.sendSuccessMessage(result.message);
+          this.sharedService.showSuccessMessage();
           this.modalRef.hide();
         }
       },
         (error: any) => {
-          this.isLoading = false; 
+          this.isLoading = false;
           this.isInvalidCredentials = true;
           const errorResponse = JSON.parse(error.error);
           // this.dialog.open(DialogBoxComponent, {
@@ -256,9 +263,10 @@ export class LoginComponent implements OnInit {
           //     message: errorResponse.message
           //   }
           // });
-          this.fpError = true;
-          this.errorFPMessage = errorResponse.message;
-
+          // this.fpError = true;
+          // this.errorFPMessage = errorResponse.message;
+          this.sharedService.sendErrorMessage(errorResponse.message);
+          this.sharedService.showErrorMessage();
         });
     } else {
       this.formGroup1.markAllAsTouched();

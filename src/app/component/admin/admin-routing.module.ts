@@ -25,51 +25,219 @@ import { TutorClassesComponent } from '../tutor/home/classes/tutor-classes.compo
 import { StaffClassesComponent } from '../staff/home/classes/staff-classes.component';
 import { RolesComponent } from './home/roles/roles.component';
 import { AdminHomeComponent } from './home/admin-home.component';
+import { AdminCustomizeComponent } from './customize/admin-customize.component';
 
 const routes: Routes = [
   {
-    path: 'admin/pulldown-list',
-    component: PulldownListComponent
+    path: 'admin/customize/pulldown-list',
+    component: PulldownListComponent,
+    data: {
+      title: 'Pulldown List',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'Pulldown List',
+          url: ''
+        }
+      ]
+    }
   },
   {
-    path: 'admin/service-group-list',
-    component: ServiceGroupListComponent
+    path: 'admin/customize/service-group-list',
+    component: ServiceGroupListComponent,
+    data: {
+      title: 'Activity/Service List',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'Activity List',
+          url: 'admin/customize/services-list'
+        },
+        {
+          label: 'Activity Group List',
+          url: ''
+        }
+      ]
+    }
   },
   {
-    path: 'admin/services-list',
-    component: ServicesListComponent
+    path: 'admin/customize/services-list',
+    component: ServicesListComponent,
+    data: {
+      title: 'Activity/Service List',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'Activity Group List',
+          url: 'admin/customize/service-group-list'
+        },
+        {
+          label: 'Activity Service List',
+          url: ''
+        }
+      ]
+    }
   },
   {
-    path: 'admin/college-list',
-    component: CollegeListComponent
+    path: 'admin/customize/college-list',
+    component: CollegeListComponent,
+    data: {
+      title: 'College List',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'School List',
+          url: 'admin/customize/school-list'
+        },
+        {
+          label: 'College List',
+          url: ''
+        }
+      ]
+    }
   },
   {
-    path: 'admin/custom-fields',
-    component: CustomFieldsComponent
+    path: 'admin/customize/custom-fields',
+    component: CustomFieldsComponent,
+    data: {
+      title: 'Custom Fields',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'Custom Fields',
+          url: ''
+        }
+      ]
+    }
   },
   {
-    path: 'admin/school-list',
-    component: SchoolListComponent
+    path: 'admin/customize/school-list',
+    component: SchoolListComponent,
+    data: {
+      title: 'School List',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'College List',
+          url: 'admin/customize/college-list'
+        },
+        {
+          label: 'School List',
+          url: ''
+        }
+      ]
+    }
   },
   {
-    path: 'admin/grade-standing-list',
-    component: GradeStandingListComponent
+    path: 'admin/customize/grade-standing-list',
+    component: GradeStandingListComponent,
+    data: {
+      title: 'Grade Standing List',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'Grade Group List',
+          url: 'admin/customize/grade-group-list'
+        },
+        {
+          label: 'Grade Standing List',
+          url: ''
+        }
+      ]
+    }
   },
   {
-    path: 'admin/grade-group-list',
-    component: GradeStandingGroupListComponent
+    path: 'admin/customize/grade-group-list',
+    component: GradeStandingGroupListComponent,
+    data: {
+      title: 'Grade Group List',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'Grade Standing List',
+          url: 'admin/customize/grade-standing-list'
+        },
+        {
+          label: 'Grade Group List',
+          url: ''
+        }
+      ]
+    }
   },
   {
     path: 'admin/home/config-settings',
-    component: ConfigSettingsComponent
+    component: ConfigSettingsComponent,
+    data: {
+      title: 'Config Settings',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/home'
+        },
+        {
+          label: 'Config Settings',
+          url: ''
+        }
+      ]
+    }
   },
   {
     path: 'admin/home/user-names-pwd',
-    component: UserNamesAndPasswordComponent
+    component: UserNamesAndPasswordComponent,
+    data: {
+      title: 'Usernames & Password',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/home'
+        },
+        {
+          label: 'Usernames & Password',
+          url: ''
+        }
+      ]
+    }
   },
   {
     path: 'admin/home/system-preferences',
-    component: SystemPreferencesComponent
+    component: SystemPreferencesComponent,
+    data: {
+      title: 'System Preferences',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/home'
+        },
+        {
+          label: 'System Preferences',
+          url: ''
+        }
+      ]
+    }
   },
   {
     path: 'tutor/assign-tutor-student-class',
@@ -88,8 +256,21 @@ const routes: Routes = [
     component: TeacherComponent
   },
   {
-    path: 'admin/lab-settings',
-    component: LabSettingsPreferencesComponent
+    path: 'admin/customize/lab-settings',
+    component: LabSettingsPreferencesComponent,
+    data: {
+      title: 'Lab Settings',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/home'
+        },
+        {
+          label: 'Lab Settings',
+          url: ''
+        }
+      ]
+    }
   },
   {
     path: 'admin/time-clock-manager',
@@ -122,9 +303,11 @@ const routes: Routes = [
   {
     path: 'admin/home',
     component: AdminHomeComponent
+  },
+  {
+    path: 'admin/customize',
+    component: AdminCustomizeComponent
   }
-
-
 ];
 
 @NgModule({

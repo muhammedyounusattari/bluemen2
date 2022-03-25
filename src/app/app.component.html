@@ -1,11 +1,21 @@
 <app-header *ngIf="isLoggedIn && !isResetPassword"></app-header>
 <app-navigation *ngIf="isLoggedIn && !isResetPassword"></app-navigation>
+<div class="validation-error">{{errorMessage}}</div>
+<div class="validation-success">{{successMessage}}</div>
+<div class="validation-info">{{infoMessage}}</div>
+<div class="row bg-white" *ngIf="isLoggedIn && !isResetPassword">
+    <div class="col-md-12 display-flex bcHeader">
+        <div class="col-md-3 header-title">
+            {{pageTitle}}
+        </div>
+        <div class="col-md-9 bcStyle">
+            <app-ng-dynamic-breadcrumb [fontSize]="'14px'" [fontColor]="'#0275d8'" [lastLinkColor]="'#000'"
+                [symbol]="' >> '">
+            </app-ng-dynamic-breadcrumb>
+        </div>
+    </div>
+</div>
 <router-outlet *ngIf="isLoggedIn && !isResetPassword"></router-outlet>
 <app-footer *ngIf="isLoggedIn && !isResetPassword"></app-footer>
 <app-login *ngIf="!isLoggedIn && !isResetPassword" (validateLogin)="validate($event)"></app-login>
 <app-reset-password *ngIf="isResetPassword" [hashcode]="resetHashCode"></app-reset-password>
-<!-- <app-header></app-header>
-<app-navigation></app-navigation>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
-<app-login (validateLogin)="validate($event)"></app-login> -->

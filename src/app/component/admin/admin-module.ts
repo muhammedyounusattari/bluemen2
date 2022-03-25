@@ -48,6 +48,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTreeModule } from '@angular/material/tree';
 import { AdminHomeComponent } from './home/admin-home.component';
+import { AdminCustomizeComponent } from './customize/admin-customize.component';
 @NgModule({
   declarations: [
     PulldownListComponent,
@@ -74,7 +75,8 @@ import { AdminHomeComponent } from './home/admin-home.component';
     TutorClassesComponent,
     StaffClassesComponent,
     RolesComponent,
-    AdminHomeComponent
+    AdminHomeComponent,
+    AdminCustomizeComponent
   ],
   imports: [
     AdminRoutingModule,

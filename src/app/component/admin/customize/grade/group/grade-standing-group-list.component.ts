@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
     selector: 'app-grade-standing-group-list',
@@ -64,9 +65,11 @@ export class GradeStandingGroupListComponent implements OnInit {
         , private dialog: MatDialog
         , private _gradingGroupStandingService: GradingGroupStandingService
         , private toastr: ToastrService
-        , private formBuilder: FormBuilder) { }
+        , private formBuilder: FormBuilder
+        , private sharedService: SharedService) { }
 
     ngOnInit() {
+        this.sharedService.setPageTitle('Grade/Standing List');
         this.createForm();
         this.myElement = window.document.getElementById('loading');
         this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
@@ -112,9 +115,9 @@ export class GradeStandingGroupListComponent implements OnInit {
 
     navigateToComponent(componentName: string) {
         if (componentName === 'grade-group-list') {
-            this.router.navigate(['admin/grade-group-list']);
+            this.router.navigate(['admin/customize/grade-group-list']);
         } else if (componentName === 'grade-standing-list') {
-            this.router.navigate(['admin/grade-standing-list']);
+            this.router.navigate(['admin/customize/grade-standing-list']);
         }
     }
 

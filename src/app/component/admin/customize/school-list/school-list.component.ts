@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
     selector: 'app-school-list',
@@ -337,11 +338,13 @@ export class SchoolListComponent implements OnInit {
         , private router: Router
         , private dialog: MatDialog
         , private _collegeAndSchoolService: CollegeAndSchoolService
-        , private toastr: ToastrService) { }
+        , private toastr: ToastrService
+        , private sharedService: SharedService) { }
 
     ngOnInit() {
+        this.sharedService.setPageTitle('College/School List');
         this.myElement = window.document.getElementById('loading');
-        this.navigateToComponent('service-group-list');
+        this.navigateToComponent('school-list');
         this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
             this.hideLoader();
             let domElement = window.document.getElementById('SCHOOL_LIST');
@@ -360,9 +363,9 @@ export class SchoolListComponent implements OnInit {
 
     navigateToComponent(componentName: string) {
         if (componentName === 'college-list') {
-            this.router.navigate(['admin/college-list']);
+            this.router.navigate(['admin/customize/college-list']);
         } else if (componentName === 'school-list') {
-            this.router.navigate(['admin/school-list']);
+            this.router.navigate(['admin/customize/school-list']);
         }
     }
 

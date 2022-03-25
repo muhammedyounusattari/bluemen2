@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 import { UserManagementService } from 'src/app/services/admin/user-management.service';
 import {Router} from '@angular/router';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
     selector: 'app-user-names-password',
@@ -64,9 +65,11 @@ export class UserNamesAndPasswordComponent implements OnInit {
         , private toastr: ToastrService
         , private formBuilder: FormBuilder
         , private _userManagementService: UserManagementService
-        , private router: Router) { }
+        , private router: Router
+        , private sharedService: SharedService) { }
 
     ngOnInit(): void {
+        this.sharedService.setPageTitle('User Information');
         this.createForm();
         this.myElement = window.document.getElementById('loading');
         this.getUserList();

@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DialogBoxComponent } from 'src/app/shared/components/dialog-box/dialog-box.component';
 import { ActivatedRoute } from '@angular/router';
 import { TimeClockComponent } from './time-clock/time-clock.component';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-home',
@@ -32,9 +33,11 @@ export class HomeComponent {
     , private formBuilder: FormBuilder
     , private modalService: BsModalService
     , private dialog: MatDialog
-    , private toastr: ToastrService) { }
+    , private toastr: ToastrService
+    , private sharedService: SharedService) { }
 
   ngOnInit() {
+    this.sharedService.setPageTitle('Dashboard');
     this.route.queryParams
       .subscribe(params => {
           this.popup = params?.popup;

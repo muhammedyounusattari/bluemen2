@@ -9,6 +9,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
     selector: 'app-services-list',
@@ -55,9 +56,11 @@ export class ServicesListComponent implements OnInit {
         , private router: Router
         , private dialog: MatDialog
         , private _activityGroupServicesService: ActivityGroupServicesService
-        , private toastr: ToastrService) { }
+        , private toastr: ToastrService
+        , private sharedService: SharedService) { }
 
     ngOnInit() {
+        this.sharedService.setPageTitle('Activity/Service List');
         this.myElement = window.document.getElementById('loading');
         this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
             this.hideLoader();

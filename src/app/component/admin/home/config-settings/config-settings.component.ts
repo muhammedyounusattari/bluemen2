@@ -7,6 +7,7 @@ import {ConfirmDialogComponent} from '../../../../shared/components/confirm-dial
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-config-settings',
@@ -54,14 +55,16 @@ export class ConfigSettingsComponent implements OnInit {
   public selectedRowData: any = null;
   public spinner: boolean = true;
 
-  constructor(private modalService: BsModalService,
-              private configSettingsService: ConfigSettingsService
+  constructor(private modalService: BsModalService
+    , private configSettingsService: ConfigSettingsService
+    , private sharedService: SharedService
   ) {
     this.getConfigSettings();
 
   }
 
   ngOnInit() {
+    this.sharedService.setPageTitle('Config Settings');
     this.myElement = window.document.getElementById('loading');
     this.username = sessionStorage.getItem('username') || '';
     this.realmId = sessionStorage.getItem('realmId') || '';

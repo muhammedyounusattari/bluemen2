@@ -1,0 +1,196 @@
+Index: src/app/component/staff/home/staff-member/staff-member.component..ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/app/component/staff/home/staff-member/staff-member.component..ts b/src/app/component/staff/home/staff-member/staff-member.component..ts
+--- a/src/app/component/staff/home/staff-member/staff-member.component..ts	(revision 90362559ee17dc7ee1b5fb93ad10aa6b0346f16b)
++++ b/src/app/component/staff/home/staff-member/staff-member.component..ts	(date 1643898139204)
+@@ -1,4 +1,5 @@
+-import { Component, TemplateRef, ViewChild } from '@angular/core';
++import { Component, TemplateRef, ViewChild, VERSION } from '@angular/core';
++
+ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+ import * as moment from 'moment';
+ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+@@ -53,6 +54,7 @@
+   picture: string;
+   staffBolt: string;
+   staffPhoneNumber: string;
++  imgUrl:string;
+ 
+   public customFieldsForm: FormGroup;
+   public customFields: any;
+@@ -68,6 +70,8 @@
+   public id: string;
+   public pullDownName: string;
+   public isEdit: boolean;
++  percentDone: number;
++  uploadSuccess: boolean;
+ 
+   columnsToDisplay: string[] = ['id', 'staffName', 'title', 'staffActive', 'staffCounselor', 'staffTutor', 'staffTeacher', 'staffBolt', 'staff', 'staffLab', 'staffPhoneNumber', 'staffHireDate'];
+   dataSource: MatTableDataSource<any>;
+@@ -607,4 +611,67 @@
+     this.createForm();
+     // this.id = ''; this.staffName = ''; this.title = ''; this.staffActive = 'true'; this.staffTutor = ''; this.ssn = ''; this.staffCounselor = ''; this.staffTeacher = ''; this.staffLab = ''; this.codes = ''; this.dob = ''; this.spouse = ''; this.staffHireDate = ''; this.license = ''; this.terminationDate = ''; this.customField1 = ''; this.customField2 = ''; this.customField3 = ''; this.customField4 = ''; this.notes = ''; this.picture = ''; this.staffBolt = '';
+   }
++
++  //code related to file upload
++
++    upload(file: any){
++      //pick from one of the 4 styles of file uploads below
++      this.basicUpload(file.target.files);
++    }
++
++    basicUpload(files: File[]){
++      var formData = new FormData();
++      Array.from(files).forEach(f => formData.append('uploadfile', f))
++      let id = this.formGroup.controls.id.value;
++      if(!id){
++        id=0;
++      }
++
++      this.staffMembersService.uploadImage(formData, id).subscribe((result)=>{
++      this.imgUrl = "../"+result;
++debugger;
++      });
++     /* this.http.post('https://file.io', formData)
++        .subscribe(event => {
++          console.log('done')
++        }) */
++    }
++
++    //this will fail since file.io dosen't accept this type of upload
++    //but it is still possible to upload a file with this style
++    basicUploadSingle(file: File){
++   /*   this.http.post('https://file.io', file)
++        .subscribe(event => {
++          console.log('done')
++        }) */
++    }
++
++    uploadAndProgress(files: File[]){
++      console.log(files)
++      var formData = new FormData();
++      Array.from(files).forEach(f => formData.append('file',f))
++
++    /*  this.http.post('https://file.io', formData, {reportProgress: true, observe: 'events'})
++        .subscribe(event => {
++          if (event.type === HttpEventType.UploadProgress) {
++            this.percentDone = Math.round(100 * event.loaded / event.total);
++          } else if (event instanceof HttpResponse) {
++            this.uploadSuccess = true;
++          }
++      });*/
++    }
++
++    //this will fail since file.io dosen't accept this type of upload
++    //but it is still possible to upload a file with this style
++    uploadAndProgressSingle(file: File){
++     /* this.http.post('https://file.io', file, {reportProgress: true, observe: 'events'})
++        .subscribe(event => {
++          if (event.type === HttpEventType.UploadProgress) {
++            this.percentDone = Math.round(100 * event.loaded / event.total);
++          } else if (event instanceof HttpResponse) {
++            this.uploadSuccess = true;
++          }
++      });
++    }*/
++    }
+ }
+Index: src/app/services/staff/staff-members.service.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/app/services/staff/staff-members.service.ts b/src/app/services/staff/staff-members.service.ts
+--- a/src/app/services/staff/staff-members.service.ts	(revision 90362559ee17dc7ee1b5fb93ad10aa6b0346f16b)
++++ b/src/app/services/staff/staff-members.service.ts	(date 1643897813449)
+@@ -65,9 +65,13 @@
+     return this.dataService.callGetService(
+       ServiceUrls.GET_PULL_DOWN_LIST);
+   }
+-  
++
+   public getPullDownItems(id:any): Observable<any> {
+     return this.dataService.callGetService(
+       ServiceUrls.GET_PULL_DOWN_ITEMS+id);
+   }
++
++  public uploadImage(formData:FormData, staffId:string):Observable<any> {
++    return this.dataService.callPostService(ServiceUrls.UPLOAD_IMAGE+staffId, formData);
++  }
+ }
+Index: src/app/config/config.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/app/config/config.ts b/src/app/config/config.ts
+--- a/src/app/config/config.ts	(revision 90362559ee17dc7ee1b5fb93ad10aa6b0346f16b)
++++ b/src/app/config/config.ts	(date 1643903182990)
+@@ -18,8 +18,8 @@
+ 
+     return new HttpHeaders({
+       "Content-Type": "application/json; charset=utf-8",
+-      Accept: "application/json" /*,
+-           'Authorization': 'Bearer '+ access_token */,
++       "Accept": "application/json" ,
++      'Authorization': 'Bearer '+ access_token
+     });
+   }
+ }
+Index: src/app/constants/serviceUrl.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/app/constants/serviceUrl.ts b/src/app/constants/serviceUrl.ts
+--- a/src/app/constants/serviceUrl.ts	(revision 90362559ee17dc7ee1b5fb93ad10aa6b0346f16b)
++++ b/src/app/constants/serviceUrl.ts	(date 1643898051140)
+@@ -86,6 +86,8 @@
+     public static ADD_STAFF_MEMBERS = environment.apiUrl + '/blumen-api/staff/staffList/v1';
+     public static DELETE_STAFF_MEMBERS = environment.apiUrl + '/blumen-api/staff/deleteStaffList/v1';
+     public static FILTER_STAFF_MEMBERS = environment.apiUrl + '/blumen-api/staff/filter/staffList/v1';
++    public static UPLOAD_IMAGE = environment.apiUrl + '/blumen-api/staff/uploadFile/';
++    public static GET_IMAGE = environment.apiUrl + '/blumen-api/staff/getFile/';
+ 
+     // Config setting API URL's
+     public static GET_CONFIG_SETTINGS = environment.apiUrl + '/blumen-api/admin/getConfigSettingList/v1';
+Index: src/app/component/staff/home/staff-member/staff-member.component.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/app/component/staff/home/staff-member/staff-member.component.html b/src/app/component/staff/home/staff-member/staff-member.component.html
+--- a/src/app/component/staff/home/staff-member/staff-member.component.html	(revision 90362559ee17dc7ee1b5fb93ad10aa6b0346f16b)
++++ b/src/app/component/staff/home/staff-member/staff-member.component.html	(date 1643897813343)
+@@ -475,13 +475,14 @@
+                 </div>
+               </div>
+               <div class="col-md-2 uploadImg">
+-                <div class="row text-center"><img src="../../../../../assets/img/photo.png"></div>
+-                <!-- <div class="col-md-12 text-center">
+-                    <input type="submit" value="Upload Files" class="btn btn-sm btn-primary text-center mt-3"
+-                      formControlName="picture" />
+-                  </div> -->
+-                <div class="row">
+-                  <button type="button" class="btn btn-v .primary">Upload Profile</button>
++                <div class="row text-center"><img [src]="imgUrl"></div>
++                 <div class="col-md-12 text-center">
++
++                  </div>
++                <div class="row">
++                  <input type="file"  (change)="upload($event)" value="Upload Files" class="btn btn-v .primary"
++                         formControlName="picture" />
++
+                 </div>
+               </div>
+             </div>
+@@ -804,4 +805,4 @@
+     </div>
+   </ng-template>
+   <!-- Modal End-->
+-</div>
+\ No newline at end of file
++</div>

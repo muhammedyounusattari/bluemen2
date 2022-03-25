@@ -1,0 +1,147 @@
+.data-table-height {
+    height: auto !important;
+}
+.search {
+    position: relative;
+    float: left;
+    top: 0.5rem;
+    color: #777777;
+    right: 1.5rem;
+}
+.search-input {
+    border-right: 1px solid #777777 !important;
+}
+
+/* Style the tab */
+.tab {
+    float: left;
+    background-color: #fff;
+    width: 20%;
+    height: 100%;
+  }
+  .student-global-filter {
+    float: left;
+    background-color: #fff;
+    height: 100%;
+  }
+  /* Style the buttons inside the tab */
+  .student-global-filter button {
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 10px 16px;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 20px;
+  }
+  
+  .tab button {
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 10px 16px;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+  }
+  
+  /* Change background color of buttons on hover */
+  .tab button:hover {
+    background-color: #F5F7F9;
+  }
+  
+  /* Create an active/current "tab button" class */
+  .tab button.active {
+    background-color: #F5F7F9;
+          border-left: 4px solid #FECB2E;
+      
+  }
+  
+  /* Style the tab content */
+  .tabcontent {
+    float: left;
+    padding: 20px 12px;
+    width: 80%;
+    border-left: none;
+    height: auto;
+  }
+  
+  .tabacontent {
+    float: left;
+    padding: 20px 12px;
+    width: 95%;
+    border-left: none;
+    height: auto;
+  }
+  .tabcontentheight {
+    float: left;
+    padding: 20px 12px;
+    width: 80%;
+    border-left: none;
+      overflow: scroll;
+    height:700px;
+  }
+  .tab .fa{
+      color: #1672b7;
+      margin-right: 7px;}
+  
+  .tab .fa:hover{
+      color: #7ab6e3;
+    
+  }
+  
+  .nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+ }
+  
+  * {
+    box-sizing: border-box;
+  }
+
+.disp-content{
+    display: contents;
+}
+.uploadImg{
+  position: absolute;
+  float: right;
+  right: 5%;
+  top: 20%; 
+}
+
+.marg-top2{
+  margin-top: 2%;
+}
+.marg-left2{
+  margin-left: -2%;
+}
+table, th, td {
+  border:1px solid black;
+}
+.tbl-header{
+  background: lightblue;
+}
+.marg-bot2{
+  margin-bottom: 2%;
+}
+.marg-left1{
+  margin-left: -1%;
+}
+.marg-top1{
+  margin-top: 1%;
+}
+.radio-btn{
+  border: 1px solid lightgray;
+}
+.rad-lable{
+  font-size: 14px;
+  color: #141010;
+}

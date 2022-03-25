@@ -13,6 +13,7 @@ import { ConfirmDialogComponent } from "../../../../shared/components/confirm-di
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: "app-pulldown-list",
@@ -100,12 +101,14 @@ export class PulldownListComponent {
     private fb: FormBuilder,
     private builder: FormBuilder,
     private pullDownListService: PullDownListService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private sharedService: SharedService
   ) {
     this.getPullDownList();
   }
 
   ngOnInit(): void {
+    this.sharedService.setPageTitle('Pulldown List');
     this.pulldownItem = this.fb.group({
       pullId: ["", Validators.required],
       pulldownName: [""],

@@ -35,7 +35,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { TextFieldModule } from '@angular/cdk/text-field';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { StudentDataComponent } from 'src/app/component/student/home/studentData/studentData.component';
+import { StudentDataTSDEMOComponent } from './home/studentData-TS-DEMO/studentData-tsDemo.component';
+import { StudentDataMcnDemoComponent } from './home/studentData-MCN-DEMO/studentData-mcn-demo.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { StudentDataSSSDemoComponent } from './home/studentData-SSS-DEMO/studentData-sss-demo.component';
+import { StudentDataVUBDemoComponent } from './home/studentData-VUB-DEMO/studentData-vub-demo.component';
+import { StudentDataUBDemoComponent } from './home/studentData-UB-DEMO/studentData-ub-demo.component';
+import { StudentDataUBMSDemoComponent } from './home/studentData-UBMS-DEMO/studentData-ubms-demo.component';
 
 @NgModule({
     declarations: [
@@ -57,7 +65,14 @@ import { TextFieldModule } from '@angular/cdk/text-field';
         DisplayTutorContactsComponent,
         DisplayCounselorContactsComponent,
         DisplayStaffContactsComponent,
-        DisplayTeacherContactsComponent
+        DisplayTeacherContactsComponent,
+        StudentDataComponent,
+        StudentDataTSDEMOComponent,
+        StudentDataMcnDemoComponent,
+        StudentDataSSSDemoComponent,
+        StudentDataVUBDemoComponent,
+        StudentDataUBDemoComponent,
+        StudentDataUBMSDemoComponent
     ],
     imports: [
         StudentRoutingModule,
@@ -76,7 +91,9 @@ import { TextFieldModule } from '@angular/cdk/text-field';
         MatSelectModule,
         MatCheckboxModule,
         MatInputModule,
-        TextFieldModule
+        TextFieldModule,
+        MatDatepickerModule,
+        MatRadioModule
     ],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
