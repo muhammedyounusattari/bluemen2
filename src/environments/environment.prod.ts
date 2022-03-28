@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   // Dev environment
-apiUrl : 'http://localhost:8080/api'
+  apiUrl : 'https://blumen-api.azurewebsites.net/api'
 };

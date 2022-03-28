@@ -11,5 +11,5 @@ export class AdminHomeComponent implements OnInit {
     constructor(private sharedService: SharedService) {}
     ngOnInit(): void {
         this.sharedService.setPageTitle('Home');
-    }
+    }    
 }

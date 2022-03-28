@@ -38,7 +38,7 @@ const TREE_DATA: FoodNode[] = [
         rad1Name: 'Y',
         rad2Name: 'R',
         rad3Name: 'N'
-      },
+      },      
       {
         name: 'Orange',
         id: 8,
@@ -48,7 +48,7 @@ const TREE_DATA: FoodNode[] = [
         rad3Name: 'N',
         children: [
           {
-            name: 'Pumpkins', id: 9,
+            name: 'Pumpkins', id: 9, 
             radActionVal: 'Y',
             rad1Name: 'Y',
             rad2Name: 'R',
@@ -104,7 +104,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
           rad1Name: 'Y',
           rad2Name: 'R',
           rad3Name: 'N'
-        },
+        },      
         {
           name: 'Orange',
           id: 3,
@@ -114,15 +114,15 @@ export class RolesComponent implements AfterViewInit, OnInit {
           rad3Name: 'N',
           children: [
             {
-              name: 'Pumpkins',
-              id: 1,
+              name: 'Pumpkins', 
+              id: 1, 
               radActionVal: 'Y',
               rad1Name: 'Y',
               rad2Name: 'R',
               rad3Name: 'N'
             },
             {
-              name: 'Carrots',
+              name: 'Carrots', 
               id: 2,
               radActionVal: 'Y',
               rad1Name: 'Y',

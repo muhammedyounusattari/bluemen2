@@ -6,7 +6,7 @@ export const environment = {
   production: false,
 
   // Dev environment
-  apiUrl : 'http://localhost:8080/api'
+  apiUrl : 'https://blumen-api.azurewebsites.net/api'
 };
 
 /*

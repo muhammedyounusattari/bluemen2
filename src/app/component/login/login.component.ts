@@ -254,7 +254,7 @@ export class LoginComponent implements OnInit {
         }
       },
         (error: any) => {
-          this.isLoading = false;
+          this.isLoading = false; 
           this.isInvalidCredentials = true;
           const errorResponse = JSON.parse(error.error);
           // this.dialog.open(DialogBoxComponent, {

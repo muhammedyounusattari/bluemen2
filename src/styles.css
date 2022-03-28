@@ -10,7 +10,7 @@ h5,
 h6 {
     font-family: "Montserrat", sans-serif!important;
     font-size: 14px!important;
-    font-weight: normal!important;
+    font-weight: normal!important;   
 }
 body{background: #eff4f8!important;}
 .bottom-fotter{position: fixed; bottom: 0; border-top:1px solid #dee2e6; background: #eff4f8;}
@@ -19,14 +19,14 @@ h3 {
     font-family: "Montserrat", sans-serif!important;
     font-size: 20px!important;
     font-weight: bolder!important;
-    margin-top: 15px!important;
-
+    margin-top: 15px!important; 
+    
 }
 .nav-link:hover{font-weight: 900;}
 .bg-bottom{background: #d7e8f5!important; margin-bottom: 20px;}
 .main-container{
-    background: #EFF4F8;
-
+    background: #EFF4F8;  
+   
 }
 .dt-max-height {
     overflow: hidden!important;
@@ -38,7 +38,7 @@ a {
 .login-footer{bottom: 0px!important; position: absolute;}
 .bottom-left{margin-left:22px;}
 .loginlogo{margin-bottom: 7%;  margin-top: 5%;}
-.welcome{color: #00396b !important;; font-weight: 500!important; font-size: 40px!important; font-family: 'Montserrat', sans-serif!important;
+.welcome{color: #00396b !important;; font-weight: 500!important; font-size: 40px!important; font-family: 'Montserrat', sans-serif!important; 
                             letter-spacing: 1px!important; margin-bottom: 7%!important;}
 .crediential{color: #222222; padding-left:44px; font-family: 'Montserrat', sans-serif; margin: 0px 0 5px 0!important; font-size: 15px; font-weight: 500;}
 .submit{background: #00396b!important; border-radius: 0px!important; font-weight: 600; font-size: 16px; background: #1672B7!important; font-family: 'Montserrat', sans-serif; width: 140px; height: 40px;}
@@ -70,7 +70,7 @@ a {
     color:#fff!important;
     text-decoration: underline;
     letter-spacing: -.5px;
-
+    
 }
 .text-size{font-size: 20px !important; color: #00396b!important;}
 /*.mat-form-field-empty.mat-form-field-label, .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{font-size: 16px!important; color: #00396b!important;}*/
@@ -93,17 +93,17 @@ a {
     -webkit-transform-origin: 0 0;
             transform-origin: 0 0;
     transition: -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); 
 }
 .md-datepicker-calendar-pane.md-pane-open {
     -webkit-transform: scale(1);
-    transform: scale(1);
+    transform: scale(1); 
 }
-
+        
 .bgtop {
     background: #00396b!important;
     padding: 0px;
-
+   
 }
 tr.mat-header-row {
     height: 35px!important;
@@ -140,7 +140,7 @@ tr.mat-header-row {
 } */
  .grayleft {
     border-left: 1px solid #BCBCBC!important;
-}
+} 
 
 .navbar-nav{margin: 0 auto!important;}
 .header-li {
@@ -636,7 +636,7 @@ footer.page-footer .footer-copyright {
 /* ============ small devices .end// ============ */
 
 .no-record {
-
+  
     float: right;
     font-size: 1.25rem;
     left: 75%;
@@ -686,7 +686,7 @@ box-shadow:  2px 2px 5px #888888!important;}
     overflow: hidden !important;
     box-shadow:  2px 2px 5px #888888!important;
     margin-right:5px;
-
+    
 }
 .modal-footer{margin-bottom: 40px;padding-right: 27px;}
 .mat-form-field-appearance-legacy .mat-form-field-underline {
@@ -702,22 +702,22 @@ box-shadow:  2px 2px 5px #888888!important;}
     padding: 3px ;
     margin-left: 15px;
   }
-
+  
   .right {
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
   }
-
+  
   .left {
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
   }
-
+  
   .up {
     transform: rotate(-135deg);
     -webkit-transform: rotate(-135deg);
   }
-
+  
   .down {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
@@ -725,9 +725,8 @@ box-shadow:  2px 2px 5px #888888!important;}
   .bordertop{border-top: 1px solid #fff;}
   .logoleft{margin-left: -14px;}
   .mat-checkbox-inner-container{
-
+     
   }
-
 
 #toast-container > .toast {
     max-width: 1200px;
@@ -765,7 +764,7 @@ div.validation-error {
     position:absolute;
     z-index: 9999;
 }
-
+  
 div.validation-error.active {
     top:0px
 }
@@ -782,7 +781,7 @@ div.validation-success {
     position:absolute;
     z-index: 9999;
 }
-
+  
 div.validation-success.active {
     top:0px
 }
@@ -800,7 +799,7 @@ div.validation-info {
     position:absolute;
     z-index: 9999;
 }
-
+  
 div.validation-info.active {
     top:0px
 }

@@ -62,7 +62,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
   ngAfterContentChecked(): void {
     this.cdRef.detectChanges();
   }
-
+  
   validate(event: any) {
     sessionStorage.setItem('accessToken', 'null');
     if (event && event.access_token) {
