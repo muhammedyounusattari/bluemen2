@@ -11,7 +11,9 @@ import { TextMessageRepliesLogsComponent } from './logs/text-message-replies/tex
 import { TextMessageLogsComponent } from './logs/text-message/text-message-logs.component';
 import { WalletLogsComponent } from './logs/wallet/wallet-logs.component';
 import { CounselorContactsComponent } from "./contacts/counselor-contacts/counselor-contacts.component";
-import { DisplayCounselorContactsComponent } from "./contacts/display-counselor-contacts/display-counselor-contacts.component";
+import {
+  DisplayCounselorContactsComponent
+} from "./contacts/display-counselor-contacts/display-counselor-contacts.component";
 import { DisplayStaffContactsComponent } from "./contacts/display-staff-contacts/display-staff-contacts.component";
 import { DisplayTeacherContactsComponent } from "./contacts/display-teacher-contacts/display-teacher-contacts.component";
 import { LabContactsComponent } from "./contacts/lab-contacts/lab-contacts.component";
@@ -20,8 +22,7 @@ import { DisplayTutorContactsComponent } from "./contacts/display-tutor-contacts
 import { TeacherContactsComponent } from './contacts/teacher-contacts/teacher-contacts.component';
 import { PersonalizedLettersComponents } from './home/personalized-letters/personalized-letters.component';
 import { TutorContactsComponent } from "./contacts/tutor-contacts/tutor-contacts.component";
-
-import { StudentDataEOCDemoComponent } from './home/studentData-EOC-DEMO/studentData-eoc-demo.component';
+import { StudentDataComponent } from './home/studentData/studentData.component';
 import { StudentDataTSDEMOComponent } from './home/studentData-TS-DEMO/studentData-tsDemo.component';
 import { StudentDataMcnDemoComponent } from './home/studentData-MCN-DEMO/studentData-mcn-demo.component';
 import { StudentDataSSSDemoComponent } from './home/studentData-SSS-DEMO/studentData-sss-demo.component';
@@ -105,7 +106,7 @@ const routes: Routes = [
   },
   {
     path: 'student/home/student-data-eocdemo',
-    component: StudentDataEOCDemoComponent,
+    component: StudentDataComponent,
     data: {
       title: 'Student Data',
       breadcrumb: [

@@ -451,7 +451,7 @@
               <a class="nav-link active" aria-current="page" href="#">Reset</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="javascript:void(0);" (click)="openNewStudentDEPopup()">New</a>
+              <a class="nav-link" href="javascript:void(0);" (click)="openStudentPopup()">New</a>
             </li>
             <li class="nav-item">
               <a class="nav-link " href="#">Edit</a>
@@ -481,57 +481,6 @@
     </nav>
   </div>
 </div>
-
-<ng-template #newStudentDataEntryPopup>
-  <div class="modal-header popHeaderBG">
-    <span class="modal-title popHeader" id="exampleModalLabel"> New Student</span>
-    <button type="button" class="btn-close" (click)="newStudentRef.hide()"></button>
-  </div>
-  <div class="modal-body">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form-group">
-          <mat-form-field class="mat-select-width" appearance="fill">
-            <mat-label>System Serial Number </mat-label>
-            <input matInput [(ngModel)]="SSNO" required>
-          </mat-form-field>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="form-group">
-          <mat-form-field class="mat-select-width" appearance="fill">
-            <mat-label>First Name </mat-label>
-            <input matInput [(ngModel)]="firstName" required>
-          </mat-form-field>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="form-group">
-          <mat-form-field class="mat-select-width" appearance="fill">
-            <mat-label>Middle Initial </mat-label>
-            <input matInput [max]="1" [(ngModel)]="middleNameInitial">
-          </mat-form-field>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="form-group">
-          <mat-form-field class="mat-select-width" appearance="fill">
-            <mat-label>Last Name </mat-label>
-            <input matInput [(ngModel)]="lastName" required>
-          </mat-form-field>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="openStudentPopup();">Save</button>
-    <button type="button" class="btn btn-secondary" id="closePopup" (click)="newStudentRef.hide();">Cancel</button>
-  </div>
-</ng-template>
 
 <ng-template #studentDataPopup>
   <div class="modal-header popHeaderBG">

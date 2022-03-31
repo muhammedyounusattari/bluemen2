@@ -1,11 +1,11 @@
 export class GradeGroupStandingList {
-    gradeGroupId: number = 1;
+    gradeGroupId: string = '';
     gradeGroupName: string = '';
     gradeGroupGradeType: string = '';
     gradeGroupAprColumn: string = '';
     
     graduateList: boolean = true;
-    gradingId: number = 1;
+    gradingId: string = '';
     gradingName: string = '';
     gradingGroupName: string = '';
     gradingNewGrade: string = '';
@@ -13,4 +13,5 @@ export class GradeGroupStandingList {
     gradeStandingFiscalYear: string = '';
     gradingParticipantStatus: string = '';
     gradingYearEnbStatus: string ='';
+    orignalGradingId: string ='';
 }

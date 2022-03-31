@@ -1,4 +1,5 @@
 export class SchoolListEnum {
+    collegeSchoolId: string = '';
     orgName: string = '';
     orgType: string = '';
     name: string = '';

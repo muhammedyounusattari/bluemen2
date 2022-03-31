@@ -1,7 +1,8 @@
 export class ActivityServiceListEnum {
-    activityId: string = '1';
+    activityId: string;
     activityName: string;
     activityGroupName:string;
     lapService: boolean;
     activityBoltService: string;
+    id: any;
 }

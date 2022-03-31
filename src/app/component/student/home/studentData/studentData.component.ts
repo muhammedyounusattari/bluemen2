@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,12 +9,12 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 
 
 @Component({
-    selector: 'app-student-eoc-demo',
-    templateUrl: './studentData-eoc-demo.component.html',
-    styleUrls: ['./studentData-eoc-demo.component.css']
+    selector: 'organization1',
+    templateUrl: './studentData.component.html',
+    styleUrls: ['./studentData.component.css']
 })
 
-export class StudentDataEOCDemoComponent implements OnInit {
+export class StudentDataComponent implements OnInit, AfterViewInit {
     public columnsToDisplay: string[] =
         ['firstName', 'lastName', 'phoneNumber', 'fiscalYear', 'active', 'served', 'reported', 'counselor', 'school', 'standing'];
     @ViewChild('studentDataPopup') studentDataPopupRef: TemplateRef<any>;
@@ -23,16 +23,7 @@ export class StudentDataEOCDemoComponent implements OnInit {
         backdrop: true,
         ignoreBackdropClick: true,
         class: 'modal-xl'
-    };
-
-    @ViewChild('newStudentDataEntryPopup') newStudentDataEntryPopupRef: TemplateRef<any>;
-    newStudentRef: BsModalRef;
-    newStudentModalConfigSM = {
-        backdrop: true,
-        ignoreBackdropClick: true,
-        class: 'modal-sm'
-    };
-
+    }
     dataSource: MatTableDataSource<any>;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -47,10 +38,6 @@ export class StudentDataEOCDemoComponent implements OnInit {
     isActivity = false;
     isParentInfo = false;
     formGroup: FormGroup;
-    SSNO = '';
-    firstName = '';
-    lastName = '';
-    middleNameInitial = '';
 
     constructor(private modalService: BsModalService
         , private formBuilder: FormBuilder
@@ -62,6 +49,13 @@ export class StudentDataEOCDemoComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.createFB();
+    }
+
+    ngAfterViewInit(): void {
+        let domElement = window.document.getElementById('CurrentStatusTab');
+        if (domElement) {
+            domElement.style.borderBottom = "2px solid #0000FF";
+        }
     }
 
     activeTab(name: string) {
@@ -101,7 +95,6 @@ export class StudentDataEOCDemoComponent implements OnInit {
                 fourthTab.style.borderBottom = "2px solid #0000FF";
             }
         } else {
-            firstTab = window.document.getElementById('CurrentStatusTab');
             if (firstTab) {
                 this.isCurrentStatus = true;
                 firstTab.style.borderBottom = "2px solid #0000FF";
@@ -114,7 +107,6 @@ export class StudentDataEOCDemoComponent implements OnInit {
         this.formGroup = this.formBuilder.group({
             'studentId': [''],
             'firstName': [''],
-            'middleNameInitial': [''],
             'mIValue': [''],
             'lastName': [''],
             'email': [''],
@@ -154,19 +146,7 @@ export class StudentDataEOCDemoComponent implements OnInit {
     }
 
     openStudentPopup() {
-        setTimeout(() => {
-            this.activeTab('CurrentStatusTab');
-        }, 100);
-        this.newStudentRef.hide();
         this.openModal(this.studentDataPopupRef);
-    }
-
-    openNewStudentDEPopup() {
-        this.openNewStudentDEModal(this.newStudentDataEntryPopupRef);
-    } 
-
-    openNewStudentDEModal(template: TemplateRef<any>) {
-        this.newStudentRef = this.modalService.show(template, this.newStudentModalConfigSM)
     }
     /**
      * @method openModal

@@ -42,13 +42,12 @@
         <mat-spinner id="spinner"></mat-spinner>
     </div>
     <!-- Spinner End-->
-
     <!-- Data Table Start-->
     <div class="mat-elevation-z8 data-table-height dt-max-height" *ngIf="!isLoading">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-            <ng-container matColumnDef="activityId">
+            <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                <td mat-cell *matCellDef="let serviceObj; let row = dataIndex;"> {{serviceObj.activityId}} </td>
+                <td mat-cell *matCellDef="let serviceObj; let row = dataIndex;"> {{serviceObj.id}} </td>
             </ng-container>
 
             <ng-container matColumnDef="activityName">
@@ -60,7 +59,7 @@
                 <td mat-cell *matCellDef="let serviceObj; let row = dataIndex;"> {{serviceObj.activityGroupName}} </td>
             </ng-container>
             <ng-container matColumnDef="lapService">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> BOLT Service </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Lab Service </th>
                 <td mat-cell *matCellDef="let serviceObj; let row = dataIndex;">
                     {{serviceObj.lapService ? 'YES' : 'NO'}} </td>
             </ng-container>
@@ -69,6 +68,11 @@
                 [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)"></tr>
 
         </table>
+        <div *ngIf="!isLoading && activityServiceData?.length == 0" class="bg-colr-wht py-4">
+            <div class="center">
+                <h3>No Data Found</h3>
+            </div>
+        </div>
     </div>
         <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
     <!-- Data Table End-->
@@ -85,24 +89,24 @@
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" (click)="resetFields()">New</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="javascript:void(0);" (click)="setValuesToUpdate()">Edit</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Move</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Merge</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Print</a>
-                </li>
+                    <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" (click)="resetFields()">New</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="javascript:void(0);" (click)="setValuesToUpdate()">Edit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="javascript:void(0);" (click)="showMoveItemPopup()">Move</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="javascript:void(0);" (click)="showMergeItemPopup()">Merge</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="javascript:void(0)" (click)="printData()">Print</a>
+                        </li>
 
             </ul>
 
@@ -122,67 +126,46 @@
     <div class="modal-body">
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <form [formGroup]="formGroup" class="form">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group ">
-                            <!-- <label for="usr">Activity/Service ID:</label> -->
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Activity/Service ID</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{activityServiceListEnum.activityId}}"
-                                    [(ngModel)]="activityServiceListEnum.activityId"
-                                    [ngModelOptions]="{standalone: true}" readonly>
+                            <mat-form-field class="example-full-width" appearance="fill">
+                                <mat-label>Service or Activity ID:</mat-label>
+                                <input matInput placeholder="" value="" formControlName="id" readonly>
                             </mat-form-field>
-
-                            <!-- <input type="text" class="form-control" [(ngModel)]="activityServiceListEnum.activityId"
-                                id="serviceId" readonly> -->
                         </div>
 
-                        <div class="form-group mt-3">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Activity/Service Name</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{activityServiceListEnum.activityName}}"
-                                    [(ngModel)]="activityServiceListEnum.activityName"
-                                    [ngModelOptions]="{standalone: true}">
+                        <div class="form-group">
+                            <mat-form-field class="example-full-width" appearance="fill">
+                                <mat-label>Service or Activity Name:</mat-label>
+                                <input matInput value="" formControlName="activityName" minlength="3" required>
                             </mat-form-field>
-                            <!-- <label for="usr">Activity/Service Name:</label>
-                            <input type="text" class="form-control" [(ngModel)]="activityServiceListEnum.activityName"
-                                id="serviceName"> -->
                         </div>
 
-                        <div class="form-group mt-3">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Activity/Service Group</mat-label>
-                                <input matInput list="groups" placeholder="Ex. ABC"
-                                    value="{{activityServiceListEnum.activityGroupName}}"
-                                    [(ngModel)]="activityServiceListEnum.activityGroupName"
-                                    [ngModelOptions]="{standalone: true}">
+                        <div class="form-group">
+                            <mat-form-field class="example-full-width" appearance="fill">
+                                <mat-label>Service or Activity Group Name:</mat-label>
+                                <input matInput list="groups" value="" formControlName="activityGroupName"
+                                    minlength="3" required>
                             </mat-form-field>
 
                             <datalist id="groups">
                                 <option *ngFor="let actGroup of activityGroup" [ngValue]="actGroup.activityGroupName">
                                     {{actGroup.activityGroupName}}</option>
                             </datalist>
-
-                            <!-- <label for="usr">Activity/Service Group</label>
-                            <select class="form-control" id="serviceGrpName"
-                                [(ngModel)]="activityServiceListEnum.activityGroupName">
-                                <option *ngFor="let actGroup of activityGroup" value="{{actGroup.activityGroupName}}">
-                                    {{actGroup.activityGroupName}}</option>
-                            </select> -->
                         </div>
 
-                        <div class="form-group mt-3">
+                        <div class="form-group">
                             <section class="example-section">
-                                <mat-checkbox [(ngModel)]="activityServiceListEnum.lapService" class="example-margin">
-                                    BOLT Service
+                                <mat-checkbox formControlName="lapService" class="example-margin">
+                                    Lab Service
                                 </mat-checkbox>
                             </section>
-                            <!-- <label for="usr">BOLT Service:</label>
-                            <input type="checkbox" name="labService"
-                                [(ngModel)]="activityServiceListEnum.lapService">&nbsp; -->
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>

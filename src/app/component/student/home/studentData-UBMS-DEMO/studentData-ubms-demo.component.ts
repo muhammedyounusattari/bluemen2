@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,7 +14,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
     styleUrls: ['./studentData-ubms-demo.component.css']
 })
 
-export class StudentDataUBMSDemoComponent implements OnInit {
+export class StudentDataUBMSDemoComponent implements OnInit, AfterViewInit {
     public columnsToDisplay: string[] =
         ['firstName', 'lastName', 'phoneNumber', 'fiscalYear', 'active', 'served', 'reported', 'counselor', 'school', 'standing'];
     @ViewChild('studentDataPopup') studentDataPopupRef: TemplateRef<any>;
@@ -30,16 +30,7 @@ export class StudentDataUBMSDemoComponent implements OnInit {
         backdrop: true,
         ignoreBackdropClick: true,
         class: 'modal-xl'
-    };
-
-    @ViewChild('newStudentDataEntryPopup') newStudentDataEntryPopupRef: TemplateRef<any>;
-    newStudentRef: BsModalRef;
-    newStudentModalConfigSM = {
-        backdrop: true,
-        ignoreBackdropClick: true,
-        class: 'modal-sm'
-    };
-
+    }
     dataSource: MatTableDataSource<any>;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -58,10 +49,6 @@ export class StudentDataUBMSDemoComponent implements OnInit {
     isParentsInfoTab = false;
     isAPRSubjectTab = false;
     formGroup: FormGroup;
-    SSNO = '';
-    firstName = '';
-    lastName = '';
-    middleNameInitial = '';
 
     constructor(private modalService: BsModalService
         , private formBuilder: FormBuilder
@@ -73,6 +60,13 @@ export class StudentDataUBMSDemoComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.createFB();
+    }
+
+    ngAfterViewInit(): void {
+        let domElement = window.document.getElementById('ProfileTab');
+        if (domElement) {
+            domElement.style.borderBottom = "2px solid #0000FF";
+        }
     }
 
     activeTab(name: string) {
@@ -249,19 +243,7 @@ export class StudentDataUBMSDemoComponent implements OnInit {
     }
 
     openStudentPopup() {
-        setTimeout(() => {
-            this.activeTab('ProfileTab');
-        }, 100);
-        this.newStudentRef.hide();
         this.openModal(this.studentDataPopupRef);
-    }
-
-    openNewStudentDEPopup() {
-        this.openNewStudentDEModal(this.newStudentDataEntryPopupRef);
-    }
-
-    openNewStudentDEModal(template: TemplateRef<any>) {
-        this.newStudentRef = this.modalService.show(template, this.newStudentModalConfigSM)
     }
     /**
      * @method openModal

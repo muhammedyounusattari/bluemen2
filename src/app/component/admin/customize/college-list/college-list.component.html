@@ -1,5 +1,4 @@
-<div class="main-container">
-<div class="container-fluid mt-3">
+<div class="container-fluid" style="background:#EFF4F8;">
     <!-- Full Screen Loader Start -->
     <div id="loading"></div>
     <!-- Full Screen Loader End -->
@@ -43,148 +42,67 @@
         <mat-spinner id="spinner"></mat-spinner>
     </div>
     <!-- Spinner End-->
-
     <!-- Data Table Start-->
     <div class="mat-elevation-z8 data-table-height dt-max-height" *ngIf="!isLoading">
-        <form [formGroup]="CollegeForm" autocomplete="off">
-            <ng-container formArrayName="CollegeRows">
-                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-                    <ng-container matColumnDef="name">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> College Name </th>
-                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
-                            <mat-form-field style="width: 70px;"
-                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
-                                <input matInput type="text" formControlName="name" [readonly]="true">
-                            </mat-form-field>
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="inPullDown">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> In Pulldown</th>
-                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
-                            <section class="example-section">
-                                <mat-checkbox formControlName="inPullDown" class="example-margin">
-                                    </mat-checkbox>
-                            </section>
-                            <!-- <mat-form-field style="width: 70px;"
-                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
-                                <input matInput type="text" formControlName="inPullDown"
-                                    [readonly]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable">
-                            </mat-form-field> -->
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="fafsaId">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> FAFSA ID </th>
-                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
-                            <mat-form-field style="width: 70px;"
-                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
-                                <input matInput type="text" formControlName="fafsaId" [readonly]="true">
-                            </mat-form-field>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="country">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> County Name</th>
-                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
-                            <mat-form-field style="width: 70px;"
-                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
-                                <input matInput type="text" formControlName="country"
-                                    [readonly]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable">
-                            </mat-form-field>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="phone1">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 1 </th>
-                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
-                            <mat-form-field style="width: 70px;"
-                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
-                                <input matInput type="text" formControlName="phone1"
-                                    [readonly]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable">
-                            </mat-form-field>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="phone2">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 2 </th>
-                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
-                            <mat-form-field style="width: 70px;"
-                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
-                                <input matInput type="text" formControlName="phone2"
-                                    [readonly]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable">
-                            </mat-form-field>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="phone3">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 3 </th>
-                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
-                            <mat-form-field style="width: 70px;"
-                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
-                                <input matInput type="text" formControlName="phone3"
-                                    [readonly]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable">
-                            </mat-form-field>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="fax">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> FAX </th>
-                        <td mat-cell *matCellDef="let collegeObj; let i = index;" [formGroup]="collegeObj">
-                            <mat-form-field style="width: 70px;"
-                                [appearance]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable? 'legacy' : 'legacy'">
-                                <input matInput type="text" formControlName="fax"
-                                    [readonly]="CollegeForm.get('CollegeRows')?.value[i]?.isEditable">
-                            </mat-form-field>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef> Action </th>
-                        <td mat-cell *matCellDef="let collegeObj; let i = index" [formGroup]="collegeObj">
-                            <button mat-icon-button class="material-icons app-toolbar-menu save-button"
-                                matTooltip="Save Changes" (click)="saveVO(CollegeForm,i)"
-                                *ngIf="!CollegeForm.get('CollegeRows')?.value[i].isEditable" color="primary">
-                                <mat-icon>check_circle</mat-icon>
-                            </button>
-
-                            <button mat-icon-button class="material-icons app-toolbar-menu cancel-button"
-                                matTooltip="Cancel Changes" color="warn" (click)="cancelSVO(CollegeForm,i)"
-                                *ngIf="!CollegeForm.get('CollegeRows')?.value[i].isEditable">
-                                <mat-icon>cancel</mat-icon>
-                            </button>
-
-                            <button mat-icon-button class="material-icons app-toolbar-menu save-button"
-                                *ngIf="CollegeForm.get('CollegeRows')?.value[i].isEditable" matTooltip="Edit"
-                                color="primary" (click)="editSVO(CollegeForm,i)">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-
-                            <button mat-icon-button class="material-icons app-toolbar-menu delete-button"
-                                *ngIf="CollegeForm.get('CollegeRows')?.value[i].isEditable"
-                                (click)="deleteRow(CollegeForm,i)" matTooltip="Delete" color="warn">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-                    <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
-                        [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row.value, idx)">
-                    </tr>
-                </table>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> College Name </th>
+                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.name}} </td>
             </ng-container>
-        </form>
-        <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
-            <mat-progress-spinner color="primary" mode="indeterminate">
-            </mat-progress-spinner>
-        </mat-card>
+
+            <ng-container matColumnDef="inPullDown">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> In Pulldown</th>
+                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{getPullDownValue(collegeObj.inPullDown)}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="fafsaId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>FAFSA ID </th>
+                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.fafsaId}} </td>
+            </ng-container>
+            <ng-container matColumnDef="country">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Country Name </th>
+                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.country}} </td>
+            </ng-container>
+            <ng-container matColumnDef="phone1">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 1 </th>
+                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.phone1}} </td>
+            </ng-container>
+            <ng-container matColumnDef="phone2">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 2 </th>
+                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.phone2}} </td>
+            </ng-container>
+            <ng-container matColumnDef="phone3">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 3 </th>
+                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.phone3}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fax">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> FAX </th>
+                <td mat-cell *matCellDef="let collegeObj; let row = dataIndex;"> {{collegeObj.fax}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
+                [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
+            </tr>
+        </table>
+        <div *ngIf="!isLoading && collegeDataList?.length == 0" class="bg-colr-wht py-4">
+            <div class="center">
+                <h3>No Data Found</h3>
+            </div>
+        </div>
     </div>
+        <mat-paginator [pageSize]="10"  [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
     <!-- Data Table End-->
 </div>
-<mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
 
 <!-- Buttons Start-->
-<nav class="navbar navbar-expand-lg navbar-light bg-bottom">
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
             aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);" (click)="resetFields()">New</a>
@@ -192,26 +110,24 @@
                 <li class="nav-item">
                     <a class="nav-link " href="javascript:void(0);" (click)="setValuesToUpdate()">Edit</a>
                 </li>
-
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Move</a>
+                    <a class="nav-link " href="javascript:void(0);" (click)="showMoveItemPopup()">Move</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Merge</a>
+                    <a class="nav-link " href="javascript:void(0);" (click)="showMergeItemPopup()">Merge</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link " href="#">Print</a>
                 </li>
+
             </ul>
 
         </div>
     </div>
 </nav>
-</div>
 <!-- Buttons End-->
 
 <!-- Modal Start-->
@@ -230,37 +146,26 @@
                         <div class="form-group col-md-4">
                             <mat-form-field appearance="fill" class="mat-select-width">
                                 <mat-label>Name</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.name}}"
-                                    [(ngModel)]="collegeListEnum.name" [readonly]="isDisabled"
-                                    [ngModelOptions]="{standalone: true}">
+                                <input matInput placeholder="Enter Name" value="{{collegeListEnum.name}}" required
+                                    [(ngModel)]="collegeListEnum.name" [ngModelOptions]="{standalone: true}" [readonly]="isDisabled" [maxLength]="50">
                             </mat-form-field>
                             <section class="example-section">
                                 <mat-checkbox [(ngModel)]="collegeListEnum.inPullDown" class="example-margin">
                                     In Pulldown List </mat-checkbox>
                             </section>
-                            <!-- <label for="usr">Name:</label>
-                            <input type="text" [(ngModel)]="collegeListEnum.name" class="form-control" id="collegeName"
-                                [readonly]="isDisabled"> &nbsp; -->
-                            <!-- <label class="radio-inline inpulldownChk">
-                                <input type="checkbox" [(ngModel)]="collegeListEnum.inPullDown" name="optradio"> In
-                                Pulldown List
-                            </label> -->
                         </div>
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>Codes</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.codes}}"
-                                    [(ngModel)]="collegeListEnum.codes" [ngModelOptions]="{standalone: true}">
+                                <input matInput placeholder="Enter Codes" value="{{collegeListEnum.codes}}"
+                                    [(ngModel)]="collegeListEnum.codes" [ngModelOptions]="{standalone: true}" [maxLength]="50">
                             </mat-form-field>
-                            <!-- <label for="usr">Codes:</label>
-                            <input type="text" class="form-control" [(ngModel)]="collegeListEnum.codes" id="codes">
-                            &nbsp; -->
                         </div>
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>Title</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.title}}"
-                                    [(ngModel)]="collegeListEnum.title" [ngModelOptions]="{standalone: true}">
+                                <input matInput placeholder="Enter Title" value="{{collegeListEnum.title}}"
+                                    [(ngModel)]="collegeListEnum.title" [ngModelOptions]="{standalone: true}" [maxLength]="50">
                             </mat-form-field>
 
                             <!-- <label for="usr">Title:</label>
@@ -271,22 +176,15 @@
                     <div class="col-md-12 form-group flex">
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>County</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.country}"
-                                    [(ngModel)]="collegeListEnum.country" [ngModelOptions]="{standalone: true}">
-                            </mat-form-field>
-
-                            <!-- <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>County</mat-label>
-                                <input matInput list="countries" placeholder="Ex. ABC"
-                                    value="{{collegeListEnum.country}}" [(ngModel)]="collegeListEnum.country"
-                                    [ngModelOptions]="{standalone: true}">
+                                <mat-label>Country</mat-label>
+                                <input matInput list="countries" placeholder="Enter Country" value="{{collegeListEnum.country}}"
+                                    [(ngModel)]="collegeListEnum.country" [ngModelOptions]="{standalone: true}" [maxLength]="50">
                             </mat-form-field>
 
                             <datalist id="countries">
                                 <option *ngFor="let countryObj of countryList" [ngValue]="countryObj.name">
                                     {{countryObj.name}}</option>
-                            </datalist> -->
+                            </datalist>
 
                             <!-- <label for="usr">County:</label>
                             <input type="text" class="form-control" [(ngModel)]="collegeListEnum.country" id="country">
@@ -295,8 +193,8 @@
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>State</mat-label>
-                                <input matInput list="states" placeholder="Ex. ABC" value="{{collegeListEnum.states}}"
-                                    [(ngModel)]="collegeListEnum.states" [ngModelOptions]="{standalone: true}">
+                                <input matInput list="states" placeholder="Enter State" value="{{collegeListEnum.states}}"
+                                    [(ngModel)]="collegeListEnum.states" [ngModelOptions]="{standalone: true}" [maxLength]="50">
                             </mat-form-field>
 
                             <datalist id="states">
@@ -313,8 +211,8 @@
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>City</mat-label>
-                                <input matInput list="cities" placeholder="Ex. ABC" value="{{collegeListEnum.city}}"
-                                    [(ngModel)]="collegeListEnum.city" [ngModelOptions]="{standalone: true}">
+                                <input matInput list="cities" placeholder="Enter City" value="{{collegeListEnum.city}}"
+                                    [(ngModel)]="collegeListEnum.city" [ngModelOptions]="{standalone: true}" [maxLength]="50">
                             </mat-form-field>
 
                             <datalist id="cities">
@@ -334,7 +232,7 @@
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>Address</mat-label>
                                 <textarea matInput placeholder="Enter Address"
-                                    [(ngModel)]="collegeListEnum.address"></textarea>
+                                    [(ngModel)]="collegeListEnum.address" [maxLength]="2000"></textarea>
                             </mat-form-field>
                             <!-- <label for="usr">Address:</label>
                         <textarea type="text" class="form-control" id="address"
@@ -345,9 +243,8 @@
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>FAFSA ID</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.fafsaId}}"
-                                    [(ngModel)]="collegeListEnum.fafsaId" [ngModelOptions]="{standalone: true}"
-                                    [readonly]="isDisabled">
+                                <input matInput placeholder="Enter FafsaId" value="{{collegeListEnum.fafsaId}}"
+                                    [(ngModel)]="collegeListEnum.fafsaId" [ngModelOptions]="{standalone: true}" [readonly]="isDisabled" [maxLength]="30" required>
                             </mat-form-field>
                             <!-- <label for="usr">FAFSA ID:</label>
                             <input type="text" class="form-control" id="fafsaId" [(ngModel)]="collegeListEnum.fafsaId"
@@ -357,10 +254,10 @@
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>Zip Code</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.zipcode}}"
-                                    [(ngModel)]="collegeListEnum.zipcode" [ngModelOptions]="{standalone: true}">
+                                <input matInput placeholder="Enter Zip Code" value="{{collegeListEnum.zipcode}}"
+                                    [(ngModel)]="collegeListEnum.zipcode" [ngModelOptions]="{standalone: true}" [maxLength]="20">
                             </mat-form-field>
-                            <!--
+                            <!-- 
                             <label for="usr">Zip Code:</label>
                             <input type="text" class="form-control" id="zipcode" [(ngModel)]="collegeListEnum.zipcode">
                             &nbsp; -->
@@ -369,8 +266,8 @@
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>Fiscal Years</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.fiscalYear}}"
-                                    [(ngModel)]="collegeListEnum.fiscalYear" [ngModelOptions]="{standalone: true}">
+                                <input matInput placeholder="Enter Fiscal Years" value="{{collegeListEnum.fiscalYear}}"
+                                    [(ngModel)]="collegeListEnum.fiscalYear" [ngModelOptions]="{standalone: true}" [maxLength]="50">
                             </mat-form-field>
                             <!-- <label for="usr">Fiscal Years:</label>
                             <input type="text" class="form-control" id="fiscalYear"
@@ -383,8 +280,8 @@
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>Phone 1</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.phone1}}"
-                                    [(ngModel)]="collegeListEnum.phone1" [ngModelOptions]="{standalone: true}">
+                                <input matInput placeholder="Enter Phone1" value="{{collegeListEnum.phone1}}"
+                                    [(ngModel)]="collegeListEnum.phone1" [ngModelOptions]="{standalone: true}" [maxLength]="30">
                             </mat-form-field>
                             <!-- <label for="usr">Phone 1:</label>
                             <input type="text" class="form-control" id="phone1" [(ngModel)]="collegeListEnum.phone1">
@@ -393,8 +290,8 @@
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>Phone 2</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.phone2}}"
-                                    [(ngModel)]="collegeListEnum.phone2" [ngModelOptions]="{standalone: true}">
+                                <input matInput placeholder="Enter Phone2" value="{{collegeListEnum.phone2}}"
+                                    [(ngModel)]="collegeListEnum.phone2" [ngModelOptions]="{standalone: true}" [maxLength]="30">
                             </mat-form-field>
                             <!-- <label for="usr">Phone 2:</label>
                             <input type="text" class="form-control" id="phone2" [(ngModel)]="collegeListEnum.phone2">
@@ -403,8 +300,8 @@
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>Phone 3</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.phone3}}"
-                                    [(ngModel)]="collegeListEnum.phone3" [ngModelOptions]="{standalone: true}">
+                                <input matInput placeholder="Enter Phone3" value="{{collegeListEnum.phone3}}"
+                                    [(ngModel)]="collegeListEnum.phone3" [ngModelOptions]="{standalone: true}" [maxLength]="30">
                             </mat-form-field>
                             <!-- <label for="usr">Phone 3:</label>
                             <input type="text" class="form-control" id="phone3" [(ngModel)]="collegeListEnum.phone3">
@@ -415,8 +312,8 @@
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>Fax</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.fax}}"
-                                    [(ngModel)]="collegeListEnum.fax" [ngModelOptions]="{standalone: true}">
+                                <input matInput placeholder="Enter Fax" value="{{collegeListEnum.fax}}"
+                                    [(ngModel)]="collegeListEnum.fax" [ngModelOptions]="{standalone: true}" [maxLength]="30">
                             </mat-form-field>
                             <!-- <label for="usr">FAX:</label>
                             <input type="text" class="form-control" id="fax" [(ngModel)]="collegeListEnum.fax">
@@ -426,8 +323,8 @@
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>Web Site</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.website}}"
-                                    [(ngModel)]="collegeListEnum.website" [ngModelOptions]="{standalone: true}">
+                                <input matInput placeholder="Enter Web Site" value="{{collegeListEnum.website}}"
+                                    [(ngModel)]="collegeListEnum.website" [ngModelOptions]="{standalone: true}" [maxLength]="50">
                             </mat-form-field>
                             <!-- <label for="usr">Web Site:</label>
                             <input type="text" class="form-control" id="website" [(ngModel)]="collegeListEnum.website">
@@ -436,11 +333,11 @@
                         <div class="form-group col-md-4">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>Email</mat-label>
-                                <input matInput placeholder="Ex. ABC" value="{{collegeListEnum.email}}"
-                                    [(ngModel)]="collegeListEnum.email" [ngModelOptions]="{standalone: true}">
+                                <input matInput placeholder="Enter Email" value="{{collegeListEnum.email}}"
+                                    [(ngModel)]="collegeListEnum.email" [ngModelOptions]="{standalone: true}" [maxLength]="50">
                             </mat-form-field>
                             <!-- <label for="usr">Email:</label>
-                            <input type="text" class="form-control" id="email" [(ngModel)]="collegeListEnum.email">
+                            <input type="text" class="form-control" id="email" [(ngModel)]="CollegeListEnum.email">
                             &nbsp; -->
                         </div>
                     </div>
@@ -448,8 +345,8 @@
                         <div class="form-group col-md-12">
                             <mat-form-field class="mat-select-width" appearance="fill">
                                 <mat-label>Notes</mat-label>
-                                <textarea matInput placeholder="Add notes if any"
-                                    [(ngModel)]="collegeListEnum.notes"></textarea>
+                                <textarea matInput placeholder="Enter Notes"
+                                    [(ngModel)]="collegeListEnum.notes" [maxLength]="2000"></textarea>
                             </mat-form-field>
                             <!-- <label for="usr">Notes:</label>
                             <textarea type="text" cols="100" rows="5" class="form-control" id="notes"
@@ -467,7 +364,7 @@
         <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();">Update
             & Close</button>
         <button type="button" class="btn btn-secondary" id="closePopup"
-            (click)="selectedRowIndex = null; modalRef.hide();selectedRow=null;" data-bs-dismiss="modal">Cancel</button>
+            (click)="selectedRowIndex = null; modalRef.hide();selectedRow=null;">Cancel</button>
     </div>
 </ng-template>
 <!-- Modal End-->

@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,7 +14,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
     styleUrls: ['./studentData-mcn-demo.component.css']
 })
 
-export class StudentDataMcnDemoComponent implements OnInit {
+export class StudentDataMcnDemoComponent implements OnInit, AfterViewInit {
     public columnsToDisplay: string[] =
         ['firstName', 'lastName', 'phoneNumber', 'fiscalYear', 'active', 'served', 'reported', 'counselor', 'school', 'standing'];
     @ViewChild('studentDataPopup') studentDataPopupRef: TemplateRef<any>;
@@ -23,16 +23,7 @@ export class StudentDataMcnDemoComponent implements OnInit {
         backdrop: true,
         ignoreBackdropClick: true,
         class: 'modal-xl'
-    };
-
-    @ViewChild('newStudentDataEntryPopup') newStudentDataEntryPopupRef: TemplateRef<any>;
-    newStudentRef: BsModalRef;
-    newStudentModalConfigSM = {
-        backdrop: true,
-        ignoreBackdropClick: true,
-        class: 'modal-sm'
-    };
-
+    }
     dataSource: MatTableDataSource<any>;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -47,10 +38,6 @@ export class StudentDataMcnDemoComponent implements OnInit {
     isActivity = false;
     isGradInfoTab = false;
     formGroup: FormGroup;
-    SSNO = '';
-    firstName = '';
-    lastName = '';
-    middleNameInitial = '';
 
     constructor(private modalService: BsModalService
         , private formBuilder: FormBuilder
@@ -62,6 +49,13 @@ export class StudentDataMcnDemoComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.createFB();
+    }
+
+    ngAfterViewInit(): void {
+        let domElement = window.document.getElementById('DemographicTab');
+        if (domElement) {
+            domElement.style.borderBottom = "2px solid #0000FF";
+        }
     }
 
     activeTab(name: string) {
@@ -188,19 +182,7 @@ export class StudentDataMcnDemoComponent implements OnInit {
     }
 
     openStudentPopup() {
-        setTimeout(() => {
-            this.activeTab('DemographicTab');
-        }, 100);
-        this.newStudentRef.hide();
         this.openModal(this.studentDataPopupRef);
-    }
-
-    openNewStudentDEPopup() {
-        this.openNewStudentDEModal(this.newStudentDataEntryPopupRef);
-    }
-
-    openNewStudentDEModal(template: TemplateRef<any>) {
-        this.newStudentRef = this.modalService.show(template, this.newStudentModalConfigSM)
     }
     /**
      * @method openModal

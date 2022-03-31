@@ -36,11 +36,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatRadioModule } from '@angular/material/radio';
-
-import { StudentDataEOCDemoComponent } from './home/studentData-EOC-DEMO/studentData-eoc-demo.component';
+import { StudentDataComponent } from 'src/app/component/student/home/studentData/studentData.component';
 import { StudentDataTSDEMOComponent } from './home/studentData-TS-DEMO/studentData-tsDemo.component';
 import { StudentDataMcnDemoComponent } from './home/studentData-MCN-DEMO/studentData-mcn-demo.component';
+import { MatRadioModule } from '@angular/material/radio';
 import { StudentDataSSSDemoComponent } from './home/studentData-SSS-DEMO/studentData-sss-demo.component';
 import { StudentDataVUBDemoComponent } from './home/studentData-VUB-DEMO/studentData-vub-demo.component';
 import { StudentDataUBDemoComponent } from './home/studentData-UB-DEMO/studentData-ub-demo.component';
@@ -67,7 +66,7 @@ import { StudentDataUBMSDemoComponent } from './home/studentData-UBMS-DEMO/stude
         DisplayCounselorContactsComponent,
         DisplayStaffContactsComponent,
         DisplayTeacherContactsComponent,
-        StudentDataEOCDemoComponent,
+        StudentDataComponent,
         StudentDataTSDEMOComponent,
         StudentDataMcnDemoComponent,
         StudentDataSSSDemoComponent,
