@@ -15,8 +15,9 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 export class LoginComponent implements OnInit {
   @Output() validateLogin = new EventEmitter();
   requestData = {
-    username: '',
-    password: ''
+    email: '',
+    password: '',
+    organization:''
   };
   formGroup: FormGroup;
   formGroup1: FormGroup;
@@ -59,8 +60,8 @@ export class LoginComponent implements OnInit {
 
   createForm() {
     this.formGroup = this.formBuilder.group({
-      'orgCode': ['', Validators.required],
-      'username': ['', Validators.required],
+      'organization': ['', Validators.required],
+      'email': ['', Validators.required],
       'password': ['', Validators.required],
     });
   }
@@ -68,17 +69,17 @@ export class LoginComponent implements OnInit {
   getError(el: any) {
     this.isInvalidCredentials = false;
     switch (el) {
-      case 'orgCode':
-        if (this.formGroup.get('orgCode')?.hasError('required')) {
+      case 'organization':
+        if (this.formGroup.get('organization')?.hasError('required')) {
           return 'Organization Code required';
         }
         break;
-      case 'user':
-        if (this.formGroup.get('username')?.hasError('required')) {
-          return 'Username required';
+      case 'email':
+        if (this.formGroup.get('email')?.hasError('required')) {
+          return 'Email required';
         }
         break;
-      case 'pass':
+      case 'password':
         if (this.formGroup.get('password')?.hasError('required')) {
           return 'Password required';
         }
@@ -93,16 +94,16 @@ export class LoginComponent implements OnInit {
     if (this.formGroup.valid) {
       this.isInvalidCredentials = false;
       this.isLoading = true;
-      this.requestData.username = this.formGroup?.get('username')?.value;
+      this.requestData.email = this.formGroup?.get('email')?.value;
       this.requestData.password = this.formGroup?.get('password')?.value;
-
-      this._loginService.validateLogin(this.requestData, this.formGroup?.get('orgCode')?.value).subscribe(result => {
+      this.requestData.organization = this.formGroup?.get('organization')?.value;
+      this._loginService.validateLogin(this.requestData, this.formGroup?.get('organization')?.value).subscribe(result => {
         this.isLoading = false;
         if (result) {
           result = JSON.parse(result);
-          if (result.status === '200') {
-            sessionStorage.setItem('realmId', this.formGroup?.get('orgCode')?.value);
-            sessionStorage.setItem('username', this.formGroup?.get('username')?.value);
+          if (result.status === 200) {
+            sessionStorage.setItem('realmId', this.requestData.organization);
+            sessionStorage.setItem('username', this.requestData.email);
             sessionStorage.setItem('state', JSON.stringify(result));
             if (result.isTwoFactorEnabled) {
               this.openModal(this.twoFactorPopupRef);
@@ -254,7 +255,7 @@ export class LoginComponent implements OnInit {
         }
       },
         (error: any) => {
-          this.isLoading = false; 
+          this.isLoading = false;
           this.isInvalidCredentials = true;
           const errorResponse = JSON.parse(error.error);
           // this.dialog.open(DialogBoxComponent, {
