@@ -15,7 +15,7 @@ import { ResetPasswordComponent } from './component/reset-password/reset-passwor
 import { AdminModule } from './component/admin/admin-module';
 import { StudentModule } from './component/student/student.module';
 import { UtilitiesModule } from './component/utilities/utilities.module';
-import { StaffModule } from './component/staff/staff.module.';
+import { StaffModule } from './component/staff/staff.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CounselorModule } from './component/counselor/counselor.module';
 import { LoginComponent } from './component/login/login.component';
@@ -33,8 +33,6 @@ import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.co
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { NgDynamicBreadcrumbModule } from 'ng-dynamic-breadcrumb';
-import { CollegeSchoolListMoveBoxComponent } from './component/admin/customize/move-box/college-school-list-move-box/college-school-list-move-box.component';
-import { CollegeSchoolListMergeBoxComponent } from './component/admin/customize/merge-box/college-school-list-merge-box/college-school-list-merge-box.component';
 
 @NgModule({
   declarations: [
@@ -47,9 +45,7 @@ import { CollegeSchoolListMergeBoxComponent } from './component/admin/customize/
     ConfirmationComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    DialogBoxComponent,
-    CollegeSchoolListMoveBoxComponent,
-    CollegeSchoolListMergeBoxComponent
+    DialogBoxComponent
   ],
   imports: [
     BrowserModule,

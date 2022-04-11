@@ -4,6 +4,5 @@ export class ActivityGroupListEnum {
     activityCalculateHoursforActivityGroup:boolean;
     activityReportActivityGroup: boolean;
     activityGroupType: string;
-    activityGroupId : string;
-    id: string;
+    activityGroupId : number = 1;
 }

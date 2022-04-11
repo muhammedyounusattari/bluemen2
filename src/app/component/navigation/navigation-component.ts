@@ -132,10 +132,6 @@ validate() {
       this.router.navigate(['/'], { queryParams: { popup: 'time-clock' } })
     } else if (componentName === 'global-filter' && subComponent != '') {
       this.router.navigate(['utilities/global-filter'], {queryParams: {page: subComponent}});
-    }else if (componentName === 'school-names') {
-      this.router.navigate(['admin/school-list'])
-     }else if (componentName === 'college-names') {
-      this.router.navigate(['admin/college-list'])
-     }
+    }
   }
 }

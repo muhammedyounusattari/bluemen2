@@ -26,7 +26,7 @@ import { StaffClassesComponent } from '../staff/home/classes/staff-classes.compo
 import { RolesComponent } from './home/roles/roles.component';
 import { AdminHomeComponent } from './home/admin-home.component';
 import { AdminCustomizeComponent } from './customize/admin-customize.component';
-
+import { StaffMemberComponent } from 'src/app/component/staff/home/staff-member/staff-member.component';
 const routes: Routes = [
   {
     path: 'admin/customize/pulldown-list',
@@ -307,6 +307,23 @@ const routes: Routes = [
   {
     path: 'admin/customize',
     component: AdminCustomizeComponent
+  },
+  {
+    path: 'admin/customize/staff-members',
+    component: StaffMemberComponent,
+    data: {
+      title: 'Staff Members',
+      breadcrumb: [
+        {
+          label: 'Customize',
+          url: 'admin/customize'
+        },
+        {
+          label: 'Staff Members',
+          url: ''
+        }
+      ]
+    }
   }
 ];
 

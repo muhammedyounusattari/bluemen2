@@ -36,29 +36,6 @@ export class GradingGroupStandingService {
     getGradingGroupMaxId() {
         return this.dataService.callGetService(ServiceUrls.GET_GRADING_GROUP_MAX_ID, '');
     }
-
-    updateGradingGroupDeletedList(request: any): Observable<any> {
-        return this.dataService.callPutService(ServiceUrls.UPDATE_GRADING_GROUP_DELETED_LIST, request);
-    }
-    
-    //
-    getDeletedGradingGroupItemById(id: any): Observable<any> {
-        return this.dataService.callGetService(ServiceUrls.GET_DELETED_GRADE_GROUP_ITEM_BY_ID+id);
-    }
-
-    recoverGradingGroupList(request: any): Observable<any> {
-        return this.dataService.callPutService(ServiceUrls.RECOVER_DELETED_GRADE_GROUP, request);
-    }
-
-    updateGradingGroupId(request: any): Observable<any> {
-        return this.dataService.callPutService(ServiceUrls.UPDATE_GRADE_GROUP_ID, request);
-    }
-
-    mergeGradingGroupId(request: any): Observable<any> {
-        return this.dataService.callDeleteService(ServiceUrls.MERGE_GRADE_GROUP_ID, request);
-    }
-    
-    
     /** GRADING GROUP LIST API - END */
 
     /** GRADING STANDING LIST API - START */
@@ -85,31 +62,6 @@ export class GradingGroupStandingService {
 
     getGradingStandingMaxId() {
         return this.dataService.callGetService(ServiceUrls.GET_GRADING_STANDING_MAX_ID, '');
-    }
-
-    getGradingStandingMovedList(request: any): Observable<any> {
-        return this.dataService.callGetService(ServiceUrls.GET_GRADING_STANDING_MOVED_LIST, request);
-    }
-
-    updateGradingStandingDeletedList(request: any): Observable<any> {
-        return this.dataService.callPutService(ServiceUrls.UPDATE_GRADING_STANDING_DELETED_LIST, request);
-    }
-
-    //Service
-    getDeletedGradingStandingById(id: any): Observable<any> {
-        return this.dataService.callGetService(ServiceUrls.GET_DELETED_GRADING_ITEM_BY_ID+id);
-    }
-
-    recoverGradingStandingList(request: any): Observable<any> {
-        return this.dataService.callPutService(ServiceUrls.RECOVER_DELETED_GRADING, request);
-    }
-
-    updateGradingStandingId(request: any): Observable<any> {
-        return this.dataService.callPutService(ServiceUrls.UPDATE_GRADING_ID, request);
-    }
-
-    mergeGradingStandingId(request: any): Observable<any> {
-        return this.dataService.callDeleteService(ServiceUrls.MERGE_GRADING_ID, request);
     }
     /** GRADING STANDING LIST API - END */
 

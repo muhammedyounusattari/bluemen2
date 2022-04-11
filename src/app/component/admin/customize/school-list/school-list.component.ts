@@ -10,9 +10,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
-import { CollegeSchoolListMergeBoxComponent } from '../merge-box/college-school-list-merge-box/college-school-list-merge-box.component';
-import { CollegeSchoolListMoveBoxComponent } from '../move-box/college-school-list-move-box/college-school-list-move-box.component';
 
 @Component({
     selector: 'app-school-list',
@@ -32,7 +29,6 @@ export class SchoolListComponent implements OnInit {
     }
     selectedRow: any = '';
     isEdit: boolean = false;
-    isMoved: boolean = false;
     requestData: any = {
         orgName: '',
         orgType: '',
@@ -337,7 +333,7 @@ export class SchoolListComponent implements OnInit {
         { "name": "Maharashtra" },
         { "name": "UP" }
     ];
-    validationClass: ValidationClass = new ValidationClass();
+
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog
@@ -363,7 +359,6 @@ export class SchoolListComponent implements OnInit {
                 this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
             }
         });
-        //this.bindDropDownValues();
     }
 
     navigateToComponent(componentName: string) {
@@ -385,7 +380,6 @@ export class SchoolListComponent implements OnInit {
         if (this.selectedRow) {
             this.isEdit = true;
             this.isDisabled = true;
-            this.schoolListEnum.collegeSchoolId = this.selectedRow.collegeSchoolId;
             this.schoolListEnum.orgName = this.selectedRow.name;
             this.schoolListEnum.inPullDown = this.selectedRow.inPullDown;
             this.schoolListEnum.name = this.selectedRow.name;
@@ -448,23 +442,26 @@ export class SchoolListComponent implements OnInit {
     }
 
     addNewSchoolName() {
-        if(this.schoolListEnum.name){
-        let name = this.checkName();
-        if(name){
-        let status  = this.emailVerify();
-        if(status){
-        let code = this.codeVerification();
-        if(code){
-        this._collegeAndSchoolService.getCollegeAndSchoolByName(this.schoolListEnum.name.toLowerCase(), 'School').subscribe(result => {
-        if (result && result != null) {
-            this.toastr.info('School name is already exist', '', {
-                timeOut: 3000,
+        this.showLoader();
+        if (this.schoolListEnum.ncesId) {
+            if (this.schoolDataList && this.schoolDataList.length > 0) {
+                const isFound = this.schoolDataList.filter((item: any) => item.fafsaId === this.schoolListEnum.ncesId);
+                if (isFound && isFound.length > 0) {
+                    this.hideLoader();
+                    this.toastr.info('Entered NCESID is alreay exist, to add this organization name please change entered NCESID.', '', {
+                        timeOut: 5000,
+                        closeButton: true
+                    });
+                    return;
+                }
+            }
+        } else {
+            this.hideLoader();
+            this.toastr.info('Please enter NCESID.', '', {
+                timeOut: 5000,
                 closeButton: true
             });
-        return;
-        }else{    
-        this.showLoader();
-        this.requestData.collegeSchoolId = this.schoolListEnum.collegeSchoolId;
+        }
         this.requestData.orgName = this.schoolListEnum.name;
         this.requestData.inPullDown = this.schoolListEnum.inPullDown;
         this.requestData.name = this.schoolListEnum.name;
@@ -497,7 +494,7 @@ export class SchoolListComponent implements OnInit {
                         this.dataSource.paginator = this.paginator;
                         this.selectedRowIndex = null;
                         this.dataSource.sort = this.sort;
-                        document.getElementById('closePopup') ?.click();
+                        document.getElementById('closePopup')?.click();
                         this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
 
                         this.toastr.success('Saved successfully!', '', {
@@ -508,68 +505,11 @@ export class SchoolListComponent implements OnInit {
                 });
             }
         });
-      }
-    });
-         }
-        }
-        }
-        }else {
-        this.hideLoader();
-        this.toastr.info('Please enter a school name.', '', {
-            timeOut: 3000,
-            closeButton: true
-        });
-        return;
-        }
     }
-   
-    codeVerification(){
-        let status = true;
-        if (this.schoolListEnum.ncesId) {
-            if (this.schoolDataList && this.schoolDataList.length > 0) {
-                const isFound = this.schoolDataList.filter((item: any) => item.ncesId.trim() === this.schoolListEnum.ncesId.trim());
-                if (isFound && isFound.length > 0) {
-                    this.hideLoader();
-                    this.toastr.info('Entered NCESID is alreay exist, to add this organization name please change entered NCESID.', '', {
-                        timeOut: 5000,
-                        closeButton: true
-                    });
-                    status = false;
-                    return status;
-                }
-            }
-        } else {
-            this.hideLoader();
-            this.toastr.info('Please enter NCESID.', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
-            status = false;
-            return status;
-        }
-        return status;
-       }
-    
-        emailVerify(){
-        let status = true;
-        if (this.schoolListEnum.email) {
-            let email = this.validateEmail(this.schoolListEnum.email);
-            if (email == false) {
-                this.hideLoader();
-                this.toastr.info('Please enter a valid email address.', '', {
-                    timeOut: 3000,
-                    closeButton: true
-                });
-                status = false;
-                return status;
-            }
-        }
-        return status;
-       }    
+
     deleteSelectedRow() {
         if (this.selectedRow) {
-            // this.showLoader();
-            this.requestData.collegeSchoolId = this.selectedRow.collegeSchoolId;
+            this.showLoader();
             this.requestData.orgName = this.selectedRow.name;
             this.requestData.inPullDown = this.selectedRow.inPullDown;
             this.requestData.name = this.selectedRow.name;
@@ -631,7 +571,6 @@ export class SchoolListComponent implements OnInit {
     updateSelectedRow() {
         if (this.selectedRow) {
             this.showLoader();
-            this.requestData.collegeSchoolId = this.schoolListEnum.collegeSchoolId;
             this.requestData.orgName = this.schoolListEnum.name;
             this.requestData.inPullDown = this.schoolListEnum.inPullDown;
             this.requestData.name = this.schoolListEnum.name;
@@ -652,17 +591,7 @@ export class SchoolListComponent implements OnInit {
             this.requestData.email = this.schoolListEnum.email;
             this.requestData.notes = this.schoolListEnum.notes;
             this.requestData.fafsaId = null;
-            if (this.schoolListEnum.email) {
-                let email = this.validateEmail(this.schoolListEnum.email);
-                if (email == false) {
-                    this.hideLoader();
-                    this.toastr.info('Please enter a valid email address.', '', {
-                        timeOut: 3000,
-                        closeButton: true
-                    });
-                    return;
-                }
-            }
+
             this._collegeAndSchoolService.updateCollegeSchoolName(this.requestData).subscribe(response => {
                 this.modalRef.hide();
                 this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
@@ -673,7 +602,7 @@ export class SchoolListComponent implements OnInit {
                         this.dataSource.paginator = this.paginator;
                         this.selectedRow = null;
                         this.dataSource.sort = this.sort;
-                        document.getElementById('closePopup') ?.click();
+                        document.getElementById('closePopup')?.click();
                         this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
                         this.isEdit = false;
                         this.toastr.success('Updated successfully!', '', {
@@ -685,160 +614,4 @@ export class SchoolListComponent implements OnInit {
             });
         }
     }
-
-    /**
-    * @method bindDropDownValues
-    * @description Get the all pull down item list
-    */
-    bindDropDownValues() {
-        this._collegeAndSchoolService.getPullDownList().subscribe((result: any) => {
-            if (result) {
-                if (result.filter((item: any) => item.code === 'City')
-                    && result.filter((item: any) => item.code === 'City').length > 0) {
-                    this._collegeAndSchoolService.getPullDownItems(result.filter((item: any) => item.code === 'City')[0].id)
-                        .subscribe(data => {
-                            if (data) {
-                                this.cityList = data;
-                            }
-                        });
-                }
-                if (result.filter((item: any) => item.code === 'State_PostalAddress')
-                    && result.filter((item: any) => item.code === 'State_PostalAddress').length > 0) {
-                    this._collegeAndSchoolService.getPullDownItems(result.filter((item: any) => item.code === 'State_PostalAddress')[0].id)
-                        .subscribe(data => {
-                            if (data) {
-                                this.stateList = data;
-                            }
-                        });
-                }
-                if (result.filter((item: any) => item.code === 'County')
-                    && result.filter((item: any) => item.code === 'County').length > 0) {
-                    this._collegeAndSchoolService.getPullDownItems(result.filter((item: any) => item.code === 'Codes')[0].id)
-                        .subscribe(data => {
-                            if (data) {
-                                this.countryList = data;
-                            }
-                        });
-                }
-            }
-        });
-    }
-
-    validateEmail(email: any) {
-        const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return regularExpression.test(String(email).toLowerCase());
-    }
-
-    /**
-     * Get yes and no value
-     */
-    getPullDownValue(val: any) {
-        if (val == true) {
-            return 'YES'
-        } else {
-            return 'NO'
-        }
-    }
-
-     /**
-     * @method checkName
-     * @description Check Name is exist or not
-     */
-    checkName() {
-        let status  = true;
-        // if (!this.validationClass.isNullOrUndefined(event)) {
-            const data = this.schoolDataList.filter((item: any) => (item.name).toLowerCase().trim() === (this.schoolListEnum.name).toLowerCase().trim());
-            if (data && data.length > 0) {
-                this.toastr.info('School name is already exist', '', {
-                    timeOut: 5000,
-                    closeButton: true
-                });
-                this.schoolListEnum.name = '';
-                status = false;
-                return status;
-            } else {
-                this.schoolListEnum.name = this.schoolListEnum.name;
-            }
-            return status;
-        // }
-    } 
-
-    showMoveItemPopup(){
-        if (this.selectedRow) {
-            //this.showLoader();
-            const confirmDialog = this.dialog.open(CollegeSchoolListMoveBoxComponent, {
-                data: {
-                    title: 'School Name',
-                    message: 'School',
-                    schoolCollegeDataList :this.schoolDataList,
-                    selectedCollegeSchoolId: this.selectedRow.collegeSchoolId,
-                    selectedCollegeSchoolName: this.selectedRow.name,
-                }
-            });
-            confirmDialog.afterClosed().subscribe(result1 => {
-            if(result1 == true){
-                this.showLoader();
-                this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
-                    this.hideLoader();
-                    let domElement = window.document.getElementById('SCHOOL_LIST');
-                    if (domElement) {
-                        domElement.style.borderBottom = "2px solid #1672B7";
-                    }
-                    if (result) {
-                        this.dataSource = new MatTableDataSource(result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined));
-                        this.dataSource.paginator = this.paginator;
-                        this.selectedRowIndex = null;
-                        this.dataSource.sort = this.sort;
-                        this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
-                    }
-                });
-            }
-            });
-        } else {
-            this.toastr.info('Please select a row to move', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
-        }
-    }
-
-    showMergeItemPopup(){
-        if (this.selectedRow) {
-            //this.showLoader();
-            const confirmDialog = this.dialog.open(CollegeSchoolListMergeBoxComponent, {
-                data: {
-                    title: 'School Name',
-                    message: 'Are you sure, you want to merge this record ' + this.selectedRow.collegeSchoolName,
-                    collegeSchoolIdList :this.schoolDataList,
-                    selectedCollegeSchoolId: this.selectedRow.collegeSchoolId,
-                    selectedCollegeSchoolName: this.selectedRow.name
-                }
-            });
-            confirmDialog.afterClosed().subscribe(result1 => {
-            if(result1 == true){
-                this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
-                    this.hideLoader();
-                    let domElement = window.document.getElementById('SCHOOL_LIST');
-                    if (domElement) {
-                        domElement.style.borderBottom = "2px solid #1672B7";
-                    }
-                    if (result) {
-                        this.dataSource = new MatTableDataSource(result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined));
-                        this.dataSource.paginator = this.paginator;
-                        this.selectedRowIndex = null;
-                        this.dataSource.sort = this.sort;
-                        this.schoolDataList = result.filter((item: any) => item.fafsaId === null || item.fafsaId === undefined);
-                    }
-                });
-            }
-            });
-        } else {
-            this.toastr.info('Please select a row to merge', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
-        }
-    }
-    
-    
 }

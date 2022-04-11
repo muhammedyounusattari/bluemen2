@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { StaffMemberComponent } from './home/staff-member/staff-member.component.';
+import { StaffMemberComponent } from './home/staff-member/staff-member.component';
 import { StaffRoutingModule } from './staff-routing.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,7 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
     declarations: [
-        StaffMemberComponent
+        // StaffMemberComponent
     ],
     imports: [
         StaffRoutingModule,

@@ -15,9 +15,9 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 export class LoginComponent implements OnInit {
   @Output() validateLogin = new EventEmitter();
   requestData = {
-    email: '',
-    password: '',
-    organization:''
+   email: '',
+   password: '',
+   organization:''
   };
   formGroup: FormGroup;
   formGroup1: FormGroup;
@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit {
           return 'Email required';
         }
         break;
-      case 'password':
+      case 'pass':
         if (this.formGroup.get('password')?.hasError('required')) {
           return 'Password required';
         }
@@ -97,13 +97,14 @@ export class LoginComponent implements OnInit {
       this.requestData.email = this.formGroup?.get('email')?.value;
       this.requestData.password = this.formGroup?.get('password')?.value;
       this.requestData.organization = this.formGroup?.get('organization')?.value;
+
       this._loginService.validateLogin(this.requestData, this.formGroup?.get('organization')?.value).subscribe(result => {
         this.isLoading = false;
         if (result) {
           result = JSON.parse(result);
           if (result.status === 200) {
-            sessionStorage.setItem('realmId', this.requestData.organization);
-            sessionStorage.setItem('username', this.requestData.email);
+            sessionStorage.setItem('realmId',  this.requestData.organization );
+            sessionStorage.setItem('username',  this.requestData.email);
             sessionStorage.setItem('state', JSON.stringify(result));
             if (result.isTwoFactorEnabled) {
               this.openModal(this.twoFactorPopupRef);

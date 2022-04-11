@@ -13,7 +13,6 @@ export class ServiceUrls {
     public static UPDATE_ACTIVITY_GROUP_LIST = environment.apiUrl + '/blumen-api/customize/updateActivityGroupList/v1';
     public static POST_ACTIVITY_GROUP_LIST = environment.apiUrl + '/blumen-api/customize/activityGroupList/v1';
     public static GET_ACTIVITY_GROUP_MAX_ID = environment.apiUrl + '/blumen-api/customize/getMaxActivityGroupId/v1';
-    public static GET_ACTIVITY_GROUP_DELETED_ITEM = environment.apiUrl + '/blumen-api/customize/getDeletedItemByOrgId/v1';
 
     // ACTIVITY SERVICE LIST API URL's
     public static FILTER_ACTIVITY_SERVICE_LIST = environment.apiUrl + '/blumen-api/customize/filter/activityList/v1';
@@ -31,9 +30,6 @@ export class ServiceUrls {
     public static POST_COLLEGE_NAME = environment.apiUrl + '/blumen-api/customize/addCollegeNameList/v1';
     public static POST_SCHOOL_NAME = environment.apiUrl + '/blumen-api/customize/addSchoolNameList/v1'
     public static SEARCH_COLLEGE_SCHOOL_NAME = environment.apiUrl + '/blumen-api/customize/collegeSchoolName/search//v1/{name}/{value}';
-    public static GET_COLLEGE_SCHOOL_MOVED_LIST = environment.apiUrl + '/blumen-api/customize/getCollegeSchoolMovedList/v1';
-    public static UPDATE_COLLEGE_SCHOOL_DELETED_LIST = environment.apiUrl + '/blumen-api/customize/updateCollegeSchoolDeletedList/v1';
-
 
     // Grade Group API URL's
     public static FILTER_GRADING_GROUP_LIST = environment.apiUrl + '/blumen-api/customize/filter/gradingGroupList/v1';
@@ -41,10 +37,7 @@ export class ServiceUrls {
     public static DELETE_GRADING_GROUP_LIST = environment.apiUrl + '/blumen-api/customize/deleteGradingGroupList/v1';
     public static UPDATE_GRADING_GROUP_LIST = environment.apiUrl + '/blumen-api/customize/updateGradingGroupList/v1';
     public static POST_GRADING_GROUP_LIST = environment.apiUrl + '/blumen-api/customize/gradingGroupList/v1';
-    public static GET_GRADING_GROUP_MAX_ID = environment.apiUrl + '/blumen-api/customize/getMaxGradingGroupId/v1';
-    public static GET_GRADING_GROUP_MOVED_LIST = environment.apiUrl + '/blumen-api/customize/getGradingGroupMovedList/v1';
-    public static UPDATE_GRADING_GROUP_DELETED_LIST = environment.apiUrl + '/blumen-api/customize/updateGradingGroupDeletedList/v1';
-
+    public static GET_GRADING_GROUP_MAX_ID = environment.apiUrl + '/blumen-api/customize/getGradingGroupListId/v1';
 
     // Grade Standing API URL's
     public static FILTER_GRADING_STANDING_LIST = environment.apiUrl + '/blumen-api/customize/filter/gradingList/v1';
@@ -53,10 +46,6 @@ export class ServiceUrls {
     public static UPDATE_GRADING_STANDING_LIST = environment.apiUrl + '/blumen-api/customize/updateGradingList/v1';
     public static POST_GRADING_STANDING_LIST = environment.apiUrl + '/blumen-api/customize/gradingList/v1';
     public static GET_GRADING_STANDING_MAX_ID = environment.apiUrl + '/blumen-api/customize/getMaxGradingListId/v1';
-    public static GET_GRADING_STANDING_MOVED_LIST = environment.apiUrl + '/blumen-api/customize/getGradingStandingMovedList/v1';
-    public static UPDATE_GRADING_STANDING_DELETED_LIST = environment.apiUrl + '/blumen-api/customize/updateGradingStandingDeletedList/v1';
-
-
 
     // Custom Field API URL's
     public static GET_CUSTOM_FIELD_NAME_TYPE = environment.apiUrl + '/blumen-api/customize/getCustomFieldsNameType/v1';
@@ -235,34 +224,4 @@ export class ServiceUrls {
     public static GET_PULLDOWN_CITY = environment.apiUrl + '/blumen-api/customize/pulldownlist/code/39';
 
     public static GET_USER_LIST = environment.apiUrl + '/blumen-api/keycloak/tenant/';
-   
-
-    public static RECOVER_DELETED_ACTIVITY_GROUP = environment.apiUrl + '/blumen-api/customize/recoverDeletedActivityGroup/v1';
-    public static GET_DELETED_GROUP_ITEM_BY_ID = environment.apiUrl + '/blumen-api/customize/getDeletedGroupItemById/v1/';
-    public static UPDATE_ACTIVITY_GROUP_ID = environment.apiUrl + '/blumen-api/customize/updateActivityGroupId/v1';
-    public static MERGE_ACTIVITY_GROUP_ID = environment.apiUrl + '/blumen-api/customize/mergeActivityGroupId/v1';
-
-
-    public static RECOVER_DELETED_ACTIVITY = environment.apiUrl + '/blumen-api/customize/recoverDeletedActivity/v1';
-    public static GET_DELETED_ACTIVITY_ITEM_BY_ID = environment.apiUrl + '/blumen-api/customize/getDeletedActivityItemById/v1/';
-    public static UPDATE_ACTIVITY_ID = environment.apiUrl + '/blumen-api/customize/updateActivityId/v1';
-    public static MERGE_ACTIVITY_ID = environment.apiUrl + '/blumen-api/customize/mergeActivityId/v1';
-
-    public static RECOVER_DELETED_GRADE_GROUP = environment.apiUrl + '/blumen-api/customize/recoverDeletedGradingGroup/v1';
-    public static GET_DELETED_GRADE_GROUP_ITEM_BY_ID = environment.apiUrl + '/blumen-api/customize/getDeletedGradingGroupItemById/v1/';
-    public static UPDATE_GRADE_GROUP_ID = environment.apiUrl + '/blumen-api/customize/updateGradingGroupId/v1';
-    public static MERGE_GRADE_GROUP_ID = environment.apiUrl + '/blumen-api/customize/mergeGradingGroupId/v1';
-
-
-    public static RECOVER_DELETED_GRADING = environment.apiUrl + '/blumen-api/customize/recoverDeletedGrading/v1';
-    public static GET_DELETED_GRADING_ITEM_BY_ID = environment.apiUrl + '/blumen-api/customize/getDeletedGradingItemById/v1/';
-    public static UPDATE_GRADING_ID = environment.apiUrl + '/blumen-api/customize/updateGradingId/v1';
-    public static MERGE_GRADING_ID = environment.apiUrl + '/blumen-api/customize/mergeGradingId/v1';
-
-    public static RECOVER_DELETED_COLLEGE_SCHOOL = environment.apiUrl + '/blumen-api/customize/recoverDeletedCollegeSchool/v1';
-    public static GET_DELETED_COLLEGE_SCHOOL_ITEM_BY_NAME = environment.apiUrl + '/blumen-api/customize/getDeletedCollegeSchoolItemByName/v1/';
-    public static UPDATE_COLLEGE_SCHOOL_ID = environment.apiUrl + '/blumen-api/customize/updateCollegeSchoolName/v1';
-    public static MERGE_COLLEGE_SCHOOL_ID = environment.apiUrl + '/blumen-api/customize/mergeCollegeSchoolId/v1';
-    public static GET_COLLEGE_SCHOOL_ITEM_BY_NAME = environment.apiUrl + '/blumen-api/customize/getCollegeSchoolItemByName/v1/';
-
 }

@@ -10,8 +10,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
-import { of } from 'rxjs';
-
+import { SharedService } from 'src/app/shared/services/shared.service';
 @Component({
   selector: 'app-staff-member',
   templateUrl: './staff-member.component.html',
@@ -127,10 +126,12 @@ export class StaffMemberComponent {
     , private staffMembersService: StaffMembersService
     , private dialog: MatDialog
     , private toastr: ToastrService
+    , private sharedService: SharedService
   ) {
   }
 
   ngOnInit(): void {
+    this.sharedService.setPageTitle('Staff Data Filter');
     const today = new Date();
     this.maxDob = new Date(
       today.getFullYear() - 18,

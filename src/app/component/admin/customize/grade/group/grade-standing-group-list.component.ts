@@ -12,8 +12,6 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { GradeStandingGroupListMoveBoxComponent } from '../../move-box/grade-standing-group-list-move-box/grade-standing-group-list-move-box.component';
-import { GradeStandingGroupListMergeBoxComponent } from '../../merge-box/grade-standing-group-list-merge-box/grade-standing-group-list-merge-box.component';
 
 @Component({
     selector: 'app-grade-standing-group-list',
@@ -25,8 +23,7 @@ export class GradeStandingGroupListComponent implements OnInit {
     formGroup: FormGroup;
     gradeGroupListData: any = [];
     requestData = {
-        id:'',
-        gradeGroupId: '',
+        gradeGroupId: 0,
         gradeGroupName: '',
         gradeGroupGradeType: '',
         gradeGroupAprColumn: ''
@@ -45,7 +42,7 @@ export class GradeStandingGroupListComponent implements OnInit {
     myElement: any = null;
     public spinner: boolean = true;
     selectedRowIndex: any;
-    columnsToDisplay: string[] =['id', 'gradeGroupName', 'gradeGroupAprColumn'];;
+    columnsToDisplay: string[] = ['gradeGroupId', 'gradeGroupName', 'gradeGroupAprColumn'];
     dataSource: MatTableDataSource<any>;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -54,13 +51,13 @@ export class GradeStandingGroupListComponent implements OnInit {
             this.dataSource.sort = sort;
         }
     }
+    isLoading: boolean = true;
     gradeGroupGradeTypeList = [
         { 'name': 'APR Column #1 | 1' },
         { 'name': 'APR Column #2 | 2' },
         { 'name': 'APR Column #3 | 3' },
         { 'name': 'APR Column #4 | 4' }
     ];
-    isLoading: boolean = true;
     validationClass: ValidationClass = new ValidationClass();
 
     constructor(private modalService: BsModalService
@@ -86,19 +83,34 @@ export class GradeStandingGroupListComponent implements OnInit {
                 this.dataSource.paginator = this.paginator;
                 this.selectedRowIndex = null;
                 this.dataSource.sort = this.sort;
-                this.gradeGroupListData = result;
             }
-            
         });
     }
 
     createForm() {
         this.formGroup = this.formBuilder.group({
-            'id':[''],
             'gradeGroupId': [''],
             'gradeGroupName': ['', Validators.required],
             'gradeGroupGradeType': ['', Validators.required],
         });
+    }
+
+    getError(el: any) {
+        switch (el) {
+            case 'gradeGroupName':
+                if (this.formGroup.get('gradeGroupName')?.hasError('required')) {
+                    return 'Group name required';
+                }
+                break;
+            case 'gradeGroupGradeType':
+                if (this.formGroup.get('gradeGroupGradeType')?.hasError('required')) {
+                    return 'Group type required';
+                }
+                break;
+            default:
+                return '';
+        }
+        return null;
     }
 
     navigateToComponent(componentName: string) {
@@ -119,11 +131,15 @@ export class GradeStandingGroupListComponent implements OnInit {
     setValuesToUpdate() {
         if (this.selectedRow) {
             this.isEdit = true;
-            this.formGroup.get('id')?.setValue(this.selectedRow.id);
             this.formGroup.get('gradeGroupId')?.setValue(this.selectedRow.gradeGroupId);
             this.formGroup.get('gradeGroupName')?.setValue(this.selectedRow.gradeGroupName);
             this.formGroup.get('gradeGroupGradeType')?.setValue(this.selectedRow.gradeGroupGradeType);
             this.formGroup.get('gradeGroupAprColumn')?.setValue(this.selectedRow.gradeGroupGradeType);
+
+            // this._gradeGroupStandingList.gradeGroupId = this.selectedRow.gradeGroupId;
+            // this._gradeGroupStandingList.gradeGroupName = this.selectedRow.gradeGroupName;
+            // this._gradeGroupStandingList.gradeGroupGradeType = this.selectedRow.gradeGroupGradeType;
+            // this._gradeGroupStandingList.gradeGroupAprColumn = this.selectedRow.gradeGroupGradeType;
             this.openModal(this.gradeGroupListPopupRef);
         } else {
             this.toastr.info('Please select a record to update', '', {
@@ -145,9 +161,10 @@ export class GradeStandingGroupListComponent implements OnInit {
         this.selectedRowIndex = null;
         this._gradingGroupStandingService.getGradingGroupMaxId().subscribe(result => {
             if (!this.validationClass.isNullOrUndefined(result)) {
-                this.formGroup.get('id')?.setValue(result + 1);
+                this.formGroup.get('gradeGroupId')?.setValue(result + 1);
+                // this._gradeGroupStandingList.gradeGroupId = result + 1;
             } else {
-                this.formGroup.get('id')?.setValue(1);
+                this.formGroup.get('gradeGroupId')?.setValue(1);
             }
             this.openModal(this.gradeGroupListPopupRef);
         });
@@ -175,16 +192,19 @@ export class GradeStandingGroupListComponent implements OnInit {
         this.selectedRow = selectedRowItem;
     }
 
+    // validateForm() {
+    //     if (this.formGroup.invalid) {
+
+    //     }
+    // }
+
     addGradeGroup() {
         if (this.formGroup.valid) {
-            this.requestData.id = this.formGroup?.get('id')?.value;
+            this.showLoader();
             this.requestData.gradeGroupId = this.formGroup?.get('gradeGroupId')?.value;
             this.requestData.gradeGroupName = this.formGroup?.get('gradeGroupName')?.value;
             this.requestData.gradeGroupGradeType = this.formGroup?.get('gradeGroupGradeType')?.value;
             this.requestData.gradeGroupAprColumn = this.formGroup?.get('gradeGroupGradeType')?.value;
-            let status = this.checkGroupNameAndType(this.requestData.gradeGroupName, this.requestData.gradeGroupGradeType);
-            if(!status){
-            this.showLoader();
             this._gradingGroupStandingService.postGradingGroupList(this.requestData).subscribe(result => {
                 if (result) {
                     this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
@@ -196,7 +216,6 @@ export class GradeStandingGroupListComponent implements OnInit {
                             this.dataSource.paginator = this.paginator;
                             this.selectedRow = null;
                             this.dataSource.sort = this.sort;
-                            this.gradeGroupListData = result;
                             this.toastr.success('Saved successfully!', '', {
                                 timeOut: 5000,
                                 closeButton: true
@@ -206,7 +225,6 @@ export class GradeStandingGroupListComponent implements OnInit {
                     });
                 }
             });
-        }
         } else {
             this.formGroup.markAllAsTouched();
         }
@@ -217,6 +235,7 @@ export class GradeStandingGroupListComponent implements OnInit {
             const data = {
                 gradeGroupId: this.selectedRow.gradeGroupId
             }
+            this.showLoader();
             const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
                 data: {
                     title: 'Confirm Remove Record',
@@ -225,7 +244,6 @@ export class GradeStandingGroupListComponent implements OnInit {
             });
             confirmDialog.afterClosed().subscribe(result => {
                 if (result === true) {
-                    this.showLoader();
                     this._gradingGroupStandingService.deleteGradingGroupList(data).subscribe(result => {
                         this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
                             this.hideLoader();
@@ -235,7 +253,6 @@ export class GradeStandingGroupListComponent implements OnInit {
                                 this.dataSource.paginator = this.paginator;
                                 this.selectedRow = null;
                                 this.dataSource.sort = this.sort;
-                                this.gradeGroupListData = result;
                                 this.toastr.success('Deleted successfully!', '', {
                                     timeOut: 5000,
                                     closeButton: true
@@ -257,16 +274,12 @@ export class GradeStandingGroupListComponent implements OnInit {
 
     updateSelectedRow() {
         if (this.selectedRow && this.formGroup.valid) {
+            this.showLoader();
             this.isEdit = true;
-            this.requestData.id = this.formGroup?.get('id')?.value;
             this.requestData.gradeGroupId = this.formGroup?.get('gradeGroupId')?.value;
             this.requestData.gradeGroupName = this.formGroup?.get('gradeGroupName')?.value;
             this.requestData.gradeGroupGradeType = this.formGroup?.get('gradeGroupGradeType')?.value;
-            this.requestData.gradeGroupAprColumn = this.formGroup?.get('gradeGroupGradeType')?.value; 
-            let status = this.checkGroupNameAndType(this.requestData.gradeGroupName, this.requestData.gradeGroupGradeType);
-            if(!status){
-            this.showLoader();
-            this._gradingGroupStandingService.updateGradingGroupList(this.requestData).subscribe(response => {
+            this.requestData.gradeGroupAprColumn = this.formGroup?.get('gradeGroupGradeType')?.value; this._gradingGroupStandingService.updateGradingGroupList(this.requestData).subscribe(response => {
                 this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
                     this.hideLoader();
                     this.modalRef.hide();
@@ -276,7 +289,6 @@ export class GradeStandingGroupListComponent implements OnInit {
                         this.dataSource.paginator = this.paginator;
                         this.selectedRow = null;
                         this.dataSource.sort = this.sort;
-                        this.gradeGroupListData = result;
                         this.isEdit = false;
                         this.toastr.success('Updated successfully!', '', {
                             timeOut: 5000,
@@ -285,102 +297,8 @@ export class GradeStandingGroupListComponent implements OnInit {
                     }
                 });
             });
-        }
         } else {
             this.formGroup.markAllAsTouched();
         }
     }
-      checkGroupNameAndType(groupName: any, groupType: any) {
-        let status = false;
-          const data = this.gradeGroupListData.filter((item: any) => ((item.gradeGroupName).toLowerCase().trim() === (groupName).toLowerCase().trim()) && ((item.gradeGroupGradeType).toLowerCase().trim() === (groupType).toLowerCase().trim()));
-          if (data && data.length > 0) {
-            this.toastr.info('Group name should be unique in all group type!', '', {
-              timeOut: 5000,
-              closeButton: true
-            });
-            this.formGroup.get('gradeGroupName')?.setValue('');
-            status = true;
-          } 
-        return status;
-       
-      }
-
-      showMoveItemPopup(){
-        if (this.selectedRow) {
-            //this.showLoader();
-            const confirmDialog = this.dialog.open(GradeStandingGroupListMoveBoxComponent, {
-                data: {
-                    title: 'Customize Grade and Grade Group Name',
-                    message: '',
-                    gradeGroupList :this.gradeGroupListData,
-                    selectedGradeGroupId: this.selectedRow.gradeGroupId,
-                    selectedId: this.selectedRow.id,
-                    selectedGradeGroupName: this.selectedRow.gradeGroupName,
-                }
-            });
-            confirmDialog.afterClosed().subscribe(result1 => {
-            if(result1 == true){
-                this.showLoader();
-                this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
-                    this.hideLoader();
-                    if (result) {
-                        this.dataSource = new MatTableDataSource(result);
-                        this.dataSource.paginator = this.paginator;
-                        this.dataSource.sort = this.sort;
-                        this.selectedRowIndex = null;
-                        this.selectedRow = null;
-                        this.gradeGroupListData = result;
-                    }
-                });
-            }
-            });
-        } else {
-            this.toastr.info('Please select a row to move', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
-        }
-    }
-
-    showMergeItemPopup(){
-        if (this.selectedRow) {
-            //this.showLoader();
-            const confirmDialog = this.dialog.open(GradeStandingGroupListMergeBoxComponent, {
-                data: {
-                    title: 'Customize Grade and Grade Group Name',
-                    message: 'Are you sure, you want to merge this record ' + this.selectedRow.GradeGroupName+"?",
-                    gradeGroupList :this.gradeGroupListData,
-                    selectedGradeGroupId: this.selectedRow.gradeGroupId,
-                    selectedId: this.selectedRow.id,
-                    selectedGradeGroupName: this.selectedRow.gradeGroupName
-                }
-            });
-            confirmDialog.afterClosed().subscribe(result1 => {
-            if(result1 == true){
-                this._gradingGroupStandingService.getGradingGroupList('').subscribe(result => {
-                    this.hideLoader();
-                    if (result) {
-                        this.dataSource = new MatTableDataSource(result);
-                        this.dataSource.paginator = this.paginator;
-                        this.dataSource.sort = this.sort;
-                        this.selectedRowIndex = null;
-                        this.selectedRow = null;
-                        this.gradeGroupListData = result;
-                    }
-                });
-            }
-            });
-        } else {
-            this.toastr.info('Please select a row to merge', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
-        }
-    }
-
-
-      
-      
-
-    
 }
