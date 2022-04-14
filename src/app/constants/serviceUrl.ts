@@ -278,6 +278,3 @@ export class ServiceUrls {
     public static RESET_PASSWORD = environment.apiUrl+'/blumen-api/resetPassword/v1/';
     public static UPDATE_PASSWORD = environment.apiUrl+'/blumen-api/updatePassword/v1/';
 }
-
-
-}
