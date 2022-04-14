@@ -92,5 +92,11 @@ export class PullDownListService {
     return this.dataService.callGetService(URL);
   }
 
+  public getMultiplePulldownListByCode(code:any): Observable<any> {
+    return this.dataService.callGetService(ServiceUrls.GET_MULTIPLE_PULL_DOWN_LIST+"/"+code);
+  }
+
+  
+
 
 }

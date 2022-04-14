@@ -120,6 +120,7 @@ export class ResetPasswordComponent implements OnInit {
       this._loginService.resetPasswordUsingLink(data, this.hashcode).subscribe((result: any) => {
         if (result) {
           console.log(result);
+          alert("Password updated successfully");
         }
       }, (error: any) => {
         console.log(error);

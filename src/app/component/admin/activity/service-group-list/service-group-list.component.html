@@ -15,7 +15,7 @@
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" id="Group_Name" role="presentation">
                 <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="javascript:void(0)"
-                    (click)="navigateToComponent('service-group-list')" role="tab" aria-controls="home"
+                (click)="navigateToComponent('services-list')" role="tab" aria-controls="home"
                     aria-selected="true">Activity/Service Group List</a>
             </li>
             <li class="nav-item active" role="presentation">
@@ -42,13 +42,12 @@
             <mat-spinner id="spinner"></mat-spinner>
         </div>
         <!-- Spinner End-->
-
         <!-- Data Table Start-->
         <div class="mat-elevation-z8 data-table-height dt-max-height" *ngIf="!isLoading">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-                <ng-container matColumnDef="activityGroupId">
+                <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Group Id </th>
-                    <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.activityGroupId}} </td>
+                    <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.id}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="activityGroupName">
@@ -66,11 +65,22 @@
                     <td mat-cell *matCellDef="let groupObj; let row = dataIndex;">
                         {{groupObj.activityCalculateHoursforActivityGroup ? 'YES' : 'NO'}} </td>
                 </ng-container>
+                <!-- <ng-container matColumnDef="action" *ngIf="isMoved">
+                    <th mat-header-cell *matHeaderCellDef> Action </th>
+                    <td mat-cell *matCellDef="let gradeObj; let row = dataIndex;"> 
+                        <a class="nav-link " href="javascript:void(0);" (click)="moveTheValues(gradeObj.activityGroupId,gradeObj.activityGroupName)">Move</a>
+                    </td>
+               </ng-container> -->
                 <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
                 <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
                     [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
                 </tr>
             </table>
+            <div *ngIf="!isLoading && activityGroupData?.length == 0" class="bg-colr-wht py-4">
+                <div class="center">
+                    <h3>No Data Found</h3>
+                </div>
+            </div>
         </div>
         <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
         <!-- Data Table End-->
@@ -93,16 +103,16 @@
                         <a class="nav-link " href="javascript:void(0);" (click)="setValuesToUpdate()">Edit</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">Move</a>
+                        <a class="nav-link " href="javascript:void(0);" (click)="showMoveItemPopup()">Move</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">Merge</a>
+                        <a class="nav-link " href="javascript:void(0);" (click)="showMergeItemPopup()">Merge</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">Print</a>
+                        <a class="nav-link " href="javascript:void(0)" (click)="print()">Print</a>
                     </li>
                 </ul>
             </div>
@@ -128,52 +138,24 @@
                         <div class="col-md-12">
                             <div class="form-group ">
                                 <mat-form-field class="example-full-width" appearance="fill">
-                                    <mat-label>Activity/Service ID</mat-label>
-                                    <input matInput placeholder="" value="" formControlName="activityGroupId" readonly>
+                                    <mat-label>Service Activity Group ID:</mat-label>
+                                    <input matInput placeholder="" value="" formControlName="id" readonly>
                                 </mat-form-field>
-                                <!-- <mat-form-field class="mat-select-width" appearance="fill">
-                                    <mat-label>Activity/Service ID</mat-label>
-                                    <input matInput
-                                        value="{{activityGrpListEnum.activityGroupId}}"
-                                        [(ngModel)]="activityGrpListEnum.activityGroupId"
-                                        [ngModelOptions]="{standalone: true}" readonly>
-                                </mat-form-field> -->
                             </div>
 
                             <div class="form-group">
                                 <mat-form-field class="example-full-width" appearance="fill">
-                                    <mat-label>Activity/Service Group Name</mat-label>
-                                    <input matInput value="" formControlName="activityGroupName" minlength="3" required>
-                                    <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                                        {{getError('gradeGroupName')}}
-                                    </mat-error> -->
+                                    <mat-label>Service or Activity Group Name:</mat-label>
+                                    <input matInput value="" formControlName="activityGroupName" minlength="3" maxlength="100" required>
                                 </mat-form-field>
-                                <!-- <mat-form-field class="mat-select-width" appearance="fill">
-                                    <mat-label>Activity/Service Group Name</mat-label>
-                                    <input matInput placeholder="Ex. ABC"
-                                        value="{{activityGrpListEnum.activityGroupName}}"
-                                        [(ngModel)]="activityGrpListEnum.activityGroupName"
-                                        [ngModelOptions]="{standalone: true}">
-                                </mat-form-field> -->
                             </div>
 
                             <div class="form-group">
                                 <mat-form-field class="example-full-width" appearance="fill">
-                                    <mat-label>Activity/Service Group Name</mat-label>
-                                    <input matInput list="groups" value="" formControlName="activityGroupType"
-                                        minlength="3" required>
-                                    <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                                        {{getError('gradeGroupName')}}
-                                    </mat-error> -->
+                                    <mat-label>Activity Group Type:</mat-label>
+                                    <input matInput list="groups" value="" formControlName="activityGroupType" required
+                                        minlength="3" maxlength="100">
                                 </mat-form-field>
-                                <!-- <mat-form-field class="mat-select-width" appearance="fill">
-                                    <mat-label> Group Type</mat-label>
-                                    <input matInput list="groups" placeholder="Ex. ABC"
-                                        value="{{activityGrpListEnum.activityGroupType}}"
-                                        [(ngModel)]="activityGrpListEnum.activityGroupType"
-                                        [ngModelOptions]="{standalone: true}">
-                                </mat-form-field> -->
-
                                 <datalist id="groups">
                                     <option *ngFor="let actGroup of activityGroupTypes" [ngValue]="actGroup.name">
                                         {{actGroup.name}}</option>
@@ -202,20 +184,10 @@
 
                             <div class="form-group">
                                 <mat-form-field class="example-full-width" appearance="fill">
-                                    <mat-label>Activity/Service Group Name</mat-label>
-                                    <input matInput value="" formControlName="activityGroupTypeName" minlength="3"
-                                        required>
-                                    <!-- <mat-error *ngIf="formGroup.controls['gradeGroupName'].invalid">
-                                        {{getError('gradeGroupName')}}
-                                    </mat-error> -->
+                                    <mat-label>Activity Group Type Name:</mat-label>
+                                    <input matInput value="" formControlName="activityGroupTypeName" minlength="3" maxlength="100"
+                                        >
                                 </mat-form-field>
-                                <!-- <mat-form-field class="mat-select-width" appearance="fill">
-                                    <mat-label>Group Type Name</mat-label>
-                                    <input matInput placeholder="Ex. ABC"
-                                        value="{{activityGrpListEnum.activityGroupTypeName}}"
-                                        [(ngModel)]="activityGrpListEnum.activityGroupTypeName"
-                                        [ngModelOptions]="{standalone: true}">
-                                </mat-form-field> -->
                             </div>
                         </div>
                     </div>

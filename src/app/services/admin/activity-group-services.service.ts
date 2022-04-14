@@ -45,7 +45,7 @@ export class ActivityGroupServicesService {
     }
 
     postActivityServiceList(request: any): Observable<any> {
-        return this.dataService.callPostService(ServiceUrls.POST_ACTIVITY_SERVICE_LIST, JSON.stringify(request));
+        return this.dataService.callPostService(ServiceUrls.POST_ACTIVITY_SERVICE_LIST, request);
     }
 
     updateActivityServiceList(request: any): Observable<any> {
@@ -63,6 +63,49 @@ export class ActivityGroupServicesService {
     getActivityServiceMaxId() {
         return this.dataService.callGetService(ServiceUrls.GET_ACTIVITY_SERVICE_MAX_ID, '');
     }
+
+
+    getDeletedGroupById(id: any): Observable<any> {
+        return this.dataService.callGetService(ServiceUrls.GET_DELETED_GROUP_BY_ID+id);
+    }
+
+    recoverActivityGroupById(request: any): Observable<any> {
+        return this.dataService.callPutService(ServiceUrls.RECOVER_DELETED_ACTIVITY_GROUP_BY_ID, request);
+    }
+
+    updateActivityGroupById(request: any): Observable<any> {
+        return this.dataService.callPutService(ServiceUrls.UPDATE_ACTIVITY_GROUP_BY_ID, request);
+    }
+
+    mergeActivityGroupById(request: any): Observable<any> {
+        return this.dataService.callDeleteService(ServiceUrls.MERGE_ACTIVITY_GROUP_BY_ID, request);
+    }
+
+    //Service
+    getDeletedActivityById(id: any): Observable<any> {
+        return this.dataService.callGetService(ServiceUrls.GET_DELETED_ACTIVITY_BY_ID+id);
+    }
+
+    recoverActivityById(request: any): Observable<any> {
+        return this.dataService.callPutService(ServiceUrls.RECOVER_DELETED_ACTIVITY_BY_ID, request);
+    }
+
+    updateActivityById(request: any): Observable<any> {
+        return this.dataService.callPutService(ServiceUrls.UPDATE_ACTIVITY_BY_ID, request);
+    }
+
+    mergeActivityById(request: any): Observable<any> {
+        return this.dataService.callDeleteService(ServiceUrls.MERGE_ACTIVITY_BY_ID, request);
+    }
+
+    getActivityByActivityNameAndActivityGroupName(request: any): Observable<any> {
+        return this.dataService.callPostService(ServiceUrls.GET_ACTIVITY_BY_ACTIVITY_NAME_AND_GROUP_NAME, request);
+    }
+
+    getActivityGroupByActivityGroupNameAndActivityGroupType(request: any): Observable<any> {
+        return this.dataService.callPostService(ServiceUrls.GET_ACTIVITY_GROUP_NAME_AND_TYPE_AND_TYPE_NAME, request);
+    }
+
 
     /** ACTIVITY SERVICE LIST - END */
 }

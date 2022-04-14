@@ -111,7 +111,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
         this._userManagementService.getUserList(sessionStorage.getItem('realmId')).subscribe(result => {
             if (result) {
                 this.hideLoader();
-                this.dataSource = new MatTableDataSource(result.body);
+                this.dataSource = new MatTableDataSource(result.users);
                 this.userList = result.body;
                 this.dataSource.paginator = this.paginator;
                 this.selectedRowIndex = null;
@@ -294,6 +294,12 @@ export class UserNamesAndPasswordComponent implements OnInit {
             'zipcode': this.formGroup?.get('zipcode')?.value
         }
         return payload;
+    }
+
+    resetPassword(test:any){
+      this._userManagementService.resetPassword(test.email).subscribe(result=>{
+        alert(result.message); //here we have added link in message aswell.
+      });
     }
 
     navigateToBackScreen() {

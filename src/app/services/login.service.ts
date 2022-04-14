@@ -50,7 +50,7 @@ export class LoginService {
     resetPasswordUsingLink(request: any, hasCode: string) {
         // https://blumen-api.azurewebsites.net:443/api/blumen-api/keycloak/resetPassword/
         //53624853-73ea-4c42-bffe-df9fe87700e8
-        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/keycloak/resetPassword/' + hasCode.replace('#', '');
+        const URL = ServiceUrls.UPDATE_PASSWORD + hasCode.replace('#', '');
         return this.dataService.callLoginPostService(URL, request);
     }
 }

@@ -1,17 +1,21 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
-import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
 import { CollegeAndSchoolService } from '../../../../services/admin/college-school.service';
-import { CollegeListEnum } from '../../../../constants/enums/college-list.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
+import { CollegeSchoolListMoveBoxComponent } from '../move-box/college-school-list-move-box/college-school-list-move-box.component';
+import { CollegeSchoolListMergeBoxComponent } from '../merge-box/college-school-list-merge-box/college-school-list-merge-box.component';
+import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable';
 
 @Component({
     selector: 'app-college-list',
@@ -21,7 +25,6 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 
 export class CollegeListComponent implements OnInit {
     collegeDataList: any = [];
-    collegeListEnum: CollegeListEnum = new CollegeListEnum();
     @ViewChild('collegeNamePopup') collegeNamePopupRef: TemplateRef<any>;
     modalRef: BsModalRef;
     modalConfigSM = {
@@ -29,9 +32,11 @@ export class CollegeListComponent implements OnInit {
         ignoreBackdropClick: true,
         class: 'modal-lg'
     }
-    selectedRow: any = {};
+    selectedRow: any = '';
+    isDisabled: boolean = false;
     isEdit: boolean = false;
     requestData: any = {
+        collegeSchoolId: '',
         orgName: '',
         orgType: '',
         name: '',
@@ -57,8 +62,8 @@ export class CollegeListComponent implements OnInit {
     myElement: any = null;
     public spinner: boolean = true;
     selectedRowIndex: any;
-    isDisabled: boolean = false;
-    columnsToDisplay: string[] = ['name', 'inPullDown', 'fafsaId', 'country', 'phone1', 'phone2', 'phone3', 'fax', 'action'];
+    formGroup: FormGroup;
+    columnsToDisplay: string[] = ['name', 'inPullDown', 'fafsaId', 'country', 'phone1', 'phone2', 'phone3', 'fax'];
     dataSource: MatTableDataSource<any>;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -68,77 +73,49 @@ export class CollegeListComponent implements OnInit {
         }
     }
     isLoading: boolean = true;
-
-    cityList: any = {};
-
-    stateList: any = {};
-    pullDownListData: any = [];
-
-    CollegeForm: FormGroup;
-    isEditableNew: boolean = true;
-
+    emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+    countryList: any = [];
+    cityList: any = [];
+    stateList: any = [];
+    validationClass: ValidationClass = new ValidationClass();
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog
         , private _collegeAndSchoolService: CollegeAndSchoolService
         , private toastr: ToastrService
         , private _pullDownListService: PullDownListService
-        , private fb: FormBuilder
-        , private _formBuilder: FormBuilder
-        , private sharedService: SharedService) { }
+        , private sharedService: SharedService
+        , private formBuilder: FormBuilder) { }
 
     ngOnInit() {
         this.sharedService.setPageTitle('College/School List');
-        this.CollegeForm = this._formBuilder.group({
-            CollegeRows: this._formBuilder.array([])
-        });
-
+        this.createForm();
+        // this.CollegeForm = this._formBuilder.group({
+        //     CollegeRows: this._formBuilder.array([])
+        // });
         this.navigateToComponent('college-list');
         this.myElement = window.document.getElementById('loading');
-        this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
+        this._collegeAndSchoolService.getCollegeNames('').subscribe(result => {
             this.hideLoader();
             let domElement = window.document.getElementById('COLLEGE_LIST');
             if (domElement) {
                 domElement.style.borderBottom = "2px solid #1672B7";
             }
             if (result) {
-                this.dataSource = new MatTableDataSource(result.filter((item: any) => item.ncesId === null || item.ncesId === undefined));
+                this.dataSource = new MatTableDataSource(result);
                 this.dataSource.paginator = this.paginator;
                 this.selectedRowIndex = null;
                 this.dataSource.sort = this.sort;
-                this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
-                this.bindValuesToForm();
+                this.collegeDataList = result;
             }
         });
-        this._pullDownListService.getPullDownList().subscribe(result => {
-            if (result) {
-                this.pullDownListData = result;
-                this.cityList = this.pullDownListData.filter((item: any) => item.code === 'APR08_Gender').pullDownItems;
-                this.stateList = this.pullDownListData.filter((item: any) => item.code === 'STATE').pullDownItems;
-            }
-        });
-    }
-    
-    bindValuesToForm() {
-        this.CollegeForm = this.fb.group({
-            CollegeRows: this.fb.array(this.collegeDataList.map((clgObj: any) => this.fb.group({
-                name: new FormControl(clgObj.name),
-                inPullDown: new FormControl(clgObj.inPullDown),
-                fafsaId: new FormControl(clgObj.fafsaId),
-                country: new FormControl(clgObj.country),
-                phone1: new FormControl(clgObj.phone1),
-                phone2: new FormControl(clgObj.phone2),
-                phone3: new FormControl(clgObj.phone3),
-                fax: new FormControl(clgObj.fax),
-                action: new FormControl('existingRecord'),
-                isEditable: new FormControl(true)
-            })
-            )) //end of fb array
-        }); // end of form group cretation
-        this.isLoading = false;
-        this.dataSource = new MatTableDataSource((this.CollegeForm.get('CollegeRows') as FormArray).controls);
+        this.bindDropDownValues();
     }
 
+    /**
+    * @method navigateToComponent
+    * @description navigate the college and school list companant
+    */
     navigateToComponent(componentName: string) {
         if (componentName === 'college-list') {
             this.router.navigate(['admin/customize/college-list']);
@@ -147,114 +124,79 @@ export class CollegeListComponent implements OnInit {
         }
     }
 
+    /**
+    * @method applyFilter
+    * @description search the text from list
+    */
     applyFilter(filterValue: any) {
+        if(filterValue.target.value.trim().toLowerCase() == 'no'){
+            this.dataSource.filter = 'false';
+        }else if(filterValue.target.value.trim().toLowerCase() == 'yes'){
+            this.dataSource.filter = 'true';
+        }else{
         this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
+        }
         if (this.dataSource.paginator) {
             this.dataSource.paginator.firstPage();
         }
     }
 
-    // this function will enabled the select field for editd
-    editSVO(CollegeFormElement: any, i: number) {
-        // CollegeFormElement.get('CollegeRows').value[i].isEditable = false;
-        // console.log(CollegeFormElement.get('CollegeRows').at(i).get('isEditable'));
-        // VOFormElement.get('VORows').at(i).get('name').disabled(false)
-        CollegeFormElement.get('CollegeRows').at(i).get('isEditable').patchValue(false);
-        // this.isEditableNew = true;
+    /**
+    * @method createForm
+    * @description declare the form fileds
+    */
+    createForm() {
+        this.formGroup = this.formBuilder.group({
+            'collegeSchoolId': [''],
+            'name': ['', Validators.required],
+            'inPullDown': [''],
+            'codes': [''],
+            'title': [''],
+            'country': [''],
+            'address': [''],
+            'fafsaId': [''],
+            'city': [''],
+            'states': [''],
+            'zipcode': [''],
+            'fiscalYear': [''],
+            'phone1': [''],
+            'phone2': [''],
+            'phone3': [''],
+            'fax': [''],
+            'website': [''],
+            'email': ['', [Validators.pattern(this.emailPattern)]],
+            'notes': ['']
+        });
     }
 
-    // On click of correct button in table (after click on edit) this method will call
-    saveVO(CollegeFormElement: any, i: number) {
-        // alert('SaveVO')
-        CollegeFormElement.get('CollegeRows').at(i).get('isEditable').patchValue(true);
-        this.updateFBValues(CollegeFormElement.get('CollegeRows').at(i).value, 'edit');
-    }
-
-    deleteRow(CollegeFormElement: any, i: number) {
-        this.updateFBValues(CollegeFormElement.get('CollegeRows').at(i).value, 'delete');
-    }
-
-    // On click of cancel button in the table (after click on edit) this method will call and reset the previous data
-    cancelSVO(CollegeFormElement: any, i: number) {
-        // CollegeFormElement.get('CollegeRows').value[i].isEditable = true;
-        CollegeFormElement.get('CollegeRows').at(i).get('isEditable').patchValue(true);
-    }
-
-    updateFBValues(data: any, action?: string) {
-        if (data) {
-            const previousData = this.collegeDataList.filter((item: any) => item.fafsaId === data.fafsaId);
-            if (previousData) {
-                this.collegeListEnum.orgName = previousData[0].name;
-                this.collegeListEnum.inPullDown = previousData[0].inPullDown;
-                this.collegeListEnum.name = previousData[0].name;
-                this.collegeListEnum.codes = previousData[0].codes;
-                this.collegeListEnum.title = previousData[0].title;
-                this.collegeListEnum.country = data.country;
-                this.collegeListEnum.address = previousData[0].address;
-                this.collegeListEnum.fafsaId = previousData[0].fafsaId;
-                this.collegeListEnum.city = previousData[0].city;
-                this.collegeListEnum.states = previousData[0].states;
-                this.collegeListEnum.zipcode = previousData[0].zipcode;
-                this.collegeListEnum.fiscalYear = previousData[0].fiscalYear;
-                this.collegeListEnum.phone1 = data.phone1;
-                this.collegeListEnum.phone2 = data.phone2;
-                this.collegeListEnum.phone3 = data.phone3;
-                this.collegeListEnum.fax = data.fax;
-                this.collegeListEnum.website = previousData[0].website;
-                this.collegeListEnum.email = previousData[0].email;
-                this.collegeListEnum.notes = previousData[0].notes;
-
-                this.selectedRow.inPullDown = previousData[0].inPullDown;
-                this.selectedRow.name = previousData[0].name;
-                this.selectedRow.codes = previousData[0].codes;
-                this.selectedRow.title = previousData[0].title;
-                this.selectedRow.country = data.country;
-                this.selectedRow.address = previousData[0].address;
-                this.selectedRow.fafsaId = previousData[0].fafsaId;
-                this.selectedRow.city = previousData[0].city;
-                this.selectedRow.states = previousData[0].states;
-                this.selectedRow.zipcode = previousData[0].zipcode;
-                this.selectedRow.fiscalYear = previousData[0].fiscalYear;
-                this.selectedRow.phone1 = data.phone1;
-                this.selectedRow.phone2 = data.phone2;
-                this.selectedRow.phone3 = data.phone3;
-                this.selectedRow.fax = data.fax;
-                this.selectedRow.website = previousData[0].website;
-                this.selectedRow.email = previousData[0].email;
-                this.selectedRow.notes = previousData[0].notes;
-                
-                if (action === 'edit') {
-                    this.updateSelectedRow(true);
-                } else if (action === 'delete') {
-                    this.deleteSelectedRow();
-                }
-            }
-        }
-    }
-
+    /**
+    * @method setValuesToUpdate
+    * @description Set the select row values in formgroup
+    */
     setValuesToUpdate() {
         if (this.selectedRow) {
             this.isEdit = true;
             this.isDisabled = true;
-            this.collegeListEnum.orgName = this.selectedRow.name;
-            this.collegeListEnum.inPullDown = this.selectedRow.inPullDown;
-            this.collegeListEnum.name = this.selectedRow.name;
-            this.collegeListEnum.codes = this.selectedRow.codes;
-            this.collegeListEnum.title = this.selectedRow.title;
-            this.collegeListEnum.country = this.selectedRow.country;
-            this.collegeListEnum.address = this.selectedRow.address;
-            this.collegeListEnum.fafsaId = this.selectedRow.fafsaId;
-            this.collegeListEnum.city = this.selectedRow.city;
-            this.collegeListEnum.states = this.selectedRow.states;
-            this.collegeListEnum.zipcode = this.selectedRow.zipcode;
-            this.collegeListEnum.fiscalYear = this.selectedRow.fiscalYear;
-            this.collegeListEnum.phone1 = this.selectedRow.phone1;
-            this.collegeListEnum.phone2 = this.selectedRow.phone2;
-            this.collegeListEnum.phone3 = this.selectedRow.phone3;
-            this.collegeListEnum.fax = this.selectedRow.fax;
-            this.collegeListEnum.website = this.selectedRow.website;
-            this.collegeListEnum.email = this.selectedRow.email;
-            this.collegeListEnum.notes = this.selectedRow.notes;
+            this.formGroup.get('collegeSchoolId') ?.setValue(this.selectedRow.collegeSchoolId);
+            this.formGroup.get('orgName') ?.setValue(this.selectedRow.name);
+            this.formGroup.get('inPullDown') ?.setValue(this.selectedRow.inPullDown);
+            this.formGroup.get('name') ?.setValue(this.selectedRow.name);
+            this.formGroup.get('codes') ?.setValue(this.selectedRow.codes);
+            this.formGroup.get('title') ?.setValue(this.selectedRow.title);
+            this.formGroup.get('country') ?.setValue(this.selectedRow.country);
+            this.formGroup.get('address') ?.setValue(this.selectedRow.address);
+            this.formGroup.get('fafsaId') ?.setValue(this.selectedRow.fafsaId);
+            this.formGroup.get('city') ?.setValue(this.selectedRow.city);
+            this.formGroup.get('states') ?.setValue(this.selectedRow.states);
+            this.formGroup.get('zipcode') ?.setValue(this.selectedRow.zipcode);
+            this.formGroup.get('fiscalYear') ?.setValue(this.selectedRow.fiscalYear);
+            this.formGroup.get('phone1') ?.setValue(this.selectedRow.phone1);
+            this.formGroup.get('phone2') ?.setValue(this.selectedRow.phone2);
+            this.formGroup.get('phone3') ?.setValue(this.selectedRow.phone3);
+            this.formGroup.get('fax') ?.setValue(this.selectedRow.fax);
+            this.formGroup.get('website') ?.setValue(this.selectedRow.website);
+            this.formGroup.get('email') ?.setValue(this.selectedRow.email);
+            this.formGroup.get('notes') ?.setValue(this.selectedRow.notes);
             this.openModal(this.collegeNamePopupRef);
         } else {
             this.toastr.info('Please select a row to update', '', {
@@ -264,17 +206,30 @@ export class CollegeListComponent implements OnInit {
         }
     }
 
+    /**
+    * @method openModal
+    * @description open model
+    */
     openModal(template: TemplateRef<any>) {
         this.modalRef = this.modalService.show(template, this.modalConfigSM)
     }
 
+    /**
+    * @method resetFields
+    * @description Reset the all form group fields
+    */
     resetFields() {
+        this.createForm();
         this.isEdit = false;
-        this.collegeListEnum = new CollegeListEnum();
         this.isDisabled = false;
+        this.selectedRowIndex = null;
         this.openModal(this.collegeNamePopupRef);
     }
 
+    /**
+    * @method hideLoader
+    * @description Hide loader
+    */
     hideLoader() {
         this.myElement = window.document.getElementById('loading');
         if (this.myElement !== null) {
@@ -284,6 +239,10 @@ export class CollegeListComponent implements OnInit {
         }
     }
 
+    /**
+    * @method showLoader
+    * @description Show loader
+    */
     showLoader() {
         if (this.myElement !== null) {
             this.spinner = true;
@@ -292,100 +251,117 @@ export class CollegeListComponent implements OnInit {
         }
     }
 
+    /**
+    * @method setSelectedRow
+    * @description Set the selected row
+    */
     setSelectedRow(selectedRowItem: any, index: number) {
         this.selectedRowIndex = index;
-        const data = this.collegeDataList.filter((item: any) => item.fafsaId === selectedRowItem.fafsaId);
-        this.selectedRow = data[0];
+        this.selectedRow = selectedRowItem;
     }
 
+    /**
+    * @method addNewCollegeName
+    * @description Add the college record
+    */
     addNewCollegeName() {
-        this.showLoader();
-        if (this.collegeListEnum.fafsaId) {
-            if (this.collegeDataList && this.collegeDataList.length > 0) {
-                const isFound = this.collegeDataList.filter((item: any) => item.fafsaId === this.collegeListEnum.fafsaId);
-                if (isFound && isFound.length > 0) {
-                    this.hideLoader();
-                    this.toastr.info('Entered FAFSAID is alreay exist, to add this organization name please change entered FAFSAID.', '', {
+        if (this.formGroup.valid) {
+            let val = this.formGroup.get('name') ?.value;
+            this.requestData.orgName =  'College';
+            this.requestData.name =  val.toLowerCase().trim();
+            this._collegeAndSchoolService.getCollegeSchoolByName(this.requestData).subscribe(result => {
+                if (result && result != null) {
+                    this.toastr.info('College name is already exist', '', {
+                        timeOut: 3000,
+                        closeButton: true
+                    });
+                    let val = this.formGroup.get('name') ?.setValue('');
+                    return;
+                } else {
+                    let val = this.formGroup.get('fafsaId') ?.value;
+                    this.requestData.orgName =  'College';
+                    this.requestData.codes =  val.toLowerCase().trim();
+                    this._collegeAndSchoolService.getCollegeSchoolByCode(this.requestData).subscribe(result => {
+                        if (result && result != null) {
+                            this.toastr.info('Entered FAFSAID is alreay exist, to add this organization name please change entered FAFSAID.', '', {
+                                timeOut: 3000,
+                                closeButton: true
+                            });
+                            let val = this.formGroup.get('fafsaId') ?.setValue('');
+                            return;
+                        } else {
+                            this.requestData.collegeSchoolId = this.formGroup ?.get('collegeSchoolId') ?.value;
+                            this.requestData.orgName = this.formGroup ?.get('name') ?.value.trim();
+                            this.requestData.inPullDown = this.formGroup ?.get('inPullDown') ?.value;
+                            this.requestData.name = this.formGroup ?.get('name') ?.value.trim();
+                            this.requestData.codes = this.formGroup ?.get('codes') ?.value;
+                            this.requestData.title = this.formGroup ?.get('title') ?.value;
+                            this.requestData.country = this.formGroup ?.get('country') ?.value;
+                            this.requestData.address = this.formGroup ?.get('address') ?.value;
+                            this.requestData.fafsaId = this.formGroup ?.get('fafsaId') ?.value;
+                            this.requestData.city = this.formGroup ?.get('city') ?.value;
+                            this.requestData.states = this.formGroup ?.get('states') ?.value;
+                            this.requestData.zipcode = this.formGroup ?.get('zipcode') ?.value;
+                            this.requestData.fiscalYear = this.formGroup ?.get('ifiscalYeard') ?.value.trim();
+                            this.requestData.phone1 = this.formGroup ?.get('phone1') ?.value;
+                            this.requestData.phone2 = this.formGroup ?.get('phone2') ?.value;
+                            this.requestData.phone3 = this.formGroup ?.get('phone3') ?.value;
+                            this.requestData.fax = this.formGroup ?.get('fax') ?.value;
+                            this.requestData.website = this.formGroup ?.get('website') ?.value;
+                            this.requestData.email = this.formGroup ?.get('email') ?.value;
+                            this.requestData.notes = this.formGroup ?.get('notes') ?.value;
+                            this.requestData.ncesId = null;
+                            this.showLoader();
+                            this._collegeAndSchoolService.postStudentName(this.requestData).subscribe(result => {
+                                if (result) {
+                                    this.modalRef.hide();
+                                    this._collegeAndSchoolService.getCollegeNames('').subscribe(result => {
+                                        this.hideLoader();
+                                        this.selectedRowIndex = null;
+                                        if (result) {
+                                            this.dataSource = new MatTableDataSource(result);
+                                            this.dataSource.paginator = this.paginator;
+                                            this.selectedRowIndex = null;
+                                            this.dataSource.sort = this.sort;
+                                            document.getElementById('closePopup') ?.click();
+                                            this.collegeDataList = result;
+
+                                            this.toastr.success('Saved successfully!', '', {
+                                                timeOut: 5000,
+                                                closeButton: true
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+                    });
+                }
+            });
+        } else {
+            this.formGroup.markAllAsTouched();
+            if (this.formGroup ?.get('email') ?.value) {
+                if (!this.formGroup ?.get('email') ?.valid) {
+                    this.toastr.info('Please enter the correct email, this email is not valid!', '', {
                         timeOut: 5000,
                         closeButton: true
                     });
                     return;
                 }
             }
-        } else {
-            this.hideLoader();
-            this.toastr.info('Please enter FAFSAID.', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
-            return;
         }
-        this.requestData.orgName = this.collegeListEnum.name;
-        this.requestData.inPullDown = this.collegeListEnum.inPullDown;
-        this.requestData.name = this.collegeListEnum.name;
-        this.requestData.codes = this.collegeListEnum.codes;
-        this.requestData.title = this.collegeListEnum.title;
-        this.requestData.country = this.collegeListEnum.country;
-        this.requestData.address = this.collegeListEnum.address;
-        this.requestData.fafsaId = this.collegeListEnum.fafsaId;
-        this.requestData.city = this.collegeListEnum.city;
-        this.requestData.states = this.collegeListEnum.states;
-        this.requestData.zipcode = this.collegeListEnum.zipcode;
-        this.requestData.fiscalYear = this.collegeListEnum.fiscalYear;
-        this.requestData.phone1 = this.collegeListEnum.phone1;
-        this.requestData.phone2 = this.collegeListEnum.phone2;
-        this.requestData.phone3 = this.collegeListEnum.phone3;
-        this.requestData.fax = this.collegeListEnum.fax;
-        this.requestData.website = this.collegeListEnum.website;
-        this.requestData.email = this.collegeListEnum.email;
-        this.requestData.notes = this.collegeListEnum.notes;
-        this.requestData.ncesId = null;
-        this._collegeAndSchoolService.postCollegeSchoolName(this.requestData).subscribe(result => {
-            if (result) {
-                this.modalRef.hide();
-                this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
-                    this.hideLoader();
-                    this.selectedRowIndex = null;
-                    if (result) {
-                        document.getElementById('closePopup')?.click();
-                        this.dataSource = new MatTableDataSource(result.filter((item: any) => item.ncesId === null || item.ncesId === undefined));
-                        this.dataSource.paginator = this.paginator;
-                        this.selectedRowIndex = null;
-                        this.dataSource.sort = this.sort;
-                        this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
-                        this.bindValuesToForm();
-                        this.toastr.success('Saved successfully!', '', {
-                            timeOut: 5000,
-                            closeButton: true
-                        });
-                    }
-                });
-            }
-        });
     }
 
+    /**
+    * @method deleteSelectedRow
+    * @description delete the college record
+    */
     deleteSelectedRow() {
         if (this.selectedRow) {
-            this.requestData.orgName = this.selectedRow.name;
-            this.requestData.inPullDown = this.selectedRow.inPullDown;
-            this.requestData.name = this.selectedRow.name;
-            this.requestData.codes = this.selectedRow.codes;
-            this.requestData.title = this.selectedRow.title;
-            this.requestData.country = this.selectedRow.country;
-            this.requestData.address = this.selectedRow.address;
-            this.requestData.fafsaId = this.selectedRow.fafsaId;
-            this.requestData.city = this.selectedRow.city;
-            this.requestData.states = this.selectedRow.states;
-            this.requestData.zipcode = this.selectedRow.zipcode;
-            this.requestData.fiscalYear = this.selectedRow.fiscalYear;
-            this.requestData.phone1 = this.selectedRow.phone1;
-            this.requestData.phone2 = this.selectedRow.phone2;
-            this.requestData.phone3 = this.selectedRow.phone3;
-            this.requestData.fax = this.selectedRow.fax;
-            this.requestData.website = this.selectedRow.website;
-            this.requestData.email = this.selectedRow.email;
-            this.requestData.notes = this.selectedRow.notes;
-            this.showLoader();
+            const data = {
+                collegeSchoolId: this.selectedRow.collegeSchoolId
+            }
             const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
                 data: {
                     title: 'Confirm Remove Record',
@@ -394,17 +370,18 @@ export class CollegeListComponent implements OnInit {
             });
             confirmDialog.afterClosed().subscribe(result => {
                 if (result === true) {
-                    this._collegeAndSchoolService.deleteCollegeSchoolName(this.requestData).subscribe(result => {
-                        this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
+                    this.showLoader();
+                    this._collegeAndSchoolService.deleteCollegeSchoolName(data).subscribe(result => {
+                        this._collegeAndSchoolService.getCollegeNames('').subscribe(result => {
                             this.hideLoader();
                             this.selectedRowIndex = null;
                             if (result) {
-                                this.dataSource = new MatTableDataSource(result.filter((item: any) => item.ncesId === null || item.ncesId === undefined));
+                                this.dataSource = new MatTableDataSource(result);
                                 this.dataSource.paginator = this.paginator;
                                 this.selectedRow = null;
                                 this.dataSource.sort = this.sort;
-                                this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
-                                this.bindValuesToForm();
+                                this.collegeDataList = result;
+
                                 this.toastr.success('Deleted successfully!', '', {
                                     timeOut: 5000,
                                     closeButton: true
@@ -417,55 +394,55 @@ export class CollegeListComponent implements OnInit {
                 }
             });
         } else {
-            this.toastr.info('Please select a row to delete', '', {
+            this.toastr.info('Please select a row to delete.', '', {
                 timeOut: 5000,
                 closeButton: true
             });
         }
     }
 
-    updateSelectedRow(inline?: boolean) {
+    /**
+    * @method updateSelectedRow
+    * @description update the college record
+    */
+    updateSelectedRow() {
+        if (this.formGroup.valid) {
         if (this.selectedRow) {
             this.showLoader();
-            this.requestData.orgName = this.collegeListEnum.name;
-            this.requestData.inPullDown = this.collegeListEnum.inPullDown;
-            this.requestData.name = this.collegeListEnum.name;
-            this.requestData.codes = this.collegeListEnum.codes;
-            this.requestData.title = this.collegeListEnum.title;
-            this.requestData.country = this.collegeListEnum.country;
-            this.requestData.address = this.collegeListEnum.address;
-            this.requestData.fafsaId = this.collegeListEnum.fafsaId;
-            this.requestData.city = this.collegeListEnum.city;
-            this.requestData.states = this.collegeListEnum.states;
-            this.requestData.zipcode = this.collegeListEnum.zipcode;
-            this.requestData.fiscalYear = this.collegeListEnum.fiscalYear;
-            this.requestData.phone1 = this.collegeListEnum.phone1;
-            this.requestData.phone2 = this.collegeListEnum.phone2;
-            this.requestData.phone3 = this.collegeListEnum.phone3;
-            this.requestData.fax = this.collegeListEnum.fax;
-            this.requestData.website = this.collegeListEnum.website;
-            this.requestData.email = this.collegeListEnum.email;
-            this.requestData.notes = this.collegeListEnum.notes;
+            this.requestData.collegeSchoolId = this.formGroup ?.get('collegeSchoolId') ?.value;
+            this.requestData.orgName = this.formGroup ?.get('name') ?.value.trim();
+            this.requestData.inPullDown = this.formGroup ?.get('inPullDown') ?.value;
+            this.requestData.name = this.formGroup ?.get('name') ?.value.trim();
+            this.requestData.codes = this.formGroup ?.get('codes') ?.value;
+            this.requestData.title = this.formGroup ?.get('title') ?.value;
+            this.requestData.country = this.formGroup ?.get('country') ?.value;
+            this.requestData.address = this.formGroup ?.get('address') ?.value;
+            this.requestData.fafsaId = this.formGroup ?.get('fafsaId') ?.value.trim();
+            this.requestData.city = this.formGroup ?.get('city') ?.value;
+            this.requestData.states = this.formGroup ?.get('states') ?.value;
+            this.requestData.zipcode = this.formGroup ?.get('zipcode') ?.value;
+            this.requestData.fiscalYear = this.formGroup ?.get('ifiscalYeard') ?.value;
+            this.requestData.phone1 = this.formGroup ?.get('phone1') ?.value;
+            this.requestData.phone2 = this.formGroup ?.get('phone2') ?.value;
+            this.requestData.phone3 = this.formGroup ?.get('phone3') ?.value;
+            this.requestData.fax = this.formGroup ?.get('fax') ?.value;
+            this.requestData.website = this.formGroup ?.get('website') ?.value;
+            this.requestData.email = this.formGroup ?.get('email') ?.value;
+            this.requestData.notes = this.formGroup ?.get('notes') ?.value;
             this.requestData.ncesId = null;
-
             this._collegeAndSchoolService.updateCollegeSchoolName(this.requestData).subscribe(response => {
-                if (!inline) {
-                    this.modalRef.hide();
-                }
-                this._collegeAndSchoolService.getCollegeSchoolNames('').subscribe(result => {
+                this.modalRef.hide();
+                this._collegeAndSchoolService.getCollegeNames('').subscribe(result => {
                     this.hideLoader();
                     this.selectedRowIndex = null;
                     if (result) {
-                        if (!inline) {
-                            document.getElementById('closePopup')?.click();
-                        }
-                        this.dataSource = new MatTableDataSource(result.filter((item: any) => item.ncesId === null || item.ncesId === undefined));
+                        this.dataSource = new MatTableDataSource(result);
                         this.dataSource.paginator = this.paginator;
                         this.selectedRow = null;
                         this.dataSource.sort = this.sort;
-                        this.collegeDataList = result.filter((item: any) => item.ncesId === null || item.ncesId === undefined);
+                        document.getElementById('closePopup') ?.click();
+                        this.collegeDataList = result;
                         this.isEdit = false;
-                        this.bindValuesToForm();
                         this.toastr.success('Updated successfully!', '', {
                             timeOut: 5000,
                             closeButton: true
@@ -474,21 +451,267 @@ export class CollegeListComponent implements OnInit {
                 });
             });
         }
+    }else{
+        this.formGroup.markAllAsTouched();
+        if (this.formGroup ?.get('email') ?.value) {
+            if (!this.formGroup ?.get('email') ?.valid) {
+                this.toastr.info('Please enter the correct email, this email is not valid!', '', {
+                    timeOut: 5000,
+                    closeButton: true
+                });
+                return;
+            }
+        }
+    }
     }
 
-    updateValueToFB() {
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.name);
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.in);
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.name);
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.name);
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.name);
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.name);
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.name);
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.name);
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.name);
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.name);
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.name);
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.name);
-        this.CollegeForm.get('name')?.setValue(this.selectedRow.name);
+    /**
+    * @method bindDropDownValues
+    * @description Get the all pull down item list
+    */
+    bindDropDownValues() {
+        // this._collegeAndSchoolService.getPullDownList().subscribe((result: any) => {
+        //     console.log(result)
+        // });
+        let data: any = ['City', 'State_PostalAddress', 'Codes'];
+        this._pullDownListService.getMultiplePulldownListByCode(data).subscribe((result: any) => {
+            if (result?.body?.City) {
+                this.cityList = result.body.City;
+            }
+            if (result?.body?.State_PostalAddress) {
+                this.stateList = result.body.State_PostalAddress;
+            }
+            if (result?.body?.Codes) {
+                this.countryList = result.body.Codes;
+            }
+        });
     }
+
+
+    /**
+     * @method checkName
+     * @description Check college Name is exist or not
+     */
+    checkName() {
+        let status = true;
+        // if (!this.validationClass.isNullOrUndefined(event)) {
+        const data = this.collegeDataList.filter((item: any) => (item.name).toLowerCase().trim() === (this.formGroup.get('name') ?.value).toLowerCase().trim());
+        if (data && data.length > 0) {
+            this.toastr.info('College Name is already exist', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
+            this.formGroup.get('name') ?.setValue('');
+            status = false;
+            return status;
+        }
+        return status;
+        // }
+    }
+
+    /**
+    * @method collegeCodeVerification
+    * @description FafsaId code is exist or not
+    */
+    collegeCodeVerification() {
+        let val = this.formGroup.get('fafsaId') ?.value;
+        this.requestData.orgName =  'College';
+        this.requestData.codes =  val.toLowerCase().trim();
+        this._collegeAndSchoolService.getCollegeSchoolByCode( this.requestData).subscribe(result => {
+            if (result && result != null) {
+                this.toastr.info('Entered FAFSAID is alreay exist, to add this organization name please change entered FAFSAID.', '', {
+                    timeOut: 3000,
+                    closeButton: true
+                });
+                return;
+            }
+        });
+    }
+
+    /**
+    * @method collegeNameVerification
+    * @description College name is exist or not
+    */
+    collegeNameVerification() {
+        let val = this.formGroup.get('name') ?.value;
+        this.requestData.orgName =  'College';
+        this.requestData.name =  val.toLowerCase().trim();
+        this._collegeAndSchoolService.getCollegeSchoolByName(this.requestData).subscribe(result => {
+            if (result && result != null) {
+                this.toastr.info('College name is already exist', '', {
+                    timeOut: 3000,
+                    closeButton: true
+                });
+                return;
+            }
+        });
+    }
+
+    /**
+    * @method showMoveItemPopup
+    * @description Open the popup for move the record
+    */
+    showMoveItemPopup() {
+        if (this.selectedRow) {
+            //this.showLoader();
+            const confirmDialog = this.dialog.open(CollegeSchoolListMoveBoxComponent, {
+                data: {
+                    title: 'College Name',
+                    message: 'College',
+                    schoolCollegeDataList: this.collegeDataList,
+                    selectedCollegeSchoolId: this.selectedRow.collegeSchoolId,
+                    selectedCollegeSchoolName: this.selectedRow.name,
+                }
+            });
+            confirmDialog.afterClosed().subscribe(result1 => {
+                if (result1 == true) {
+                    this.showLoader();
+                    this._collegeAndSchoolService.getCollegeNames('').subscribe(result => {
+                        this.hideLoader();
+                        this.selectedRowIndex = null;
+                        if (result) {
+                            this.dataSource = new MatTableDataSource(result);
+                            this.dataSource.paginator = this.paginator;
+                            this.selectedRow = null;
+                            this.dataSource.sort = this.sort;
+                            this.collegeDataList = result;
+                        }
+                    });
+                }
+            });
+        } else {
+            this.toastr.info('Please select a row to move', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
+        }
+    }
+
+    /**
+     * @method showMergeItemPopup
+     * @description Open the popup for merge the record
+     */
+    showMergeItemPopup() {
+        if (this.selectedRow) {
+            const confirmDialog = this.dialog.open(CollegeSchoolListMergeBoxComponent, {
+                data: {
+                    title: 'College Name',
+                    message: 'Are you sure, you want to merge this record ' + this.selectedRow.collegeSchoolName,
+                    collegeSchoolIdList: this.collegeDataList,
+                    selectedCollegeSchoolId: this.selectedRow.collegeSchoolId,
+                    selectedCollegeSchoolName: this.selectedRow.name
+                }
+            });
+            confirmDialog.afterClosed().subscribe(result1 => {
+                if (result1 == true) {
+                    this.showLoader();
+                    this._collegeAndSchoolService.getCollegeNames('').subscribe(result => {
+                        this.hideLoader();
+                        this.selectedRowIndex = null;
+                        if (result) {
+                            this.dataSource = new MatTableDataSource(result);
+                            this.dataSource.paginator = this.paginator;
+                            this.selectedRow = null;
+                            this.dataSource.sort = this.sort;
+                            this.collegeDataList = result;
+                        }
+                    });
+                }
+            });
+        } else {
+            this.toastr.info('Please select a row to merge', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
+        }
+    }
+
+    /**
+    * @method getEmailMessage
+    * @description show the email message
+    */
+    getEmailMessage() {
+        this.toastr.info('Please enter the correct email, this email is not valid!', '', {
+            timeOut: 5000,
+            closeButton: true
+        });
+        return;
+    }
+
+    /**
+    * @method print
+    * @description show print and download the data.
+    */
+    print() {
+        //const doc = new jsPDF('l', 'mm', 'a4'); 
+        const doc = new jsPDF('l', 'mm', 'a4'); 
+        const head = [['College Name', 'FAFSA ID', 'County Name', 'In Pulldown List', 'Phone1', 'Phone2', 'Phone3', 'Fax']]
+        let data : any = [];
+          this.collegeDataList.forEach((e: any) => {
+            var tempObj =[];
+            tempObj.push(e.name);
+            tempObj.push(e.fafsaId);
+            tempObj.push(e.country);
+            if(e.inPullDown == true){
+                tempObj.push("Yes");
+            }else{
+                tempObj.push("No");
+            }
+            if(e.phone1){
+               tempObj.push(e.phone1.replace(/^(\d{0,3})(\d{0,3})(.*)/, '($1) $2-$3'));
+            }
+            if(e.phone2){
+                tempObj.push(e.phone2.replace(/^(\d{0,3})(\d{0,3})(.*)/, '($1) $2-$3'));
+            }
+            if(e.phone3){
+                tempObj.push(e.phone3.replace(/^(\d{0,3})(\d{0,3})(.*)/, '($1) $2-$3'));
+            }
+            if(e.fax){
+                tempObj.push(e.fax.replace(/^(\d{0,3})(\d{0,3})(.*)/, '($1) $2-$3'));
+            }
+            data.push(tempObj);
+          });
+        autoTable(doc, {
+            head: head,
+            body: data,
+            theme: "grid",
+            showHead: "everyPage",
+            margin: { left: 20, right: 20, top: 30, bottom: 40 },
+            startY: 25,
+            headStyles: {
+            fillColor: [0, 57, 107]
+            },
+            alternateRowStyles: {
+            fillColor : [240,240,240]
+            },
+            tableLineColor: [208,208,208],
+            tableLineWidth: 0.1,
+            //styles : { halign : 'center'},
+            bodyStyles: {
+            fontSize: 12
+            },
+            styles: {
+                cellPadding: 3
+            },
+            didDrawPage: function (data) {
+
+                // Header
+                doc.setFontSize(20);
+                doc.setTextColor(40);
+                //doc.text("Compansol TRIO College Listing", data.settings.margin.left, 10);
+                doc.text("Compansol TRIO College Listing", 140, 15,{
+                    align: 'center'
+                });
+                
+              },
+            didDrawCell: (data) => { },
+        });
+        doc.setProperties({
+            title: "College list"
+        });
+        window.open(doc.output('bloburl').toString(), '_blank');
+        //doc.output('dataurlnewwindow', {filename: 'college.pdf'});
+        //doc.save('college.pdf');  
+    }
+
 }

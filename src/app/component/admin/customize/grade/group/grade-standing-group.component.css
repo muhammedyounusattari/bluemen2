@@ -2,6 +2,10 @@
     width: 100% !important;
 }
 
+.buttonAlign{
+margin-left: 96%;
+}
+
 /* .search {
     position: relative;
     float: right;

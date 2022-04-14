@@ -50,6 +50,25 @@ import { MatTreeModule } from '@angular/material/tree';
 import { AdminHomeComponent } from './home/admin-home.component';
 import { AdminCustomizeComponent } from './customize/admin-customize.component';
 import { StaffMemberComponent } from 'src/app/component/staff/home/staff-member/staff-member.component';
+import { MoveMergeDialogBoxComponent } from '../../shared/components/move-merge-dialog-box/move-merge-dialog-box.component';
+import { ServiceListMoveBoxComponent } from './customize/move-box/service-list-move-box/service-list-move-box.component';
+import { ServiceListMergeBoxComponent } from './customize/merge-box/service-list-merge-box/service-list-merge-box.component';
+import { ServiceGroupListMoveBoxComponent } from './customize/move-box/service-group-list-move-box/service-group-list-move-box.component';
+import { ServiceGroupListMergeBoxComponent } from './customize/merge-box/service-group-list-merge-box/service-group-list-merge-box.component';
+import { GradeStandingGroupListMoveBoxComponent } from './customize/move-box/grade-standing-group-list-move-box/grade-standing-group-list-move-box.component';
+import { GradeStandingListMoveBoxComponent } from './customize/move-box/grade-standing-list-move-box/grade-standing-list-move-box.component';
+import { GradeStandingGroupListMergeBoxComponent } from './customize/merge-box/grade-standing-group-list-merge-box/grade-standing-group-list-merge-box.component';
+import { GradeStandingListMergeBoxComponent } from './customize/merge-box/grade-standing-list-merge-box/grade-standing-list-merge-box.component';
+import { CollegeSchoolListMergeBoxComponent } from './customize/merge-box/college-school-list-merge-box/college-school-list-merge-box.component';
+import { CollegeSchoolListMoveBoxComponent } from './customize/move-box/college-school-list-move-box/college-school-list-move-box.component';
+import { PhoneMaskPipe } from 'src/app/shared/mask/phone-mask-pipe';
+import { NgxMaskModule , IConfig} from 'ngx-mask'
+const maskConfigFunction: () => Partial<IConfig> = () => {
+  return {
+    validation: true,
+  };
+};
+
 @NgModule({
   declarations: [
     PulldownListComponent,
@@ -78,7 +97,19 @@ import { StaffMemberComponent } from 'src/app/component/staff/home/staff-member/
     RolesComponent,
     AdminHomeComponent,
     AdminCustomizeComponent,
-    StaffMemberComponent
+    StaffMemberComponent,
+    MoveMergeDialogBoxComponent,
+    ServiceListMoveBoxComponent,
+    ServiceListMergeBoxComponent,
+    ServiceGroupListMoveBoxComponent,
+    ServiceGroupListMergeBoxComponent,
+    GradeStandingGroupListMoveBoxComponent,
+    GradeStandingListMoveBoxComponent,
+    GradeStandingGroupListMergeBoxComponent,
+    GradeStandingListMergeBoxComponent,
+    CollegeSchoolListMergeBoxComponent,
+    CollegeSchoolListMoveBoxComponent,
+    PhoneMaskPipe
   ],
   imports: [
     AdminRoutingModule,
@@ -103,7 +134,8 @@ import { StaffMemberComponent } from 'src/app/component/staff/home/staff-member/
     MatIconModule,
     MatRadioModule,
     MatExpansionModule,
-    MatTreeModule
+    MatTreeModule,
+    NgxMaskModule.forRoot(maskConfigFunction)
   ],
   providers: [
     MatDatepickerModule,
