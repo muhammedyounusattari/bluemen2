@@ -15,47 +15,47 @@
         <div class="row marg-top1">
             <div class="col-md-12 display-content">
                 <div class="col-md-2 left-div" id="leftBlock">
-                    <div class="list" style="margin-top: 5%;">
-                        Admin(Default)
-                    </div>
-                    <div class="list">
-                        Manager(Default)
+                    <div *ngFor="let role of roleNameList">
+                        <div class="list" style="margin-top: 5%;white-space: nowrap;" (click)="setBgColorForSelectedRole(role.id)" id="{{role.id}}">
+                            {{role.name}} {{role.default ? '(Default)': ''}}
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-9 right-div" id="rightBlock">
-                    <div class="row" *ngFor="let parentNode of roleList">
+                    <div class="row" *ngFor="let parentNode of userRoles">
                         <div class="col-md-12">
                             <input type="checkbox" (click)="setValue()" />
-                            <mat-radio-button [checked]="parentNode.radActionVal == 'Y'" class="marg-top1 marg-left2">
-                                {{parentNode.rad1Name}}</mat-radio-button>&nbsp;&nbsp;&nbsp;
-                            <mat-radio-button [checked]="parentNode.radActionVal == 'R'" class="marg-top1">
-                                {{parentNode.rad2Name}}
+                            <mat-radio-button [checked]="parentNode?.accessType == 'Y'" class="marg-top1 marg-left2">
+                                Y</mat-radio-button>&nbsp;&nbsp;&nbsp;
+                            <mat-radio-button [checked]="parentNode?.accessType == 'R'" class="marg-top1">
+                                N
                             </mat-radio-button>&nbsp;&nbsp;&nbsp;
-                            <mat-radio-button [checked]="parentNode.radActionVal == 'N'" class="marg-top1">
-                                {{parentNode.rad3Name}}
+                            <mat-radio-button [checked]="parentNode?.accessType == 'N'" class="marg-top1">
+                                R
                             </mat-radio-button>
-                            &nbsp;&nbsp;&nbsp; ** {{parentNode.name}} **
+                            &nbsp;&nbsp;&nbsp; ** {{parentNode?.name}} **
                         </div>
                         <div *ngIf="isExpandChildren">
                             <div class="col-md-12 marg-left2"
-                                *ngFor="let childrenNode of parentNode?.children; let ind = index">
+                                *ngFor="let childrenNode of parentNode?.privileges; let ind = index">
                                 <input type="checkbox" (click)="setChildValue()" />
-                                <mat-radio-button [checked]="childrenNode.radActionVal == 'Y'" class="marg-left2"
-                                    name="{{ind}}">{{childrenNode.rad1Name}}</mat-radio-button>&nbsp;&nbsp;&nbsp;
-                                <mat-radio-button [checked]="childrenNode.radActionVal == 'R'" class="marg-left2"
-                                    name="{{ind}}">{{childrenNode.rad2Name}}</mat-radio-button>&nbsp;&nbsp;&nbsp;
-                                <mat-radio-button [checked]="childrenNode.radActionVal == 'N'" class="marg-left2"
-                                    name="{{ind}}">{{childrenNode.rad3Name}}</mat-radio-button>
-                                &nbsp;&nbsp;&nbsp; {{childrenNode.name}}
+                                <mat-radio-button [checked]="childrenNode?.accessType == 'Y'" class="marg-left2"
+                                    name="{{ind}}">Y</mat-radio-button>&nbsp;&nbsp;&nbsp;
+                                <mat-radio-button [checked]="childrenNode?.accessType == 'R'" class="marg-left2"
+                                    name="{{ind}}">R</mat-radio-button>&nbsp;&nbsp;&nbsp;
+                                <mat-radio-button [checked]="childrenNode?.accessType == 'N'" class="marg-left2"
+                                    name="{{ind}}">N</mat-radio-button>
+                                &nbsp;&nbsp;&nbsp; {{childrenNode?.name}}
                                 <div *ngIf="isExpandChild">
-                                    <div class="marg-left3" *ngFor="let childNode of childrenNode?.children; let idx = index;">
-                                        <mat-radio-button [checked]="childNode.radActionVal == 'Y'" class="marg-left2"
-                                            name="child_{{idx}}">{{childNode.rad1Name}}</mat-radio-button>&nbsp;&nbsp;&nbsp;
-                                        <mat-radio-button [checked]="childNode.radActionVal == 'R'" class="marg-left2"
-                                            name="child_{{idx}}">{{childNode.rad2Name}}</mat-radio-button>&nbsp;&nbsp;&nbsp;
-                                        <mat-radio-button [checked]="childNode.radActionVal == 'N'" class="marg-left2"
-                                            name="child_{{idx}}">{{childNode.rad3Name}}</mat-radio-button>
-                                        &nbsp;&nbsp;&nbsp; {{childNode.name}}
+                                    <div class="marg-left3"
+                                        *ngFor="let childNode of childrenNode?.privileges; let idx = index;">
+                                        <mat-radio-button [checked]="childNode?.accessType == 'Y'" class="marg-left2"
+                                            name="child_{{idx}}">Y</mat-radio-button>&nbsp;&nbsp;&nbsp;
+                                        <mat-radio-button [checked]="childNode?.accessType == 'R'" class="marg-left2"
+                                            name="child_{{idx}}">R</mat-radio-button>&nbsp;&nbsp;&nbsp;
+                                        <mat-radio-button [checked]="childNode?.accessType == 'N'" class="marg-left2"
+                                            name="child_{{idx}}">N</mat-radio-button>
+                                        &nbsp;&nbsp;&nbsp; {{childNode?.name}}
                                     </div>
                                 </div>
                             </div>

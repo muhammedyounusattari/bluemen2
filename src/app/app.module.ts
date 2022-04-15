@@ -33,6 +33,7 @@ import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.co
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { NgDynamicBreadcrumbModule } from 'ng-dynamic-breadcrumb';
+import { OrgUserLoginComponent } from './component/org-user-login/org-user-login.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { NgDynamicBreadcrumbModule } from 'ng-dynamic-breadcrumb';
     ConfirmationComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    DialogBoxComponent
+    DialogBoxComponent,
+    OrgUserLoginComponent
   ],
   imports: [
     BrowserModule,

@@ -57,6 +57,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
         this.isLoggedIn = false;
       }
     }
+    // this.isLoggedIn = true;
   }
 
   ngAfterContentChecked(): void {

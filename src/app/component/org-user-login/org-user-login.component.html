@@ -44,7 +44,7 @@
                                 </mat-error> -->
                             </mat-form-field>
                         </div>
-                        <div class="form-group last mb-login txtAlign">
+                        <div class="form-group last mb-login txtAlign" *ngIf="isValidUser">
                             <mat-form-field class="example-full-width" appearance="fill">
                                 <mat-label>Password</mat-label>
                                 <input [type]="hide ? 'password' : 'text'" matInput value="" formControlName="password"
@@ -59,13 +59,15 @@
                             </mat-form-field>
                         </div>
 
-                        <button mat-raised-button color="primary" type="submit" [disabled]="!isLoginEnabled"
+                        <button mat-raised-button color="primary" type="submit" *ngIf="!isValidUser"
+                            class="submit btn text-white btn-block btn-primary button" (click)="checkUserExist()">Proceed to Login</button>
+                        <button mat-raised-button color="primary" type="submit" *ngIf="isValidUser"
                             class="submit btn text-white btn-block btn-primary button">LOGIN</button>
                         <mat-error class="mts-5" *ngIf="isInvalidCredentials">
                             {{errorMessage}}
                         </mat-error>
 
-                        <div class="d-flex align-items-center mts-5">
+                        <div class="d-flex align-items-center mts-5" *ngIf="isValidUser">
                             <span class="mr-auto"><a href="javascript:void(0)" (click)="forgotPwd()"
                                     class="forgot-pass forgot">Forgot
                                     Password ?</a></span>
@@ -76,7 +78,7 @@
         </div>
     </div>
 </div>
-<div class="container-fluid login-footer">
+<div class="container-fluid login-footer" *ngIf="isValidUser">
     <div class="row">
         <div class="col-1 reserved text-center"></div>
         <div class="col-5 reserved ">©All
@@ -99,14 +101,14 @@
                 <form [formGroup]="formGroup1" class="form">
                     <div class="form-group first txtAlign">
                         <mat-form-field class="forgot-password-textbox" appearance="fill">
-                            <mat-label>Organization Type</mat-label>
-                            <input matInput value="" formControlName="fpOrgType" minlength="3" required>
+                            <mat-label>Organization Code</mat-label>
+                            <input matInput value="" formControlName="fpOrgCode" minlength="3" required>
                         </mat-form-field>
                     </div>
                     <div class="form-group first txtAlign">
                         <mat-form-field class="forgot-password-textbox" appearance="fill">
-                            <mat-label>Email</mat-label>
-                            <input matInput value="" required (blur)="getSecQuestions()" formControlName="fpEmail">
+                            <mat-label>Username</mat-label>
+                            <input matInput value="" required (blur)="getSecQuestions()" formControlName="fpUsername">
                         </mat-form-field>
                     </div>
                     <div class="form-group last mb-login txtAlign" *ngIf="isVisible">

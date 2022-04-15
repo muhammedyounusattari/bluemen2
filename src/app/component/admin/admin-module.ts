@@ -63,12 +63,14 @@ import { CollegeSchoolListMergeBoxComponent } from './customize/merge-box/colleg
 import { CollegeSchoolListMoveBoxComponent } from './customize/move-box/college-school-list-move-box/college-school-list-move-box.component';
 import { PhoneMaskPipe } from 'src/app/shared/mask/phone-mask-pipe';
 import { NgxMaskModule , IConfig} from 'ngx-mask'
+import { OrganizationComponent } from '../super-admin/organization/organization.component';
+import { SecurityQuestionsComponent } from '../super-admin/security-question/security-questions.component';
+
 const maskConfigFunction: () => Partial<IConfig> = () => {
   return {
     validation: true,
   };
 };
-
 @NgModule({
   declarations: [
     PulldownListComponent,
@@ -109,7 +111,9 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
     GradeStandingListMergeBoxComponent,
     CollegeSchoolListMergeBoxComponent,
     CollegeSchoolListMoveBoxComponent,
-    PhoneMaskPipe
+    PhoneMaskPipe,
+    OrganizationComponent,
+    SecurityQuestionsComponent
   ],
   imports: [
     AdminRoutingModule,

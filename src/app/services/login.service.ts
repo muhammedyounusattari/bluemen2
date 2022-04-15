@@ -18,16 +18,14 @@ export class LoginService {
 
     getSecurityQuestions(username: string, orgCode: string) {
         const request = {
-            'orgCode': orgCode,
-            'username': username
+            'orgType': orgCode,
+            'email': username
         };
-        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/keycloak/forgotPassword';
-        return this.dataService.callLoginPostService(URL, request);
+        return this.dataService.callLoginPostService(ServiceUrls.FORGOT_PASSWORD, request);
     }
 
     forgotPassword(request: any, orgCode: string) {
-        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/keycloak/forgotPassword';
-        return this.dataService.callLoginPostService(URL, request);
+        return this.dataService.callLoginPostService(ServiceUrls.FORGOT_PASSWORD , request);
     }
 
     updateSecurityQuestions(request: any) {
@@ -52,5 +50,10 @@ export class LoginService {
         //53624853-73ea-4c42-bffe-df9fe87700e8
         const URL = ServiceUrls.UPDATE_PASSWORD + hasCode.replace('#', '');
         return this.dataService.callLoginPostService(URL, request);
+    }
+
+    getSSOConfig(request: any) {
+        const URL= 'https://blumen-api.azurewebsites.net:443/api/blumen-api/ssoConfig?email='+request.email + '&orgType='+request.orgType;
+        return this.dataService.validateUser(URL);
     }
 }

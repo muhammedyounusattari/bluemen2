@@ -274,7 +274,15 @@ export class ServiceUrls {
     public static GET_COLLEGE_SCHOOL_BY_CODE = environment.apiUrl + '/blumen-api/customize/getCollegeSchoolByCode/v1/';
     public static GET_DELETED_COLLEGE_SCHOOL_BY_NAME_AND_ORG_ID = environment.apiUrl + '/blumen-api/customize/getDeletedCollegeSchoolByNameAndOrgId/v1/';
 
-    public static GET_ORG_USERS = environment.apiUrl+'/blumen-api/admin/home/getOrganizationList/v1';
-    public static RESET_PASSWORD = environment.apiUrl+'/blumen-api/resetPassword/v1/';
-    public static UPDATE_PASSWORD = environment.apiUrl+'/blumen-api/updatePassword/v1/';
+    public static GET_ORG_USERS = environment.apiUrl + '/blumen-api/admin/home/getOrganizationList/v1';
+    public static RESET_PASSWORD = environment.apiUrl + '/blumen-api/resetPassword/v1/';
+    public static UPDATE_PASSWORD = environment.apiUrl + '/blumen-api/updatePassword/v1/';
+    public static FORGOT_PASSWORD = environment.apiUrl +'/blumen-api/forgotPassword/v1';
+
+    // Organizations API's
+    public static GET_ORGANIZATIONS_LIST = environment.apiUrl + '/blumen-api/admin/home/getOrganizationsList/v1';
+    public static ADD_ORGANIZATION = environment.apiUrl + '/blumen-api/admin/home/addOrganization/v1';
+
+    // Roles API's
+    public static GET_ROLES_LIST = environment.apiUrl + '/blumen-api/roles/getRoles/v1';
 }

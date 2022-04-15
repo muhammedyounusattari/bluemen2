@@ -11,6 +11,19 @@ export class DataService {
     constructor(private http: HttpClient, private config: Config) {
     }
 
+    validateUser(url:string):Observable<any>{
+        try {
+            const response = this.http.get(url).pipe(tap(response => {
+                const res: any = response;
+            }, (error:any) => {
+                console.log(error);
+            }));
+            return response;
+        } catch (error) {
+            console.log(error);
+            return new Observable<any>();
+        }
+    }
     callGetService(url: string, ...request: any): Observable<any> {
         try {
             const response = this.http.get(url , {headers:this.config.getHeader()}).pipe(tap(response => {

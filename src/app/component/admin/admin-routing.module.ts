@@ -27,6 +27,8 @@ import { RolesComponent } from './home/roles/roles.component';
 import { AdminHomeComponent } from './home/admin-home.component';
 import { AdminCustomizeComponent } from './customize/admin-customize.component';
 import { StaffMemberComponent } from 'src/app/component/staff/home/staff-member/staff-member.component';
+import { OrganizationComponent } from '../super-admin/organization/organization.component';
+import { SecurityQuestionsComponent } from '../super-admin/security-question/security-questions.component';
 const routes: Routes = [
   {
     path: 'admin/customize/pulldown-list',
@@ -320,6 +322,40 @@ const routes: Routes = [
         },
         {
           label: 'Staff Members',
+          url: ''
+        }
+      ]
+    }
+  },
+  {
+    path: 'admin/home/organization',
+    component: OrganizationComponent,
+    data: {
+      title: 'Organization Information',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/home'
+        },
+        {
+          label: 'Organization Information',
+          url: ''
+        }
+      ]
+    }
+  },
+  {
+    path: 'admin/home/securityQuestions',
+    component: SecurityQuestionsComponent,
+    data: {
+      title: 'Security Questions',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/home'
+        },
+        {
+          label: 'Security Questions',
           url: ''
         }
       ]
