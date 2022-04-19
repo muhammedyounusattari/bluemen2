@@ -215,12 +215,12 @@
                                                 <button mat-menu-item
                                                         [routerLink]="['admin/home/system-preferences']">SYSTEM
                                                         PREFERENCES</button>
-                                                <button mat-menu-item [routerLink]="['admin/home/user-names-pwd']">USER
+                                                <button *ngIf="this.sharedService.getUserRole() === 'OrgUser'" mat-menu-item [routerLink]="['admin/home/user-names-pwd']">USER
                                                         NAMES AND
                                                         PASSWORDS</button>
-                                                <button mat-menu-item [routerLink]="['admin/home/organization']">
+                                                <button *ngIf="this.sharedService.getUserRole() === 'SuperAdmin'" mat-menu-item [routerLink]="['admin/home/organization']">
                                                         ORGANIZATIONS</button>
-                                                <button mat-menu-item [routerLink]="['admin/home/securityQuestions']">
+                                                <button *ngIf="this.sharedService.getUserRole() === 'SuperAdmin'" mat-menu-item [routerLink]="['admin/home/securityQuestions']">
                                                         SECURITY QUESTIONS</button>
                                         </mat-menu>
                                         <mat-menu #customizeMenuList="matMenu">

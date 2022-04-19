@@ -17,6 +17,6 @@
 </div>
 <router-outlet *ngIf="isLoggedIn && !isResetPassword"></router-outlet>
 <app-footer *ngIf="isLoggedIn && !isResetPassword"></app-footer>
-<app-login *ngIf="!isLoggedIn && !isResetPassword" (validateLogin)="validate($event)"></app-login>
-<!-- <app-org-user-login *ngIf="!isLoggedIn && !isResetPassword" (validateLogin)="validate($event)"></app-org-user-login> -->
+<app-login *ngIf="!isLoggedIn && !isResetPassword && isSuperAdmin" (validateLogin)="validate($event)"></app-login>
+<app-org-user-login *ngIf="!isLoggedIn && !isResetPassword && !isSuperAdmin" (validateLogin)="validate($event)"></app-org-user-login>
 <app-reset-password *ngIf="isResetPassword" [hashcode]="resetHashCode"></app-reset-password>

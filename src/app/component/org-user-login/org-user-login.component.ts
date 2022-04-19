@@ -216,11 +216,9 @@ export class OrgUserLoginComponent implements OnInit {
         }
         this._loginService.getSSOConfig(request).subscribe(result => {
             this.isLoading = false;
-            if (result) {
-                this.isValidUser = true;
-            }
+            this.isValidUser = true;
         },(error:any) => {
-            if (error.status.toString()==='200' || error.status.toString() === '0') {
+            if (error.status === 200 || error.status === 0) {
                 this.isLoading = false;
                 this.isValidUser = true;
             }

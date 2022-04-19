@@ -56,12 +56,12 @@ export class UserNamesAndPasswordComponent implements OnInit {
     emailVerified = false;
     userEnabled = false;
     userId = null;
-    orgId = '';
     boltId = 0;
     userList = [];
 
+    @Input() organizationId: any;
     @Input() organizationType: any;
-    organizationId = null;
+    orgId = null;
     constructor(private modalService: BsModalService
         , private dialog: MatDialog
         , private toastr: ToastrService
@@ -79,7 +79,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
 
     createForm() {
         this.formGroup = this.formBuilder.group({
-            'id': [''],
+            'id': [null],
             'username': ['', Validators.required],
             'email': ['', Validators.required],
             'mobile': ['', Validators.required],
@@ -110,8 +110,8 @@ export class UserNamesAndPasswordComponent implements OnInit {
     }
 
     getUserList() {
-        this.organizationId = this.organizationType ? this.organizationType : null;
-        this._userManagementService.getUserList(this.organizationId).subscribe(result => {
+        this.orgId = this.organizationId ? this.organizationId : null;
+        this._userManagementService.getUserList(this.orgId).subscribe(result => {
             setTimeout(() => {
                 this.hideLoader();
             }, 500);
@@ -123,9 +123,6 @@ export class UserNamesAndPasswordComponent implements OnInit {
                 this.selectedRowIndex = null;
                 this.dataSource.sort = this.sort;
             }
-        }, (error: any) => {
-            const errorResponse = JSON.stringify(error);
-            console.log(errorResponse);
         });
     }
 
@@ -190,11 +187,13 @@ export class UserNamesAndPasswordComponent implements OnInit {
                     this.modalRef.hide();
                 }
             }, (error: any) => {
-                const errorResponse = JSON.parse(error);
-                this.toastr.error(errorResponse.message, '', {
-                    timeOut: 5000,
-                    closeButton: true
-                });
+                if (error) {
+                    const errorResponse = JSON.parse(error);
+                    this.toastr.error(errorResponse.message, '', {
+                        timeOut: 5000,
+                        closeButton: true
+                    });
+                } 
                 this.modalRef.hide();
             });
         } else {
@@ -247,7 +246,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
             });
             confirmDialog.afterClosed().subscribe(result => {
                 if (result === true) {
-                    this._userManagementService.deleteUser(this.selectedRow.id, this.organizationId).subscribe(res => {
+                    this._userManagementService.deleteUser(this.selectedRow.id, this.orgId).subscribe(res => {
                         if (res) {
                             this.getUserList();
                         }
@@ -287,11 +286,12 @@ export class UserNamesAndPasswordComponent implements OnInit {
             'enabled': this.userEnabled,
             'fax': this.formGroup?.get('fax')?.value,
             'firstName': this.formGroup?.get('firstName')?.value,
-            // 'id': this.userId,
+            'id': this.formGroup.get('id')?.value,
             'lastName': this.formGroup?.get('lastName')?.value,
             'mobile': this.formGroup?.get('mobile')?.value,
             'notes': this.formGroup?.get('notes')?.value,
-            'orgId': this.organizationId,
+            'orgId': this.orgId,
+            'orgType': this.organizationType,
             'phone2': this.formGroup?.get('phone2')?.value,
             'roleName': this.formGroup?.get('roleName')?.value,
             'sendMail': this.formGroup?.get('sendMail')?.value,

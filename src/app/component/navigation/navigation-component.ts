@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-navigation',
@@ -7,11 +8,12 @@ import {Router} from '@angular/router';
   styleUrls: ['./navigation-component.css']
 })
 export class NavigationComponent {
-  constructor(private router: Router) {
+  constructor(private router: Router
+    , public sharedService: SharedService) {
   }
 
 validate() {
-  alert('hi');
+  // alert('hi');
 }
   navigateToComponent(componentName: string, subComponent: string = '') {
     if (componentName === 'logged-user') {
