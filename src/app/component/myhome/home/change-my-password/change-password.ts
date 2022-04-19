@@ -2,6 +2,7 @@ import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {HomeService} from 'src/app/services/home/home.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -27,16 +28,31 @@ export class ChangePasswordComponent implements OnInit{
     public isSpecialChar:string="fa fa-close";;
     public passwordMatch:string = "fa fa-close";
 
-    constructor(public homeService:HomeService) {
-
+    constructor(public homeService:HomeService,
+                private toastr: ToastrService) {
     }
 
    ngOnInit() {
 
     let username = sessionStorage.getItem('username');
     this.userName = username?username:'';
-    this.securityQuesLst1 = ["--Select Question--","What is your pet's name?","Which city were you born in?","What was the make/model of your first car?","What is your favorite sports team? ","Which street did you grow up on?","Name of your favorite childhood friend?","What was your favorite food as a child?","What school did you attend for sixth grade?","In what city was your first job?","What was the last name of your first boss?"];
-    this.securityQuesLst2 = ["--Select Question--","What was your favorite restaurant growing up?","What was your high school mascot?","What is your oldest cousin’s first name?","Your spouse/partner's mother's maiden name?","In what city did your parents meet?","Who was your favorite teacher in high school?","What was the licence plate number for your first car?","When you were young, what did you want to be when you grew up?","Who was your childhood hero?","Where was your best family vacation as a kid?"];
+    this.securityQuesLst1 = [];
+    this.securityQuesLst2 = [];
+
+    this.homeService.getSecurityQuestionList().subscribe((result)=>{
+            if (result) {
+              this.securityQuesLst1 = result.body.question1;
+              this.securityQuesLst2 = result.body.question2;
+            }
+         /* },
+          (error: any) => {
+            const errorResponse = JSON.parse(error.error);
+            this.toastr.error(errorResponse.message, '', {
+              timeOut: 5000,
+              closeButton: true
+            });
+          });*/
+        });
 
     }
 
@@ -45,11 +61,16 @@ export class ChangePasswordComponent implements OnInit{
      this.validatePassword();
 
       let payload = {
-                      "temporary": true,
-                      "type": "password",
-                      "value": this.newPassword
+                      "password": this.password,
+                      "confPassword": this.confPassword,
+                      "securityQuestion1":this.securityQues1,
+                      "securityQuestion2":this.securityQues2,
+                      "securityAnswer1":this.answer1,
+                      "securityAnswer2":this.answer2
                     }
       this.homeService.changePassword(payload).subscribe((result)=>{
+      debugger;
+      alert(result);
       });
     }
 

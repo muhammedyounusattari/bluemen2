@@ -22,12 +22,11 @@ export class HomeService {
      * @method getLoggedUsers
      */
   public changePassword(payload: any) {
-    let realmId = '' + sessionStorage.getItem('realmId');;
-    let id = this.getRealmIdFromState();
-    let URL = ServiceUrls.PUT_CHANGE_PASSWORD + realmId + '/resetPassword/v1/' + id;
-    console.log("id is {} and url is {}", id, URL);
+    return this.dataService.callPutService(ServiceUrls.PUT_CHANGE_PASSWORD , payload);
+  }
 
-    return this.dataService.callPutService(URL, payload);
+  public getSecurityQuestionList(){
+    return this.dataService.callGetService(ServiceUrls.GET_SECURITY_QUESTIONS);
   }
 
 

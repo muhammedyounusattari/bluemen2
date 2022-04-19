@@ -51,7 +51,7 @@ export class HomeComponent {
     if (this.userData) {
       this.userData = JSON.parse(this.userData);
       if (this.userData.isFirstTime === 'true') {
-        this._loginService.getSecurityQuestionList(sessionStorage.getItem('realmId')).subscribe((result: any) => {
+        this._loginService.getSecurityQuestionList().subscribe((result: any) => {
           if (result) {
             this.question1List = result.body.question1;
             this.question2List = result.body.question2;
@@ -117,7 +117,7 @@ export class HomeComponent {
             timeOut: 5000,
             closeButton: true
           });
-        });  
+        });
       }
     } else {
       this.formGroup.markAllAsTouched();

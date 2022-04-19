@@ -32,17 +32,10 @@ export class LoginService {
         return this.dataService.callPutService(URL, request);
     }
 
-    getSecurityQuestionList(orgCode: any) {
-        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/admin/' + orgCode + '/securityQuestions';
-        // https://blumen-api.azurewebsites.net:443/api/blumen-api/admin/test/securityQuestions1{orgId}
-        return this.dataService.callGetService(URL);
+    getSecurityQuestionList() {
+        return this.dataService.callGetService(ServiceUrls.GET_SECURITY_QUESTIONS);
     }
 
-    getSecurityQuestions2(orgCode: any) {
-        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/admin/' + orgCode + '/securityQuestions/2';
-        // https://blumen-api.azurewebsites.net:443/api/blumen-api/admin/test/securityQuestions1{orgId}
-        return this.dataService.callGetService(URL);
-    }
 
     resetPasswordUsingLink(request: any, hasCode: string) {
         // https://blumen-api.azurewebsites.net:443/api/blumen-api/keycloak/resetPassword/
