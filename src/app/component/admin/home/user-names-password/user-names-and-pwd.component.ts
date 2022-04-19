@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild, OnInit, Input } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -9,7 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 import { UserManagementService } from 'src/app/services/admin/user-management.service';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
@@ -37,14 +37,14 @@ export class UserNamesAndPasswordComponent implements OnInit {
     selectedRowIndex: any;
     isLoading: boolean = true;
     myElement: any = null;
-    roleList: any = [{ 'id': 1, 'name': 'Admin(Default)' }, { 'id': 2, 'name': 'Manager(Default)' }, { 'id': 2, 'name': 'Counselor(Default)' }];
+    roleList: any = [{ 'id': 'Admin', 'name': 'Admin(Default)' }, { 'id': 'Manager', 'name': 'Manager(Default)' }, { 'id': 'Counselor', 'name': 'Counselor(Default)' }];
     siteLocationList: any = [{ 'id': 1, 'name': 'Location1' }, { 'id': 2, 'name': 'Location2' }, { 'id': 2, 'name': 'Location3' }];
     cityList: any = [{ 'id': 1, 'name': 'Pune' }, { 'id': 2, 'name': 'Mumbai' }];
     stateList: any = [{ 'id': 1, 'name': 'Maharashtra' }, { 'id': 2, 'name': 'Delhi' }];
 
     validationClass: ValidationClass = new ValidationClass();
 
-    columnsToDisplay: string[] = ['orgId', 'username', 'firstName', 'lastName', 'email', 'roleName', 'siteLocation', 'active', 'action'];
+    columnsToDisplay: string[] = ['orgCode', 'username', 'firstName', 'lastName', 'email', 'roleName', 'siteLocation', 'active', 'action'];
     dataSource: MatTableDataSource<any>;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -55,11 +55,13 @@ export class UserNamesAndPasswordComponent implements OnInit {
     }
     emailVerified = false;
     userEnabled = false;
-    userId = 0;
+    userId = null;
     orgId = '';
     boltId = 0;
     userList = [];
 
+    @Input() organizationType: any;
+    organizationId = null;
     constructor(private modalService: BsModalService
         , private dialog: MatDialog
         , private toastr: ToastrService
@@ -71,7 +73,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     ngOnInit(): void {
         this.sharedService.setPageTitle('User Information');
         this.createForm();
-        this.myElement = window.document.getElementById('loading');
+        this.myElement = window.document.getElementById('loading1');
         this.getUserList();
     }
 
@@ -108,9 +110,13 @@ export class UserNamesAndPasswordComponent implements OnInit {
     }
 
     getUserList() {
-        this._userManagementService.getUserList(sessionStorage.getItem('realmId')).subscribe(result => {
-            if (result) {
+        this.organizationId = this.organizationType ? this.organizationType : null;
+        this._userManagementService.getUserList(this.organizationId).subscribe(result => {
+            setTimeout(() => {
                 this.hideLoader();
+            }, 500);
+            this.isLoading = false;
+            if (result) {
                 this.dataSource = new MatTableDataSource(result.users);
                 this.userList = result.body;
                 this.dataSource.paginator = this.paginator;
@@ -133,7 +139,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     }
 
     hideLoader() {
-        this.myElement = window.document.getElementById('loading');
+        this.myElement = window.document.getElementById('loading1');
         if (this.myElement !== null) {
             this.spinner = false;
             this.isLoading = false;
@@ -174,7 +180,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     addUpdateUser() {
         if (this.formGroup.valid) {
             const request = this.getRequestPayload();
-            this._userManagementService.addUpdateUser(request, sessionStorage.getItem('realmId'), sessionStorage.getItem('username')).subscribe(result => {
+            this._userManagementService.addUpdateUser(request).subscribe(result => {
                 if (result) {
                     this.getUserList();
                     this.toastr.success('Saved successfully !', '', {
@@ -241,7 +247,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
             });
             confirmDialog.afterClosed().subscribe(result => {
                 if (result === true) {
-                    this._userManagementService.deleteUser(this.selectedRow.id, sessionStorage.getItem('realmId')).subscribe(res => {
+                    this._userManagementService.deleteUser(this.selectedRow.id, this.organizationId).subscribe(res => {
                         if (res) {
                             this.getUserList();
                         }
@@ -266,25 +272,26 @@ export class UserNamesAndPasswordComponent implements OnInit {
             'active': this.formGroup?.get('active')?.value,
             'address1': this.formGroup?.get('address1')?.value,
             'address2': this.formGroup?.get('address2')?.value,
-            'bolt': {
-                'active': this.formGroup?.get('boltActive')?.value,
-                'startDate': this.formGroup?.get('startDate')?.value,
-                'endDate': this.formGroup?.get('endDate')?.value,
-                'id': this.boltId,
-                'lastGenerated': this.formGroup?.get('lastGenerated')?.value,
-                'link': this.formGroup?.get('link')?.value
-            },
+            // 'bolt': {
+            //     'active': this.formGroup?.get('boltActive')?.value,
+            //     'startDate': this.formGroup?.get('startDate')?.value,
+            //     'endDate': this.formGroup?.get('endDate')?.value,
+            //     'id': this.boltId,
+            //     'lastGenerated': this.formGroup?.get('lastGenerated')?.value,
+            //     'link': this.formGroup?.get('link')?.value
+            // },
+            'bolt': null,
             'city': this.formGroup?.get('city')?.value,
             'email': this.formGroup?.get('email')?.value,
             'emailVerified': this.emailVerified,
             'enabled': this.userEnabled,
             'fax': this.formGroup?.get('fax')?.value,
             'firstName': this.formGroup?.get('firstName')?.value,
-            'id': this.userId,
+            // 'id': this.userId,
             'lastName': this.formGroup?.get('lastName')?.value,
             'mobile': this.formGroup?.get('mobile')?.value,
             'notes': this.formGroup?.get('notes')?.value,
-            'orgId': this.orgId,
+            'orgId': this.organizationId,
             'phone2': this.formGroup?.get('phone2')?.value,
             'roleName': this.formGroup?.get('roleName')?.value,
             'sendMail': this.formGroup?.get('sendMail')?.value,
@@ -296,10 +303,10 @@ export class UserNamesAndPasswordComponent implements OnInit {
         return payload;
     }
 
-    resetPassword(test:any){
-      this._userManagementService.resetPassword(test.email).subscribe(result=>{
-        alert(result.message); //here we have added link in message aswell.
-      });
+    resetPassword(test: any) {
+        this._userManagementService.resetPassword(test.email).subscribe(result => {
+            alert(result.message); //here we have added link in message aswell.
+        });
     }
 
     navigateToBackScreen() {

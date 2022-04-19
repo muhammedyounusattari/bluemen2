@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
 
@@ -65,6 +65,8 @@ import { PhoneMaskPipe } from 'src/app/shared/mask/phone-mask-pipe';
 import { NgxMaskModule , IConfig} from 'ngx-mask'
 import { OrganizationComponent } from '../super-admin/organization/organization.component';
 import { SecurityQuestionsComponent } from '../super-admin/security-question/security-questions.component';
+import { StaffMemberMergeBoxComponent } from './customize/merge-box/staff-member-merge-box/staff-member-merge-box.component';
+import { StaffMemberMoveBoxComponent } from './customize/move-box/staff-member-move-box/staff-member-move-box.component';
 
 const maskConfigFunction: () => Partial<IConfig> = () => {
   return {
@@ -113,7 +115,9 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
     CollegeSchoolListMoveBoxComponent,
     PhoneMaskPipe,
     OrganizationComponent,
-    SecurityQuestionsComponent
+    SecurityQuestionsComponent,
+    StaffMemberMergeBoxComponent,
+    StaffMemberMoveBoxComponent
   ],
   imports: [
     AdminRoutingModule,
@@ -143,7 +147,8 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
   ],
   providers: [
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    DatePipe
   ]
 })
 export class AdminModule { }

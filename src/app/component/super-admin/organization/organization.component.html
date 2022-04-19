@@ -172,9 +172,9 @@
                     <mat-form-field appearance="fill" class="mat-select-width">
                         <mat-label>City</mat-label>
                         <select matNativeControl>
-                            <option value="" selected></option>
-                            <option value="volvo">Yes</option>
-                            <option value="saab">No</option>
+                            <option value="" selected>--Select--</option>
+                            <option value="austin">Austin</option>
+                            <option value="dallas">Dallas</option>
                         </select>
                     </mat-form-field>
                 </div>
@@ -184,9 +184,9 @@
                     <mat-form-field appearance="fill" class="mat-select-width">
                         <mat-label>State</mat-label>
                         <select matNativeControl>
-                            <option value="" selected></option>
-                            <option value="volvo">Yes</option>
-                            <option value="saab">No</option>
+                            <option value="" selected>--Select--</option>
+                            <option value="al">AL</option>
+                            <option value="ca">CA</option>
                         </select>
                     </mat-form-field>
                 </div>
@@ -196,9 +196,14 @@
                     <mat-form-field appearance="fill" class="mat-select-width">
                         <mat-label>Program Type</mat-label>
                         <select matNativeControl>
-                            <option value="" selected></option>
-                            <option value="volvo">Yes</option>
-                            <option value="saab">No</option>
+                            <option value="" selected>--Select--</option>
+                            <option value="ts">TS</option>
+                            <option value="eoc">EOC</option>
+                            <option value="ub">UB</option>
+                            <option value="vub">VUB</option>
+                            <option value="ubms">UBMS</option>
+                            <option value="sss">SSS</option>
+                            <option value="mcn">MCN</option>
                         </select>
                     </mat-form-field>
                 </div>
@@ -277,9 +282,14 @@
                                 <mat-form-field appearance="fill" class="example-full-width">
                                     <mat-label>Program Type</mat-label>
                                     <select matNativeControl formControlName="orgProgramType" required>
-                                        <option value="" selected></option>
-                                        <option value="volvo">Yes</option>
-                                        <option value="saab">No</option>
+                                        <option value="" selected>--Select--</option>
+                                        <option value="ts">TS</option>
+                                        <option value="eoc">EOC</option>
+                                        <option value="ub">UB</option>
+                                        <option value="vub">VUB</option>
+                                        <option value="ubms">UBMS</option>
+                                        <option value="sss">SSS</option>
+                                        <option value="mcn">MCN</option>
                                     </select>
                                 </mat-form-field>
                             </div>
@@ -287,15 +297,18 @@
                                 <mat-form-field appearance="fill" class="example-full-width">
                                     <mat-label>Organization Type</mat-label>
                                     <select matNativeControl formControlName="orgOrganizationType">
-                                        <option value="" selected></option>
-                                        <option value="volvo">Yes</option>
-                                        <option value="saab">No</option>
+                                        <option value="" selected>--Select--</option>
+                                        <option value="lcd">Live Customer Data</option>
+                                        <option value="cd">Customer Demo</option>
+                                        <option value="tsd">Tech Support Demo</option>
+                                        <option value="saab">Dev Team Demo</option>
+                                        <option value="saab">Testing Scenario Demo</option>
                                     </select>
                                 </mat-form-field>
                             </div>
                         </div>
                     </div>
-                    <mat-accordion>
+                    <mat-accordion *ngIf="orgId">
                         <mat-expansion-panel (opened)="otherInfo = true" (closed)="otherInfo = false">
                             <mat-expansion-panel-header class="accordion-bg">
                                 <mat-panel-title>
@@ -342,11 +355,9 @@
                                         <mat-form-field appearance="fill" class="example-full-width">
                                             <mat-label>City</mat-label>
                                             <select matNativeControl formControlName="orgCity">
-                                                <option value="" selected></option>
-                                                <option value="volvo">SSS</option>
-                                                <option value="saab">UB</option>
-                                                <option value="mercedes">UBMS</option>
-                                                <option value="audi">TS</option>
+                                                <option value="" selected>--Select--</option>
+                                                <option value="austin">Austin</option>
+                                                <option value="dallas">Dallas</option>
                                             </select>
                                         </mat-form-field>
                                     </div>
@@ -354,11 +365,9 @@
                                         <mat-form-field appearance="fill" class="example-full-width">
                                             <mat-label>State</mat-label>
                                             <select matNativeControl formControlName="orgState">
-                                                <option value="" selected></option>
-                                                <option value="volvo">SSS</option>
-                                                <option value="saab">UB</option>
-                                                <option value="mercedes">UBMS</option>
-                                                <option value="audi">TS</option>
+                                                <option value="" selected>--Select--</option>
+                                                <option value="al">AL</option>
+                                                <option value="ca">CA</option>
                                             </select>
                                         </mat-form-field>
                                     </div>
@@ -542,8 +551,9 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-v .primary" (click)="openUserPopup()">Users</button>
-        <button type="button" class="btn btn-primary" (click)="addOrganization()">Save</button>
+        <button type="button" class="btn btn-v .primary" *ngIf="orgId" (click)="openUserPopup()">Users</button>
+        <button type="button" class="btn btn-primary" *ngIf="orgId" (click)="addOrganization()">Save</button>
+        <button type="button" class="btn btn-primary" *ngIf="!orgId" (click)="addOrganization();">Save & Next</button>
         <button type="button" class="btn btn-secondary" id="closePopup"
             (click)="isEdit = false; selectedRowIndex = null; selectedRow=null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>
         <button type="button" class="btn btn-primary">Purge Report</button>
@@ -559,7 +569,7 @@
     </div>
     <div class="modal-body">
         <div class="row">
-            <app-user-names-password></app-user-names-password>
+            <app-user-names-password  [organizationType]="orgId"></app-user-names-password>
         </div>
     </div>
 

@@ -1,7 +1,7 @@
 <div class="main-container">
   <div id="main-section" class="container-fluid ">
     <!-- Full Screen Loader Start -->
-    <div id="loading"></div>
+    <div id="loading1"></div>
     <!-- Full Screen Loader End -->
 
     <!-- Header Start-->
@@ -21,9 +21,9 @@
     <!-- Data Table Start-->
     <div class="mat-elevation-z8 data-table-height dt-max-height marg-t2" *ngIf="!isLoading">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-        <ng-container matColumnDef="orgId">
+        <ng-container matColumnDef="orgCode">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Organization Code </th>
-          <td mat-cell *matCellDef="let userObj; let row = dataIndex;">{{userObj.orgId}}</td>
+          <td mat-cell *matCellDef="let userObj; let row = dataIndex;">{{userObj.orgCode}}</td>
         </ng-container>
 
         <ng-container matColumnDef="username">
@@ -137,7 +137,7 @@
                 <mat-form-field appearance="fill" class="example-full-width">
                   <mat-label>Role</mat-label>
                   <select matNativeControl formControlName="roleName" required>
-                    <option [value]="roleObj.name" *ngFor="let roleObj of roleList" selected>
+                    <option [value]="roleObj.id" *ngFor="let roleObj of roleList" selected>
                       {{roleObj.name}}
                     </option>
                   </select>
@@ -168,14 +168,13 @@
                   <div class="form-group col-md-4">
                     <mat-form-field class="example-full-width" appearance="fill">
                       <mat-label>First Name</mat-label>
-                      <input matInput placeholder="" value="" formControlName="firstName"
-                             required>
+                      <input matInput placeholder="" value="" formControlName="firstName">
                     </mat-form-field>
                   </div>
                   <div class="form-group col-md-4">
                     <mat-form-field class="example-full-width" appearance="fill">
                       <mat-label>Last Name</mat-label>
-                      <input matInput placeholder="" value="" formControlName="lastName" required>
+                      <input matInput placeholder="" value="" formControlName="lastName">
                     </mat-form-field>
                   </div>
                   <div class="form-group col-md-4">

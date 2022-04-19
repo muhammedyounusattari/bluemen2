@@ -58,7 +58,7 @@ export class OrganizationComponent implements OnInit {
     }
 
     otherInfo: boolean = false;
-    orgId: number = 0;
+    orgId: any;
     organizationList: any;
 
     constructor(private modalService: BsModalService
@@ -166,10 +166,11 @@ export class OrganizationComponent implements OnInit {
         this.selectedRow = null;
         this.selectedRowIndex = null;
         this.isEdit = false;
+        this.orgId = null;
         this.openModal(this.organizationPopupRef);
     }
 
-    openModal(template: TemplateRef<any>, isUser?: false) {
+    openModal(template: TemplateRef<any>, isUser?: boolean) {
         if (!isUser) {
             this.modalRef = this.modalService.show(template, this.modalConfigSM);
         } else {
@@ -198,7 +199,12 @@ export class OrganizationComponent implements OnInit {
             this.showLoader();
             this.organizationService.saveOrganization(request).subscribe(result => {
                 if (result) {
-                    this.getOrgList();
+                    if (!this.orgId) {
+                        this.orgId= JSON.parse(result).body;
+                        this.hideLoader();
+                    } else {
+                        this.getOrgList();
+                    }
                 }
             });
         } else {
@@ -248,7 +254,7 @@ export class OrganizationComponent implements OnInit {
     }
 
     openUserPopup() {
-        this.openModal(this.userComponentPopupRef);
+        this.openModal(this.userComponentPopupRef, true);
     }
 
     editSelectedOrg() {

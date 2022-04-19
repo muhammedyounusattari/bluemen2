@@ -102,6 +102,13 @@ export class ServiceUrls {
     public static ADD_STAFF_MEMBERS = environment.apiUrl + '/blumen-api/staff/staffList/v1';
     public static DELETE_STAFF_MEMBERS = environment.apiUrl + '/blumen-api/staff/deleteStaffList/v1';
     public static FILTER_STAFF_MEMBERS = environment.apiUrl + '/blumen-api/staff/filter/staffList/v1';
+    public static GET_STAFF_MAX_ID = environment.apiUrl + '/blumen-api/staff/getMaxStaffId/v1';
+    public static GET_STAFF_NAME_BY_ORG_ID = environment.apiUrl + '/blumen-api/staff/getStaffNameByOrgId/v1';
+    public static MERGE_STAFF_BY_STAFF_ID = environment.apiUrl + '/blumen-api/staff/mergeStaffByStaffId/v1';
+    public static GET_DELETED_STAFF_BY_STAFF_ID = environment.apiUrl + '/blumen-api/staff/getDeletedStaffByStaffId/v1/';
+    public static RECOVER_DELETED_STAFF_BY_STAFF_ID = environment.apiUrl + '/blumen-api/staff/recoverDeletedStaffByStaffId/v1';
+    public static UPDATE_STAFF_BY_STAFF_ID = environment.apiUrl + '/blumen-api/staff/updateStaffByStaffId/v1';
+
 
     // Config setting API URL's
     public static GET_CONFIG_SETTINGS = environment.apiUrl + '/blumen-api/admin/getConfigSettingList/v1';
@@ -241,7 +248,6 @@ export class ServiceUrls {
 
     public static GET_USER_LIST = environment.apiUrl + '/blumen-api/keycloak/tenant/';
 
-
     public static RECOVER_DELETED_ACTIVITY_GROUP_BY_ID = environment.apiUrl + '/blumen-api/customize/recoverDeletedActivityGroupById/v1';
     public static GET_DELETED_GROUP_BY_ID = environment.apiUrl + '/blumen-api/customize/getDeletedGroupById/v1/';
     public static UPDATE_ACTIVITY_GROUP_BY_ID = environment.apiUrl + '/blumen-api/customize/updateActivityGroupById/v1';
@@ -274,6 +280,8 @@ export class ServiceUrls {
     public static GET_COLLEGE_SCHOOL_BY_CODE = environment.apiUrl + '/blumen-api/customize/getCollegeSchoolByCode/v1/';
     public static GET_DELETED_COLLEGE_SCHOOL_BY_NAME_AND_ORG_ID = environment.apiUrl + '/blumen-api/customize/getDeletedCollegeSchoolByNameAndOrgId/v1/';
 
+    // Login Managment
+    public static AUTHENTICATE = environment.apiUrl +"/blumen-api/authenticate";
     public static GET_ORG_USERS = environment.apiUrl + '/blumen-api/admin/home/getOrganizationList/v1';
     public static RESET_PASSWORD = environment.apiUrl + '/blumen-api/resetPassword/v1/';
     public static UPDATE_PASSWORD = environment.apiUrl + '/blumen-api/updatePassword/v1/';

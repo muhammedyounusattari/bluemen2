@@ -220,8 +220,7 @@ export class OrgUserLoginComponent implements OnInit {
                 this.isValidUser = true;
             }
         },(error:any) => {
-            const errorResponse = JSON.parse(error);
-            if (errorResponse.status==='200') {
+            if (error.status.toString()==='200' || error.status.toString() === '0') {
                 this.isLoading = false;
                 this.isValidUser = true;
             }

@@ -12,8 +12,7 @@ export class LoginService {
     }
 
     validateLogin(request: any, orgCode: string): Observable<any> {
-        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/authenticate';
-        return this.dataService.callLoginPostService(URL, request);
+        return this.dataService.callLoginPostService(ServiceUrls.AUTHENTICATE, request);
     }
 
     getSecurityQuestions(username: string, orgCode: string) {
@@ -40,7 +39,7 @@ export class LoginService {
     }
 
     getSecurityQuestions2(orgCode: any) {
-        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/admin/' + orgCode + '/securityQuestions/2';
+        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/admin/' + orgCode + '/securityQuestions/2';
         // https://blumen-api.azurewebsites.net:443/api/blumen-api/admin/test/securityQuestions1{orgId}
         return this.dataService.callGetService(URL);
     }

@@ -14,8 +14,8 @@ export class UserManagementService {
         return this.dataService.callGetService(ServiceUrls.GET_ORG_USERS);
     }
 
-    public addUpdateUser(request: any, orgId: any, userId: any): Observable<any> {
-        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/keycloak/tenant/' + orgId + '/createUser/v1/' + userId;
+    public addUpdateUser(request: any): Observable<any> {
+        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/admin/home/createUser/v1';
         return this.dataService.callPostService(
             URL,
             JSON.stringify(request)
