@@ -60,7 +60,7 @@ export class OrganizationComponent implements OnInit {
     otherInfo: boolean = false;
     orgId: any;
     organizationList: any;
-    orgType: any;
+    organizationCode: any;
     constructor(private modalService: BsModalService
         , private dialog: MatDialog
         , private toastr: ToastrService
@@ -159,7 +159,7 @@ export class OrganizationComponent implements OnInit {
         this.selectedRowIndex = index;
         this.selectedRow = selectedRowItem;
         this.orgId = this.selectedRow.orgId;
-        this.orgType = this.selectedRow.orgProgramType;
+        this.organizationCode = this.selectedRow.orgCode;
     }
 
     resetFields() {
@@ -217,7 +217,7 @@ export class OrganizationComponent implements OnInit {
                 if (result) {
                     if (!this.orgId) {
                         this.orgId = JSON.parse(result).body;
-                        this.orgType = this.formGroup?.get('orgProgramType')?.value;
+                        this.organizationCode = this.formGroup?.get('orgCode')?.value;
                         this.hidePopupLoader();
                     } else {
                         this.showLoader();

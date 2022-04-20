@@ -23,7 +23,7 @@
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
         <ng-container matColumnDef="orgCode">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Organization Code </th>
-          <td mat-cell *matCellDef="let userObj; let row = dataIndex;">{{orgCode}}</td>
+          <td mat-cell *matCellDef="let userObj; let row = dataIndex;">{{userObj.orgCode}}</td>
         </ng-container>
 
         <ng-container matColumnDef="username">
