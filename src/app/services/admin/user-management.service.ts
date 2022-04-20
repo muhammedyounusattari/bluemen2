@@ -9,8 +9,9 @@ import { ServiceUrls } from '../../constants/serviceUrl';
 export class UserManagementService {
     constructor(private dataService: DataService) { }
 
-    public getUserList(orgCode:any) {
-        return this.dataService.callGetService(ServiceUrls.GET_ORG_USERS);
+    public getUserList(orgCode: any) {
+        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/admin/home/getOrganizationUserList/v1/' + orgCode;
+        return this.dataService.callGetService(URL);
     }
 
     public addUpdateUser(request: any): Observable<any> {
@@ -27,7 +28,7 @@ export class UserManagementService {
     }
 
     public resetPassword(user: string) {
-      const URL = ServiceUrls.RESET_PASSWORD+""+user;
-      return this.dataService.callGetService(URL);
+        const URL = ServiceUrls.RESET_PASSWORD + "" + user;
+        return this.dataService.callGetService(URL);
     }
 }

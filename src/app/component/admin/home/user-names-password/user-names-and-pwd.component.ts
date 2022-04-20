@@ -58,6 +58,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     userId = null;
     boltId = 0;
     userList = [];
+    orgCode: any;
 
     @Input() organizationId: any;
     @Input() organizationType: any;
@@ -110,7 +111,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     }
 
     getUserList() {
-        this.orgId = this.organizationId ? this.organizationId : null;
+        this.orgId = this.organizationId ? this.organizationId : sessionStorage.getItem('realmId');
         this._userManagementService.getUserList(this.orgId).subscribe(result => {
             setTimeout(() => {
                 this.hideLoader();
@@ -118,6 +119,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
             this.isLoading = false;
             if (result) {
                 this.dataSource = new MatTableDataSource(result.users);
+                this.orgCode = result[0].orgCode;
                 this.userList = result.body;
                 this.dataSource.paginator = this.paginator;
                 this.selectedRowIndex = null;

@@ -174,8 +174,23 @@ export class OrganizationComponent implements OnInit {
     openModal(template: TemplateRef<any>, isUser?: boolean) {
         if (!isUser) {
             this.modalRef = this.modalService.show(template, this.modalConfigSM);
+            this.hidePopupLoader();
         } else {
             this.userModalRef = this.modalService.show(template, this.modalConfigXL)
+        }
+    }
+
+    hidePopupLoader() {
+        const popupElement = window.document.getElementById('popupLoading');
+        if (popupElement != null) {
+            popupElement.style.display = 'none';
+        }
+    }
+
+    showPopupLoader() {
+        const popupElement = window.document.getElementById('popupLoading');
+        if (popupElement != null) {
+            popupElement.style.display = 'block';
         }
     }
 
@@ -196,16 +211,18 @@ export class OrganizationComponent implements OnInit {
 
     addOrganization() {
         if (this.formGroup.valid) {
+            this.showPopupLoader();
             const request = this.requestPayload();
-            this.showLoader();
             this.organizationService.saveOrganization(request).subscribe(result => {
                 if (result) {
                     if (!this.orgId) {
-                        this.orgId= JSON.parse(result).body;
+                        this.orgId = JSON.parse(result).body;
                         this.orgType = this.formGroup?.get('orgProgramType')?.value;
-                        this.hideLoader();
+                        this.hidePopupLoader();
                     } else {
+                        this.showLoader();
                         this.getOrgList();
+                        this.modalRef.hide();
                     }
                 }
             });
