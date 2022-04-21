@@ -290,8 +290,9 @@ export class ServiceUrls {
 
     // Organizations API's
     public static GET_ORGANIZATIONS_LIST = environment.apiUrl + '/blumen-api/admin/home/getOrganizationsList/v1';
-    public static ADD_ORGANIZATION = environment.apiUrl + '/blumen-api/admin/home/addOrganization/v1';
-
+    public static GET_ORGANIZATIONS_USER_LIST = environment.apiUrl + '/blumen-api/admin/home/getOrganizationUserList/v1/';
+    public static ADD_ORGANIZATION = environment.apiUrl + '/blumen-api/admin/home/addOrganization/v1/';
+    public static CREATE_ORGANIZATION_USER = environment.apiUrl+'/blumen-api/admin/home/createUser/v1';
     // Roles API's
     public static GET_ROLES_LIST = environment.apiUrl + '/blumen-api/roles/getRoles/v1';
 }

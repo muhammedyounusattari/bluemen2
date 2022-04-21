@@ -10,14 +10,14 @@ export class UserManagementService {
     constructor(private dataService: DataService) { }
 
     public getUserList(orgCode: any) {
-        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/admin/home/getOrganizationUserList/v1/' + orgCode;
+        const URL = ServiceUrls.GET_ORGANIZATIONS_USER_LIST + orgCode;
         return this.dataService.callGetService(URL);
     }
 
     public addUpdateUser(request: any): Observable<any> {
-        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/admin/home/createUser/v1';
+
         return this.dataService.callPostService(
-            URL,
+            ServiceUrls.CREATE_ORGANIZATION_USER,
             JSON.stringify(request)
         );
     }

@@ -169,7 +169,7 @@ export class LoginComponent implements OnInit {
 
   createForgotPasswordForm() {
     this.formGroup1 = this.formBuilder.group({
-      'fpOrgType': ['', Validators.required],
+      'fpOrgCode': ['', Validators.required],
       'fpEmail': ['', Validators.required],
       'securityQuestion1': ['', Validators.required],
       'securityQuestion2': ['', Validators.required],
@@ -190,7 +190,7 @@ export class LoginComponent implements OnInit {
 
   getSecQuestions() {
     this.fpError = false;
-    this._loginService.getSecurityQuestions(this.formGroup1?.get('fpEmail')?.value, this.formGroup1?.get('fpOrgType')?.value)
+    this._loginService.getSecurityQuestions(this.formGroup1?.get('fpEmail')?.value, this.formGroup1?.get('fpOrgCode')?.value)
       .subscribe(result => {
         if (result) {
           result = JSON.parse(result);
@@ -222,12 +222,12 @@ export class LoginComponent implements OnInit {
     this.fpError = false;
     if (this.formGroup1.valid) {
       const data = {
-        'orgType': this.formGroup1?.get('fpOrgType')?.value,
+        'orgCode': this.formGroup1?.get('fpOrgCode')?.value,
         'email': this.formGroup1?.get('fpEmail')?.value,
         'securityAnswer1': this.formGroup1?.get('securityAnswer1')?.value,
         'securityAnswer2': this.formGroup1?.get('securityAnswer2')?.value
       };
-      this._loginService.forgotPassword(data, this.formGroup1?.get('fpOrgType')?.value).subscribe((result: any) => {
+      this._loginService.forgotPassword(data, this.formGroup1?.get('fpOrgCode')?.value).subscribe((result: any) => {
         if (result) {
           result = JSON.parse(result);
           // let maskid = "";
