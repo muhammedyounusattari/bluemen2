@@ -17,7 +17,7 @@ export class LoginService {
 
     getSecurityQuestions(username: string, orgCode: string) {
         const request = {
-            'orgType': orgCode,
+            'orgCode': orgCode,
             'email': username
         };
         return this.dataService.callLoginPostService(ServiceUrls.FORGOT_PASSWORD, request);
