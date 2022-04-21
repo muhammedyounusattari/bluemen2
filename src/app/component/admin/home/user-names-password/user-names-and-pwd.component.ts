@@ -124,7 +124,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
                 this.dataSource.sort = this.sort;
             }
         });
-    } 
+    }
 
     openModal(template: TemplateRef<any>) {
         this.modalRef = this.modalService.show(template, this.modalConfigSM)
@@ -193,7 +193,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
                         timeOut: 5000,
                         closeButton: true
                     });
-                } 
+                }
                 this.modalRef.hide();
             });
         } else {
@@ -291,7 +291,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
             'mobile': this.formGroup?.get('mobile')?.value,
             'notes': this.formGroup?.get('notes')?.value,
             'orgId': this.orgId,
-            'orgType': this.organizationCode,
+            'orgCode': this.organizationCode,
             'phone2': this.formGroup?.get('phone2')?.value,
             'roleName': this.formGroup?.get('roleName')?.value,
             'sendMail': this.formGroup?.get('sendMail')?.value,
