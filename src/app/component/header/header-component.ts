@@ -26,6 +26,9 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['']);
     } else if (this.sharedService.getUserRole() === 'OrgUser') {
       this.router.navigate(['user-login']);
+    } else {
+      this.router.navigate(['']);
     }
+    window.location.reload();
   }
 }

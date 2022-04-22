@@ -294,5 +294,8 @@ export class ServiceUrls {
     public static ADD_ORGANIZATION = environment.apiUrl + '/blumen-api/admin/home/addOrganization/v1/';
     public static CREATE_ORGANIZATION_USER = environment.apiUrl+'/blumen-api/admin/home/createUser/v1';
     // Roles API's
-    public static GET_ROLES_LIST = environment.apiUrl + '/blumen-api/roles/getRoles/v1';
+    public static GET_ROLENAMES_LIST = environment.apiUrl + '/blumen-api/roles/getRoles/v1';
+    public static GET_PRIVILEDGES_BY_ROLENAME = environment.apiUrl + '/blumen-api/roles/getRolesAsTree/v1?roleName=';
+    public static ADD_NEW_ROLE = environment.apiUrl + '/blumen-api/roles/addRole/v1';
+    public static DELETE_ROLE = environment.apiUrl + '/blumen-api/roles/deleteRole/v1?roleId=';
 }

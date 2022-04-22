@@ -11,7 +11,23 @@ export class RolesService {
     constructor(private dataService: DataService) {
     }
 
-    getRolesList() {
-        return this.dataService.callGetService(ServiceUrls.GET_ROLES_LIST, '');
+    getRoleNamesList() {
+        return this.dataService.callGetService(ServiceUrls.GET_ROLENAMES_LIST, '');
+    }
+
+    getPriviledgesByRoleName(roleName: string) {
+        return this.dataService.callGetService(ServiceUrls.GET_PRIVILEDGES_BY_ROLENAME + roleName, '');
+    }
+
+    addNewRole(request: any): Observable<any> {
+        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/roles/addRole/v1?copyRoleName=' 
+        + request.copyRoleName
+        + '&isDefault=' + request.isDefault + '&newRoleCode=' + request.newRoleCode + '&newRoleName=' +
+        request.newRoleName + '&orgId=' + 1;
+        return this.dataService.callPostService(URL, request);
+    }
+
+    deleteRole(id: string) {
+        return this.dataService.callDeleteService(ServiceUrls.DELETE_ROLE + id);
     }
 }

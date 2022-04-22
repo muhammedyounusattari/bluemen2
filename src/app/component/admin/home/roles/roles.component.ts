@@ -4,7 +4,7 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { RolesService } from 'src/app/services/admin/roles.service';
-
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-roles',
@@ -12,13 +12,6 @@ import { RolesService } from 'src/app/services/admin/roles.service';
   styleUrls: ['./roles.component.css']
 })
 export class RolesComponent implements AfterViewInit, OnInit {
-  @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
-  modalRef: BsModalRef;
-  modalConfigSM = {
-    backdrop: true,
-    ignoreBackdropClick: true,
-    class: 'modal-lg'
-  }
   roleList: any;
   userRoles: any = [];
   toggler: any;
@@ -26,34 +19,62 @@ export class RolesComponent implements AfterViewInit, OnInit {
   isExpandChildren = false;
   isExpandChild = false;
   roleNameList: any;
+
+  @ViewChild('addNewRolePopup') addNewRolePopupRef: TemplateRef<any>;
+  modalRef: BsModalRef;
+  modalConfigSM = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+    class: 'modal-sm'
+  }
+  formGroup: FormGroup;
+  selectedRoleId: any;
+
   constructor(private modalService: BsModalService
     , private sharedService: SharedService
-    , private rolesService: RolesService) {
+    , private rolesService: RolesService
+    , private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
     this.sharedService.setPageTitle('Roles');
+    this.createForm();
+    this.loadRoleNames();
+  }
+
+  loadRoleNames() {
     this.roleNameList = [];
-    this.rolesService.getRolesList().subscribe(result => {
+    this.rolesService.getRoleNamesList().subscribe(result => {
       if (result) {
-        this.roleList = result;
-        this.roleList.forEach((element: any) => {
-          const data = {
-            id: element.id,
-            name: element.name,
-            default: element.default
-          };
-          this.roleNameList.push(data);
-        });
-        this.userRoles.push(this.roleList[0]);
+        this.roleNameList = result;
         setTimeout(() => {
-          this.setBgColorForSelectedRole(this.roleNameList[0].id);
+          this.setBgColorForSelectedRole(this.roleNameList[0].id, this.roleNameList[0].name);
         }, 1000);
+      }
+    });
+
+  }
+
+  getPriviledgesByRoleName(roleName: string) {
+    this.rolesService.getPriviledgesByRoleName(roleName).subscribe(result => {
+      if (result) {
+        this.userRoles = result;
       }
     });
   }
 
-  setBgColorForSelectedRole(id: any) {
+  createForm() {
+    this.formGroup = this.formBuilder.group({
+      'id': [''],
+      'newRoleName': ['', Validators.required],
+      'roleCode': [''],
+      'copyRoleName': ['', Validators.required],
+      'isDefault': ['']
+    });
+  }
+
+  setBgColorForSelectedRole(id: any, roleName: string) {
+    this.selectedRoleId = id;
     this.roleNameList.forEach((element: any) => {
       const roleId = document.getElementById(element.id);
       if (roleId) {
@@ -65,8 +86,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
       roleId.style.backgroundColor = '#00396b';
     }
     this.userRoles = [];
-    const activeRole = this.roleList.filter((item: any) => item.id === id);
-    this.userRoles.push(activeRole[0]);
+    this.getPriviledgesByRoleName(roleName);
   }
 
   ngAfterViewInit(): void {
@@ -96,5 +116,46 @@ export class RolesComponent implements AfterViewInit, OnInit {
   }
   setChildValue() {
     this.isExpandChild = !this.isExpandChild;
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, this.modalConfigSM)
+  }
+
+  resetFields() {
+    this.createForm();
+    this.openModal(this.addNewRolePopupRef);
+  }
+
+  addNewRole() {
+    if (this.formGroup.valid) {
+      const request = this.getRequestPayload();
+      this.rolesService.addNewRole(request).subscribe(result => {
+        if (result) {
+          this.loadRoleNames();
+          this.modalRef.hide();
+        }
+      });
+    } else {
+      this.formGroup.markAllAsTouched();
+    }
+  }
+
+  deleteRole() {
+    this.rolesService.deleteRole(this.selectedRoleId).subscribe(result => {
+      if(result) {
+        this.loadRoleNames();
+      }
+    });
+  }
+
+  getRequestPayload() {
+    return {
+      'copyRoleName' : this.formGroup ?.get('copyRoleName') ?.value,
+      'newRoleName' : this.formGroup ?.get('newRoleName') ?.value,
+      'newRoleCode' : this.formGroup ?.get('newRoleName') ?.value,
+      'isDefault' : this.formGroup ?.get('isDefault') ?.value,
+      'orgId' : 1,
+    }
   }
 }

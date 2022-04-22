@@ -16,7 +16,7 @@
             <div class="col-md-12 display-content">
                 <div class="col-md-2 left-div" id="leftBlock">
                     <div *ngFor="let role of roleNameList">
-                        <div class="list" style="margin-top: 5%;white-space: nowrap;" (click)="setBgColorForSelectedRole(role.id)" id="{{role.id}}">
+                        <div class="list" style="margin-top: 5%;white-space: nowrap;" (click)="setBgColorForSelectedRole(role.id, role.name)" id="{{role.id}}">
                             {{role.name}} {{role.default ? '(Default)': ''}}
                         </div>
                     </div>
@@ -65,4 +65,85 @@
             </div>
         </div>
     </div>
+
+    <!-- Buttons Start-->
+  <nav class="navbar navbar-expand-lg navbar-light bg-bottom " id="navbarTag">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0);" (click)="resetFields()">New</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0);">Rename</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0);">Save</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0);">Delete</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0);">Save & Close</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0);">Cancel</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 </div>
+
+<!-- Modal Start-->
+<ng-template #addNewRolePopup>
+    <!-- Modal -->
+    <div class="modal-header popHeaderBG">
+        <span class="modal-title popHeader" id="exampleModalLabel">Role Information</span>
+        <button type="button" class="btn-close" (click)="modalRef.hide();" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <form [formGroup]="formGroup" class="form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group ">
+                            <mat-form-field class="example-full-width" appearance="fill">
+                                <mat-label>Role Name</mat-label>
+                                <input matInput placeholder="" value="" formControlName="newRoleName" required>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="form-group">
+                            <mat-form-field appearance="fill" class="mat-select-width">
+                                <mat-label>Role</mat-label>
+                                <select matNativeControl formControlName="copyRoleName" required>
+                                    <option value="" selected>--Select--</option>
+                                    <option value="{{roleObj.name}}" *ngFor="let roleObj of roleNameList">{{roleObj.name}}</option>
+                                </select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="form-group">
+                            <section class="example-section">
+                                <mat-checkbox formControlName="isDefault" class="example-margin">
+                                    Default
+                                </mat-checkbox>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-v .primary" (click)="addNewRole()">Save </button>
+        
+        <button type="button" class="btn btn-secondary" id="closePopup"
+            (click)="modalRef.hide();">Cancel</button>
+
+    </div>
+</ng-template>
+<!-- Modal End-->
