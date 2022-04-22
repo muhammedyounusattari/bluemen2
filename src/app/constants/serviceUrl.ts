@@ -6,6 +6,8 @@ export class ServiceUrls {
     public static GET_LOGGED_USERS = environment.apiUrl + '/blumen-api/logged-user/getLoggedUsers/v1';
     public static PUT_CHANGE_PASSWORD = environment.apiUrl + '/blumen-api/changePassword/v1';
     public static GET_SECURITY_QUESTIONS = environment.apiUrl +'/blumen-api/admin/securityQuestions';
+    public static POST_SECURITY_QUESTIONS = environment.apiUrl +'/blumen-api/admin/addSecurityQuestion';
+
 
     // ACTIVITY GROUP LIST API URL's
     public static FILTER_ACTIVITY_GROUP_LIST = environment.apiUrl + '/blumen-api/customize/filter/activityGroupList/v1';
@@ -81,6 +83,8 @@ export class ServiceUrls {
     public static GET_PULL_DOWN_ITEM = environment.apiUrl + '/blumen-api/customize/pullDownList/v1/';
     public static GET_PULL_DOWN_ID_VALIDATE = environment.apiUrl + '/blumen-api/customize/getPulldownValidate/v1';
     public static GET_MULTIPLE_PULL_DOWN_LIST = environment.apiUrl + '/blumen-api/customize/multiplePulldownList/code';
+    public static GET_MULTIPLE_PULL_DOWN_MASTER_LIST = environment.apiUrl + '/blumen-api/customize/getMultiPullDownMaster/v1';
+
 
 
     // Counselors API URL's
@@ -112,7 +116,7 @@ export class ServiceUrls {
 
 
     // Config setting API URL's
-    public static GET_CONFIG_SETTINGS = environment.apiUrl + '/blumen-api/admin/getConfigSettingList/v1';
+   public static GET_CONFIG_SETTINGS = environment.apiUrl + '/blumen-api/admin/getConfigSettingList/v1';
     public static POST_CONFIG_SETTINGS = environment.apiUrl + '/blumen-api/admin/postConfigSettingList/v1';
 
     // LAB SETTINGS PREFERENCES
@@ -293,6 +297,8 @@ export class ServiceUrls {
     public static GET_ORGANIZATIONS_USER_LIST = environment.apiUrl + '/blumen-api/admin/home/getOrganizationUserList/v1/';
     public static ADD_ORGANIZATION = environment.apiUrl + '/blumen-api/admin/home/addOrganization/v1/';
     public static CREATE_ORGANIZATION_USER = environment.apiUrl+'/blumen-api/admin/home/createUser/v1';
+    public static GET_ORG_BASED_USER_LIST = environment.apiUrl + '/blumen-api/admin/home/getUsers/v1';
+
     // Roles API's
     public static GET_ROLENAMES_LIST = environment.apiUrl + '/blumen-api/roles/getRoles/v1';
     public static GET_PRIVILEDGES_BY_ROLENAME = environment.apiUrl + '/blumen-api/roles/getRolesAsTree/v1?roleName=';

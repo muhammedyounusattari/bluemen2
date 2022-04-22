@@ -29,6 +29,11 @@ export class HomeService {
     return this.dataService.callGetService(ServiceUrls.GET_SECURITY_QUESTIONS);
   }
 
+  postSecurityQuestion(request: any): Observable<any> {
+    console.log(JSON.stringify(request));
+    return this.dataService.callPostService(ServiceUrls.POST_SECURITY_QUESTIONS, JSON.stringify(request));
+}
+
 
   public getRealmIdFromState() {
     let stateDB = sessionStorage.getItem('state');

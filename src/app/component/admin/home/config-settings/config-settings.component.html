@@ -11,7 +11,7 @@
         <span for="sel1">User:
         <select class="form-control" id="serviceGrpName" (change)="getConfigValues($event)"
                 [(ngModel)]="userSelected">
-          <option *ngFor="let user of userList.body" value="{{user.username}}">
+          <option *ngFor="let user of userList" value="{{user.id }}">
             {{user.username}}</option>
         </select>
         </span>

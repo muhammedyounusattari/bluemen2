@@ -66,10 +66,8 @@ export class ConfigSettingsComponent implements OnInit {
   ngOnInit() {
     this.sharedService.setPageTitle('Config Settings');
     this.myElement = window.document.getElementById('loading');
-    this.username = sessionStorage.getItem('username') || '';
-    this.realmId = sessionStorage.getItem('realmId') || '';
-    this.getUserList(this.realmId);
-    this.getConfigSettingsValues(this.username, this.realmId);
+    this.getUserList();
+    //this.getConfigSettingsValues(this.username);
   }
 
 
@@ -136,7 +134,7 @@ export class ConfigSettingsComponent implements OnInit {
       if (result) {
         this.spinner = false;
         this.configSettingsList = result;
-        this.getConfigSettingsValues(this.userSelected,this.realmId);
+        this.getConfigSettingsValues(this.userSelected);
       }
     });
 
@@ -149,8 +147,8 @@ export class ConfigSettingsComponent implements OnInit {
     }
   }
 
-  getConfigSettingsValues(username:string, realmId:string){
-       this.configSettingsService.getConfigSettings(username, realmId).subscribe((result: any) => {
+  getConfigSettingsValues(username:string){
+       this.configSettingsService.getConfigSettings(username).subscribe((result: any) => {
           this.hideLoader();
 
           if (result) {
@@ -167,11 +165,11 @@ export class ConfigSettingsComponent implements OnInit {
     var user = this.userSelected = userEvent.target.value;
 
     if(user)
-       this.getConfigSettingsValues(user, this.realmId);
+       this.getConfigSettingsValues(user);
   }
 
-  getUserList(realmId:string){
-   this.configSettingsService.getUserList(realmId).subscribe((result:any) => {
+  getUserList(){
+   this.configSettingsService.getUserList().subscribe((result:any) => {
           if(result){
           this.userList = result;
             console.log("result", result);

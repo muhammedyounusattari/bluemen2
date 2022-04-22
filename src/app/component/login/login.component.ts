@@ -106,6 +106,7 @@ export class LoginComponent implements OnInit {
             sessionStorage.setItem('realmId',  this.requestData.organization );
             sessionStorage.setItem('username',  this.requestData.email);
             sessionStorage.setItem('state', JSON.stringify(result));
+            sessionStorage.setItem('orgId',result.orgId);
             if (result.isTwoFactorEnabled) {
               this.openModal(this.twoFactorPopupRef);
             } else {

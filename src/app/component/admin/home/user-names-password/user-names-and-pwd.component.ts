@@ -110,7 +110,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     }
 
     getUserList() {
-        this.orgId = this.organizationId ? this.organizationId : sessionStorage.getItem('realmId');
+        this.orgId = this.organizationId ? this.organizationId : sessionStorage.getItem('orgId');
         this._userManagementService.getUserList(this.orgId).subscribe(result => {
             setTimeout(() => {
                 this.hideLoader();

@@ -96,6 +96,12 @@ export class PullDownListService {
     return this.dataService.callGetService(ServiceUrls.GET_MULTIPLE_PULL_DOWN_LIST+"/"+code);
   }
 
+  // public getMultiPullDownMaster(pullType: any): Observable<any> {
+  //   let orgId= 0;
+  //   let projtype= 7;
+  //   return this.dataService.callGetService(ServiceUrls.GET_MULTIPLE_PULL_DOWN_MASTER_LIST+"/"+orgId+"/"+projtype+"/"+pullType);
+  // }
+
   
 
 

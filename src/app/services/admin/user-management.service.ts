@@ -9,8 +9,8 @@ import { ServiceUrls } from '../../constants/serviceUrl';
 export class UserManagementService {
     constructor(private dataService: DataService) { }
 
-    public getUserList(orgCode: any) {
-        const URL = ServiceUrls.GET_ORGANIZATIONS_USER_LIST + orgCode;
+    public getUserList(orgId: any) {
+        const URL = ServiceUrls.GET_ORGANIZATIONS_USER_LIST + orgId;
         return this.dataService.callGetService(URL);
     }
 
