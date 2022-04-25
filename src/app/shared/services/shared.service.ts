@@ -10,7 +10,7 @@ export class SharedService {
     private successMessage = new Subject<any>();
     private infoMessage = new Subject<any>();
     private pageTitle = new Subject<any>();
-    private userRole = '';
+    private userInfo = null;
 
     showErrorMessage() {
         let className = document.getElementsByClassName('validation-error')[0].className;
@@ -82,11 +82,11 @@ export class SharedService {
         return this.pageTitle.asObservable();
     }
 
-    setUserRole(role: string) {
-        this.userRole = role;
+    setUserInformation(userInfo:any) {
+        this.userInfo = userInfo;
     }
  
-    getUserRole() {
-        return this.userRole;
+    getUserInformation() {
+        return this.userInfo;
     }
 }

@@ -62,6 +62,12 @@ export class UserNamesAndPasswordComponent implements OnInit {
     @Input() organizationId: any;
     @Input() organizationCode: any;
     orgId = null;
+    isDisabled = false;
+    organizationsList: any;
+    selectedOrgId: any;
+    user: any;
+    isSuperAdmin: boolean = false;
+
     constructor(private modalService: BsModalService
         , private dialog: MatDialog
         , private toastr: ToastrService
@@ -71,10 +77,21 @@ export class UserNamesAndPasswordComponent implements OnInit {
         , private sharedService: SharedService) { }
 
     ngOnInit(): void {
-        this.sharedService.setPageTitle('User Information');
+        this.isSuperAdmin = false;
+        this.user = sessionStorage.getItem('state');
+        this.user = JSON.parse(this.user);
+        if (this.user.roleName !== 'Super Admin' || this.organizationId) {
+            this.getUserList();
+            if (!this.organizationId) {
+                this.sharedService.setPageTitle('User Information');
+            }
+        } else {
+            this.isSuperAdmin = true;
+            this.getOrganizationList();
+        }
         this.createForm();
         this.myElement = window.document.getElementById('loading1');
-        this.getUserList();
+
     }
 
     createForm() {
@@ -110,7 +127,11 @@ export class UserNamesAndPasswordComponent implements OnInit {
     }
 
     getUserList() {
-        this.orgId = this.organizationId ? this.organizationId : sessionStorage.getItem('orgId');
+        if (this.isSuperAdmin) {
+            this.orgId = this.selectedOrgId;
+        } else {
+            this.orgId = this.organizationId ? this.organizationId : this.user.orgId;
+        }
         this._userManagementService.getUserList(this.orgId).subscribe(result => {
             setTimeout(() => {
                 this.hideLoader();
@@ -118,12 +139,34 @@ export class UserNamesAndPasswordComponent implements OnInit {
             this.isLoading = false;
             if (result) {
                 this.dataSource = new MatTableDataSource(result.users);
-                this.userList = result.body;
+                this.userList = result.users;
                 this.dataSource.paginator = this.paginator;
                 this.selectedRowIndex = null;
                 this.dataSource.sort = this.sort;
             }
         });
+    }
+
+    getOrganizationList() {
+        this._userManagementService.getOrganizationsList().subscribe(result => {
+            if (result) {
+                this.hideLoader();
+                this.organizationsList = result;
+                this.selectedOrgId = result[0].orgId;
+                this.populateUserList();
+            }
+        });
+    }
+
+    populateUserList() {
+        const result = this.organizationsList.filter((item: any) => item.orgId === Number(this.selectedOrgId));
+        this.dataSource = new MatTableDataSource(result[0].users);
+        this.userList = result[0].users;
+        this.dataSource.paginator = this.paginator;
+        this.selectedRowIndex = null;
+        this.dataSource.sort = this.sort;
+        this.orgId = this.selectedOrgId;
+        this.organizationCode = result[0].orgCode;
     }
 
     openModal(template: TemplateRef<any>) {
@@ -133,6 +176,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     setSelectedRow(selectedRowItem: any, index: Number) {
         this.selectedRowIndex = index;
         this.selectedRow = selectedRowItem;
+        this.orgId = this.selectedRow.orgId;
     }
 
     hideLoader() {
@@ -174,11 +218,13 @@ export class UserNamesAndPasswordComponent implements OnInit {
         }
     }
 
-    addUpdateUser() {
+    createUser() {
         if (this.formGroup.valid) {
+            this.isDisabled = true;
             const request = this.getRequestPayload();
-            this._userManagementService.addUpdateUser(request).subscribe(result => {
+            this._userManagementService.createUser(request).subscribe(result => {
                 if (result) {
+                    this.isDisabled = false;
                     this.getUserList();
                     this.toastr.success('Saved successfully !', '', {
                         timeOut: 5000,
@@ -238,6 +284,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     removeUser() {
         if (this.selectedRow) {
             this.showLoader();
+            this.selectedRow.active = false;
             const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
                 data: {
                     title: 'Confirm remove record',
@@ -246,14 +293,17 @@ export class UserNamesAndPasswordComponent implements OnInit {
             });
             confirmDialog.afterClosed().subscribe(result => {
                 if (result === true) {
-                    this._userManagementService.deleteUser(this.selectedRow.id, this.orgId).subscribe(res => {
+                    this._userManagementService.updateUser(this.selectedRow).subscribe(res => {
                         if (res) {
                             this.getUserList();
+                            this.toastr.success('Deleted successfully !', '', {
+                                timeOut: 5000,
+                                closeButton: true
+                            });
                         }
                     }, (error: any) => {
                         const errorResponse = JSON.parse(error);
-                    })
-
+                    });
                 } else {
                     this.hideLoader();
                 }
@@ -263,6 +313,35 @@ export class UserNamesAndPasswordComponent implements OnInit {
                 timeOut: 5000,
                 closeButton: true
             });
+        }
+    }
+
+    updateUser() {
+        if (this.formGroup.valid) {
+            this.isDisabled = true;
+            const request = this.getRequestPayload();
+            this._userManagementService.updateUser(request).subscribe(result => {
+                if (result) {
+                    this.isDisabled = false;
+                    this.getUserList();
+                    this.toastr.success('Updated successfully !', '', {
+                        timeOut: 5000,
+                        closeButton: true
+                    });
+                    this.modalRef.hide();
+                }
+            }, (error: any) => {
+                if (error) {
+                    const errorResponse = JSON.parse(error);
+                    this.toastr.error(errorResponse.message, '', {
+                        timeOut: 5000,
+                        closeButton: true
+                    });
+                }
+                this.modalRef.hide();
+            });
+        } else {
+            this.formGroup.markAllAsTouched();
         }
     }
 

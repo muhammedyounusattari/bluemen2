@@ -40,7 +40,6 @@ import en from '@angular/common/locales/en';
 import { HttpClientModule } from '@angular/common/http';
 
 registerLocaleData(en);
-import { OrgUserLoginComponent } from './component/org-user-login/org-user-login.component';
 
 @NgModule({
   declarations: [
@@ -53,8 +52,7 @@ import { OrgUserLoginComponent } from './component/org-user-login/org-user-login
     ConfirmationComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    DialogBoxComponent,
-    OrgUserLoginComponent
+    DialogBoxComponent
   ],
   imports: [
     BrowserModule,

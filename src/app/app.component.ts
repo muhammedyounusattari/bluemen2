@@ -45,27 +45,18 @@ export class AppComponent implements OnInit, AfterContentChecked {
     this.subscription = this.sharedService.getPageTitle().subscribe(message => {
       this.pageTitle = message.text;
     });
-    let isLoggedIn = false;
     if (window.location.pathname === '/reset-password' || window.location.pathname === '/reset-password/') {
-      isLoggedIn = false;
+      this.isLoggedIn = false;
       this.resetHashCode = window.location.hash;
       this.isResetPassword = true;
     } else {
-      if(window.location.pathname === '/user-login' || window.location.pathname === '/user-login/'){
-        this.isSuperAdmin = false;
-        this.sharedService.setUserRole('OrgUser');
-      } else if (window.location.pathname === '' || window.location.pathname === '/') {
-        this.isSuperAdmin = true;
-        this.sharedService.setUserRole('SuperAdmin');
-      }
       const data = sessionStorage.getItem('accessToken');
       if (data && data !== 'null') {
-        isLoggedIn = true;
+        this.isLoggedIn = true;
       } else {
-        isLoggedIn = false;
+        this.isLoggedIn = false;
       }
     }
-    this.isLoggedIn = isLoggedIn;
     // this.isLoggedIn = true;
   }
 

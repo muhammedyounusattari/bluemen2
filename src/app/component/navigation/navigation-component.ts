@@ -10,6 +10,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 })
 export class NavigationComponent implements OnInit {
   menus: String[];
+  user: any;
   constructor(private router: Router
     , public sharedService: SharedService, private roleService: RolesService) {
   }
@@ -21,10 +22,13 @@ export class NavigationComponent implements OnInit {
     }, (error: any) => {
       console.log(error);
     });
+
+    this.user = sessionStorage.getItem('state');
+    this.user = JSON.parse(this.user);
   }
 
   showMenu(element: String): boolean {
-     return this.menus.includes(element);
+    return this.menus.includes(element);
   }
 
   validate() {

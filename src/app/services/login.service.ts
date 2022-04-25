@@ -28,14 +28,19 @@ export class LoginService {
     }
 
     updateSecurityQuestions(request: any) {
-        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/keycloak/updateSecurityQuestions';
+        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/updateSecurityQuestions';
         return this.dataService.callPutService(URL, request);
     }
 
-    getSecurityQuestionList() {
-        return this.dataService.callGetService(ServiceUrls.GET_SECURITY_QUESTIONS);
+    getSecurityQuestionList(orgCode: any) {
+        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/admin/' + orgCode + '/securityQuestions';
+        return this.dataService.callGetService(URL);
     }
 
+    getSecurityQuestions2(orgCode: any) {
+        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/admin/' + orgCode + '/securityQuestions/2';
+        return this.dataService.callGetService(URL);
+    }
 
     resetPasswordUsingLink(request: any, hasCode: string) {
         // https://blumen-api.azurewebsites.net:443/api/blumen-api/keycloak/resetPassword/
@@ -45,7 +50,7 @@ export class LoginService {
     }
 
     getSSOConfig(request: any) {
-        const URL= ServiceUrls.SSO_CONFIG + '?email='+request.email + '&orgType='+request.orgType;
+        const URL= ServiceUrls.SSO_CONFIG + '?email='+request.email + '&orgCode='+request.orgType;
         return this.dataService.validateUser(URL);
     }
 }

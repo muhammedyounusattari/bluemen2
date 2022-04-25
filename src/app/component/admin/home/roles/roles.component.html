@@ -24,7 +24,7 @@
                 <div class="col-md-9 right-div" id="rightBlock">
                     <div class="row" *ngFor="let parentNode of userRoles">
                         <div class="col-md-12">
-                            <input type="checkbox" (click)="setValue()" />
+                            <input type="checkbox" (click)="setValue()" *ngIf="parentNode?.privileges?.length > 0" />
                             <mat-radio-button [checked]="parentNode?.accessType == 'Y'" class="marg-top1 marg-left2">
                                 Y</mat-radio-button>&nbsp;&nbsp;&nbsp;
                             <mat-radio-button [checked]="parentNode?.accessType == 'R'" class="marg-top1">
@@ -38,7 +38,7 @@
                         <div *ngIf="isExpandChildren">
                             <div class="col-md-12 marg-left2"
                                 *ngFor="let childrenNode of parentNode?.privileges; let ind = index">
-                                <input type="checkbox" (click)="setChildValue()" />
+                                <input type="checkbox" (click)="setChildValue()" *ngIf="childrenNode?.privileges?.length > 0" />
                                 <mat-radio-button [checked]="childrenNode?.accessType == 'Y'" class="marg-left2"
                                     name="{{ind}}">Y</mat-radio-button>&nbsp;&nbsp;&nbsp;
                                 <mat-radio-button [checked]="childrenNode?.accessType == 'R'" class="marg-left2"

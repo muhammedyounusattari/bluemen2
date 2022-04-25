@@ -254,7 +254,7 @@
     <!-- Modal -->
     <div class="modal-header popHeaderBG">
         <span class="modal-title popHeader" id="exampleModalLabel">Organization Information</span>
-        <button type="button" class="btn-close" (click)="selectedRowIndex = null; formGroup?.markAsUntouched(); 
+        <button type="button" class="btn-close" (click)="selectedRowIndex = null;isDisabledBtn = false; formGroup?.markAsUntouched(); 
             selectedRow = null; modalRef.hide()" aria-label="Close"></button>
     </div>
     <div class="modal-body">
@@ -554,11 +554,11 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-v .primary" *ngIf="orgId" (click)="openUserPopup()">Users</button>
-        <button type="button" class="btn btn-primary" *ngIf="orgId" (click)="addOrganization()">Save</button>
-        <button type="button" class="btn btn-primary" *ngIf="!orgId" (click)="addOrganization();">Save & Next</button>
-        <button type="button" class="btn btn-secondary" id="closePopup"
-            (click)="isEdit = false; selectedRowIndex = null; selectedRow=null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>
+        <button type="button" class="btn btn-v .primary" [disabled]="isDisabledBtn" *ngIf="orgId" (click)="openUserPopup()">Users</button>
+        <button type="button" class="btn btn-primary" *ngIf="orgId" [disabled]="isDisabledBtn" (click)="addOrganization()">Save</button>
+        <button type="button" class="btn btn-primary" *ngIf="!orgId" [disabled]="isDisabledBtn" (click)="addOrganization();">Save & Next</button>
+        <button type="button" class="btn btn-secondary" id="closePopup" [disabled]="isDisabledBtn"
+            (click)="isEdit = false; selectedRowIndex = null;isDisabledBtn = false; selectedRow=null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>
         <button type="button" class="btn btn-primary">Purge Report</button>
     </div>
 </ng-template>

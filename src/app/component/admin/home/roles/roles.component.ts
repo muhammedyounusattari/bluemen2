@@ -149,6 +149,12 @@ export class RolesComponent implements AfterViewInit, OnInit {
     });
   }
 
+  updateRole() {
+    if(this.selectedRoleId) {
+      // const request = 
+    }
+  }
+
   getRequestPayload() {
     return {
       'copyRoleName' : this.formGroup ?.get('copyRoleName') ?.value,

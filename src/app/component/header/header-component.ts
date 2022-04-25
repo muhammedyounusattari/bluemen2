@@ -9,7 +9,7 @@ import {Router} from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   userName: any = '';
-  
+  user : any;
   constructor(private sharedService: SharedService
     , private router: Router) {}
 
@@ -22,13 +22,6 @@ export class HeaderComponent implements OnInit {
   logout() {
     sessionStorage.clear();
     localStorage.clear();
-    if (this.sharedService.getUserRole() === 'SuperAdmin') {
-      this.router.navigate(['']);
-    } else if (this.sharedService.getUserRole() === 'OrgUser') {
-      this.router.navigate(['user-login']);
-    } else {
-      this.router.navigate(['']);
-    }
     window.location.reload();
   }
 }

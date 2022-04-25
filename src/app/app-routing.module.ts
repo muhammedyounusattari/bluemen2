@@ -5,7 +5,6 @@ import { HomeComponent } from 'src/app/component/myhome/home/home.component';
 import { PendingChangesGuard } from './shared/components/canDeactivate/can-deactivate.component';
 import { LoginComponent } from './component/login/login.component';
 import { ResetPasswordComponent } from 'src/app/component/reset-password/reset-password.component';
-import { OrgUserLoginComponent } from './component/org-user-login/org-user-login.component';
 
 const routes: Routes = [
   {
@@ -19,10 +18,6 @@ const routes: Routes = [
   {
     path: 'reset-password',
     component: ResetPasswordComponent
-  },
-  {
-    path: 'user-login',
-    component: OrgUserLoginComponent
   }
 ];
 

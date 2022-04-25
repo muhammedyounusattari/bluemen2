@@ -27,7 +27,8 @@ export class HomeComponent {
   userData: any;
   question1List: any = [];
   question2List: any = [];
-
+  orgId : any;
+  userInfo: any;
   constructor(private route: ActivatedRoute
     , private _loginService: LoginService
     , private formBuilder: FormBuilder
@@ -46,12 +47,15 @@ export class HomeComponent {
           }
         }
       );
+    this.userInfo = sessionStorage.getItem('state');
+    this.userInfo = JSON.parse(this.userInfo);
+    this.orgId = this.userInfo.orgId;
     this.createForm();
     this.userData = sessionStorage.getItem('state');
     if (this.userData) {
       this.userData = JSON.parse(this.userData);
       if (this.userData.isFirstTime === 'true') {
-        this._loginService.getSecurityQuestionList().subscribe((result: any) => {
+        this._loginService.getSecurityQuestionList(this.orgId).subscribe((result: any) => {
           if (result) {
             this.question1List = result.body.question1;
             this.question2List = result.body.question2;

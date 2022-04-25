@@ -61,6 +61,8 @@ export class OrganizationComponent implements OnInit {
     orgId: any;
     organizationList: any;
     organizationCode: any;
+    isDisabledBtn: boolean = false;
+
     constructor(private modalService: BsModalService
         , private dialog: MatDialog
         , private toastr: ToastrService
@@ -211,9 +213,11 @@ export class OrganizationComponent implements OnInit {
 
     addOrganization() {
         if (this.formGroup.valid) {
+            this.isDisabledBtn = true;
             this.showPopupLoader();
             const request = this.requestPayload();
             this.organizationService.saveOrganization(request).subscribe(result => {
+                this.isDisabledBtn = false;
                 if (result) {
                     if (!this.orgId) {
                         this.orgId = JSON.parse(result).body;
