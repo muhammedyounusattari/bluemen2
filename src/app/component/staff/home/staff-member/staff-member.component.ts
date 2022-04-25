@@ -11,6 +11,12 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 import { SharedService } from 'src/app/shared/services/shared.service';
+
+import { NzButtonSize } from 'ng-zorro-antd/button';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+
+
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable';
 import { DatePipe } from '@angular/common';
@@ -23,6 +29,46 @@ import { StaffMemberMergeBoxComponent } from 'src/app/component/admin/customize/
 })
 
 export class StaffMemberComponent {
+  size: NzButtonSize = 'small';
+  activeChecked = true;
+  tutorChecked = false;
+  boltChecked = false;
+  staffChecked = false;
+  teacherChecked = false;
+  labChecked = false;
+  counselorChecked = false;
+  public staffDetailsForm!: FormGroup;
+  viewOptions = ['Custom 1', 'Custom 2', 'Custom 3'];
+  viewphoneType = ['Work', 'Home', 'Office'];
+  public staffAddressForm!: FormGroup;
+  public staffData = [{
+    mailing_name: 'Karintha Ashe',
+    email_address: 'karinthaashe@gmail.com',
+    phone1: '(713)646-4654',
+    phone2: '0987654321',
+    phone3: '8789654123',
+    fax: 'karinthaashe@fax.com',
+    action: 'Approve'
+  },
+  {
+    mailing_name: 'Test',
+    email_address: 'test@gmail.com',
+    phone1: '12134567890',
+    phone2: '0987654321',
+    phone3: '8789654123',
+    fax: 'test@fax.com',
+    action: 'Approve'
+  },
+  {
+    mailing_name: 'Test',
+    email_address: 'test@gmail.com',
+    phone1: '12134567890',
+    phone2: '0987654321',
+    phone3: '8789654123',
+    fax: 'test@fax.com',
+    action: 'Approve'
+  }]
+
   @ViewChild('staffDataEntryPopup') staffDataEntryPopupRef: TemplateRef<any>;
   isVisible: boolean = false;
   modalRef: BsModalRef;
@@ -74,6 +120,7 @@ export class StaffMemberComponent {
   public id: string;
   public pullDownName: string;
   public isEdit: boolean;
+  public activeToggle: boolean = true;
   imageSrc = "../../../../../assets/img/photo.png";
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
@@ -142,6 +189,51 @@ export class StaffMemberComponent {
   }
 
   ngOnInit(): void {
+    this.staffDetailsForm = this.fb.group({
+			formLayout: ['vertical'],
+			staff_title: [null],
+      staff_name: [null],
+      staff_SSNo: [null],
+      staff_id: [null],
+      staff_codes: [null],
+      staff_license: [null],
+      staff_dob: [null],
+      staff_hire: [null],
+      staff_terminate: [null],
+      staff_spouse: [null],
+      staff_custom1: [null],
+      staff_custom2: [null],
+      staff_custom3: [null],
+      staff_custom4: [null],
+      staff_notes: [null],
+      tutuor_chk: [null],
+      bolt_chk: [null],
+      staff_chk: [null],
+      counselor_chk: [null],
+      teacher_chk: [null],
+      lab_chk: [null],
+      active_toggle: [null]
+		});
+    this.staffAddressForm = this.fb.group({
+			formLayout: ['vertical'],
+			staff_mailing_address: [null],
+      staff_primary_address: [null],
+      staff_mailing_name: [null],
+      staff_city: [null],
+      staff_state: [null],
+      staff_phone1: [null],
+      staff_phone1_type: [null],
+      staff_email: [null],
+      staff_phone2: [null],
+      staff_phone2_type: [null],
+      staff_website: [null],
+      staff_phone3: [null],
+      staff_phone3_type: [null],
+      staff_zip_code: [null],
+      staff_fax: [null],
+      staff_address: [null]
+		});
+    
     this.sharedService.setPageTitle('Staff Data Filter');
     const today = new Date();
     this.maxDob = new Date(
@@ -157,6 +249,17 @@ export class StaffMemberComponent {
     this.getStaffMembers();
     this.bindDropDownValues();
     this.isEdit = false;
+  }
+
+  imageChange(info: NzUploadChangeParam): void {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      //this.msg.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      //this.msg.error(`${info.file.name} file upload failed.`);
+    }
   }
 
   bindDropDownValues() {

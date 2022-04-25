@@ -30,8 +30,7 @@ export class HomeService {
   }
 
   postSecurityQuestion(request: any): Observable<any> {
-    console.log(JSON.stringify(request));
-    return this.dataService.callPostService(ServiceUrls.POST_SECURITY_QUESTIONS, JSON.stringify(request));
+    return this.dataService.callPostService(ServiceUrls.POST_SECURITY_QUESTIONS, request);
 }
 
 

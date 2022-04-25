@@ -1,16 +1,21 @@
 import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AnnualPerformance, DefaultSetting, DefaultSettingTab, GeneralSettingTab, ReportSetting, SystemPreferencesEnum } from '../../../../constants/enums/system-preferences.enum';
 import { SystemPreferencesService } from '../../../../services/admin/system-preferences.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-system-preferences',
-    templateUrl: './system-preferences.component.html'
+    templateUrl: './system-preferences.component.html',
+    styleUrls: ['./system-preferences.component.css']
 })
 
 export class SystemPreferencesComponent implements OnInit {
+    //nz- zorro
+    public systemPreferenceForm!: FormGroup;
+    public staffAddressForm!: FormGroup;
+
     @ViewChild('addDropDownValue') addDropDownValueRef: TemplateRef<any>;
     isVisible: boolean = false;
     modalRef: BsModalRef;
@@ -28,7 +33,8 @@ export class SystemPreferencesComponent implements OnInit {
     componentsList: [{'name': ''}]
     constructor(private modalService: BsModalService
         , private _systemPreferencesService: SystemPreferencesService
-        , private sharedService: SharedService) {
+        , private sharedService: SharedService,
+        private fb: FormBuilder) {
 
     }
 
@@ -49,6 +55,48 @@ export class SystemPreferencesComponent implements OnInit {
                 this.bindDataToCustomObject(result[0]);
             }
         });
+
+        this.systemPreferenceForm = this.fb.group({
+			formLayout: ['vertical'],
+            fiscalYear: [null],
+            currentYear: [null],
+            semFall: [null],
+            component: [null],
+            timeout: [null],
+            title1: [null],
+            title2: [null],
+            reportFooter: [null],
+            projectDirector: [null],
+            institutionName: [null],
+            reportingPeriodFrom: [null],
+            reportingPeriodTo: [null],
+            address: [null],
+            city: [null],
+            state: [null],
+            zipCode: [null],
+            phone1: [null],
+            ext: [null],
+            fax: [null],
+            prAwardNumber: [null],
+            ombApprovalNumber: [null],
+            programType: [null],
+            expirationDate: [null],
+            fundedToServe: [null],
+            serveRatioThreshold: [null],
+            rationThreshouldTo: [null],
+            previousData: [null],
+            studentActive: [null],
+            studentServed: [null],
+            studentReported: [null],
+            addStudentToFiscalYear: [null],
+            updateFirstDateOfService: [null],
+            updateLastDateOfService: [null],
+            gpaScale: [null],
+            stateTest: [null],
+            ageCalculator: [null],
+            siteLocation: [null]
+		});
+
     }
 
     bindDropDownValues() {

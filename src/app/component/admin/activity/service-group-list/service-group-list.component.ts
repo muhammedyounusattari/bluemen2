@@ -16,6 +16,7 @@ import { ServiceGroupListMergeBoxComponent } from '../../customize/merge-box/ser
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable';
 import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-service-group-list',
@@ -63,8 +64,9 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
     isLoading: boolean = true;
     activityGroupTypes: any = [];
     formGroup: FormGroup;
+    indeterminate = false;
+    allChecked = false;
     validationClass: ValidationClass = new ValidationClass();
-
     constructor(private modalService: BsModalService
         , private router: Router
         , private dialog: MatDialog
@@ -75,6 +77,7 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
         , private pullDownService: PullDownListService) { }
 
     ngOnInit() {
+
         this.createForm();
         this.sharedService.setPageTitle('Activity/Service List');
         this.myElement = window.document.getElementById('loading');
@@ -90,7 +93,13 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
                 this.dataSource.paginator = this.paginator;
                 this.selectedRowIndex = null;
                 this.dataSource.sort = this.sort;
+                if(result.length > 0) {
+                    result.map((item: any) => {
+                        item['checked'] = false;
+                    });
+                }
                 this.activityGroupData = result;
+                console.log('activityGroupData:',this.activityGroupData);
             }
         });
         this.bindDropDownValues();
@@ -153,7 +162,8 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
    * @method setValuesToUpdate
    * @description Set the select row values in formgroup
    */
-    setValuesToUpdate() {
+    setValuesToUpdate(data: any) {
+        this.selectedRow = data;
         if (this.selectedRow) {
             this.isEdit = true;
             this.formGroup.get('id') ?.setValue(this.selectedRow.id);
@@ -164,12 +174,13 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
             this.formGroup.get('activityGroupTypeName') ?.setValue(this.selectedRow.activityGroupTypeName);
             this.formGroup.get('activityGroupType') ?.setValue(this.selectedRow.activityGroupType);
             this.openModal(this.activityServiceGroupListPopupRef);
-        } else {
-            this.toastr.info('Please select a row to update', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
-        }
+        } 
+        // else {
+        //     this.toastr.info('Please select a row to update', '', {
+        //         timeOut: 5000,
+        //         closeButton: true
+        //     });
+        // }
     }
 
     /**
@@ -264,6 +275,8 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
                             this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
                                 this.hideLoader();
                                 if (result) {
+                                    debugger;
+                                    console.log('Result:', result);
                                     this.dataSource = new MatTableDataSource(result);
                                     this.dataSource.paginator = this.paginator;
                                     this.dataSource.sort = this.sort;
@@ -288,7 +301,8 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
     * @method deleteSelectedRow
     * @description delete the record
     */
-    deleteSelectedRow() {
+    deleteSelectedRow(data: any) {
+        this.selectedRow = data;
         if (this.selectedRow) {
             const data = {
                 activityGroupId: this.selectedRow.activityGroupId
@@ -311,6 +325,7 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
                                 this.dataSource.sort = this.sort;
                                 this.selectedRowIndex = null;
                                 this.selectedRow = null;
+                                this.unCheckAll();
                                 this.activityGroupData = result2;
                                 this.toastr.success('Deleted successfully!', '', {
                                     timeOut: 5000,
@@ -374,6 +389,7 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
         this._activityGroupServicesService.updateActivityGroupList(this.requestData).subscribe(response => {
             this.modalRef.hide();
             this.selectedRow = null;
+            this.unCheckAll();
             this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
                 this.hideLoader();
                 if (result) {
@@ -396,7 +412,8 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
     * @method showMoveItemPopup
     * @description Open the popup for move the record
     */
-    showMoveItemPopup() {
+    showMoveItemPopup(data: any) {
+        this.selectedRow = data;
         if (this.selectedRow) {
             //this.showLoader();
             const confirmDialog = this.dialog.open(ServiceGroupListMoveBoxComponent, {
@@ -420,6 +437,7 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
                             this.dataSource.sort = this.sort;
                             this.selectedRowIndex = null;
                             this.selectedRow = null;
+                            this.unCheckAll();
                             this.activityGroupData = result;
                         }
                     });
@@ -437,7 +455,8 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
     * @method showMergeItemPopup
     * @description Open the popup for merge the record
     */
-    showMergeItemPopup() {
+    showMergeItemPopup(data: any) {
+        this.selectedRow = data;
         if (this.selectedRow) {
             //this.showLoader();
             const confirmDialog = this.dialog.open(ServiceGroupListMergeBoxComponent, {
@@ -460,6 +479,7 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
                             this.dataSource.sort = this.sort;
                             this.selectedRowIndex = null;
                             this.selectedRow = null;
+                            this.unCheckAll();
                             this.activityGroupData = result;
                         }
                     });
@@ -552,5 +572,24 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
         window.open(doc.output('bloburl').toString(), '_blank');
         //doc.output('dataurlnewwindow', { filename: 'serviceGroup.pdf' });
         //doc.save('college.pdf');  
+    }
+    unCheckAll() {
+        debugger;
+        this.activityGroupData.map((item: any) => {
+                item.checked = false;
+        });
+    }
+    refreshStatus(data: any) {
+        console.log('data:', data);
+        this.activityGroupData.map((item: any) => {
+            if (item.id != data.id) {
+                item.checked = false;
+            }
+        });
+        if (data.checked) {
+            this.selectedRow = data;
+        } else {
+            this.selectedRow = null;
+        }
     }
 }

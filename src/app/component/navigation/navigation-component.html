@@ -15,11 +15,10 @@
                                         </mat-menu>
                                         <mat-menu #myHomeList="matMenu">
                                                 <button mat-menu-item (click)="navigateToComponent('change-password')">
-                                                        CHANGE PASSWORD</button>
+                                                        Change My Password</button>
                                                 <button mat-menu-item (click)="navigateToComponent('logged-user')">
-                                                        SHOW LOGGED USERS</button>
-                                                <button mat-menu-item (click)="navigateToComponent('time-clock')"> Time
-                                                        Clock </button>
+                                                        Show Logged Users</button>
+                                                <button mat-menu-item *ngIf="this.showMenu('Time Clock')" (click)="navigateToComponent('time-clock')"> Time Clock </button>
                                         </mat-menu>
                                 </li>
 
@@ -211,6 +210,7 @@
                                                         [routerLink]="['admin/home/config-settings']">CONFIG
                                                         SETTINGS</button>
                                                 <button mat-menu-item>E-MAIL SETUP</button>
+                                                <button mat-menu-item [routerLink]="['admin/home/pull-type']">PULL TYPE</button>
                                                 <button mat-menu-item [routerLink]="['admin/home/roles']">ROLES</button>
                                                 <button mat-menu-item
                                                         [routerLink]="['admin/home/system-preferences']">SYSTEM

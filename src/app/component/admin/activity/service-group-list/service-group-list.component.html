@@ -1,3 +1,4 @@
+
 <div class="main-container">
     <div id="main-section" class="container-fluid ">
         <!-- Full Screen Loader Start -->
@@ -10,7 +11,6 @@
             </div>
         </div> -->
         <!-- Header End-->
-
         <!-- Two Tabs Start-->
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" id="Group_Name" role="presentation">
@@ -25,31 +25,49 @@
             </li>
         </ul>
         <!-- Two Tabs Start-->
-
         <!-- Search Box Start-->
-        <div class="row ">
+        <div class="row">
             <div class="col-md-6 mt-3 mb-3 ">
                 <form class="example">
                     <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
                     <i class="fa fa-search search"></i>
                 </form>
             </div>
+            <div nz-row nzJustify="end" class="col-md-6 mt-3 mb-3 ">
+                <nz-form-item class="search-filter-item">
+                    <nz-form-control>
+                        <button (click)="resetFields()" nz-button nzType="primary" class="search-filter-btn">
+                           <span> New</span>
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item class="search-filter-item print">
+                    <nz-form-control>
+                        <button (click)="print()" nz-button nzType="primary" class="search-filter-btn">
+                            <i nz-icon nzType="printer" nzTheme="fill"></i>
+                           <span> Print </span>
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+             </div>
         </div>
+       
+           
+       
         <!-- Search Box End-->
-
         <!-- Spinner Start-->
-        <div class="spinner-container" *ngIf="isLoading">
+        <!-- <div class="spinner-container" *ngIf="isLoading">
             <mat-spinner id="spinner"></mat-spinner>
-        </div>
+        </div> -->
         <!-- Spinner End-->
         <!-- Data Table Start-->
-        <div class="mat-elevation-z8 data-table-height dt-max-height" *ngIf="!isLoading">
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+        <!-- *ngIf="!isLoading" -->
+        <div class="mat-elevation-z8 data-table-height dt-max-height">
+            <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
                 <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Group Id </th>
                     <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.id}} </td>
                 </ng-container>
-
                 <ng-container matColumnDef="activityGroupName">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Group Name</th>
                     <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.activityGroupName}} </td>
@@ -65,69 +83,113 @@
                     <td mat-cell *matCellDef="let groupObj; let row = dataIndex;">
                         {{groupObj.activityCalculateHoursforActivityGroup ? 'YES' : 'NO'}} </td>
                 </ng-container>
-                <!-- <ng-container matColumnDef="action" *ngIf="isMoved">
-                    <th mat-header-cell *matHeaderCellDef> Action </th>
-                    <td mat-cell *matCellDef="let gradeObj; let row = dataIndex;"> 
-                        <a class="nav-link " href="javascript:void(0);" (click)="moveTheValues(gradeObj.activityGroupId,gradeObj.activityGroupName)">Move</a>
-                    </td>
-               </ng-container> -->
                 <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
                 <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
                     [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
                 </tr>
-            </table>
-            <div *ngIf="!isLoading && activityGroupData?.length == 0" class="bg-colr-wht py-4">
+            </table> -->
+            <nz-table #activityGroupDataTable [nzNoResult]="noResultTemplate" [nzLoading]="isLoading" [nzData]="activityGroupData">
+                <ng-template #noResultTemplate>
+                    <nz-empty [nzNotFoundContent]="'No Data Found'">
+                    </nz-empty> 
+                </ng-template>
+                <thead>
+                <tr>
+                    <th>Group Id</th>
+                    <th>Group Name</th>
+                    <th>Report Activity</th>
+                    <th>Calculate Hours</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let data of activityGroupDataTable.data">
+                    <td>{{ data.id }}</td>
+                    <td>{{ data.activityGroupName }}</td>
+                    <td>{{ data.activityReportActivityGroup ? 'YES' : 'NO'}}</td>
+                    <td> {{data.activityCalculateHoursforActivityGroup ? 'YES' : 'NO'}} </td>
+                    <!-- <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus(data)"></td> -->
+                    <td class="edit-icon-div"> 
+                        <i class="icon-pt" nz-icon nzType="edit" (click)="setValuesToUpdate(data)" 
+                            nzTheme="outline" nz-tooltip
+                            nzTooltipTitle="Edit"
+                            nzTooltipPlacement="bottom" nz-button>
+                        </i>
+                        <i class="icon-pt" nz-icon nzType="export" nzTheme="outline" (click)="showMoveItemPopup(data)" 
+                            nz-tooltip
+                            nzTooltipTitle="Move"
+                            nzTooltipPlacement="bottom" nz-button>
+                        </i>
+                        <i class="icon-pt" nz-icon nzType="merge-cells" nzTheme="outline"
+                            (click)="showMergeItemPopup(data)"
+                            nz-tooltip
+                            nzTooltipTitle="Merge"
+                            nzTooltipPlacement="bottom" nz-button>
+                        </i>
+                        <i class="icon-pt" nz-icon nzType="delete" nzTheme="outline"
+                            (click)="deleteSelectedRow(data)"
+                            nz-tooltip
+                            nzTooltipTitle="Delete"
+                            nzTooltipPlacement="bottom" nz-button>
+                        </i>
+                    </td>
+                </tr>
+                </tbody>
+          </nz-table>
+            <!-- <div *ngIf="!isLoading && activityGroupData?.length == 0" class="bg-colr-wht py-4">
                 <div class="center">
                     <h3>No Data Found</h3>
                 </div>
-            </div>
+            </div> -->
         </div>
-        <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+      
+        <!-- <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator> -->
         <!-- Data Table End-->
+        <!-- <div class="nav-bar">
+            <nav class="navbar navbar-expand-lg navbar-light bg-bottom ">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+                        aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" (click)="resetFields()">New</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="javascript:void(0);" (click)="setValuesToUpdate()">Edit</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="javascript:void(0);" (click)="showMoveItemPopup()">Move</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="javascript:void(0);" (click)="showMergeItemPopup()">Merge</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="javascript:void(0)" (click)="print()">Print</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div> -->
     </div>
-
     <!-- Buttons Start-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-bottom ">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);" (click)="resetFields()">New</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="javascript:void(0);" (click)="setValuesToUpdate()">Edit</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="javascript:void(0);" (click)="showMoveItemPopup()">Move</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="javascript:void(0);" (click)="showMergeItemPopup()">Merge</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="javascript:void(0)" (click)="print()">Print</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+  
 </div>
 <!-- Buttons End-->
-
 <!-- Modal Start-->
 <ng-template #activityServiceGroupListPopup>
     <!-- Modal -->
     <div class="modal-header popHeaderBG">
         <span class="modal-title popHeader" id="exampleModalLabel">Customize Activity/Service Group</span>
         <button type="button" class="btn-close"
-            (click)="selectedRowIndex = null; formGroup?.markAsUntouched(); selectedRow = null; modalRef.hide()"
+            (click)="unCheckAll(); selectedRowIndex = null; formGroup?.markAsUntouched(); selectedRow = null; modalRef.hide()"
             aria-label="Close"></button>
     </div>
     <div class="modal-body">
@@ -137,57 +199,87 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group ">
-                                <mat-form-field class="example-full-width" appearance="fill">
+                                <!-- <mat-form-field class="example-full-width" appearance="fill">
                                     <mat-label>Service Activity Group ID:</mat-label>
                                     <input matInput placeholder="" value="" formControlName="id" readonly>
-                                </mat-form-field>
+                                </mat-form-field> -->
+                                <div nz-col [nzSpan]="18">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style">Service Activity Group ID*</nz-form-label>
+                                        <nz-form-control>
+                                            <input nz-input type="text" placeholder="" value="" formControlName="id" readonly/>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
                             </div>
-
                             <div class="form-group">
-                                <mat-form-field class="example-full-width" appearance="fill">
+                                <!-- <mat-form-field class="example-full-width" appearance="fill">
                                     <mat-label>Service or Activity Group Name:</mat-label>
                                     <input matInput value="" formControlName="activityGroupName" minlength="3" maxlength="100" required>
-                                </mat-form-field>
+                                </mat-form-field> -->
+                                <div nz-col [nzSpan]="18">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style">Service or Activity Group Name*</nz-form-label>
+                                        <nz-form-control>
+                                            <input nz-input value="" formControlName="activityGroupName" minlength="3" maxlength="100" required/>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
                             </div>
-
                             <div class="form-group">
-                                <mat-form-field class="example-full-width" appearance="fill">
+                                <!-- <mat-form-field class="example-full-width" appearance="fill">
                                     <mat-label>Activity Group Type:</mat-label>
                                     <input matInput list="groups" value="" formControlName="activityGroupType" required
                                         minlength="3" maxlength="100">
-                                </mat-form-field>
+                                </mat-form-field> -->
+                                <div nz-col [nzSpan]="18">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style">Activity Group Type*</nz-form-label>
+                                        <nz-form-control>
+                                            <input nz-input value="" formControlName="activityGroupType" minlength="3" maxlength="100" required/>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
                                 <datalist id="groups">
                                     <option *ngFor="let actGroup of activityGroupTypes" [ngValue]="actGroup.name">
                                         {{actGroup.name}}</option>
                                 </datalist>
                             </div>
-
                             <div class="form-group">
                                 <div class="row mt-3">
                                     <div class="col-md-12">
                                         <section class="example-section">
-                                            <mat-checkbox formControlName="activityCalculateHoursforActivityGroup"
+                                            <!-- <mat-checkbox formControlName="activityCalculateHoursforActivityGroup"
                                                 class="example-margin">
                                                 Calculate Hours for Active Group
-                                            </mat-checkbox>
+                                            </mat-checkbox> -->
+                                            <label nz-checkbox formControlName="activityCalculateHoursforActivityGroup">Calculate Hours for Active Group</label> 
                                         </section>
                                     </div>
                                     <div class="col-md-12">
                                         <section class="example-section">
-                                            <mat-checkbox formControlName="activityReportActivityGroup"
+                                            <!-- <mat-checkbox formControlName="activityReportActivityGroup"
                                                 class="example-margin">
-                                                Report Activity Group </mat-checkbox>
+                                                Report Activity Group </mat-checkbox> -->
+                                                <label nz-checkbox formControlName="activityReportActivityGroup"> Report Activity Group</label> 
                                         </section>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group">
-                                <mat-form-field class="example-full-width" appearance="fill">
+                                <!-- <mat-form-field class="example-full-width" appearance="fill">
                                     <mat-label>Activity Group Type Name:</mat-label>
                                     <input matInput value="" formControlName="activityGroupTypeName" minlength="3" maxlength="100"
                                         >
-                                </mat-form-field>
+                                </mat-form-field> -->
+                                <div nz-col [nzSpan]="18">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style">Activity Group Type Name*</nz-form-label>
+                                        <nz-form-control>
+                                            <input nz-input value="" formControlName="activityGroupTypeName" minlength="3" maxlength="100" required/>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -201,7 +293,7 @@
         <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();">Update &
             Close</button>
         <button type="button" class="btn btn-secondary" id="closePopup"
-            (click)="isEdit = false; selectedRowIndex = null; selectedRow=null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>
+            (click)="unCheckAll();isEdit = false; selectedRowIndex = null; selectedRow=null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>
     </div>
 </ng-template>
 <!-- Modal End-->

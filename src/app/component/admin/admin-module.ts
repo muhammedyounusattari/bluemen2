@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NO_ERRORS_SCHEMA, NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
@@ -50,6 +50,9 @@ import { MatTreeModule } from '@angular/material/tree';
 import { AdminHomeComponent } from './home/admin-home.component';
 import { AdminCustomizeComponent } from './customize/admin-customize.component';
 import { StaffMemberComponent } from 'src/app/component/staff/home/staff-member/staff-member.component';
+import { DemoNgZorroAntdModule } from 'src/app/ng-zorro-antd.module';
+import { PullTypeComponent } from './home/pull-type/pull-type.component';
+
 import { MoveMergeDialogBoxComponent } from '../../shared/components/move-merge-dialog-box/move-merge-dialog-box.component';
 import { ServiceListMoveBoxComponent } from './customize/move-box/service-list-move-box/service-list-move-box.component';
 import { ServiceListMergeBoxComponent } from './customize/merge-box/service-list-merge-box/service-list-merge-box.component';
@@ -102,6 +105,7 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
     AdminHomeComponent,
     AdminCustomizeComponent,
     StaffMemberComponent,
+    PullTypeComponent,
     MoveMergeDialogBoxComponent,
     ServiceListMoveBoxComponent,
     ServiceListMergeBoxComponent,
@@ -143,8 +147,10 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
     MatRadioModule,
     MatExpansionModule,
     MatTreeModule,
+    DemoNgZorroAntdModule,
     NgxMaskModule.forRoot(maskConfigFunction)
   ],
+  schemas: [ NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA  ],
   providers: [
     MatDatepickerModule,
     MatNativeDateModule,

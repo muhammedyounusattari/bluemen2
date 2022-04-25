@@ -3,11 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true,
-  // Dev environment
-  apiUrl : 'https://blumen-api.azurewebsites.net/api'
-};
+  production: false,
 
+  // Dev environment
+ // apiUrl : 'https://blumen-api.azurewebsites.net/api'
+ apiUrl:'http://localhost:8080/api'
+};
 
 /*
  * For easier debugging in development mode, you can import the following file

@@ -27,6 +27,8 @@ import { RolesComponent } from './home/roles/roles.component';
 import { AdminHomeComponent } from './home/admin-home.component';
 import { AdminCustomizeComponent } from './customize/admin-customize.component';
 import { StaffMemberComponent } from 'src/app/component/staff/home/staff-member/staff-member.component';
+import { PullTypeComponent } from './home/pull-type/pull-type.component';
+
 import { OrganizationComponent } from '../super-admin/organization/organization.component';
 import { SecurityQuestionsComponent } from '../super-admin/security-question/security-questions.component';
 const routes: Routes = [
@@ -236,6 +238,23 @@ const routes: Routes = [
         },
         {
           label: 'System Preferences',
+          url: ''
+        }
+      ]
+    }
+  },
+  {
+    path: 'admin/home/pull-type',
+    component: PullTypeComponent,
+    data: {
+      title: 'Pull Type',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/home'
+        },
+        {
+          label: 'Pull Type',
           url: ''
         }
       ]

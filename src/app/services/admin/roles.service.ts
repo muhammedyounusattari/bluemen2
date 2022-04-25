@@ -15,12 +15,16 @@ export class RolesService {
         return this.dataService.callGetService(ServiceUrls.GET_ROLENAMES_LIST, '');
     }
 
+    getMenuList() {
+        return this.dataService.callGetService(ServiceUrls.GET_MENU_LIST, '');
+    }
+
     getPriviledgesByRoleName(roleName: string) {
         return this.dataService.callGetService(ServiceUrls.GET_PRIVILEDGES_BY_ROLENAME + roleName, '');
     }
 
     addNewRole(request: any): Observable<any> {
-        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/roles/addRole/v1?copyRoleName=' 
+        const URL = ServiceUrls.ADD_NEW_ROLE+'?copyRoleName=' 
         + request.copyRoleName
         + '&isDefault=' + request.isDefault + '&newRoleCode=' + request.newRoleCode + '&newRoleName=' +
         request.newRoleName + '&orgId=' + 1;

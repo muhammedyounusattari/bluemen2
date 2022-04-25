@@ -291,6 +291,7 @@ export class ServiceUrls {
     public static RESET_PASSWORD = environment.apiUrl + '/blumen-api/resetPassword/v1/';
     public static UPDATE_PASSWORD = environment.apiUrl + '/blumen-api/updatePassword/v1/';
     public static FORGOT_PASSWORD = environment.apiUrl +'/blumen-api/forgotPassword/v1';
+    public static SSO_CONFIG = environment.apiUrl + '/blumen-api/ssoConfig';
 
     // Organizations API's
     public static GET_ORGANIZATIONS_LIST = environment.apiUrl + '/blumen-api/admin/home/getOrganizationsList/v1';
@@ -304,4 +305,6 @@ export class ServiceUrls {
     public static GET_PRIVILEDGES_BY_ROLENAME = environment.apiUrl + '/blumen-api/roles/getRolesAsTree/v1?roleName=';
     public static ADD_NEW_ROLE = environment.apiUrl + '/blumen-api/roles/addRole/v1';
     public static DELETE_ROLE = environment.apiUrl + '/blumen-api/roles/deleteRole/v1?roleId=';
+    public static GET_MENU_LIST = environment.apiUrl + '/blumen-api/roles/getMenus/v1';
+
 }

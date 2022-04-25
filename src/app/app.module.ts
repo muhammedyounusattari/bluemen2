@@ -33,6 +33,13 @@ import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.co
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { NgDynamicBreadcrumbModule } from 'ng-dynamic-breadcrumb';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+import { HttpClientModule } from '@angular/common/http';
+
+registerLocaleData(en);
 import { OrgUserLoginComponent } from './component/org-user-login/org-user-login.component';
 
 @NgModule({
@@ -69,10 +76,11 @@ import { OrgUserLoginComponent } from './component/org-user-login/org-user-login
     ReactiveFormsModule,
     MatRadioModule, 
     MatSelectModule,
-    NgDynamicBreadcrumbModule
+    NgDynamicBreadcrumbModule,
+    HttpClientModule
   ],
   entryComponents: [ConfirmationComponent],
-  providers: [ToastrService, PendingChangesGuard],
+  providers: [ToastrService, PendingChangesGuard, { provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent],
   schemas: [ NO_ERRORS_SCHEMA ]
 })

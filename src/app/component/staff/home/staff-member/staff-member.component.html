@@ -214,555 +214,525 @@
   <!-- Modal Start-->
   <ng-template #staffDataEntryPopup>
     <!-- Modal -->
-    <div class="modal-header popHeaderBG">
-      <span class="modal-title popHeader" id="exampleModalLabel">Staff Data Entry</span>
-      <button type="button" class="btn-close" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()"
-        aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-      <!-- Two Tabs Start-->
-      <ul class="nav nav-tabs marg-left15" id="myTab" role="tablist">
-        <li class="nav-item" id="Staff_Detail" role="presentation">
-          <a class="nav-link active" id="staff-tab" data-bs-toggle="tab" href="javascript:void(0)"
-            (click)="switchBetweenTabs('staff-detail')" role="tab" aria-controls="home" aria-selected="true">Staff
-            Details</a>
-        </li>
-        <li class="nav-item active" id="Address" role="presentation">
-          <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="javascript:void(0)"
-            (click)="switchBetweenTabs('address')" role="tab" aria-controls="address" aria-selected="false">Address</a>
-        </li>
-      </ul>
-      <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-          <form [formGroup]="formGroup" class="form" >
-            <div class="row flex" *ngIf="isStaffDetail">
-              <div class="col-md-10 disp-content">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <mat-form-field class="example-full-width" appearance="fill">
-                      <mat-label>Staff ID</mat-label>
-                      <input matInput value="" formControlName="staffId" readonly>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="row">
-                    <div class="form-group">
-                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Title</mat-label>
-                        <input matInput value="" formControlName="title" maxlength="50">
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="row">
-                    <div class="form-group">
-                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Name</mat-label>
-                        <input matInput value="" formControlName="staffName" minlength="3" (blur)="checkName($event)"
-                          required maxlength="50">
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-3"></div>
-                <div class="col-md-3">
-                  <div class="row">
-                    <div class="form-group">
-                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>SS.No</mat-label>
-                        <input matInput value="" formControlName="ssn" minlength="3" maxlength="50">
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
-               
-                <div class="col-md-3">
-                  <div class="row">
-                    <div class="form-group">
-                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Codes</mat-label>
-                        <input matInput list="codeList" value="" formControlName="codes" minlength="3" maxlength="50">
-                      </mat-form-field>
-                      <datalist id="codeList">
-                        <option *ngFor="let code of codeListArray" [ngValue]="code.name">
-                          {{code.name}}</option>
-                      </datalist>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="row">
-                    <div class="form-group">
-                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Driver License#</mat-label>
-                        <input matInput value="" formControlName="license" maxlength="50">
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3"></div>
-
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <mat-form-field appearance="fill" class="mb-m-6 example-full-width">
-                      <mat-label>Date Of Birth</mat-label>
-                      <input matInput [matDatepicker]="picker" formControlName="dob" [max]="maxDob" (dateChange)="enabledHireDate($event)">
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <mat-form-field appearance="fill" class="mb-m-6 example-full-width">
-                      <mat-label>Hire Date</mat-label>
-                      <input matInput [matDatepicker]="picker1" [min]="minHireDate" (dateChange)="checkValidDate($event)" 
-                      formControlName="staffHireDate">
-                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                      <mat-datepicker #picker1></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <mat-form-field appearance="fill" class="mb-m-6 example-full-width">
-                      <mat-label>Termination Date</mat-label>
-                      <input matInput [matDatepicker]="picker2" [min]="minTermDate" formControlName="terminationDate">
-                      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                      <mat-datepicker #picker2></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div class="col-md-3"></div>
-
-                <div class="col-md-3">
-                  <div class="row">
-                    <div class="form-group">
-                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Spouse Name</mat-label>
-                        <input matInput value="" formControlName="spouse" maxlength="50">
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="row">
-                    <div class="form-group">
-                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Phone Number</mat-label>
-                        <input matInput value="" formControlName="staffPhoneNumber" mask="(000)000-0000">
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="row">
-                    <div class="form-group">
-                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Custom Field 1</mat-label>
-                        <input matInput list="customFieldList1" value="" formControlName="customField1" maxlength="50">
-                      </mat-form-field>
-                      <datalist id="customFieldList1">
-                        <option *ngFor="let code of customFieldListArray1" [ngValue]="code.name">
-                          {{code.name}}</option>
-                      </datalist>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3"></div>
-                <div class="col-md-3">
-                  <div class="row">
-                    <div class="form-group">
-                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Custom Field 2</mat-label>
-                        <input matInput list="customFieldList2" value="" formControlName="customField2" maxlength="50">
-                      </mat-form-field>
-                      <datalist id="customFieldList2">
-                        <option *ngFor="let code of customFieldListArray2" [ngValue]="code.name">
-                          {{code.name}}</option>
-                      </datalist>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="row">
-                    <div class="form-group">
-                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Custom Field 3</mat-label>
-                        <input matInput list="customFieldList3" value="" formControlName="customField3" maxlength="50">
-                      </mat-form-field>
-                      <datalist id="customFieldList3">
-                        <option *ngFor="let code of customFieldListArray3" [ngValue]="code.name">
-                          {{code.name}}</option>
-                      </datalist>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="row">
-                    <div class="form-group">
-                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Custom Field 4</mat-label>
-                        <input matInput list="customFieldList4" value="" formControlName="customField4" maxlength="50">
-                      </mat-form-field>
-                      <datalist id="customFieldList4">
-                        <option *ngFor="let code of customFieldListArray4" [ngValue]="code.name">
-                          {{code.name}}</option>
-                      </datalist>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <div class="row mt-3">
-                      <div class="col-md-3">
-                        <section class="example-section">
-                          <mat-checkbox formControlName="staffActive" class="example-margin">
-                            Active
-                          </mat-checkbox>
-                        </section>
-                      </div>
-                      <div class="col-md-3">
-                        <section class="example-section">
-                          <mat-checkbox formControlName="staffTutor" class="example-margin">
-                            Tutor
-                          </mat-checkbox>
-                        </section>
-                      </div>
-                      <div class="col-md-3">
-                        <section class="example-section">
-                          <mat-checkbox formControlName="staffBolt" class="example-margin">
-                            Bolt
-                          </mat-checkbox>
-                        </section>
-                      </div>
-                      <div class="col-md-3">
-                        <section class="example-section">
-                          <mat-checkbox formControlName="staff" class="example-margin">
-                            Staff
-                          </mat-checkbox>
-                        </section>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-9">
-                  <div class="row">
-                    <div class="form-group">
-                      <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                        <mat-label>Notes</mat-label>
-                        <textarea matInput value="" formControlName="notes" rows="5" maxlength="2000"></textarea>
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <div class="row mt-3">
-                      <div class="col-md-4">
-                        <section class="example-section">
-                          <mat-checkbox formControlName="staffCounselor" class="example-margin">
-                            Counselor
-                          </mat-checkbox>
-                        </section>
-                      </div>
-                      <div class="col-md-4">
-                        <section class="example-section">
-                          <mat-checkbox formControlName="staffTeacher" class="example-margin">
-                            Teacher
-                          </mat-checkbox>
-                        </section>
-                      </div>
-                      <div class="col-md-4">
-                        <section class="example-section">
-                          <mat-checkbox formControlName="staffLab" class="example-margin">
-                            Lab
-                          </mat-checkbox>
-                        </section>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-2 uploadImg">
-                <div class="row text-center"><img src="{{imageSrc}}"></div>
-                <div class="row">
-                  <input #fileInput name="file" id="file" type="file" class="btn btn-v .primary" (change)="onFileChange($event, fileInput)">
-                  <!-- <button id="file" type="file" class="btn btn-v .primary" (change)="onFileChange($event)">Upload Profile</button> -->
-                </div>
-              </div>
-            </div>
-            <div class="row flex" *ngIf="!isStaffDetail">
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-4" *ngIf="stctlbName != ''">
-                    <label class="lblText">Name : &nbsp; <span class="lblValue">{{stctlbName}}</span></label>
-                  </div>
-                  <div class="col-md-4">
-                    <section class="example-section">
-                      <mat-checkbox formControlName="usedForMailling" class="example-margin">
-                        Use this for mailling address
-                      </mat-checkbox>
-                    </section>
-                  </div>
-
-                  <div class="col-md-4">
-                    <section class="example-section">
-                      <mat-checkbox formControlName="permanentAddress" class="example-margin">
-                        Primary Address
-                      </mat-checkbox>
-                    </section>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Mailling Name*</mat-label>
-                          <input matInput value="" formControlName="staffMaillingName" minlength="3" maxlength="50" (blur)="checkMallingStaffName($event)">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>City</mat-label>
-                          <input matInput list="cities" value="" formControlName="staffCity" maxlength="50">
-                        </mat-form-field>
-                        <datalist id="cities">
-                          <option *ngFor="let obj of cityList" [ngValue]="obj.name">
-                            {{obj.name}}</option>
-                        </datalist>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>State</mat-label>
-                          <input matInput list="states" value="" formControlName="staffState" maxlength="50"> 
-                        </mat-form-field>
-                        <datalist id="states">
-                          <option *ngFor="let obj of stateList" [ngValue]="obj.name">
-                            {{obj.name}}</option>
-                        </datalist>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Phone1</mat-label>
-                          <input matInput value="" maxlength="30" formControlName="staffPhone1" mask="(000)000-0000">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Phone1 Type</mat-label>
-                          <input matInput list="phoneTypes" value="" formControlName="staffPhoneType1" maxlength="50"> 
-                        </mat-form-field>
-                        <datalist id="phoneTypes">
-                          <option *ngFor="let obj of phoneTypesList" [ngValue]="obj.name">
-                            {{obj.name}}</option>
-                        </datalist>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Email</mat-label>
-                          <input matInput type="email" value="" formControlName="staffEmail" maxlength="80">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Phone2</mat-label>
-                          <input matInput value="" maxlength="30" formControlName="staffPhone2" mask="(000)000-0000">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Phone2 Type</mat-label>
-                          <input matInput list="phoneTypes" value="" formControlName="staffPhoneType2" maxlength="50">
-                        </mat-form-field>
-                        <datalist id="phoneTypes">
-                          <option *ngFor="let obj of phoneTypesList" [ngValue]="obj.name">
-                            {{obj.name}}</option>
-                        </datalist>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Web Site</mat-label>
-                          <input matInput value="" formControlName="staffWebsite" maxlength="80">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Phone3</mat-label>
-                          <input matInput value="" maxlength="30" formControlName="staffPhone3" mask="(000)000-0000">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Phone3 Type</mat-label>
-                          <input matInput list="phoneTypes" value="" formControlName="staffPhoneType3" maxlength="50">
-                        </mat-form-field>
-                        <datalist id="phoneTypes">
-                          <option *ngFor="let obj of phoneTypesList" [ngValue]="obj.name">
-                            {{obj.name}}</option>
-                        </datalist>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Zip Code</mat-label>
-                          <input matInput value="" formControlName="staffZipcodes" mask="00000-0000" maxlength="20">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Fax</mat-label>
-                          <input matInput value="" formControlName="staffFax" mask="(000)000-0000" maxlength="30">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-8">
-                    <div class="row">
-                      <div class="form-group">
-                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                          <mat-label>Address</mat-label>
-                          <textarea matInput value="" formControlName="staffAddress" rows="1" maxlength="2000"></textarea>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-1">
-                    <button type="button" class="btn btn-secondary cursor" *ngIf="!isEditAddress" (click)="bindAddressValueToFB()">Reset</button>
-                  </div>
-                  <div class="col-md-1">
-                    <button type="button" class="btn btn-secondary cursor" (click)="addAddressToList()">{{!isEditAddress ? 'Add' : 'Update'}}</button>
-                  </div>
-                  <div class="col-md-10"></div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="md-form form-group pink-textarea active-pink-textarea-2">
-                  <div class="mat-elevation-z8 data-table-height bgColorDT dt-max-height">
-                    <table mat-table [dataSource]="dataSource1" class="mat-elevation-z8" matSort>
-                      <ng-container matColumnDef="staffMaillingName">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Mailling Name </th>
-                        <td mat-cell *matCellDef="let element; let row = dataIndex;">
-                          {{element.staffMaillingName}} </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="staffEmail">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email Address</th>
-                        <td mat-cell *matCellDef="let element; let row = dataIndex;">
-                          {{element.staffEmail}} </td>
-                      </ng-container>
-                      <ng-container matColumnDef="staffPhone1">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone1 </th>
-                        <td mat-cell *matCellDef="let element; let row = dataIndex;">
-                          {{element?.staffPhone1 | phoneMask: '(000) 000-0000'}} </td>
-                      </ng-container>
-                      <ng-container matColumnDef="staffPhone2">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone2 </th>
-                        <td mat-cell *matCellDef="let element; let row = dataIndex;">
-                          {{element?.staffPhone2 | phoneMask: '(000) 000-0000'}} </td>
-                      </ng-container>
-                      <ng-container matColumnDef="staffPhone3">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone3 </th>
-                        <td mat-cell *matCellDef="let element; let row = dataIndex;">
-                          {{element?.staffPhone3 | phoneMask: '(000) 000-0000'}} </td>
-                      </ng-container>
-                      <ng-container matColumnDef="staffFax">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fax </th>
-                        <td mat-cell *matCellDef="let element; let row = dataIndex;">
-                          {{element?.staffFax | phoneMask: '(000) 000-0000'}} </td>
-                      </ng-container>
-                      <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef> Action </th>
-                        <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
-                          <i class="fas fa-edit cursor" (click)="editAddress(element, i)" title="Edit"></i>
-                          &nbsp; &nbsp;
-                          <i class="fas fa-remove cursor" (click)="deleteAddress(element, i)" title="Delete"></i>
-                        </td>
-                      </ng-container>
-                      <tr mat-header-row *matHeaderRowDef="columnsToDisplay1"></tr>
-                      <tr mat-row *matRowDef="let row; let idx1 = index; columns: columnsToDisplay1;"
-                        [ngClass]="{'selected-row' : selectedStudentRowIndex == idx1}">
-                      </tr>
-                    </table>
-                  </div>
-                  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
-                </div>
-              </div>
-            </div>
-          </form>
+    <div class="custom-modal-header">
+      <div nz-row>
+        <div nz-col nzSpan="8">
+          <span class="modal-title popHeader-staff" id="exampleModalLabel">Staff Data Entry</span>
+        </div>
+        <div nz-col nzSpan="4" nzOffset="11">
+          <div class="btn-right">
+            <a nz-button nzType="link" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()">Cancel</a>
+            <button nz-button nzType="primary" class="btn-color">SAVE</button>
+          </div>
+        </div>
+        <div nz-col nzSpan="1">
+           <i nz-icon nzType="close" nzTheme="outline" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()" class="close-icon"></i>
         </div>
       </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-body custom-modal-body"> 
+      <div nz-row>
+        <div nz-col [nzSpan]="24">
+          <nz-tabset>
+            <nz-tab nzTitle="STAFF DETAILS">
+              <div nz-row class="tabStyle">
+                <div nz-col [nzSpan]="24">
+                  <div nz-row class="logo_section">
+                    <div nz-col nzSpan="9">
+                      <h1 class="logo_header">Karintha Ashe</h1>
+                    </div>
+                    <div nz-col nzSpan="10">
+                     
+                    </div>
+                    <div nz-col nzSpan="5">
+                      <div class="logo_image_section">
+                        <img
+                        class="logo_image"
+                        nz-image
+                        width="150px"
+                        height="150px"
+                        nzSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                        alt=""
+                      />
+                      <nz-upload
+                          nzAction=""
+                          [nzHeaders]="{ authorization: 'authorization-text' }"
+                          (nzChange)="imageChange($event)"
+                        >
+                          <button nz-button class="upload-btn">
+                            <i nz-icon nzType="upload"></i>
+                            Click to Upload
+                          </button>
+                        </nz-upload>
+                      </div>
+                      
+                    </div>
+                  </div>
+
+                  <!--Form Section Start-->
+                  <div nz-row class="form_section">
+                    <form nz-form class="staff-form" [nzLayout]="staffDetailsForm.get('formLayout')?.value"
+                      [formGroup]="staffDetailsForm">
+                      <div nz-row>
+                        <h6 class="section-head">Staff Details</h6>
+                      </div>
+                      <div nz-row [nzGutter]="24">
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Title</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Title">
+                                <input nz-input type="text" formControlName="staff_title" placeholder="Title" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">SS.No</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter SS.No">
+                                <input nz-input type="text" formControlName="staff_SSNo" placeholder="SS.No" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Staff ID</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Staff ID">
+                                <input nz-input type="text" formControlName="staff_id" placeholder="Staff ID" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Codes</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Codes">
+                                <input nz-input type="text" formControlName="staff_codes" placeholder="Codes" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Driver License#</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Driver License">
+                                <input nz-input type="text" formControlName="staff_license" placeholder="Driver License" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Date Of Birth</nz-form-label>
+                              <nz-form-control>
+                                  <nz-date-picker class="filter_Datepicker"
+                                     nzPlaceHolder="MM/DD/YYYY" formControlName="staff_dob">
+                                  </nz-date-picker>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8"> 
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Hire Date</nz-form-label>
+                              <nz-form-control>
+                                  <nz-date-picker class="filter_Datepicker"
+                                     nzPlaceHolder="MM/DD/YYYY" formControlName="staff_hire">
+                                  </nz-date-picker>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Termination Date</nz-form-label>
+                              <nz-form-control>
+                                  <nz-date-picker class="filter_Datepicker"
+                                     nzPlaceHolder="MM/DD/YYYY" formControlName="staff_terminate">
+                                  </nz-date-picker>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Spouse Name</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Spouse Name">
+                                <input nz-input type="text" formControlName="staff_spouse" placeholder="Spouse Name" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">&nbsp;</nz-form-label>
+                              <nz-form-control nzErrorTip="">
+                                <nz-switch class="toggle-btn" formControlName="active_toggle" [(ngModel)]="activeToggle"></nz-switch> <label class="toggle-lable">Active</label>
+                                <label class="lable-checkbox" nz-checkbox formControlName="tutuor_chk" [(ngModel)]="tutorChecked">Tutor</label>
+                                <label class="lable-checkbox" nz-checkbox formControlName="bolt_chk" [(ngModel)]="boltChecked">Bolt</label>
+                                <label class="lable-checkbox" nz-checkbox formControlName="staff_chk" [(ngModel)]="staffChecked">Staff</label>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">&nbsp;</nz-form-label>
+                              <nz-form-control nzErrorTip="">
+                                <label class="lable-checkbox1" nz-checkbox formControlName="counselor_chk" [(ngModel)]="counselorChecked">Counselor</label>
+                                <label class="lable-checkbox1" nz-checkbox formControlName="teacher_chk" [(ngModel)]="teacherChecked">Teacher</label>
+                                <label class="lable-checkbox1" nz-checkbox formControlName="lab_chk" [(ngModel)]="labChecked">Lab</label>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Custom Field 1</nz-form-label>
+                              <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_custom1" nzPlaceHolder="Custom Field 1">
+                                      <nz-option *ngFor="let option of viewOptions" [nzLabel]="option" [nzValue]="option">
+                                      </nz-option>
+                                  </nz-select>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Custom Field 2</nz-form-label>
+                              <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_custom2" nzPlaceHolder="Custom Field 2">
+                                      <nz-option *ngFor="let option of viewOptions" [nzLabel]="option" [nzValue]="option">
+                                      </nz-option>
+                                  </nz-select>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Custom Field 3</nz-form-label>
+                              <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_custom3" nzPlaceHolder="Custom Field 3">
+                                      <nz-option *ngFor="let option of viewOptions" [nzLabel]="option" [nzValue]="option">
+                                      </nz-option>
+                                  </nz-select>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Custom Field 4</nz-form-label>
+                              <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_custom4" nzPlaceHolder="Custom Field 4">
+                                      <nz-option *ngFor="let option of viewOptions" [nzLabel]="option" [nzValue]="option">
+                                      </nz-option>
+                                  </nz-select>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                        
+                        <div nz-col [nzSpan]="24">
+                            <nz-form-item class="flexArr">
+                                <nz-form-label class="lable-style">Notes</nz-form-label>
+                                <nz-form-control nzErrorTip="Please Enter Notes">
+                                    <textarea class="notes-style" formControlName="staff_notes" nz-input placeholder="Enter Notes"
+                                         [nzAutosize]="{ minRows: 3, maxRows: 3 }">
+                                    </textarea>
+                                    <span class="spell-icon"><i nz-icon nzType="edit" nzTheme="outline"></i></span>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                      </div>
+                  </form>
+                  </div>
+                  <!--Form Section End-->
+                </div>
+                
+              </div>
+              <div nz-row class="tabStyle-btn">
+                <div nz-col nzSpan="4" nzOffset="20">
+                  <a nz-button nzType="link" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()">Cancel</a>
+                  <button nz-button nzType="primary" class="btn-color">SAVE</button>
+                </div>
+              </div>
+            </nz-tab>
+            <nz-tab nzTitle="ADDRESS">
+              <div nz-row class="tabStyle">
+                <div nz-col [nzSpan]="24">
+                  <div nz-row class="logo_section">
+                    <div nz-col nzSpan="9">
+                      <h1 class="logo_header">Karintha Ashe</h1>
+                    </div>
+                    <div nz-col nzSpan="10">
+                     
+                    </div>
+                    <div nz-col nzSpan="5">
+                      <div class="logo_image_section">
+                        <img
+                        class="logo_image"
+                        nz-image
+                        width="150px"
+                        height="150px"
+                        nzSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                        alt=""
+                      />
+                      <nz-upload
+                          nzAction=""
+                          [nzHeaders]="{ authorization: 'authorization-text' }"
+                          (nzChange)="imageChange($event)"
+                        >
+                          <button nz-button class="upload-btn">
+                            <i nz-icon nzType="upload"></i>
+                            Click to Upload
+                          </button>
+                        </nz-upload>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <!--Form Section Start-->
+                  <div nz-row class="form_section">
+                    <form nz-form class="staff-address-form" [nzLayout]="staffAddressForm.get('formLayout')?.value"
+                      [formGroup]="staffAddressForm">
+                      <div nz-row>
+                        <h6 class="section-head">Staff Address</h6>
+                      </div>
+                      <div nz-row [nzGutter]="24">
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-control>
+                                <label nz-checkbox class="lable-checkbox" formControlName="staff_mailing_address"><span>Use this for mailling address</span>
+                                </label>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-control>
+                                <label nz-checkbox class="lable-checkbox" formControlName="staff_primary_address"><span>Primary Address</span>
+                                </label>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <!-- <nz-form-item>
+                              <nz-form-label class="lable-style">SS.No</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter SS.No">
+                                <input nz-input type="text" formControlName="staff_SSNo" placeholder="SS.No" />
+                              </nz-form-control>
+                          </nz-form-item> -->
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Mailing Name</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Mailing Name">
+                                <input nz-input type="text" formControlName="staff_mailing_name" placeholder="Mailing Name" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">City</nz-form-label>
+                              <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_city" nzPlaceHolder="City">
+                                      <nz-option *ngFor="let option of viewOptions" [nzLabel]="option" [nzValue]="option">
+                                      </nz-option>
+                                  </nz-select>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">State</nz-form-label>
+                              <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_state" nzPlaceHolder="State">
+                                      <nz-option *ngFor="let option of viewOptions" [nzLabel]="option" [nzValue]="option">
+                                      </nz-option>
+                                  </nz-select>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Phone1</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Phone1">
+                                <input nz-input type="number" formControlName="staff_phone1" placeholder="Phone1" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                        
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Phone1 Type</nz-form-label>
+                              <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_phone1_type" nzPlaceHolder="Phone1 Type">
+                                      <nz-option *ngFor="let option of viewphoneType" [nzLabel]="option" [nzValue]="option">
+                                      </nz-option>
+                                  </nz-select>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Email</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Email">
+                                <input nz-input type="text" formControlName="staff_email" placeholder="Email" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Phone2</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Phone2">
+                                <input nz-input type="number" formControlName="staff_phone2" placeholder="Phone2" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                        
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Phone2 Type</nz-form-label>
+                              <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_phone2_type" nzPlaceHolder="Phone2 Type">
+                                      <nz-option *ngFor="let option of viewphoneType" [nzLabel]="option" [nzValue]="option">
+                                      </nz-option>
+                                  </nz-select>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Website</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Website">
+                                <input nz-input type="text" formControlName="staff_website" placeholder="Website" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Phone3</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Phone3">
+                                <input nz-input type="number" formControlName="staff_phone3" placeholder="Phone3" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                        
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Phone3 Type</nz-form-label>
+                              <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_phone3_type" nzPlaceHolder="Phone3 Type">
+                                      <nz-option *ngFor="let option of viewphoneType" [nzLabel]="option" [nzValue]="option">
+                                      </nz-option>
+                                  </nz-select>
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Zip Code</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Zip Code">
+                                <input nz-input type="text" formControlName="staff_zip_code" placeholder="Zip Code" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Fax</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Fax">
+                                <input nz-input type="text" formControlName="staff_fax" placeholder="Fax" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzSpan]="16">
+                          <nz-form-item class="flexArr">
+                              <nz-form-label class="lable-style">Address</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Address">
+                                  <textarea formControlName="staff_address" nz-input placeholder="Enter Address"
+                                       [nzAutosize]="{ minRows: 3, maxRows: 3 }">
+                                  </textarea>
+                              </nz-form-control>
+                          </nz-form-item>
+                      </div>
+                      </div>
+                      <div nz-row>
+                        <div nz-col nzSpan="4">
+                          <!-- <button nz-button nzType="primary" class="btn-color">Reset</button> -->
+                          <a nz-button nzType="link">Reset</a>
+                          <button nz-button nzType="primary" class="btn-color">Add</button>
+                        </div>
+                      </div>
+
+
+                      <!--Table Start-->
+                      <div nz-row>
+                        
+                          <nz-table #staffDetails nzShowPagination nzShowSizeChanger [nzData]="staffData" style="margin-top: 75px">
+                              <thead>
+                                  <tr>
+                                    <th style="width: 150px">Mailing Name</th>
+                                    <th style="width: 150px">Email Address</th>
+                                    <th style="width: 150px">Phone1</th>
+                                    <th style="width: 150px">Phone2</th>
+                                    <th style="width: 150px">Phone3</th>
+                                    <th style="width: 150px">Fax</th>
+                                    <th style="width: 100px">Action</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr *ngFor="let data of staffDetails.data">
+                                      <td>{{ data.mailing_name }}</td>
+                                      <td>{{ data.email_address }}</td>
+                                      <td>{{ data.phone1 }}</td>
+                                      <td>{{ data.phone2 }}</td>
+                                      <td>{{ data.phone3 }}</td>
+                                      <td>{{ data.fax }}</td>
+                                      <td>{{ data.action }}</td>
+                                      
+                                  </tr>
+                              </tbody>
+                          </nz-table>
+                      
+                      </div>
+
+                      <!--Table End-->
+                  </form>
+                  </div>
+                  <!--Form Section End-->
+                </div>
+                
+              </div>
+              <div nz-row class="tabStyle-btn">
+                <div nz-col nzSpan="4" nzOffset="20">
+                  <a nz-button nzType="link" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()">Cancel</a>
+                  <button nz-button nzType="primary" class="btn-color">SAVE</button>
+                </div>
+              </div>
+            </nz-tab>
+          </nz-tabset>
+        
+        </div>
+      </div>
+
+    </div>
+    <!-- <div class="modal-footer">
       <button type="button" class="btn btn-v .primary cursor" *ngIf="!isEdit" (click)="addStaffMembers();">Save
         &
         Close</button>
@@ -771,7 +741,7 @@
         Close</button>
       <button type="button" class="btn btn-secondary cursor" id="closePopup"
         (click)="isEdit = false; selectedRowIndex = null;selectedRow = null;modalRef.hide()">Cancel</button>
-    </div>
+    </div> -->
   </ng-template>
   <!-- Modal End-->
 </div>

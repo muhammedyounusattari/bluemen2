@@ -1,67 +1,4 @@
-.marg-right-10 {
-    margin-right: 10%;
-}
-
-.disp-content {
-    display: contents;
-}
-
-.example-full-width {
-    width: 100% !important;
-}
-
-.mb-m-6 {
-    margin-bottom: -6%;
-}
-
-#Staff_Detail {
-    border-bottom: thick solid #0000FF;
-}
-
-.uploadImg {
-    position: absolute;
-    float: right;
-    right: 5%;
-    top: 12%;
-}
-
-.marg-left15 {
-    margin-left: 15px;
-}
-
-.lblText {
-    font-size: 12px;
-    color: gray;
-}
-
-.lblValue {
-    font-size: 16px;
-    color: darkgray;
-    font-weight: bold;
-}
-
-.cursor {
-    cursor: pointer;
-}
-
-.popHeader-staff {
-    font-weight: bold;
-    font-size: 22px;
-    margin-left: 15px;
-}
-
-.btn-color {
-    background-color: #1366a0;
-}
-
-.custom-modal-header {
-    position: relative;
-    flex: 1 1 auto;
-    padding: 1rem;
-}
-
-.custom-modal-body {
-    background: #eff4f8;
+.custom-body {
     padding: 2rem;
 }
 
@@ -116,8 +53,11 @@
 .form_section {
     padding: 30px;
     background: #ffffff;
-    height: 400px;
-    overflow-y: auto;
+}
+
+.form_section1 {
+    padding: 0px 30px 30px 30px;
+    background: #ffffff;
 }
 
 .section-head {
@@ -246,3 +186,23 @@ button.upload-btn.ant-btn:active, button.upload-btn.ant-btn:hover {
       position: relative;
       bottom: 4px;
   }
+
+  .marginTop30 {
+      margin-top: 30px;
+  }
+
+  .fundedStyle {
+      width: 75%;
+  }
+
+  .funded-percentage {
+    margin: 0px 0px 0px 20px;
+    font-weight: bold;
+  }
+
+  .full-width-container {
+      width: 100%;
+  }
+  .btn-color {
+    background-color: #1366a0;
+}

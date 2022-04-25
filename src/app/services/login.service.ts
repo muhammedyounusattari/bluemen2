@@ -45,7 +45,7 @@ export class LoginService {
     }
 
     getSSOConfig(request: any) {
-        const URL= 'https://blumen-api.azurewebsites.net:443/api/blumen-api/ssoConfig?email='+request.email + '&orgType='+request.orgType;
+        const URL= ServiceUrls.SSO_CONFIG + '?email='+request.email + '&orgType='+request.orgType;
         return this.dataService.validateUser(URL);
     }
 }

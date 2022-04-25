@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { RolesService } from 'src/app/services/admin/roles.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
@@ -7,14 +8,29 @@ import { SharedService } from 'src/app/shared/services/shared.service';
   templateUrl: './navigation-component.html',
   styleUrls: ['./navigation-component.css']
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnInit {
+  menus: String[];
   constructor(private router: Router
-    , public sharedService: SharedService) {
+    , public sharedService: SharedService, private roleService: RolesService) {
+  }
+  ngOnInit(): void {
+    this.roleService.getMenuList().subscribe((result: any) => {
+      if (result) {
+        this.menus = result;
+      }
+    }, (error: any) => {
+      console.log(error);
+    });
   }
 
-validate() {
-  // alert('hi');
-}
+  showMenu(element: String): boolean {
+     return this.menus.includes(element);
+  }
+
+  validate() {
+    // alert('hi');
+  }
+
   navigateToComponent(componentName: string, subComponent: string = '') {
     if (componentName === 'logged-user') {
       this.router.navigate(['home/logged-user']);
@@ -128,12 +144,12 @@ validate() {
       this.router.navigate(['admin/counselors-classes'])
     } else if (componentName === 'tutor-classes') {
       this.router.navigate(['admin/tutor-classes'])
-    }else if (componentName === 'staff-classes') {
-     this.router.navigate(['admin/staff-classes'])
+    } else if (componentName === 'staff-classes') {
+      this.router.navigate(['admin/staff-classes'])
     } else if (componentName === 'time-clock') {
       this.router.navigate(['/'], { queryParams: { popup: 'time-clock' } })
     } else if (componentName === 'global-filter' && subComponent != '') {
-      this.router.navigate(['utilities/global-filter'], {queryParams: {page: subComponent}});
+      this.router.navigate(['utilities/global-filter'], { queryParams: { page: subComponent } });
     }
   }
 }

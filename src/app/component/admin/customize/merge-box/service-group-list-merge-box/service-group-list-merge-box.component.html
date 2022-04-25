@@ -1,16 +1,24 @@
     <!-- Modal -->
     <div class="modal-body">
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-            <h4 mat-dialog-title><b>{{title}}</b></h4>
+            <h4  class="title"><b>{{title}}</b></h4>
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <form [formGroup]="formGroup" class="form">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                        <mat-form-field class="example-full-width" appearance="fill">
+                                        <!-- <mat-form-field class="example-full-width" appearance="fill">
                                             <mat-label>Service Activity Group ID*</mat-label>
                                             <input  matInput list="groups" type="text" placeholder="" value="" formControlName="id">
-                                        </mat-form-field>
+                                        </mat-form-field> -->
+                                        <div nz-col [nzSpan]="16">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">Service Activity Group ID*</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter Service Activity Group ID">
+                                                    <input nz-input type="text" list="groups" placeholder="" value="" formControlName="id" />
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
                                         <datalist id="groups">
                                             <option value="">Select</option>
                                             <option *ngFor="let actGroup of activityGroupList" [ngValue]="actGroup.id">
