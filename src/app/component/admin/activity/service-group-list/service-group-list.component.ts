@@ -498,10 +498,10 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
     * @description Get the all pull down item list
     */
      bindDropDownValues() {
-        let data: any = ['ActivityGroupType'];
-        this.pullDownService.getMultiplePulldownListByCode(data).subscribe((result: any) => {
-            if (result?.body?.ActivityGroupType) {
-                this.activityGroupTypes = result.body.ActivityGroupType;
+        let data: any = ['ACTIVITYGROUPTYPE'];
+        this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
+            if (result?.ACTIVITYGROUPTYPE) {
+                this.activityGroupTypes = result.ACTIVITYGROUPTYPE;
             }
         });
     }

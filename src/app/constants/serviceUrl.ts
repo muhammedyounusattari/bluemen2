@@ -7,6 +7,7 @@ export class ServiceUrls {
     public static PUT_CHANGE_PASSWORD = environment.apiUrl + '/blumen-api/changePassword/v1';
     public static GET_SECURITY_QUESTIONS = environment.apiUrl +'/blumen-api/admin/securityQuestions';
     public static POST_SECURITY_QUESTIONS = environment.apiUrl +'/blumen-api/admin/addSecurityQuestion';
+    public static LOGOUT_USER = environment.apiUrl +'/blumen-api/logout/v1';
 
 
     // ACTIVITY GROUP LIST API URL's

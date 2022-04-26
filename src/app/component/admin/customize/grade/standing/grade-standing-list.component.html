@@ -163,8 +163,8 @@
                             </mat-form-field>
 
                             <datalist id="fiscallist">
-                                <option *ngFor="let fyObj of gradingFiscalYearList" [ngValue]="fyObj?.name">
-                                    {{fyObj?.name}}</option>
+                                <option *ngFor="let fyObj of gradingFiscalYearList" [ngValue]="fyObj?.longpullna">
+                                    {{fyObj?.longpullna}}</option>
                             </datalist>
                         </div>
 
@@ -176,8 +176,8 @@
                             </mat-form-field>
 
                             <datalist id="partlist">
-                                <option *ngFor="let part of participantList" [ngValue]="part?.name">
-                                    {{part?.name}}</option>
+                                <option *ngFor="let part of participantList" [ngValue]="part?.longpullna">
+                                    {{part?.longpullna}}</option>
                             </datalist>
 
                         </div>
@@ -189,8 +189,8 @@
                             </mat-form-field>
 
                             <datalist id="esfylist">
-                                <option *ngFor="let esfy of yearEndFYList" [ngValue]="esfy?.name">
-                                    {{esfy?.name}}</option>
+                                <option *ngFor="let esfy of yearEndFYList" [ngValue]="esfy?.longpullna">
+                                    {{esfy?.longpullna}}</option>
                             </datalist>
                         </div>
                     </div>

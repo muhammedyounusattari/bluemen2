@@ -22,6 +22,7 @@ import autoTable from 'jspdf-autotable';
 import { DatePipe } from '@angular/common';
 import { StaffMemberMoveBoxComponent } from 'src/app/component/admin/customize/move-box/staff-member-move-box/staff-member-move-box.component';
 import { StaffMemberMergeBoxComponent } from 'src/app/component/admin/customize/merge-box/staff-member-merge-box/staff-member-merge-box.component';
+import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
 @Component({
   selector: 'app-staff-member',
   templateUrl: './staff-member.component.html',
@@ -135,14 +136,14 @@ export class StaffMemberComponent {
     }
   }
 
-  codeListArray = [{ 'name': '111' }, { 'name': '222' }];
-  customFieldListArray1 = [{ 'name': 'Custom 1' }, { 'name': 'Custom 2' }, { 'name': 'Custom 3' }];
-  customFieldListArray2 = [{ 'name': 'Custom 1' }, { 'name': 'Custom 2' }, { 'name': 'Custom 3' }];
-  customFieldListArray3 = [{ 'name': 'Custom 1' }, { 'name': 'Custom 2' }, { 'name': 'Custom 3' }];
-  customFieldListArray4 = [{ 'name': 'Custom 1' }, { 'name': 'Custom 2' }, { 'name': 'Custom 3' }];
-  cityList = [{ 'name': 'London' }, { 'name': 'Pune' }, { 'name': 'New York' }];
-  stateList = [{ 'name': 'Custom 1' }, { 'name': 'Custom 2' }, { 'name': 'Custom 3' }];
-  phoneTypesList = [{ 'name': 'Work' }, { 'name': 'Home' }, { 'name': 'Office' }];
+  codeListArray : any = [];
+  customFieldListArray1: any = [];
+  customFieldListArray2 : any = [];
+  customFieldListArray3: any = [];
+  customFieldListArray4: any = [];
+  cityList : any = [];
+  stateList: any = [];
+  phoneTypesList: any = [];
 
   formGroup: FormGroup;
   searchFormGroup: FormGroup;
@@ -184,7 +185,8 @@ export class StaffMemberComponent {
     , private dialog: MatDialog
     , private toastr: ToastrService
     , private sharedService: SharedService,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    private pullDownService: PullDownListService
   ) {
   }
 
@@ -263,74 +265,34 @@ export class StaffMemberComponent {
   }
 
   bindDropDownValues() {
-    this.staffMembersService.getPullDownList().subscribe((result: any) => {
-      if (result) {
-        if (result.filter((item: any) => item.code === 'City')
-          && result.filter((item: any) => item.code === 'City').length > 0) {
-          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'City')[0].id)
-            .subscribe(data => {
-              if (data) {
-                this.cityList = data;
-              }
-            });
+    let data: any = 'CITY,STATE,CODES, CUSTOMFIELDONE, CUSTOMFIELDTWO, CUSTOMFIELDTHREE, CUSTOMFIELDFOUR, PHONETYPE';
+    this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
+        if (result?.CITY) {
+            this.cityList = result.CITY;
         }
-        if (result.filter((item: any) => item.code === 'State_PostalAddress')
-          && result.filter((item: any) => item.code === 'State_PostalAddress').length > 0) {
-          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'State_PostalAddress')[0].id)
-            .subscribe(data => {
-              if (data) {
-                this.stateList = data;
-              }
-            });
+        if (result?.STATE) {
+            this.stateList = result.STATE;
         }
-        if (result.filter((item: any) => item.code === 'Codes')
-          && result.filter((item: any) => item.code === 'Codes').length > 0) {
-          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'Codes')[0].id)
-            .subscribe(data => {
-              if (data) {
-                this.codeListArray = data;
-              }
-            });
+        if (result?.CODES) {
+            this.codeListArray = result.CODES;
         }
-        if (result.filter((item: any) => item.code === 'CustomField1')
-          && result.filter((item: any) => item.code === 'CustomField1').length > 0) {
-          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'CustomField1')[0].id)
-            .subscribe(data => {
-              if (data) {
-                this.customFieldListArray1 = data;
-              }
-            });
+        if (result?.CUSTOMFIELDONE) {
+          this.customFieldListArray1 = result.CUSTOMFIELDONE;
+         }
+        if (result?.CUSTOMFIELDTWO) {
+            this.customFieldListArray2 = result.CUSTOMFIELDTWO;
         }
-        if (result.filter((item: any) => item.code === 'CustomField2')
-          && result.filter((item: any) => item.code === 'CustomField2').length > 0) {
-          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'CustomField2')[0].id)
-            .subscribe(data => {
-              if (data) {
-                this.customFieldListArray2 = data;
-              }
-            });
+        if (result?.CUSTOMFIELDTHREE) {
+          this.customFieldListArray3 = result.CUSTOMFIELDTHREE;
         }
-        if (result.filter((item: any) => item.code === 'CustomField3')
-          && result.filter((item: any) => item.code === 'CustomField3').length > 0) {
-          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'CustomField3')[0].id)
-            .subscribe(data => {
-              if (data) {
-                this.customFieldListArray3 = data;
-              }
-            });
+        if (result?.CUSTOMFIELDFOUR) {
+          this.customFieldListArray4 = result.CUSTOMFIELDFOUR;
         }
-        if (result.filter((item: any) => item.code === 'CustomField4')
-          && result.filter((item: any) => item.code === 'CustomField4').length > 0) {
-          this.staffMembersService.getPullDownItems(result.filter((item: any) => item.code === 'CustomField4')[0].id)
-            .subscribe(data => {
-              if (data) {
-                this.customFieldListArray4 = data;
-              }
-            });
+        if (result?.PHONETYPE) {
+          this.phoneTypesList = result.PHONETYPE;
         }
-      }
     });
-  }
+ }
   switchBetweenTabs(activeTab: string) {
     if (!this.validationClass.isNullOrUndefined(activeTab) && !this.validationClass.isEmpty(activeTab)) {
       this.isStaffDetail = activeTab === 'staff-detail' ? true : activeTab === 'address' ? false : true;

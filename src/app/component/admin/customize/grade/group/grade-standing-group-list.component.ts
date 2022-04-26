@@ -480,10 +480,11 @@ export class GradeStandingGroupListComponent implements OnInit {
     * @description Get the all pull down item list
     */
       bindDropDownValues() {
-        let data: any = ['StandingGroupType_APRColumn'];
-        this.pullDownService.getMultiplePulldownListByCode(data).subscribe((result: any) => {
-            if (result?.body?.StandingGroupType_APRColumn) {
-                this.gradeGroupGradeTypeList = result.body.StandingGroupType_APRColumn;
+        let data: any = 'STANDINGGROUPTYPE';
+        this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
+            console.log(result);
+            if (result?.STANDINGGROUPTYPE) {
+                this.gradeGroupGradeTypeList = result.STANDINGGROUPTYPE;
             }
         });
     }

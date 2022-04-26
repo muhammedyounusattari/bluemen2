@@ -484,16 +484,16 @@ export class GradeStandingListComponent implements OnInit {
     * @description Get the all pull down item list
     */
       bindDropDownValues() {
-        let data: any = ['gradingFiscalYearList','participantList','yearEndFYList'];
-        this.pullDownService.getMultiplePulldownListByCode(data).subscribe((result: any) => {
-            if (result?.body?.gradingFiscalYearList) {
-                this.gradingFiscalYearList = result.body.gradingFiscalYearList;
+        let data: any = 'FISCALYEAR,PARTICIPANT,YEAREND';
+        this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
+            if (result?.FISCALYEAR) {
+                this.gradingFiscalYearList = result.FISCALYEAR;
             }
-            if (result?.body?.participantList) {
-                this.participantList = result.body.participantList;
+            if (result?.PARTICIPANT) {
+                this.participantList = result.PARTICIPANT;
             }
-            if (result?.body?.yearEndFYList) {
-                this.yearEndFYList = result.body.yearEndFYList;
+            if (result?.YEAREND) {
+                this.yearEndFYList = result.YEAREND;
             }
         });
     }
