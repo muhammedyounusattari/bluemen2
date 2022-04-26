@@ -53,4 +53,8 @@ export class LoginService {
         const URL= ServiceUrls.SSO_CONFIG + '?email='+request.email + '&orgCode='+request.orgType;
         return this.dataService.validateUser(URL);
     }
+
+    logoutUser() {
+        return this.dataService.callGetService(ServiceUrls.LOGOUT_USER);
+    }
 }

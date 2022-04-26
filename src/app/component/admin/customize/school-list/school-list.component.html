@@ -175,8 +175,8 @@
                             </mat-form-field>
 
                             <datalist id="countries">
-                                <option *ngFor="let countryObj of countryList" [ngValue]="countryObj.name">
-                                    {{countryObj.name}}</option>
+                                <option *ngFor="let countryObj of countryList" [ngValue]="countryObj.longpullna">
+                                    {{countryObj.longpullna}}</option>
                             </datalist>
                         </div>
                         <div class="form-group col-md-4">
@@ -186,8 +186,8 @@
                                 formControlName="states" maxlength="50">
                             </mat-form-field>
                             <datalist id="states">
-                                <option *ngFor="let stateObj of stateList" [ngValue]="stateObj.name">
-                                    {{stateObj.name}}</option>
+                                <option *ngFor="let stateObj of stateList" [ngValue]="stateObj.longpullna">
+                                    {{stateObj.longpullna}}</option>
                             </datalist>
                         </div>
                         <div class="form-group col-md-4">
@@ -197,8 +197,8 @@
                             </mat-form-field>
 
                             <datalist id="cities">
-                                <option *ngFor="let cityObj of cityList" [ngValue]="cityObj.name">
-                                    {{cityObj.name}}</option>
+                                <option *ngFor="let cityObj of cityList" [ngValue]="cityObj.longpullna">
+                                    {{cityObj.longpullna}}</option>
                             </datalist>
                         </div>
                     </div>

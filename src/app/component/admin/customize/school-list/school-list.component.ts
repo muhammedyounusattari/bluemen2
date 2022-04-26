@@ -471,16 +471,16 @@ export class SchoolListComponent implements OnInit {
         // this._collegeAndSchoolService.getPullDownList().subscribe((result: any) => {
         //     console.log(result)
         // });
-        let data: any = ['City', 'State_PostalAddress', 'Codes'];
-        this._pullDownListService.getMultiplePulldownListByCode(data).subscribe((result: any) => {
-            if (result?.body?.City) {
-                this.cityList = result.body.City;
+        let data: any = 'CITY,STATE,COUNTRY';
+        this._pullDownListService.getMultiPullDownMaster(data).subscribe((result: any) => {
+            if (result?.CITY) {
+                this.cityList = result.CITY;
             }
-            if (result?.body?.State_PostalAddress) {
-                this.stateList = result.body.State_PostalAddress;
+            if (result?.STATE) {
+                this.stateList = result.STATE;
             }
-            if (result?.body?.Codes) {
-                this.countryList = result.body.Codes;
+            if (result?.COUNTRY) {
+                this.countryList = result.COUNTRY;
             }
         });
     }

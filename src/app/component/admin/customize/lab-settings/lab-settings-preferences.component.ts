@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 import { ToastrService } from 'ngx-toastr';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
 
 @Component({
     selector: 'lab-settings',
@@ -38,27 +39,17 @@ export class LabSettingsPreferencesComponent implements OnInit {
         lapSearchPriority: ''
     }
     isDisabled: boolean = false;
-    lapSearchPriorityList = [
-        { 'name': 'Student ID, Scan ID, System Serial Number' },
-        { 'name': 'Student ID, System Serial Number, Scan ID' },
-        { 'name': 'Scan ID, Student ID, System Serial Number' },
-        { 'name': 'Scan ID, System Serial Number, Student ID' },
-        { 'name': 'System Serial Number, Student ID, Scan ID' },
-        { 'name': 'System Serial Number, Scan ID, Student ID' }
-    ];
-    labComponentsList = [
-        { 'name': 'Academic' },
-        { 'name': 'Both' },
-        { 'name': 'Not Applicable' },
-        { 'name': 'Summer' }
-    ];
+    labComponentsList: any = [];
+    lapSearchPriorityList: any = [];
+    labServiceList: any = [];
     myElement: any = null;
     constructor(private modalService: BsModalService
         , private router: Router
         , private _labSettingsPreferencesService: LabSettingsPreferencesService
         , private formBuilder: FormBuilder
         , private toastr: ToastrService
-        , private sharedService: SharedService) { }
+        , private sharedService: SharedService
+        , private pullDownService: PullDownListService) { }
 
     ngOnInit(): void {
         this.sharedService.setPageTitle('Lab Settings');
@@ -95,18 +86,19 @@ export class LabSettingsPreferencesComponent implements OnInit {
         });
     }
     bindDropDownValues() {
-        this._labSettingsPreferencesService.getPullDownList().subscribe((result: any) => {
-            if (result) {
-                if (result.filter((item: any) => item.code === 'ComponentType')
-                    && result.filter((item: any) => item.code === 'ComponentType').length > 0) {
-                    this._labSettingsPreferencesService.getPullDownItems(result.filter((item: any) => item.code === 'ComponentType')[0].id)
-                        .subscribe(data => {
-                            if (data) {
-                                this.labComponentsList = data;
-                            }
-                        });
-                }
+        let data: any = 'COMPONENT,LABSERVICE,SEARCHPRIORITY';
+        this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
+            console.log(result);
+            if (result?.COMPONENT) {
+                this.labComponentsList = result.COMPONENT;
             }
+            if (result?.LABSERVICE) {
+                this.labServiceList = result.LABSERVICE;
+            }
+            if (result?.SEARCHPRIORITY) {
+                this.lapSearchPriorityList = result.SEARCHPRIORITY;
+            }
+           
         });
     }
     hideLoader() {

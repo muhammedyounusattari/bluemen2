@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import {Router} from '@angular/router';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,8 @@ export class HeaderComponent implements OnInit {
   userName: any = '';
   user : any;
   constructor(private sharedService: SharedService
-    , private router: Router) {}
+            , private router: Router
+            , private loginService: LoginService) {}
 
   ngOnInit(): void {
     const data = sessionStorage.getItem('username');
@@ -20,8 +22,14 @@ export class HeaderComponent implements OnInit {
     }
   }
   logout() {
-    sessionStorage.clear();
-    localStorage.clear();
-    window.location.reload();
+
+    this.loginService.logoutUser().subscribe((result)=>{
+      if(result){
+        sessionStorage.clear();
+        localStorage.clear();
+        window.location.reload();
+      }
+    });
+
   }
 }
