@@ -17,13 +17,17 @@
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"
            [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
 
-      <ng-container matColumnDef="userName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> User Name </th>
-        <td mat-cell *matCellDef="let entry"> {{entry?.userName}} </td>
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+        <td mat-cell *matCellDef="let entry; let row = dataIndex"> {{entry?.email}} </td>
       </ng-container>
-      <ng-container matColumnDef="issueDate">
+      <ng-container matColumnDef="orgCode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Organization Code </th>
+        <td mat-cell *matCellDef="let entry; let row = dataIndex"> {{entry?.orgCode}} </td>
+      </ng-container>
+      <ng-container matColumnDef="lastLogin">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Login Time </th>
-        <td mat-cell *matCellDef="let entry"> {{entry?.issueDate}} </td>
+        <td mat-cell *matCellDef="let entry; let row = dataIndex"> {{entry?.lastLogin}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>

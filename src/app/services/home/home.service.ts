@@ -11,11 +11,12 @@ export class HomeService {
   constructor(private dataService: DataService) {
   }
 
-  /**
+   /**
      * @method getLoggedUsers
      */
-  public getLoggedUsers() {
-    return this.dataService.callGetService(ServiceUrls.GET_LOGGED_USERS);
+  public getLoggedUsers(): Observable<any> {
+    const orgId = sessionStorage.getItem("orgId");
+    return this.dataService.callGetService(ServiceUrls.GET_ORG_BASED_USER_LIST+'/'+orgId);
   }
 
   /**
