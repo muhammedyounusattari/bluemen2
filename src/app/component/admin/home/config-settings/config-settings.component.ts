@@ -173,6 +173,7 @@ export class ConfigSettingsComponent implements OnInit {
           if(result){
           this.userList = result;
             console.log("result", result);
+            this.hideLoader();
           }
         });
   }

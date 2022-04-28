@@ -5,6 +5,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DialogBoxComponent } from 'src/app/shared/components/dialog-box/dialog-box.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
@@ -16,7 +17,7 @@ export class ResetPasswordComponent implements OnInit {
   formGroup: FormGroup;
   isLoading: boolean = false;
   hide: boolean = true;
-  public passwordLength: string = "fa fa-close";;
+  public passwordLength: string = "fa fa-close";
   public isUppercase: string = "fa fa-close";;
   public isLowercase: string = "fa fa-close";;
   public isNumber: string = "fa fa-close";;
@@ -34,7 +35,7 @@ export class ResetPasswordComponent implements OnInit {
     , private formBuilder: FormBuilder
     , private modalService: BsModalService
     , private dialog: MatDialog
-    , private toastr: ToastrService) { }
+    , private toastr: ToastrService, private router: Router ) { }
 
   ngOnInit(): void {
     this.hide = true;
@@ -118,9 +119,15 @@ export class ResetPasswordComponent implements OnInit {
         'confPassword': this.formGroup?.get('reTypePassword')?.value
       }
       this._loginService.resetPasswordUsingLink(data, this.hashcode).subscribe((result: any) => {
-        if (result) {
-          console.log(result);
-          alert("Password updated successfully");
+        result = JSON.parse(result);
+        if (result.status === '200') {
+          this.toastr.success(result.message, '', {
+            timeOut: 5000,
+            closeButton: true
+          });
+          window.location.assign('');
+        } else {
+          this.toastr.error(result.message);
         }
       }, (error: any) => {
         console.log(error);

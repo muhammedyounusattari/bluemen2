@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
     errorFPMessage = '';
     fpError = false;
     isValidUser: boolean = false;
+    isFirstTime: boolean = false;
 
     constructor(private _loginService: LoginService
         , private formBuilder: FormBuilder
@@ -217,13 +218,20 @@ export class LoginComponent implements OnInit {
                 orgType: this.requestData.organization
             }
             this._loginService.getSSOConfig(request).subscribe(result => {
-                this.isLoading = false;
-                this.isValidUser = true;
-            }, (error: any) => {
-                if (error.status === 200 || error.status === 0) {
+                if (result.status === 200) {
                     this.isLoading = false;
                     this.isValidUser = true;
+                    this.isFirstTime = result.isFirstTime;
+                } else {
+                    this.isLoading = false;
+                    this.sharedService.sendErrorMessage(result.message);
+                    this.sharedService.showErrorMessage();
+                    if (result.status === '403') {
+                        this.isLoginEnabled = false;
+                    }                    
                 }
+            }, (error: any) => {
+                console.log(JSON.parse(error));
             });
         } else {
             this.formGroup.markAllAsTouched();

@@ -11,6 +11,7 @@ import { ValidationClass } from 'src/app/shared/validation/common-validation-cla
 import { UserManagementService } from 'src/app/services/admin/user-management.service';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
 
 @Component({
     selector: 'app-user-names-password',
@@ -67,6 +68,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     selectedOrgId: any;
     user: any;
     isSuperAdmin: boolean = false;
+    request:any;
 
     constructor(private modalService: BsModalService
         , private dialog: MatDialog
@@ -74,7 +76,8 @@ export class UserNamesAndPasswordComponent implements OnInit {
         , private formBuilder: FormBuilder
         , private _userManagementService: UserManagementService
         , private router: Router
-        , private sharedService: SharedService) { }
+        , private sharedService: SharedService
+        , private pullDownService: PullDownListService) { }
 
     ngOnInit(): void {
         this.isSuperAdmin = false;
@@ -91,7 +94,20 @@ export class UserNamesAndPasswordComponent implements OnInit {
         }
         this.createForm();
         this.myElement = window.document.getElementById('loading1');
+        this.bindDropDownValues();
+    }
 
+    /**
+    * @method bindDropDownValues
+    * @description Get the all pull down item list
+    */
+     bindDropDownValues() {
+        let data: any = ['CITY'];
+        this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
+            if (result?.CITY) {
+                this.cityList = result.CITY;
+            }
+        });
     }
 
     createForm() {
@@ -138,6 +154,9 @@ export class UserNamesAndPasswordComponent implements OnInit {
             }, 500);
             this.isLoading = false;
             if (result) {
+                result.users = result.users.filter((item: any) => {
+                    item.active
+                });
                 this.dataSource = new MatTableDataSource(result.users);
                 this.userList = result.users;
                 this.dataSource.paginator = this.paginator;
@@ -160,6 +179,11 @@ export class UserNamesAndPasswordComponent implements OnInit {
 
     populateUserList() {
         const result = this.organizationsList.filter((item: any) => item.orgId === Number(this.selectedOrgId));
+        if (result[0].users) {
+            result[0].users = result[0].users.filter((item: any) => {
+                item.active
+            });
+        }
         this.dataSource = new MatTableDataSource(result[0].users);
         this.userList = result[0].users;
         this.dataSource.paginator = this.paginator;
@@ -250,15 +274,15 @@ export class UserNamesAndPasswordComponent implements OnInit {
     setValuesToUpdate() {
         if (this.selectedRow) {
             this.isEdit = true;
-            this.formGroup.get('id')?.setValue(this.selectedRow.id);
             this.formGroup.get('username')?.setValue(this.selectedRow.username);
+            this.formGroup.get('siteLocation')?.setValue(this.selectedRow.siteLocation);
             this.formGroup.get('firstName')?.setValue(this.selectedRow.firstName);
             this.formGroup.get('lastName')?.setValue(this.selectedRow.lastName);
             this.formGroup.get('roleName')?.setValue(this.selectedRow.roleName);
             this.formGroup.get('email')?.setValue(this.selectedRow.email);
             this.formGroup.get('mobile')?.setValue(this.selectedRow.mobile);
             this.formGroup.get('phone2')?.setValue(this.selectedRow.phone2);
-            this.formGroup.get('active')?.setValue(this.selectedRow.active);
+            this.formGroup.get('active')?.setValue(true);
             this.formGroup.get('sendMail')?.setValue(this.selectedRow.sendMail);
             this.formGroup.get('city')?.setValue(this.selectedRow.city);
             this.formGroup.get('state')?.setValue(this.selectedRow.state);
@@ -270,7 +294,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
             this.formGroup.get('link')?.setValue(this.selectedRow?.bolt?.link);
             this.formGroup.get('startDate')?.setValue(this.selectedRow?.bolt?.startDate);
             this.formGroup.get('endDate')?.setValue(this.selectedRow?.bolt?.endDate);
-            this.formGroup.get('active')?.setValue(this.selectedRow?.bolt?.active);
+            this.formGroup.get('boltActive')?.setValue(this.selectedRow?.bolt?.active);
             this.formGroup.get('lastGenerated')?.setValue(this.selectedRow?.bolt?.lastGenerated);
             this.openModal(this.userNamesAndPasswordPopupRef);
         } else {
@@ -319,8 +343,9 @@ export class UserNamesAndPasswordComponent implements OnInit {
     updateUser() {
         if (this.formGroup.valid) {
             this.isDisabled = true;
-            const request = this.getRequestPayload();
-            this._userManagementService.updateUser(request).subscribe(result => {
+            this.request = this.getRequestPayload();
+            this.request.id = this.selectedRow.id;
+            this._userManagementService.updateUser(this.request).subscribe(result => {
                 if (result) {
                     this.isDisabled = false;
                     this.getUserList();
@@ -351,7 +376,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
             'address1': this.formGroup?.get('address1')?.value,
             'address2': this.formGroup?.get('address2')?.value,
             // 'bolt': {
-            //     'active': this.formGroup?.get('boltActive')?.value,
+            //     'boltActive': this.formGroup?.get('boltActive')?.value,
             //     'startDate': this.formGroup?.get('startDate')?.value,
             //     'endDate': this.formGroup?.get('endDate')?.value,
             //     'id': this.boltId,
@@ -365,11 +390,10 @@ export class UserNamesAndPasswordComponent implements OnInit {
             'enabled': this.userEnabled,
             'fax': this.formGroup?.get('fax')?.value,
             'firstName': this.formGroup?.get('firstName')?.value,
-            'id': this.formGroup.get('id')?.value,
             'lastName': this.formGroup?.get('lastName')?.value,
             'mobile': this.formGroup?.get('mobile')?.value,
             'notes': this.formGroup?.get('notes')?.value,
-            'orgId': this.orgId,
+            'orgId': Number(this.orgId),
             'orgCode': this.organizationCode,
             'phone2': this.formGroup?.get('phone2')?.value,
             'roleName': this.formGroup?.get('roleName')?.value,

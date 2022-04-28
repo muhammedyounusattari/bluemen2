@@ -219,15 +219,13 @@ export class OrganizationComponent implements OnInit {
             this.organizationService.saveOrganization(request).subscribe(result => {
                 this.isDisabledBtn = false;
                 if (result) {
-                    if (!this.orgId) {
-                        this.orgId = JSON.parse(result).body;
-                        this.organizationCode = this.formGroup?.get('orgCode')?.value;
-                        this.hidePopupLoader();
-                    } else {
-                        this.showLoader();
-                        this.getOrgList();
-                        this.modalRef.hide();
-                    }
+                    this.orgId = JSON.parse(result).body;
+                    this.organizationCode = this.formGroup?.get('orgCode')?.value;
+                    this.hidePopupLoader();
+                    this.toastr.success('Organization created successfully.', '', {
+                        timeOut: 5000,
+                        closeButton: true
+                    });
                 }
             });
         } else {
@@ -282,6 +280,7 @@ export class OrganizationComponent implements OnInit {
 
     editSelectedOrg() {
         if (this.selectedRow) {
+            this.isEdit = true;
             this.formGroup.get('orgId')?.setValue(this.orgId);
             this.formGroup.get('orgName')?.setValue(this.selectedRow.orgName);
             this.formGroup.get('mailServer')?.setValue(this.selectedRow.mailServer);
@@ -331,9 +330,49 @@ export class OrganizationComponent implements OnInit {
         if (this.selectedRow) {
             this.selectedRow.orgActive = false;
             this.showLoader();
-            this.organizationService.saveOrganization(this.selectedRow).subscribe(result => {
+            const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+                data: {
+                    title: 'Confirm remove record',
+                    message: 'Are you sure, you want to remove this record: ' + this.selectedRow.orgName
+                }
+            });
+            confirmDialog.afterClosed().subscribe(result => {
+                if (result === true) {
+                    this.organizationService.updateOrganization(this.selectedRow).subscribe(result => {
+                        if (result) {
+                            this.toastr.success('Deleted successfully.', '', {
+                                timeOut: 5000,
+                                closeButton: true
+                            });
+                            this.getOrgList();
+                            this.hideLoader();
+                        }
+                    });
+                } else {
+                    this.hideLoader();
+                }
+            });
+        } else {
+            this.toastr.info('Please select a row to delete', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
+        }
+    }
+
+    updateOrganization() {
+        if (this.selectedRow) {
+            this.showLoader();
+            const request = this.requestPayload();
+            request.orgId = this.selectedRow.orgId;
+            this.organizationService.updateOrganization(request).subscribe(result => {
                 if (result) {
+                    this.toastr.success('Updated successfully.', '', {
+                        timeOut: 5000,
+                        closeButton: true
+                    });
                     this.getOrgList();
+                    this.modalRef.hide();
                 }
             });
         } else {

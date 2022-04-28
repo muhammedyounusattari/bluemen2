@@ -68,7 +68,7 @@
                             {{errorMessage}}
                         </mat-error>
 
-                        <div class="d-flex align-items-center mts-5" *ngIf="isValidUser">
+                        <div class="d-flex align-items-center mts-5" *ngIf="isValidUser && !isFirstTime">
                             <span class="mr-auto"><a href="javascript:void(0)" (click)="forgotPwd()"
                                     class="forgot-pass forgot">Forgot
                                     Password ?</a></span>

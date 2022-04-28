@@ -555,7 +555,8 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-v .primary" [disabled]="isDisabledBtn" *ngIf="orgId" (click)="openUserPopup()">Users</button>
-        <button type="button" class="btn btn-primary" *ngIf="orgId" [disabled]="isDisabledBtn" (click)="addOrganization()">Save</button>
+        <!-- <button type="button" class="btn btn-primary" *ngIf="orgId && !isEdit" [disabled]="isDisabledBtn" (click)="addOrganization()">Save</button> -->
+        <button type="button" class="btn btn-primary" *ngIf="orgId && isEdit" [disabled]="isDisabledBtn" (click)="updateOrganization()">Save</button>
         <button type="button" class="btn btn-primary" *ngIf="!orgId" [disabled]="isDisabledBtn" (click)="addOrganization();">Save & Next</button>
         <button type="button" class="btn btn-secondary" id="closePopup" [disabled]="isDisabledBtn"
             (click)="isEdit = false; selectedRowIndex = null;isDisabledBtn = false; selectedRow=null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>

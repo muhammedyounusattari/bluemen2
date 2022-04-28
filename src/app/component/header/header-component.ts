@@ -22,7 +22,9 @@ export class HeaderComponent implements OnInit {
     }
   }
   logout() {
-
+    sessionStorage.clear();
+    localStorage.clear();
+    window.location.reload();
     this.loginService.logoutUser().subscribe((result)=>{
       if(result){
         sessionStorage.clear();
