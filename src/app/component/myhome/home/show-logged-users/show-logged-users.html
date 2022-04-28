@@ -25,9 +25,9 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Organization Code </th>
         <td mat-cell *matCellDef="let entry; let row = dataIndex"> {{entry?.orgCode}} </td>
       </ng-container>
-      <ng-container matColumnDef="issueDate">
+      <ng-container matColumnDef="lastLogin">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Login Time </th>
-        <td mat-cell *matCellDef="let entry; let row = dataIndex"> {{entry?.issueDate}} </td>
+        <td mat-cell *matCellDef="let entry; let row = dataIndex"> {{entry?.lastLogin}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
