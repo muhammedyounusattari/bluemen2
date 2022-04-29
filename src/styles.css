@@ -1010,3 +1010,11 @@ a.ant-btn.ant-btn-link {
     justify-content: center;
     display: grid;
 }
+
+.spin-loader {
+    text-align: center;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 30px 50px;
+    margin: 20px 0;
+}

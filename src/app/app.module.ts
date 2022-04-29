@@ -38,6 +38,7 @@ import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { HttpClientModule } from '@angular/common/http';
+import { DemoNgZorroAntdModule } from 'src/app/ng-zorro-antd.module';
 
 registerLocaleData(en);
 
@@ -75,7 +76,8 @@ registerLocaleData(en);
     MatRadioModule, 
     MatSelectModule,
     NgDynamicBreadcrumbModule,
-    HttpClientModule
+    HttpClientModule,
+    DemoNgZorroAntdModule
   ],
   entryComponents: [ConfirmationComponent],
   providers: [ToastrService, PendingChangesGuard, { provide: NZ_I18N, useValue: en_US }],

@@ -35,8 +35,8 @@ export class UserManagementService {
         );
     }
 
-    public resetPassword(user: string) {
-        const URL = ServiceUrls.RESET_PASSWORD + "" + user;
+    public resetPassword(user: string, orgCode: string) {
+        const URL = ServiceUrls.RESET_PASSWORD + "" + user+"/"+orgCode;
         return this.dataService.callGetService(URL);
     }
 
