@@ -149,8 +149,9 @@
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Role</mat-label>
                     <select matNativeControl formControlName="roleName" required>
-                      <option [value]="roleObj.id" *ngFor="let roleObj of roleList" selected>
-                        {{roleObj.name}}
+                      <option value="" selected>--Select--</option>
+                      <option [value]="role.name" *ngFor="let role of roleList" selected>
+                        {{role.name}} {{role.default ? '(Default)': ''}}
                       </option>
                     </select>
                   </mat-form-field>
@@ -204,8 +205,8 @@
                       <mat-form-field appearance="fill" class="example-full-width">
                         <mat-label>City</mat-label>
                         <select matNativeControl formControlName="city">
-                          <option [value]="cityObj.name" *ngFor="let cityObj of cityList" selected>
-                            {{cityObj.name}}
+                          <option [value]="cityObj.id" *ngFor="let cityObj of cityList" selected>
+                            {{cityObj.longpullna}}
                           </option>
                         </select>
                       </mat-form-field>

@@ -11,6 +11,7 @@ import { ValidationClass } from 'src/app/shared/validation/common-validation-cla
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { OrganizationsService } from 'src/app/services/super-admin/organizations.service';
 import { UserNamesAndPasswordComponent } from 'src/app/component/admin/home/user-names-password/user-names-and-pwd.component';
+import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
 
 @Component({
     selector: 'app-organization',
@@ -62,19 +63,42 @@ export class OrganizationComponent implements OnInit {
     organizationList: any;
     organizationCode: any;
     isDisabledBtn: boolean = false;
+    siteLocationList: any = [{ 'id': 1, 'name': 'Location1' }, { 'id': 2, 'name': 'Location2' }, { 'id': 2, 'name': 'Location3' }];
+    cityList: any = [{ 'id': 1, 'name': 'Pune' }, { 'id': 2, 'name': 'Mumbai' }];
+    stateList: any = [{ 'id': 1, 'name': 'Maharashtra' }, { 'id': 2, 'name': 'Delhi' }];
 
     constructor(private modalService: BsModalService
         , private dialog: MatDialog
         , private toastr: ToastrService
         , private formBuilder: FormBuilder
         , private sharedService: SharedService
-        , private organizationService: OrganizationsService) { }
+        , private organizationService: OrganizationsService
+        , private pullDownService: PullDownListService) { }
 
     ngOnInit(): void {
         this.sharedService.setPageTitle('Organization Information');
         this.createForm();
         this.myElement = window.document.getElementById('loading');
         this.getOrgList();
+    }
+
+    /**
+    * @method bindDropDownValues
+    * @description Get the all pull down item list
+    */
+     bindDropDownValues() {
+        let data: any = 'CITY, STATE, SITE LOCATION';
+        this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
+            if (result?.CITY) {
+                this.cityList = result?.CITY;
+            }
+            if (result?.STATE) {
+                this.stateList = result?.STATE;
+            }
+            if (result?.SITELOCATION) {
+                this.siteLocationList = result?.SITELOCATION;
+            }
+        });
     }
 
     createForm() {
@@ -226,6 +250,7 @@ export class OrganizationComponent implements OnInit {
                         timeOut: 5000,
                         closeButton: true
                     });
+                    this.getOrgList();
                 }
             });
         } else {

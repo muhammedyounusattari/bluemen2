@@ -275,7 +275,7 @@
                             <div class="form-group col-md-6">
                                 <mat-form-field class="example-full-width" appearance="fill">
                                     <mat-label>Organization Code</mat-label>
-                                    <input matInput placeholder="" value="" formControlName="orgCode" required>
+                                    <input matInput placeholder="" value="" [readOnly]="orgId" formControlName="orgCode" required>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -359,8 +359,9 @@
                                             <mat-label>City</mat-label>
                                             <select matNativeControl formControlName="orgCity">
                                                 <option value="" selected>--Select--</option>
-                                                <option value="austin">Austin</option>
-                                                <option value="dallas">Dallas</option>
+                                                <option [value]="cityObj.id" *ngFor="let cityObj of cityList" selected>
+                                                    {{cityObj.longpullna}}
+                                                  </option>
                                             </select>
                                         </mat-form-field>
                                     </div>
@@ -369,8 +370,9 @@
                                             <mat-label>State</mat-label>
                                             <select matNativeControl formControlName="orgState">
                                                 <option value="" selected>--Select--</option>
-                                                <option value="al">AL</option>
-                                                <option value="ca">CA</option>
+                                                <option [value]="stateObj.id" *ngFor="let stateObj of stateList" selected>
+                                                    {{stateObj.longpullna}}
+                                                  </option>
                                             </select>
                                         </mat-form-field>
                                     </div>

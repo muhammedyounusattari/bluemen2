@@ -938,9 +938,10 @@ nz-select-item.ant-select-selection-item .ant-select-arrow {
 }
 
 .ant-modal-title {
-    font-weight: bold;
-    font-size: 22px;
+    font-weight: bolder;
+    font-size: 18px;
     margin-left: 15px;
+    /* color: white; */
     color: black;
     margin-top: 5px;
 }
@@ -948,29 +949,42 @@ nz-select-item.ant-select-selection-item .ant-select-arrow {
 .ant-modal-header {
     border: none;
     padding: 1rem;
+    /* background: #1366a0; */
+    background: white;
 }
 
 .ant-modal-body {
-    background: #EFF4F9;
-    padding: 3rem 2rem 0 2rem;
+    /* background: #EFF4F9;
+    padding: 3rem 2rem 0 2rem; */
+    padding-bottom: 0px;
 }
 
 i.anticon.ant-modal-close-icon.anticon-close { 
     font-size: 17px;
     color: #1366a0;
+    /* color: white; */
+    font-weight: bold;
 }
 
 .ant-modal-footer {
-    background: #EFF4F9;
-    padding-bottom: 35px;
+    background: #e8ebed;
+    padding: 15px 45px 15px 0px;
+    padding: 0;
 }
-
+.modal-footer-btn {
+    position: relative;
+    padding: 10px 45px 10px 0px;
+    /* background: #e8ebed; */
+    background: white;
+}
 .ant-btn-primary {
     border-color: #1366a0;
     background: #1366a0;
     color: white;
 }
-
+.tab-content {
+    border: 1px solid #1366a0;
+}
 .ant-btn-primary:active {
     color: #fff;
     border-color: #1366a0;

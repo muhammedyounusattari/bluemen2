@@ -23,9 +23,12 @@ export class CollegeSchoolListMergeBoxComponent implements OnInit {
   currentValId: any;
   selectedCollegeSchoolName: any;
 
-  constructor(public dialogRef: MatDialogRef<CollegeSchoolListMergeBoxComponent>, private toastr: ToastrService,
-    @Inject(MAT_DIALOG_DATA) public data: CollegeSchoolListMergeBoxModel, private formBuilder: FormBuilder, private _collegeAndSchoolService: CollegeAndSchoolService,
-    private dialog: MatDialog, private router: Router) {
+  constructor(public dialogRef: MatDialogRef<CollegeSchoolListMergeBoxComponent>, 
+               private toastr: ToastrService,
+               @Inject(MAT_DIALOG_DATA) public data: CollegeSchoolListMergeBoxModel, 
+               private formBuilder: FormBuilder,
+               private _collegeAndSchoolService: CollegeAndSchoolService,
+               private dialog: MatDialog, private router: Router) {
     // Update view with given values
     this.title = data.title;
     this.message = data.message;

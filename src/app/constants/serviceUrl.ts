@@ -293,6 +293,8 @@ export class ServiceUrls {
     public static UPDATE_PASSWORD = environment.apiUrl + '/blumen-api/updatePassword/v1/';
     public static FORGOT_PASSWORD = environment.apiUrl +'/blumen-api/forgotPassword/v1';
     public static SSO_CONFIG = environment.apiUrl + '/blumen-api/ssoConfig';
+    public static GENERATE_CODE = environment.apiUrl + '/blumen-api/generateCode';
+    public static VALIDATE_CODE = environment.apiUrl + '/blumen-api/validateCode';
 
     // Organizations API's
     public static GET_ORGANIZATIONS_LIST = environment.apiUrl + '/blumen-api/admin/home/getOrganizationsList/v1';

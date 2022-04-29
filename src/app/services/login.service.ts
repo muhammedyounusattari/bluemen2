@@ -57,4 +57,15 @@ export class LoginService {
     logoutUser() {
         return this.dataService.callGetService(ServiceUrls.LOGOUT_USER);
     }
+
+    generateCode() {
+        return this.dataService.callGetService(ServiceUrls.GENERATE_CODE);
+    }
+
+    validateCode(code: any) {
+        const request = {
+            'authCode': code
+        };
+        return this.dataService.callPostService(ServiceUrls.VALIDATE_CODE, request);
+    }
 }

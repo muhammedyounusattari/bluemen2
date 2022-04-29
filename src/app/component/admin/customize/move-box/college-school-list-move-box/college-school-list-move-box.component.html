@@ -6,11 +6,17 @@
                 <form [formGroup]="formGroup" class="form">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                        <mat-form-field class="example-full-width" appearance="fill">
+                            <div class="form-group"  nz-col [nzSpan]="18">
+                                        <!-- <mat-form-field class="example-full-width" appearance="fill">
                                             <mat-label>Name To:*</mat-label>
                                             <input matInput type="text" placeholder="" value="" formControlName="collegeSchoolName">
-                                        </mat-form-field>
+                                        </mat-form-field> -->
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style">Name To*</nz-form-label>
+                                            <nz-form-control>
+                                                <input nz-input type="text" placeholder="" value="" formControlName="collegeSchoolName"/>
+                                            </nz-form-control>
+                                        </nz-form-item>
                             </div>
                         </div>
                     </div>

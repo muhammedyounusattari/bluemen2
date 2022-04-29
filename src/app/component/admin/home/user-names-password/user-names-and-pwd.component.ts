@@ -102,10 +102,21 @@ export class UserNamesAndPasswordComponent implements OnInit {
     * @description Get the all pull down item list
     */
      bindDropDownValues() {
-        let data: any = ['CITY'];
+        let data: any = 'CITY, STATE, SITE LOCATION';
         this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
             if (result?.CITY) {
                 this.cityList = result.CITY;
+            }
+            if (result?.STATE) {
+                this.stateList = result.STATE;
+            }
+            if (result?.SITELOCATION) {
+                this.siteLocationList = result.SITELOCATION;
+            }
+        });
+        this._userManagementService.getRoleNamesList().subscribe(result => {
+            if (result) {
+                this.roleList = result;
             }
         });
     }
@@ -154,9 +165,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
             }, 500);
             this.isLoading = false;
             if (result) {
-                result.users = result.users.filter((item: any) => {
-                    item.active
-                });
+                // const userList = result.users.filter((item: any) => { item.active === true; }); 
                 this.dataSource = new MatTableDataSource(result.users);
                 this.userList = result.users;
                 this.dataSource.paginator = this.paginator;
@@ -180,15 +189,13 @@ export class UserNamesAndPasswordComponent implements OnInit {
     populateUserList() {
         const result = this.organizationsList.filter((item: any) => item.orgId === Number(this.selectedOrgId));
         if (result[0].users) {
-            result[0].users = result[0].users.filter((item: any) => {
-                item.active
-            });
+            // const userList = result[0].users.filter((item: any) => { item.active === true; }); 
+            this.dataSource = new MatTableDataSource(result[0].users);
+            this.userList = result[0].users;
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
         }
-        this.dataSource = new MatTableDataSource(result[0].users);
-        this.userList = result[0].users;
-        this.dataSource.paginator = this.paginator;
         this.selectedRowIndex = null;
-        this.dataSource.sort = this.sort;
         this.orgId = this.selectedOrgId;
         this.organizationCode = result[0].orgCode;
     }

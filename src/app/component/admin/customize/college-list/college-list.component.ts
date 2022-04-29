@@ -19,8 +19,8 @@ import autoTable from 'jspdf-autotable';
 
 @Component({
     selector: 'app-college-list',
-    templateUrl: './college-list.component.html'
-    // styleUrls: ['./pulldown-list.component.css']
+    templateUrl: './college-list.component.html',
+    styleUrls: ['./college-list.component.css']
 })
 
 export class CollegeListComponent implements OnInit {
@@ -173,7 +173,8 @@ export class CollegeListComponent implements OnInit {
     * @method setValuesToUpdate
     * @description Set the select row values in formgroup
     */
-    setValuesToUpdate() {
+    setValuesToUpdate(data: any) {
+        this.selectedRow = data;
         if (this.selectedRow) {
             this.isEdit = true;
             this.isDisabled = true;
@@ -357,7 +358,8 @@ export class CollegeListComponent implements OnInit {
     * @method deleteSelectedRow
     * @description delete the college record
     */
-    deleteSelectedRow() {
+    deleteSelectedRow(data: any) {
+        this.selectedRow = data;
         if (this.selectedRow) {
             const data = {
                 collegeSchoolId: this.selectedRow.collegeSchoolId
@@ -551,7 +553,8 @@ export class CollegeListComponent implements OnInit {
     * @method showMoveItemPopup
     * @description Open the popup for move the record
     */
-    showMoveItemPopup() {
+    showMoveItemPopup(data: any) {
+        this.selectedRow = data;
         if (this.selectedRow) {
             //this.showLoader();
             const confirmDialog = this.dialog.open(CollegeSchoolListMoveBoxComponent, {
@@ -591,7 +594,8 @@ export class CollegeListComponent implements OnInit {
      * @method showMergeItemPopup
      * @description Open the popup for merge the record
      */
-    showMergeItemPopup() {
+    showMergeItemPopup(data: any) {
+        this.selectedRow = data;
         if (this.selectedRow) {
             const confirmDialog = this.dialog.open(CollegeSchoolListMergeBoxComponent, {
                 data: {
@@ -712,6 +716,17 @@ export class CollegeListComponent implements OnInit {
         window.open(doc.output('bloburl').toString(), '_blank');
         //doc.output('dataurlnewwindow', {filename: 'college.pdf'});
         //doc.save('college.pdf');  
+    }
+    sorting(attr: string) {
+        if (this.collegeDataList.length > 0) {
+            this.collegeDataList = [...this.collegeDataList].sort((a, b) => (a[attr] > b[attr]) ? 1 : -1)
+        }
+    }
+    
+    sorting2(attr: string) {
+        if (this.collegeDataList.length > 0) {
+            this.collegeDataList = [...this.collegeDataList].sort((a, b) => (a[attr] < b[attr]) ? 1 : -1)
+        }
     }
 
 }

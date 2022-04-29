@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivityGroupServicesService } from 'src/app/services/admin/activity-group-services.service';
 import { Router } from '@angular/router';
 import { MoveMergeDialogBoxComponent } from 'src/app/shared/components/move-merge-dialog-box/move-merge-dialog-box.component';
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
 
 @Component({
   selector: 'app-service-group-list-merge-box',
@@ -23,7 +24,9 @@ export class ServiceGroupListMergeBoxComponent implements OnInit {
   currentValId: any;
   selectedActivityGroupName: any;
 
-  constructor(public dialogRef: MatDialogRef<ServiceGroupListMergeBoxComponent>, private toastr: ToastrService,
+  constructor(public dialogRef: MatDialogRef<ServiceGroupListMergeBoxComponent>, 
+    private toastr: ToastrService,
+    private notificationService: NotificationUtilities,
     @Inject(MAT_DIALOG_DATA) public data: ServiceGroupListMergeBoxModel, private formBuilder: FormBuilder, private _activityGroupServicesService: ActivityGroupServicesService,
     private dialog: MatDialog, private router: Router) {
     // Update view with given values

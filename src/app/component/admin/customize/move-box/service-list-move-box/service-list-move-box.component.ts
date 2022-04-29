@@ -23,9 +23,12 @@ export class ServiceListMoveBoxComponent implements OnInit {
   currentValId: any;
   selectedActivityName: any;
 
-  constructor(public dialogRef: MatDialogRef<ServiceListMoveBoxComponent>, private toastr: ToastrService,
-    @Inject(MAT_DIALOG_DATA) public data: ServiceListMoveBoxModel, private formBuilder: FormBuilder, private _activityGroupServicesService: ActivityGroupServicesService,
-    private dialog: MatDialog, private router: Router) {
+  constructor(public dialogRef: MatDialogRef<ServiceListMoveBoxComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: ServiceListMoveBoxModel,
+              private formBuilder: FormBuilder, 
+              private dialog: MatDialog,
+              private _activityGroupServicesService: ActivityGroupServicesService,
+              ) {
     // Update view with given values
     this.title = data.title;
     this.message = data.message;

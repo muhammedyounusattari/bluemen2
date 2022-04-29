@@ -1,6 +1,3 @@
-.example-full-width {
-    width: 100% !important;
-}
 .header-elements{
     display: flex;
     flex-direction: row;
@@ -15,9 +12,10 @@
     font-size: 15px;
     padding-right: 15px;
 }
-/* .modal-content {
-    width: 85% !important;
-} */
+.icon-div {
+    display: flex;
+    flex-direction: row;
+}
 .sort {
     cursor: pointer;
 }

@@ -39,4 +39,8 @@ export class UserManagementService {
         const URL = ServiceUrls.RESET_PASSWORD + "" + user;
         return this.dataService.callGetService(URL);
     }
+
+    getRoleNamesList() {
+        return this.dataService.callGetService(ServiceUrls.GET_ROLENAMES_LIST, '');
+    }
 }
