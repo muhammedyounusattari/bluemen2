@@ -143,10 +143,6 @@ export class ServiceGroupListMoveBoxComponent implements OnInit {
     let status = true;
     const data = this.activityGroupList.filter((item: any) => ((item.id) === (currentId)));
     if (data && data.length > 0) {
-      // this.toastr.info('Id already exist in list please use other id', '', {
-      //   timeOut: 5000,
-      //   closeButton: true
-      // });
       let message = "Enter a different number as the number is already in use or To combine to lists use the merge option instead!";
       const confirmDialog = this.dialog.open(MoveMergeDialogBoxComponent, {
         data: {

@@ -15,15 +15,15 @@
     <!-- Two Tabs Start-->
 
     <!-- Search Box Start-->
-    <!-- Search Box Start-->
     <div class="row">
         <div class="col-md-6 mt-3 mb-3 ">
             <nz-input-group [nzSuffix]="suffixIconSearch">
-                <input type="text" #searchText nz-input placeholder="input search text"  (keyup)="applyFilter(searchText.value)"/>
-              </nz-input-group>
-              <ng-template #suffixIconSearch>
+                <input type="text" #searchText nz-input placeholder="input search text"
+                    (keyup)="applyFilter(searchText.value)" />
+            </nz-input-group>
+            <ng-template #suffixIconSearch>
                 <i nz-icon nzType="search"></i>
-              </ng-template>
+            </ng-template>
             <!-- <form class="example">
                 <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
                 <i class="fa fa-search search"></i>
@@ -48,268 +48,339 @@
         </div>
     </div>
     <!-- Search Box End-->
-    <!-- Data Table Start-->
-    <div class="mat-elevation-z8 data-table-height dt-max-height" >
-        <nz-table #collegeDataListTable [nzNoResult]="noResultTemplate" [nzLoading]="isLoading" [nzData]="collegeDataList">
+
+    <!-- nz Table Start-->
+    <div class="mat-elevation-z8 data-table-height dt-max-height">
+        <nz-table #collegeDataListTable [nzNoResult]="noResultTemplate" [nzLoading]="isLoading"
+            [nzData]="collegeDataList">
             <ng-template #noResultTemplate>
                 <nz-empty [nzNotFoundContent]="'No Data Found'">
-                </nz-empty> 
+                </nz-empty>
             </ng-template>
             <thead>
-            <tr>
-                <th>College Name <i  class="sort" (click)="sorting('name')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                    <i  class="sort" (click)="sorting2('name')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
-                <th>In Pulldown <i  class="sort" (click)="sorting('inPullDown')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                    <i  class="sort" (click)="sorting2('inPullDown')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
-                <th>FAFSA ID <i  class="sort" (click)="sorting('fafsaId')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                    <i  class="sort" (click)="sorting2('fafsaId')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
-                <th>Country Name  <i  class="sort" (click)="sorting('country')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                    <i  class="sort" (click)="sorting2('country')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
-                <th>Phone 1 <i  class="sort" (click)="sorting('phone1')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                        <i  class="sort" (click)="sorting2('phone1')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>  
-                <th>Phone 2 <i  class="sort" (click)="sorting('phone2')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                            <i  class="sort" (click)="sorting2('phone2')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>    
-                <th>Phone 3 <i  class="sort" (click)="sorting('phone3')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                                <i  class="sort" (click)="sorting2('phone3')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>    
-                <th>FAX <i  class="sort" (click)="sorting('fax')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                                    <i  class="sort" (click)="sorting2('fax')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>    
-                <th>Action</th>
-            </tr>
+                <tr>
+                    <th>College Name <i class="sort" (click)="sorting('name')" nz-icon nzType="caret-up"
+                            nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('name')" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                    </th>
+                    <th>In Pulldown <i class="sort" (click)="sorting('inPullDown')" nz-icon nzType="caret-up"
+                            nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('inPullDown')" nz-icon nzType="caret-down"
+                            nzTheme="outline"></i>
+                    </th>
+                    <th>FAFSA ID <i class="sort" (click)="sorting('fafsaId')" nz-icon nzType="caret-up"
+                            nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('fafsaId')" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                    </th>
+                    <th>Country Name <i class="sort" (click)="sorting('country')" nz-icon nzType="caret-up"
+                            nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('country')" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                    </th>
+                    <th>Phone 1 <i class="sort" (click)="sorting('phone1')" nz-icon nzType="caret-up"
+                            nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('phone1')" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                    </th>
+                    <th>Phone 2 <i class="sort" (click)="sorting('phone2')" nz-icon nzType="caret-up"
+                            nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('phone2')" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                    </th>
+                    <th>Phone 3 <i class="sort" (click)="sorting('phone3')" nz-icon nzType="caret-up"
+                            nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('phone3')" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                    </th>
+                    <th>FAX <i class="sort" (click)="sorting('fax')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('fax')" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                    </th>
+                    <th>Action</th>
+                </tr>
             </thead>
-            
+
             <tbody>
-            <tr *ngFor="let data of collegeDataListTable.data;let idx = index;">
-                <td>{{ data.name }}</td>
-                <td>{{ data.inPullDown ? 'YES' : 'NO'}}</td>
-                <td>{{ data.fafsaId}}</td>
-                <td> {{data.country}} </td>
-                <td> {{data.phone1 | phoneMask: '(000) 000-0000'}}</td>
-                <td> {{data.phone2 | phoneMask: '(000) 000-0000'}}</td>
-                <td> {{data.phone3 | phoneMask: '(000) 000-0000'}}</td>
-                <td> {{data.fax | phoneMask: '(000) 000-0000'}}</td>
-                <!-- <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus(data)"></td> -->
-                <td class="edit-icon-div"> 
-                    <i class="icon-pt" nz-icon nzType="edit" (click)="setValuesToUpdate(data, idx)" 
-                        nzTheme="outline" nz-tooltip
-                        nzTooltipTitle="Edit"
-                        nzTooltipPlacement="bottom" nz-button>
-                    </i>
-                    <i class="icon-pt" nz-icon nzType="export" nzTheme="outline" (click)="showMoveItemPopup(data, idx)" 
-                        nz-tooltip
-                        nzTooltipTitle="Move"
-                        nzTooltipPlacement="bottom" nz-button>
-                    </i>
-                    <i class="icon-pt" nz-icon nzType="merge-cells" nzTheme="outline"
-                        (click)="showMergeItemPopup(data, idx)"
-                        nz-tooltip
-                        nzTooltipTitle="Merge"
-                        nzTooltipPlacement="bottom" nz-button>
-                    </i>
-                    <i class="icon-pt" nz-icon nzType="delete" nzTheme="outline"
-                        (click)="deleteSelectedRow(data, idx)"
-                        nz-tooltip
-                        nzTooltipTitle="Delete"
-                        nzTooltipPlacement="bottom" nz-button>
-                    </i>
-                </td>
-            </tr>
+                <tr *ngFor="let data of collegeDataListTable.data">
+                    <td>{{ data.name }}</td>
+                    <td>{{ data.inPullDown }}</td>
+                    <td>{{ data.fafsaId}}</td>
+                    <td> {{data.country}} </td>
+                    <td> {{data.phone1 | phoneMask: '(000) 000-0000'}}</td>
+                    <td> {{data.phone2 | phoneMask: '(000) 000-0000'}}</td>
+                    <td> {{data.phone3 | phoneMask: '(000) 000-0000'}}</td>
+                    <td> {{data.fax | phoneMask: '(000) 000-0000'}}</td>
+                    <td class="edit-icon-div">
+                        <i class="icon-pt" nz-icon nzType="edit" nzTheme="outline" nz-tooltip nzTooltipTitle="Edit"
+                            (click)="setValuesToUpdate(data)" nzTooltipPlacement="bottom" nz-button>
+                        </i>
+                        <i class="icon-pt" nz-icon nzType="export" nzTheme="outline" nz-tooltip nzTooltipTitle="Move"
+                            (click)="showMoveItemPopup(data)" nzTooltipPlacement="bottom" nz-button>
+                        </i>
+                        <!-- 
+                        <i class="icon-pt" nz-icon nzType="merge-cells" nzTheme="outline" nz-tooltip
+                            (click)="showMergeItemPopup(data)" nzTooltipTitle="Merge" nzTooltipPlacement="bottom"
+                            nz-button>
+                        </i>  -->
+                        <i class="icon-pt" nz-icon nzType="delete" nzTheme="outline" (click)="deleteSelectedRow(data)"
+                            nz-tooltip nzTooltipTitle="Delete" nzTooltipPlacement="bottom" nz-button>
+                        </i>
+                    </td>
+                </tr>
             </tbody>
         </nz-table>
     </div>
+    <!-- nz Table End-->
 </div>
-
-<!-- Modal Start-->
-<ng-template #collegeNamePopup>
-    <!-- Modal -->
-    <div class="modal-header popHeaderBG">
-        <span class="modal-title popHeader" id="exampleModalLabel">College Name</span>
-        <button type="button" class="btn-close" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()"
-            aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
+<!-- New/Edit Modal Start-->
+<nz-modal [(nzVisible)]="collegeNamePopupVisiblity" nzTitle={{collegeNamePopupTitle}} (nzOnCancel)="handleCancel()"
+    [nzFooter]="collegeNamePopupFooters" nzWidth="65%" [nzOkLoading]="isCollegeNamePopupLoading">
+    <ng-template #collegeNamePopupFooters>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+            <button nz-button nzType="primary" *ngIf="!isEdit" (click)="addNewCollegeName();"
+                [nzLoading]="isCollegeNamePopupLoading">Save &
+                Close</button>
+            <button nz-button nzType="primary" *ngIf="isEdit" (click)="updateSelectedRow();"
+                [nzLoading]="isCollegeNamePopupLoading">Update &
+                Close</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <form [formGroup]="formGroup" class="form">
-                <div class="row">
-                    <div class="col-md-12 flex">
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label class="lable-style">Name</nz-form-label>
-                                <nz-form-control nzErrorTip="Please Enter College Name">
-                                    <input nz-input *ngIf="!isDisabled" placeholder="Enter Name" value="" formControlName="name" maxlength="50" required  (blur)="checkName($event)"/>
-                                    <input nz-input *ngIf="isDisabled" placeholder="Enter Name" value="" formControlName="name" maxlength="50" readonly="{{isDisabled}}"/>
-                                </nz-form-control>
-                            </nz-form-item>
-                            <label nz-checkbox formControlName="inPullDown" > In Pulldown List</label> 
+                    <div nz-row [nzGutter]="24" [nzSpan]="24" class="row box">
+                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Name</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input *ngIf="!isDisabled" placeholder="Enter Name" value=""
+                                            formControlName="name" maxlength="50" required />
+                                        <input nz-input *ngIf="isDisabled" placeholder="Enter Name" value=""
+                                            formControlName="name" maxlength="50" readonly="{{isDisabled}}" required />
+                                    </nz-form-control>
+                                </nz-form-item>
+                                <label nz-checkbox formControlName="inPullDown"> In Pulldown List</label>
+                            </div>
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Codes</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input placeholder="Enter Codes" value="" formControlName="codes"
+                                            maxlength="50" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Title</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input placeholder="Enter Title" value="" formControlName="title"
+                                            maxlength="50" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
                         </div>
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label class="lable-style">Codes</nz-form-label>
-                                <nz-form-control>
-                                    <input nz-input placeholder="Enter Codes" value="" formControlName="codes" maxlength ="50"/>
-                                </nz-form-control>
-                            </nz-form-item>
+                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Country</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input list="countries" placeholder="Enter Country" value=""
+                                            formControlName="country" maxlength="50" />
+                                    </nz-form-control>
+                                </nz-form-item>
+
+                                <datalist id="countries">
+                                    <option *ngFor="let countryObj of countryList" [ngValue]="countryObj.longpullna">
+                                        {{countryObj.longpullna}}</option>
+                                </datalist>
+                            </div>
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">State</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input list="states" placeholder="Enter State" value=""
+                                            formControlName="states" maxlength="50" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                                <datalist id="states">
+                                    <option *ngFor="let stateObj of stateList" [ngValue]="stateObj.longpullna">
+                                        {{stateObj.longpullna}}</option>
+                                </datalist>
+                            </div>
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">City</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input list="cities" placeholder="Enter City" value=""
+                                            formControlName="city" maxlength="50" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                                <datalist id="cities">
+                                    <option *ngFor="let cityObj of cityList" [ngValue]="cityObj.longpullna">
+                                        {{cityObj.longpullna}}</option>
+                                </datalist>
+                            </div>
                         </div>
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label class="lable-style">Title</nz-form-label>
-                                <nz-form-control>
-                                    <input nz-input placeholder="Enter Title" value="" formControlName="title" maxlength="50"/>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label [nzSpan]="24" class="lable-style">Country</nz-form-label>
-                                <nz-form-control>
-                                    <nz-select nzShowSearch nzAllowClear formControlName="country" nzPlaceHolder="Enter Country">
-                                        <nz-option *ngFor="let countryObj of countryList" [nzLabel]="countryObj.longpullna" [nzValue]="countryObj.longpullna">
-                                        </nz-option>
-                                    </nz-select>
-                                </nz-form-control>
-                            </nz-form-item>    
-                        </div>
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label [nzSpan]="24" class="lable-style">State</nz-form-label>
-                                <nz-form-control>
-                                    <nz-select nzShowSearch nzAllowClear formControlName="states" nzPlaceHolder="Enter State">
-                                        <nz-option *ngFor="let stateObj of stateList" [nzLabel]="stateObj.longpullna" [nzValue]="stateObj.longpullna">
-                                        </nz-option>
-                                    </nz-select>
-                                </nz-form-control>
-                            </nz-form-item>    
-                        </div>
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label [nzSpan]="24" class="lable-style">City</nz-form-label>
-                                <nz-form-control>
-                                    <nz-select nzShowSearch nzAllowClear formControlName="city" nzPlaceHolder="Enter City">
-                                        <nz-option *ngFor="let cityObj of cityList" [nzLabel]="cityObj.longpullna" [nzValue]="cityObj.longpullna">
-                                        </nz-option>
-                                    </nz-select>
-                                </nz-form-control>
-                            </nz-form-item>    
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-12">
+                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                            <div class="form-group" nz-col [nzSpan]="24">
                                 Address:
                                 <nz-form-item>
                                     <nz-form-control>
-                                        <textarea nz-input placeholder="Enter Address"
-                                        formControlName="address" maxlength="2000"></textarea>
+                                        <textarea nz-input placeholder="Enter Address" formControlName="address"
+                                            maxlength="2000"></textarea>
                                     </nz-form-control>
                                 </nz-form-item>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label class="lable-style">FAFSA ID</nz-form-label>
-                                <nz-form-control nzErrorTip="Please Enter FAFSA ID">
-                                    <input nz-input placeholder="Enter FafsaId" value="" formControlName="fafsaId" maxlength="30" required/>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label class="lable-style">Zip Code</nz-form-label>
-                                <nz-form-control>
-                                    <input nz-input  placeholder="Enter Zip Code" mask="00000-0000" value="" formControlName="zipcode" maxlength="20"/>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label class="lable-style">Fiscal Years</nz-form-label>
-                                <nz-form-control>
-                                    <input nz-input type="number" placeholder="Enter Fiscal Years" value="" formControlName="fiscalYear" maxlength="50"/>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
+                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">FAFSA ID</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input *ngIf="isDisabled" placeholder="Enter FafsaId" value=""
+                                            formControlName="fafsaId" maxlength="30" readonly="{{isDisabled}}"
+                                            required />
+                                        <input nz-input *ngIf="!isDisabled" placeholder="Enter FafsaId" value=""
+                                            formControlName="fafsaId" maxlength="30" required />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Zip Code</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input placeholder="Enter Zip Code" mask="00000-0000" value=""
+                                            formControlName="zipcode" maxlength="20" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Fiscal Years</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input placeholder="Enter Fiscal Years" value=""
+                                            formControlName="fiscalYear" maxlength="50" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
 
+                        </div>
+                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Phone 1</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input placeholder="Enter Phone1" mask="(000)000-0000" value=""
+                                            formControlName="phone1" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Phone 2</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input placeholder="Enter Phone2" mask="(000)000-0000" value=""
+                                            formControlName="phone2" maxlength="30" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Phone 3</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input placeholder="Enter Phone3" mask="(000)000-0000" value=""
+                                            formControlName="phone3" maxlength="30" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+
+                        </div>
+                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                            <div class="form-group" nz-col [nzSpan]="6">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Fax</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input placeholder="Enter Fax" mask="(000)000-0000" value=""
+                                            formControlName="fax" maxlength="30" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div class="form-group" nz-col [nzSpan]="8">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Web Site</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input placeholder="Enter Web Site" formControlName="website" value=""
+                                            maxlength="50" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div class="form-group" nz-col [nzSpan]="7">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Email</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input placeholder="Enter Email" value="" formControlName="email"
+                                            maxlength="50" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                            <div class="form-group" nz-col [nzSpan]="24">
+                                Notes:
+                                <nz-form-item>
+                                    <nz-form-control>
+                                        <textarea nz-input placeholder="Enter Notes" formControlName="notes"
+                                            maxlength="2000"></textarea>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label class="lable-style">Phone 1</nz-form-label>
-                                <nz-form-control>
-                                    <input nz-input   placeholder="Enter Phone1" mask="(000)000-0000" value="" formControlName="phone1"/>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                       
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label class="lable-style">Phone 2</nz-form-label>
-                                <nz-form-control>
-                                    <input nz-input placeholder="Enter Phone2" mask="(000)000-0000" value="" formControlName="phone2" maxlength="30"/>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                       
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label class="lable-style">Phone 3</nz-form-label>
-                                <nz-form-control>
-                                    <input nz-input placeholder="Enter Phone3" mask="(000)000-0000" value="" formControlName="phone3" maxlength="30"/>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                      
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label class="lable-style">Fax</nz-form-label>
-                                <nz-form-control>
-                                    <input nz-input  placeholder="Enter Fax" mask="(000)000-0000" value="" formControlName="fax" maxlength="30"/>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label class="lable-style">Web Site</nz-form-label>
-                                <nz-form-control>
-                                    <input nz-input  placeholder="Enter Web Site" formControlName="website" value="" maxlength="50"/>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <nz-form-item>
-                                <nz-form-label class="lable-style">Email</nz-form-label>
-                                <nz-form-control>
-                                    <input nz-input  placeholder="Enter Email" value="" formControlName="email" maxlength="50"/>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-12">
-                            Notes:
-                            <nz-form-item>
-                                <nz-form-control>
-                                    <textarea nz-input placeholder="Enter Notes" formControlName="notes" maxlength="2000"></textarea>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                    </div>
-                </div>
                 </form>
             </div>
         </div>
-    </div>
+    </ng-container>
 
-    <div class="modal-footer">
-        <button type="button" class="btn btn-primary" *ngIf="!isEdit" (click)="addNewCollegeName();">Save
-            & Close</button>
-        <button type="button" class="btn btn-primary" *ngIf="isEdit" (click)="updateSelectedRow();">Update
-            & Close</button>
-        <button type="button" class="btn btn-secondary" id="closePopup"
-            (click)="selectedRowIndex = null; modalRef.hide();selectedRow=null;">Cancel</button>
-    </div>
-</ng-template>
+</nz-modal>
 <!-- Modal End-->
+
+<!-- Move Modal Start-->
+<nz-modal [(nzVisible)]="collegeMovePopupVisiblity" nzTitle={{collegeMovePopupTitle}} (nzOnCancel)="handleCancel()"
+    [nzFooter]="collegeMoveModalFooters" nzWidth="75%" [nzOkLoading]="isCollegeMoveLoading">
+    <ng-template #collegeMoveModalFooters>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+            <button nz-button nzType="primary" (click)="onConfirmMove();"
+                [nzLoading]="isCollegeMoveLoading">Move</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div class="modal-body">
+            <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <form [formGroup]="moveFormGroup" class="form">
+                        <div [nzSpan]="24" [nzSpan]="24" class="row">
+                            <div class="form-group" nz-col [nzSpan]="8">
+                                <div nz-col [nzSpan]="18">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style">Name To*</nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Enter College/School Name">
+                                            <input nz-input type="text" placeholder="" value=""
+                                                formControlName="collegeSchoolName" />
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</nz-modal>
+<!-- Move Modal End -->
+
+
+<!-- Merge Modal Start-->
+<!-- Merge Modal End -->

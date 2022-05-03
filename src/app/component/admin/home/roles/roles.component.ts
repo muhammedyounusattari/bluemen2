@@ -7,7 +7,6 @@ import { NzTreeFlattener, NzTreeFlatDataSource } from 'ng-zorro-antd/tree-view';
 import { FlatTreeControl } from 'ng-zorro-antd/node_modules/@angular/cdk/tree';
 
 
-
 interface TreeNode {
   id: number;
   name: string;
@@ -243,7 +242,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
 
 
   getUpdateRequestPayload(): UpdateRole {
-    let topNode: any = this.treeControl.dataNodes.find((dn: { code: number; }) => dn.code === 1);
+    let topNode: any = this.treeControl.dataNodes.find(dn => dn.code === 1);
     let updateRole: UpdateRole = {
       code: this.userRoles[0].code,
       copyRoleName: this.userRoles[0].copyRoleName,
@@ -268,7 +267,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
 
     //Add others privilges from tree control
     const descendants = this.treeControl.getDescendants(topNode);
-    descendants.forEach((privilege: { id: any; name: any; code: any; accessType: any; orgId: any; parentCode: any; }) => {
+    descendants.forEach(privilege => {
       updatePrivileges.push({
         id: privilege.id,
         name: privilege.name,
@@ -344,9 +343,9 @@ export class RolesComponent implements AfterViewInit, OnInit {
   flatNodeMap = new Map<FlatNode, TreeNode>();
   nestedNodeMap = new Map<TreeNode, FlatNode>();
 
-  treeControl = new FlatTreeControl<FlatNode, FlatNode>(
-    (    node: { level: any; }) => node.level,
-    (    node: { expandable: any; }) => node.expandable
+  treeControl = new FlatTreeControl<FlatNode>(
+    node => node.level,
+    node => node.expandable
   );
 
   treeFlattener = new NzTreeFlattener(
@@ -367,7 +366,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
   itemSelectionToggle(node: FlatNode): void {
     const descendants = this.treeControl.getDescendants(node);
 
-    descendants.forEach((child: { accessType: string | null | undefined; }) => {
+    descendants.forEach(child => {
       child.accessType = node.accessType;
     });
   }

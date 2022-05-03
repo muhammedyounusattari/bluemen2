@@ -1,22 +1,13 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { Router } from '@angular/router';
-import { ActivityGroupServicesService } from '../../../../services/admin/activity-group-services.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
-import { MatPaginator } from '@angular/material/paginator';
-// import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { SharedService } from 'src/app/shared/services/shared.service';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
-import { ServiceListMoveBoxComponent } from '../../customize/move-box/service-list-move-box/service-list-move-box.component';
-import { ServiceListMergeBoxComponent } from '../../customize/merge-box/service-list-merge-box/service-list-merge-box.component';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { NzModalService } from "ng-zorro-antd/modal";
+import { ActivityGroupServicesService } from "src/app/services/admin/activity-group-services.service";
+import { SharedService } from "src/app/shared/services/shared.service";
+import { NotificationUtilities } from "src/app/shared/utilities/notificationUtilities";
+import { ValidationClass } from "src/app/shared/validation/common-validation-class";
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable';
-import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
-import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
     selector: 'app-services-list',
@@ -24,115 +15,55 @@ import { NzModalService } from 'ng-zorro-antd/modal';
     styleUrls: ['./services-list.component.css']
 })
 
-/**
- * ServicesList Component 
- */
 export class ServicesListComponent implements OnInit {
-    activityServiceData: any = [];
 
-    requestData: any = {
-        id: '',
-        activityId: '',
-        activityName: '',
-        activityGroupName: '',
-        lapService: true,
-        activityBoltService: ''
+    public activityServiceData: any = [];
+    public activityGroup: any;
+    public mergeFormGroup: FormGroup;
+    public moveFormGroup: FormGroup;
+    public formGroup: FormGroup;
+    public validationClass: ValidationClass = new ValidationClass();
+
+    public isActivityServiceListMergeLoading: boolean = false;
+    public isLoading: boolean = false;
+    public isActivityServiceListMoveLoading: boolean = false;
+    public activityServiceListMovePopupVisiblity: boolean = false;
+    public activityServiceListMergePopupVisiblity: boolean = false;
+    public isConfirmActivityLoading: boolean = false;
+    public isEdit: boolean = false;
+    public activityServiceListPopupVisiblity: boolean = false;
+
+    public activityMovePopupTitle: string = 'Customize Service and Activity Name';
+    public activityMergePopupTitle: string = 'Customize Service and Activity Name';
+    public activityServiceModalHeader: string = 'Customize Activity/Service';
+
+    public selectedRow: any = {};
+    public currentValId: any = null;
+    public existingAccountData: any = {
+        "lapService": null,
+        "activityGroupName": null,
+        "activityId": null,
+        "activityName": null,
+        "id": null,
     };
-    @ViewChild('activityServiceListPopup') activityServiceListPopupRef: TemplateRef<any>;
-    // modalRef: BsModalRef;
-    modalConfigSM = {
-        backdrop: true,
-        ignoreBackdropClick: true,
-        class: 'modal-lg'
-    }
-    selectedRow: any = '';
-    isEdit: boolean = false;
-    myElement: any = null;
-    public spinner: boolean = true;
+    public moveExistingAccountData: any = {
+        "id": null,
+    };
+    public mergeExistingAccountData: any = {
+        "id": null,
+    };
     selectedRowIndex: any;
-    columnsToDisplay: string[] = ['id', 'activityName', 'activityGroupName', 'lapService'];
-    dataSource: MatTableDataSource<any>;
-    activityServiceModalHeader =  'Customize Activity/Service';
-    activityServiceListPopupVisiblity = false;
-    // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-    // @ViewChild(MatSort, { static: true }) sort: MatSort;
-    // @ViewChild(MatSort) set matSort(sort: MatSort) {
-    //     if (this.dataSource && !this.dataSource.sort) {
-    //         this.dataSource.sort = sort;
-    //     }
-    // }
-    public isLoading: boolean = true;
-    isConfirmActivityLoading = false;
-    activityGroup: any;
-    formGroup: FormGroup;
-    validationClass: ValidationClass = new ValidationClass();
 
-    constructor(private modalService: BsModalService
-        , private router: Router
-        , private dialog: MatDialog
-        ,private modal: NzModalService
+    constructor(private router: Router
+        , private modal: NzModalService
         , private _activityGroupServicesService: ActivityGroupServicesService
-        ,  private notificationService: NotificationUtilities
+        , private notificationService: NotificationUtilities
         , private sharedService: SharedService, private formBuilder: FormBuilder) { }
-
     ngOnInit() {
         this.sharedService.setPageTitle('Activity/Service List');
         this.createForm();
-        this.myElement = window.document.getElementById('loading');
-        this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
-            this.hideLoader();
-            let domElement = window.document.getElementById('Service_Name');
-            if (domElement) {
-                domElement.style.borderBottom = "thick solid #0000FF";
-            }
-            if (result) {
-                // this.dataSource = new MatTableDataSource(result);
-                this.selectedRowIndex = null;
-                // this.dataSource.paginator = this.paginator;
-                // this.dataSource.sort = this.sort;
-                this.activityServiceData = result;
-            }
-        });
-        this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
-            if (result) {
-                this.activityGroup = result;
-            }
-        });
+        this.loadInitialTableData();
     }
-
-    /**
-    * @method navigateToComponent
-    * @description navigate the service group list companant
-    */
-    navigateToComponent(componentName: string) {
-        if (componentName === 'service-group-list') {
-            this.router.navigate(['admin/customize/service-group-list']);
-        } else if (componentName === 'services-list') {
-            this.router.navigate(['admin/customize/services-list']);
-        }
-    }
-
-    /**
-   * @method applyFilter
-   * @description search the text from list
-   */
-    applyFilter(filterValue: any) {
-        // if(filterValue.target.value.trim().toLowerCase() == 'no'){
-        //     this.dataSource.filter = 'false';
-        // }else if(filterValue.target.value.trim().toLowerCase() == 'yes'){
-        //     this.dataSource.filter = 'true';
-        // }else{
-        // this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
-        // }
-        // if (this.dataSource.paginator) {
-        //     this.dataSource.paginator.firstPage();
-        // }
-    }
-
-    /**
-   * @method createForm
-   * @description declare the form fields
-   */
     createForm() {
         this.formGroup = this.formBuilder.group({
             'id': [''],
@@ -141,137 +72,304 @@ export class ServicesListComponent implements OnInit {
             'activityName': ['', Validators.required],
             'lapService': ['']
         });
-    }
-
-    /**
-   * @method setValuesToUpdate
-   * @description Set the select row values in formgroup
-   */
-    setValuesToUpdate(data: any) {
-        this.selectedRow = data;
-        if (this.selectedRow) {
-            this.activityServiceListPopupVisiblity = true;
-            this.isEdit = true;
-            this.formGroup.get('id') ?.setValue(this.selectedRow.id);
-            this.formGroup.get('activityId') ?.setValue(this.selectedRow.activityId);
-            this.formGroup.get('activityGroupName') ?.setValue(this.selectedRow.activityGroupName);
-            this.formGroup.get('activityName') ?.setValue(this.selectedRow.activityName);
-            this.formGroup.get('lapService') ?.setValue(this.selectedRow.lapService);
-            // this.openModal(this.activityServiceListPopupRef);
-        } else {
-            // this.toastr.info('Please select a row to update', '', {
-            //     timeOut: 5000,
-            //     closeButton: true
-            // });
-            this.notificationService.createNotificationBasic('info', "Info", 'Please select a row to update!');
-        }
-    }
-
-    /**
-   * @method openModal
-   * @description open model
-   */
-    // openModal(template: TemplateRef<any>) {
-    //     this.modalRef = this.modalService.show(template, this.modalConfigSM)
-    // }
-
-    /**
-     * @method setSelectedRow
-     * @description Set the selected row
-     */
-    setSelectedRow(selectedRowItem: any, index: number) {
-        this.selectedRowIndex = index;
-        this.selectedRow = selectedRowItem;
-    }
-
-    /**
-    * @method resetFields
-    * @description Reset the all form group fields
-    */
-    resetFields() {
-        this.createForm();
-        // this.activityServiceListPopupVisiblity = true;
-        this.isEdit = false;
-        this.selectedRowIndex = null;
-        this._activityGroupServicesService.getActivityServiceMaxId().subscribe(result => {
-            this.activityServiceListPopupVisiblity = true;
-            if (!this.validationClass.isNullOrUndefined(result)) {
-                this.formGroup.get('id') ?.setValue(result + 1);
-                // this._gradeGroupStandingList.gradeGroupId = result + 1;
-            } else {
-                this.formGroup.get('id') ?.setValue(1);
-            }
+        this.mergeFormGroup = this.formBuilder.group({
+            'id': ['', Validators.required]
+        });
+        this.moveFormGroup = this.formBuilder.group({
+            'id': ['', Validators.required]
         });
     }
 
     /**
-  * @method hideLoader
-  * @description Hide loader
-  */
-    hideLoader() {
-        this.myElement = window.document.getElementById('loading');
-        if (this.myElement !== null) {
-            this.activityServiceListPopupVisiblity = false;
-            this.isConfirmActivityLoading = false;
-            this.spinner = false;
-            this.isLoading = false;
-            this.myElement.style.display = 'none';
-        }
+    * @method loadInitialTableData
+    * @description load initial table data
+    */
+    loadInitialTableData() {
+        this.showLoader();
+        this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
+            if (result) {
+                this.hideLoader();
+                this.activityServiceData = result;
+            }
+            this._activityGroupServicesService.getActivityGroupList('').subscribe(groupResult => {
+
+                if (groupResult) {
+                    this.activityGroup = groupResult;
+                }
+            });
+        });
     }
 
     /**
-     * @method showLoader
-     * @description Show loader
-     */
+    * @method showLoader
+    * @description displaying the loader
+    */
     showLoader() {
-        this.myElement = window.document.getElementById('loading');
-        if (this.myElement !== null) {
-            this.isConfirmActivityLoading = true;
-            this.spinner = true;
-            this.isLoading = true;
-            this.myElement.style.display = 'block';
+        this.isLoading = true;
+    }
+
+    /**
+    * @method hideLoader
+    * @description hiding the loader
+    */
+    hideLoader() {
+        this.isLoading = false;
+        this.isConfirmActivityLoading = false;
+        this.isActivityServiceListMergeLoading = false;
+        this.isActivityServiceListMoveLoading = false;
+    }
+
+    /**
+    * @method deleteSelectedRow
+    * @description delete the record
+    */
+    deleteSelectedRow(data: any) {
+        const item = {
+            activityId: data.activityId
+        }
+        const message = 'Are you sure, you want to remove this record:';
+        this.modal.confirm({
+            nzTitle: 'Confirm Remove Record?',
+            nzContent: message + ' ' + this.existingAccountData.activityName,
+            nzOkText: 'Yes',
+            nzOkType: 'primary',
+            nzOkDanger: true,
+            nzOnOk: () => this.deleteRecord(item),
+            nzCancelText: 'No',
+            nzOnCancel: () => this.hideLoader()
+        });
+    }
+    deleteRecord(data: any) {
+        this.showLoader();
+        this._activityGroupServicesService.deleteActivityServiceList(data).subscribe(result => {
+            this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
+                this.hideLoader();
+                this.selectedRowIndex = null;
+                if (result) {
+                    this.selectedRow = null;
+                    this.activityServiceData = result;
+                    this.notificationService.createNotificationBasic('success', "Success", 'Deleted Successfully!');
+                }
+            });
+        });
+    }
+
+    setValuesToUpdate(data: any) {
+        // console.log('selectedRow:', data);
+        this.selectedRow = JSON.parse(JSON.stringify(data));
+        if (this.selectedRow) {
+            this.activityServiceListPopupVisiblity = true;
+            this.isEdit = true;
+            this.existingAccountData = this.selectedRow;
+        }
+    }
+    /**
+    * @method showMoveItemPopup
+    * @description Open the popup for move the record
+    */
+    showMoveItemPopup(data: any) {
+
+        this.selectedRow = JSON.parse(JSON.stringify(data));
+        if (this.selectedRow) {
+            this.activityServiceListMovePopupVisiblity = true;
+            Object.keys(this.moveExistingAccountData).forEach((i) => this.moveExistingAccountData[i] = null);
+            this.moveFormGroup.reset();
+        }
+    }
+
+    showMergeItemPopup(data: any) {
+        this.selectedRow = JSON.parse(JSON.stringify(data));
+        if (this.selectedRow) {
+            this.activityServiceListMergePopupVisiblity = true;
+            this.mergeFormGroup.reset();
         }
     }
 
     /**
-   * @method addNewServicName
-   * @description Add the service record
-   */
+ * @method getDeletedItemByIdMerge
+ * @description This method is used for recover record and get deleted recodes.
+ */
+    getDeletedItemByIdMerge(id: any) {
+        const verifyData = {
+            id: this.selectedRow.id
+        }
+        const status = this.verifyServiceIdForMerge(this.currentValId);
+        if (!status) {
+            const message = "Do you want to merge activity " + this.selectedRow.activityName + " from No. " + this.selectedRow.id + " to No. " + id;
+            this.modal.confirm({
+                nzTitle: 'Confirm Merge Activity?',
+                nzContent: message,
+                nzOkText: 'Yes',
+                nzOkType: 'primary',
+                nzOkDanger: true,
+                nzOnOk: () => {
+                    this.isActivityServiceListMergeLoading = true;
+                    this._activityGroupServicesService.mergeActivityById(verifyData).subscribe(result3 => {
+                        if (result3) {
+                            this.loadInitialTableData();
+                            this.isActivityServiceListMergeLoading = false;
+                            this.activityServiceListMergePopupVisiblity = false;
+                            this.notificationService.createNotificationBasic('success', "Success", 'Merge Successfully Done!');
+                        }
+                    });
+                },
+                nzCancelText: 'No',
+                nzOnCancel: () => this.hideLoader()
+            });
+        }
+    }
+    /**
+     * @method verifyServiceId
+     * @description Verify the serviceId name.
+     */
+    verifyServiceIdForMerge(currentId: any) {
+        currentId = Number(currentId);
+        let status = false;
+        const data = this.activityServiceData.filter((item: any) => ((item.id) === (currentId)));
+        if (data && data.length > 0) {
+            status = false;
+        } else {
+            this.notificationService.createNotificationBasic('info', 'Info', 'This record does not exist!')
+            this.formGroup.get("id")?.setValue('');
+            status = true;
+        }
+        return status;
+    }
+    /**
+      * @method onConfirmMove
+      * @description this method is used for moving the record.
+      */
+    onConfirmMove(): void {
+        if (this.moveFormGroup.valid) {
+            this.isActivityServiceListMoveLoading = true;
+            this.currentValId = this.moveFormGroup?.get('id')?.value;
+            let status = this.verifyIdForMove(this.currentValId);
+            if (!status) {
+                this.getDeletedItemByIdForMove(this.currentValId);
+            }
+        } else {
+            this.moveFormGroup.markAllAsTouched();
+        }
+    }
+    getDeletedItemByIdForMove(id: any) {
+        const verifyData = {
+            id: id,
+            tempId: this.selectedRow.id
+        }
+        this._activityGroupServicesService.getDeletedActivityById(id).subscribe(result => {
+            if (result && result != null) {
+                let message = "Activity name was deleted for this number. Do you want to recall the old activity.";
+                this.modal.confirm({
+                    nzTitle: '',
+                    nzContent: message,
+                    nzOkText: 'Ok',
+                    nzOkType: 'primary',
+                    nzOkDanger: true,
+                    nzOnOk: () => {
+                        const currentData = {
+                            activityId: result.activityId,
+                            id: result.id
+                        }
+                        this._activityGroupServicesService.recoverActivityById(currentData).subscribe(result2 => {
+                            this.loadInitialTableData();
+                            this.isActivityServiceListMoveLoading = false;
+                            this.activityServiceListMovePopupVisiblity = false;
+                            this.notificationService.createNotificationBasic('success', "Success", 'Activity Recovered Successfully!');
+                        });
+                    },
+                    nzCancelText: 'Cancel',
+                    nzOnCancel: () => { }
+                });
+            } else {
+                const message = "Do you want to move activity " + this.selectedRow.activityName + " from No. " + this.selectedRow.id + " to No. " + id;
+                this.modal.confirm({
+                    nzTitle: '',
+                    nzContent: message,
+                    nzOkText: 'Ok',
+                    nzOkType: 'primary',
+                    nzOkDanger: true,
+                    nzOnOk: () => {
+                        this._activityGroupServicesService.updateActivityById(verifyData).subscribe(result3 => {
+                            this.loadInitialTableData();
+                            this.isActivityServiceListMoveLoading = false;
+                            this.activityServiceListMovePopupVisiblity = false;
+                            this.notificationService.createNotificationBasic('success', "Success", 'Moved Successfully Done!');
+                        });
+                    },
+                    nzCancelText: 'Cancel',
+                    nzOnCancel: () => { this.isActivityServiceListMoveLoading = false; }
+                });
+            }
+        });
+    }
+
+    verifyIdForMove(currentId: any) {
+        let status = true;
+        const data = this.activityServiceData.filter((item: any) => ((item.id) === (currentId)));
+        if (data && data.length > 0) {
+            const modal = this.modal.warning({
+                nzTitle: 'Enter a different number as the number is already in use or To combine to lists use the merge option instead',
+                nzContent: '',
+                nzOnOk: () => { this.moveFormGroup.get("id")?.setValue(''); status = true; this.isActivityServiceListMoveLoading = false; }
+            });
+
+            setTimeout(() => { modal.destroy(); this.moveFormGroup.get("id")?.setValue(''); status = true; this.isActivityServiceListMoveLoading = false; }, 5000);
+        } else {
+            status = false;
+        }
+        return status;
+    }
+    handleCancel() {
+        this.activityServiceListPopupVisiblity = false;
+        this.activityServiceListMergePopupVisiblity = false;
+        this.activityServiceListMovePopupVisiblity = false;
+        this.hideLoader();
+    }
+
+    onConfirmmerge() {
+        if (this.mergeFormGroup.valid) {
+            let val = this.mergeFormGroup?.get('id')?.value.split('|')[1];
+            if (val) {
+                if (Number(this.selectedRow.id) == Number(val.trim())) {
+                    this.notificationService.createNotificationBasic('info', "Info", 'Same Activity Can Not Be Merged!');
+                    this.mergeFormGroup.get("id")?.setValue('');
+                    return;
+                } else {
+                    this.currentValId = val.trim();
+                }
+            } else {
+                this.notificationService.createNotificationBasic('info', "Info", 'Please Enter Correct Value!');
+                this.mergeFormGroup.get("id")?.setValue('');
+                return;
+            }
+            this.getDeletedItemByIdMerge(this.currentValId);
+        } else {
+            this.mergeFormGroup.markAllAsTouched();
+        }
+    }
+    /**
+* @method addNewServicName
+* @description Add the service record
+*/
     addNewServiceName() {
         if (this.formGroup.valid) {
-            this.requestData.id = this.formGroup ?.get('id') ?.value;
-            this.requestData.activityId = this.formGroup ?.get('activityId') ?.value;
-            this.requestData.activityName = this.formGroup ?.get('activityName') ?.value;
-            this.requestData.activityGroupName = this.formGroup ?.get('activityGroupName') ?.value;
-            this.requestData.lapService = this.formGroup ?.get('lapService') ?.value;
             this.isConfirmActivityLoading = true;
-            this._activityGroupServicesService.getActivityByActivityNameAndActivityGroupName(this.requestData).subscribe(result3 => {
+            this._activityGroupServicesService.getActivityByActivityNameAndActivityGroupName(this.existingAccountData).subscribe(result3 => {
                 if (result3) {
-                    // this.toastr.info('Activity name should be unique in all activity group type!', '', {
-                    //     timeOut: 5000,
-                    //     closeButton: true
-                    // });
                     this.notificationService.createNotificationBasic('info', "Info", 'Activity name should be unique in all activity group type!');
-                    this.formGroup.get('activityName') ?.setValue('');
+                    this.existingAccountData.activityName = null;
+                    this.hideLoader();
                     return;
                 } else {
                     this.showLoader();
-                    this._activityGroupServicesService.postActivityServiceList(this.requestData).subscribe(result => {
-                        // this.modalRef.hide();
+                    this._activityGroupServicesService.postActivityServiceList(this.existingAccountData).subscribe(result => {
                         if (result) {
                             this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
                                 this.hideLoader();
                                 this.selectedRowIndex = null;
                                 if (result) {
-                                    // this.dataSource = new MatTableDataSource(result);
-                                    // this.dataSource.paginator = this.paginator;
-                                    // this.dataSource.sort = this.sort;
                                     this.activityServiceListPopupVisiblity = false;
                                     this.activityServiceData = result;
-                                    // this.toastr.success('Saved Successfully!', '', {
-                                    //     timeOut: 5000,
-                                    //     closeButton: true
-                                    // });
                                     this.notificationService.createNotificationBasic('success', "Success", 'Saved Successfully!');
                                 }
                             });
@@ -283,203 +381,40 @@ export class ServicesListComponent implements OnInit {
             this.formGroup.markAllAsTouched();
         }
     }
+    sorting(attr: string) {
+        if (this.activityServiceData.length > 0) {
+            this.activityServiceData = [...this.activityServiceData].sort((a, b) => (a[attr] > b[attr]) ? 1 : -1)
+        }
+    }
 
+    sorting2(attr: string) {
+        if (this.activityServiceData.length > 0) {
+            this.activityServiceData = [...this.activityServiceData].sort((a, b) => (a[attr] < b[attr]) ? 1 : -1)
+        }
+
+    }
     /**
-    * @method deleteSelectedRow
-    * @description delete the record
-    */
-    deleteSelectedRow(data: any) {
-        this.selectedRow = data;
-        if (this.selectedRow) {
-            const data = {
-                activityId: this.selectedRow.activityId
+  * @method resetFields
+  * @description Reset the all form group fields
+  */
+    resetFields() {
+        this.createForm();
+        this.isEdit = false;
+        this.selectedRowIndex = null;
+        Object.keys(this.existingAccountData).forEach((i) => this.existingAccountData[i] = null);
+        this._activityGroupServicesService.getActivityServiceMaxId().subscribe(result => {
+            this.activityServiceListPopupVisiblity = true;
+            if (!this.validationClass.isNullOrUndefined(result)) {
+                this.existingAccountData['id'] = result + 1;
+            } else {
+                this.existingAccountData['id'] = 1;
             }
-            // const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
-            //     data: {
-            //         title: 'Confirm Remove Record',
-            //         message: 'Are you sure, you want to remove this record: ' + this.selectedRow.activityName
-            //     }
-            // });
-            // confirmDialog.afterClosed().subscribe(result => {
-            //     if (result === true) {
-            //         this._activityGroupServicesService.deleteActivityServiceList(data).subscribe(result => {
-            //             this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
-            //                 this.hideLoader();
-            //                 this.selectedRowIndex = null;
-            //                 if (result) {
-            //                     this.selectedRow = null;
-            //                     this.activityServiceData = result;
-            //                     this.notificationService.createNotificationBasic('success', "Success", 'Deleted Successfully!');
-            //                 }
-            //             });
-            //         });
-            //     } else {
-            //         this.hideLoader();
-            //     }
-            // });
-            const message = 'Are you sure, you want to remove this record:';
-            this.modal.confirm({
-                nzTitle: 'Confirm Remove Record?',
-                nzContent: message + ' ' +this.selectedRow.activityName,
-                nzOkText: 'Yes',
-                nzOkType: 'primary',
-                nzOkDanger: true,
-                nzOnOk: () => this.deleteRecord(data),
-                nzCancelText: 'No',
-                nzOnCancel: () => this.hideLoader()
-              });
-        }
-    }
-    deleteRecord (data: any) {
-        this.showLoader();
-        this._activityGroupServicesService.deleteActivityServiceList(data).subscribe(result => {
-                        this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
-                            this.hideLoader();
-                            this.selectedRowIndex = null;
-                            if (result) {
-                                this.selectedRow = null;
-                                this.activityServiceData = result;
-                                this.notificationService.createNotificationBasic('success', "Success", 'Deleted Successfully!');
-                            }
-                        });
         });
     }
     /**
-   * @method updateSelectedRow
-   * @description update the record
-   */
-    updateSelectedRow() {
-        if (this.selectedRow) {
-
-            this.requestData.id = this.formGroup ?.get('id') ?.value;
-            this.requestData.activityId = this.formGroup ?.get('activityId') ?.value;
-            this.requestData.activityName = this.formGroup ?.get('activityName') ?.value;
-            this.requestData.activityGroupName = this.formGroup ?.get('activityGroupName') ?.value;
-            this.requestData.lapService = this.formGroup ?.get('lapService') ?.value;
-            //this.requestData.activityBoltService = this.formGroup?.get('activityBoltService')?.value;
-            this._activityGroupServicesService.getActivityByActivityNameAndActivityGroupName(this.requestData).subscribe(result3 => {
-                if (!result3) {
-                    this.updateActivityRow();
-                } else {
-                    if ((this.selectedRow.activityName.toLowerCase() == this.formGroup ?.get('activityName') ?.value.toLowerCase()) &&
-                        (this.selectedRow.activityGroupName.toLowerCase() == this.formGroup ?.get('activityGroupName') ?.value.toLowerCase())
-                    ) {
-                        this.updateActivityRow();
-                    } else {
-                        // this.toastr.info('Activity name should be unique in all activity group type!', '', {
-                        //     timeOut: 5000,
-                        //     closeButton: true
-                        // });
-                        this.notificationService.createNotificationBasic('info', "Info", 'Activity name should be unique in all activity group type!');
-                        this.formGroup.get('activityName') ?.setValue('');
-                        return;
-                    }
-                }
-            });
-        }
-    }
-
-    updateActivityRow() {
-        this.showLoader();
-        this._activityGroupServicesService.updateActivityServiceList(this.requestData).subscribe(result => {
-            // this.modalRef.hide();
-            this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
-                this.hideLoader();
-                this.selectedRowIndex = null;
-                if (result) {
-                    // this.dataSource = new MatTableDataSource(result);
-                    // this.dataSource.paginator = this.paginator;
-                    // this.dataSource.sort = this.sort;
-                    this.isEdit = false;
-                    this.selectedRow = null;
-                    this.activityServiceData = result;
-                    // this.toastr.success('Updated Successfully!', '', {
-                    //     timeOut: 5000,
-                    //     closeButton: true
-                    // });
-                    this.notificationService.createNotificationBasic('success', "Success", 'Updated Successfully!');
-                }
-            });
-        });
-    }
-
-    /**
-    * @method showMoveItemPopup
-    * @description Open the popup for move the record
+    * @method print
+    * @description show print and download the data.
     */
-    showMoveItemPopup(data: any) {
-        this.selectedRow = data;
-        if (this.selectedRow) {
-            //this.showLoader();
-            const confirmDialog = this.dialog.open(ServiceListMoveBoxComponent, {
-                data: {
-                    title: 'Customize Service and Activity Name',
-                    message: '',
-                    activityList: this.activityServiceData,
-                    selectedActivityId: this.selectedRow.activityId,
-                    selectedId: this.selectedRow.id,
-                    selectedActivityName: this.selectedRow.activityName,
-                }
-            });
-            confirmDialog.afterClosed().subscribe(result1 => {
-                if (result1 == true) {
-                    this.showLoader();
-                    this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
-                        this.hideLoader();
-                        if (result) {
-                            this.selectedRowIndex = null;
-                            this.selectedRow = null;
-                            this.activityServiceData = result;
-                        }
-                    });
-                }
-            });
-        }
-    }
-
-    /**
-   * @method showMergeItemPopup
-   * @description Open the popup for merge the record
-   */
-    showMergeItemPopup(data: any) {
-        this.selectedRow = data;
-        if (this.selectedRow) {
-            //this.showLoader();
-            const confirmDialog = this.dialog.open(ServiceListMergeBoxComponent, {
-                data: {
-                    title: 'Customize Service and Activity Name',
-                    message: 'Are you sure, you want to merge this record ' + this.selectedRow.activityGroupName,
-                    activityList: this.activityServiceData,
-                    selectedActivityId: this.selectedRow.activityId,
-                    selectedId: this.selectedRow.id,
-                    selectedActivityName: this.selectedRow.activityName
-                }
-            });
-            confirmDialog.afterClosed().subscribe(result1 => {
-                if (result1 == true) {
-                    this._activityGroupServicesService.getActivityServiceList('').subscribe(result => {
-                        this.hideLoader();
-                        if (result) {
-                            this.selectedRowIndex = null;
-                            this.selectedRow = null;
-                            this.activityServiceData = result;
-                        }
-                    });
-                }
-            });
-        } else {
-            // this.toastr.info('Please select a row to merge', '', {
-            //     timeOut: 5000,
-            //     closeButton: true
-            // });
-            this.notificationService.createNotificationBasic('info', "Info", 'Please select a row to move!');
-        }
-    }
-
-    /**
-   * @method print
-   * @description show print and download the data.
-   */
     print() {
         var doc = new jsPDF('l', 'mm', 'a4');
         const head = [['Id', 'Activity Name', 'Activity Group Name', 'Lap Service']]
@@ -538,20 +473,25 @@ export class ServicesListComponent implements OnInit {
         //doc.output('dataurlnewwindow', { filename: 'activity.pdf' });
         //doc.save('college.pdf');  
     }
-    sorting(attr: string) {
-        if (this.activityServiceData.length > 0) {
-            this.activityServiceData = [...this.activityServiceData].sort((a, b) => (a[attr] > b[attr]) ? 1 : -1)
-        }
+
+    /**
+    * @method applyFilter
+    * @description search the text from list
+    */
+    applyFilter(filterValue: any) {
+
     }
-    
-    sorting2(attr: string) {
-        if (this.activityServiceData.length > 0) {
-            this.activityServiceData = [...this.activityServiceData].sort((a, b) => (a[attr] < b[attr]) ? 1 : -1)
+
+     /**
+    * @method navigateToComponent
+    * @description navigate the service group list companant
+    */
+      navigateToComponent(componentName: string) {
+          debugger;
+        if (componentName === 'service-group-list') {
+            this.router.navigate(['admin/customize/service-group-list']);
+        } else if (componentName === 'services-list') {
+            this.router.navigate(['admin/customize/services-list']);
         }
-        
-    }
-    handleCancel () {
-        this.isConfirmActivityLoading = false;
-        this.activityServiceListPopupVisiblity = false;
     }
 }

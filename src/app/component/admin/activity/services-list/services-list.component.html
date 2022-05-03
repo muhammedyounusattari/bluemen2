@@ -1,16 +1,4 @@
 <div class="container-fluid mt-3" style="background:#EFF4F8;">
-    <!-- Full Screen Loader Start -->
-    <div id="loading"></div>
-    <!-- Full Screen Loader End-->
-
-    <!-- Header Start-->
-    <!-- <div class="row bg-white">
-        <div class="col-md-12">
-            <h3>Activity/Service List</h3>
-        </div>
-    </div> -->
-    <!-- Header End-->
-
     <!-- Two Tabs Start-->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -24,6 +12,7 @@
                 aria-selected="false">Activity/Service List</a>
         </li>
     </ul>
+
     <!-- Two Tabs Start-->
 
     <!-- Search Box Start-->
@@ -54,37 +43,8 @@
     </div>
     <!-- Search Box End-->
 
-    <!-- Spinner Start-->
-    <!-- <div class="spinner-container" *ngIf="isLoading">
-        <mat-spinner id="spinner"></mat-spinner>
-    </div> -->
-    <!-- Spinner End-->
     <!-- Data Table Start-->
     <div class="mat-elevation-z8 data-table-height dt-max-height">
-        <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                <td mat-cell *matCellDef="let serviceObj; let row = dataIndex;"> {{serviceObj.id}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="activityName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Activity/Service Name</th>
-                <td mat-cell *matCellDef="let serviceObj; let row = dataIndex;"> {{serviceObj.activityName}} </td>
-            </ng-container>
-            <ng-container matColumnDef="activityGroupName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Group </th>
-                <td mat-cell *matCellDef="let serviceObj; let row = dataIndex;"> {{serviceObj.activityGroupName}} </td>
-            </ng-container>
-            <ng-container matColumnDef="lapService">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Lab Service </th>
-                <td mat-cell *matCellDef="let serviceObj; let row = dataIndex;">
-                    {{serviceObj.lapService ? 'YES' : 'NO'}} </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-            <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
-                [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)"></tr>
-
-        </table> -->
         <nz-table #activityServiceDataTable [nzNoResult]="noResultTemplate" [nzLoading]="isLoading"
             [nzData]="activityServiceData">
             <ng-template #noResultTemplate>
@@ -139,31 +99,25 @@
                 </tr>
             </tbody>
         </nz-table>
-        <!-- <div *ngIf="!isLoading && activityServiceData?.length == 0" class="bg-colr-wht py-4">
-            <div class="center">
-                <h3>No Data Found</h3>
-            </div>
-        </div> -->
     </div>
-    <!-- <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator> -->
-    <!-- Data Table End-->
 </div>
 
 <!-- Modal Start-->
-<!-- <ng-template #activityServiceListPopup> -->
 <nz-modal [(nzVisible)]="activityServiceListPopupVisiblity" nzTitle={{activityServiceModalHeader}}
     (nzOnCancel)="handleCancel()" [nzFooter]="activityModalFooter" nzWidth="75%"
     [nzOkLoading]="isConfirmActivityLoading">
     <ng-template #activityModalFooter>
         <div class="modal-footer-btn">
             <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
-            <button nz-button nzType="primary" *ngIf="!isEdit" (click)="addNewServiceName();" [nzLoading]="isConfirmActivityLoading">Save &
+            <button nz-button nzType="primary" *ngIf="!isEdit" (click)="addNewServiceName();"
+                [nzLoading]="isConfirmActivityLoading">Save &
                 Close</button>
-            <button nz-button nzType="primary" *ngIf="isEdit" (click)="addNewServiceName();" [nzLoading]="isConfirmActivityLoading">Update &
+            <button nz-button nzType="primary" *ngIf="isEdit" (click)="addNewServiceName();"
+                [nzLoading]="isConfirmActivityLoading">Update &
                 Close</button>
         </div>
     </ng-template>
-    <ng-container *nzModalContent> 
+    <ng-container *nzModalContent>
         <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <form [formGroup]="formGroup" class="form">
@@ -171,24 +125,24 @@
                         <div nz-row [nzGutter]="16" [nzSpan]="14">
                             <div nz-col [nzSpan]="8">
                                 <!-- <div nz-col [nzSpan]="24"> -->
-                                    <nz-form-item>
-                                        <nz-form-label class="lable-style">Service or Activity ID</nz-form-label>
-                                        <nz-form-control>
-                                            <input nz-input placeholder="" value="" formControlName="id" readonly />
-                                        </nz-form-control>
-                                    </nz-form-item>
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">Service or Activity ID</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input placeholder="" value="" [(ngModel)]="existingAccountData.id"  formControlName="id" readonly />
+                                    </nz-form-control>
+                                </nz-form-item>
                                 <!-- </div> -->
                             </div>
                             <div nz-col [nzSpan]="8">
-                               <div nz-col [nzSpan]="24"> 
+                                <div nz-col [nzSpan]="24">
                                     <nz-form-item>
                                         <nz-form-label class="lable-style">Service or Activity Name</nz-form-label>
                                         <nz-form-control>
-                                            <input nz-input value="" formControlName="activityName" minlength="3"
+                                            <input nz-input value="" formControlName="activityName" [(ngModel)]="existingAccountData.activityName" minlength="3"
                                                 required />
                                         </nz-form-control>
                                     </nz-form-item>
-                               </div>
+                                </div>
                             </div>
 
                             <div class="form-group" nz-col [nzSpan]="8">
@@ -197,8 +151,9 @@
                                         <nz-form-label class="lable-style">Service or Activity Group Name:
                                         </nz-form-label>
                                         <nz-form-control>
-                                            <input nz-input list="groups" value="" formControlName="activityGroupName"
-                                                minlength="3" required />
+                                            <input nz-input list="groups" value="" [(ngModel)]="existingAccountData.activityGroupName" 
+                                                   formControlName="activityGroupName"
+                                                   minlength="3" required />
                                         </nz-form-control>
                                     </nz-form-item>
 
@@ -211,7 +166,7 @@
                             </div>
                             <div class="form-group" nz-col [nzSpan]="12">
                                 <section class="example-section">
-                                    <label nz-checkbox formControlName="lapService"> Report Activity Group</label>
+                                    <label nz-checkbox formControlName="activityGroupName" formControlName="lapService"> Report Activity Group</label>
                                 </section>
                             </div>
                         </div>
@@ -221,4 +176,79 @@
         </div>
     </ng-container>
 </nz-modal>
+<nz-modal [(nzVisible)]="activityServiceListMergePopupVisiblity" nzTitle={{activityMergePopupTitle}}
+(nzOnCancel)="handleCancel()" [nzFooter]="activityServiceListModalFooters" nzWidth="75%"
+[nzOkLoading]="isActivityServiceListMergeLoading">
+    <ng-template #activityServiceListModalFooters>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+            <button nz-button nzType="primary"(click)="onConfirmmerge();"
+                [nzLoading]="isActivityServiceListMergeLoading">Merge</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent> 
+        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+            <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab">
+                <form [formGroup]="mergeFormGroup" class="form">
+                    <div class="row">
+                        <div nz-row [nzSpan]="24">
+                            <div class="form-group" nz-row [nzSpan]="24">
+                                <div nz-col [nzSpan]="14">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style">Service Activity ID*</nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Enter Service Activity ID">
+                                            <input nz-input list="activitys" type="text" placeholder="" value=""
+                                                formControlName="id" required />
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                                <datalist id="activitys">
+                                    <option value="">Select</option>
+                                    <option *ngFor="let act of activityServiceData" [ngValue]="act.id">
+                                        <span *ngIf="act.id != selectedRow.id">{{act.activityName }} | {{act.id}}</span>
+                                    </option>
+                                </datalist>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-container>
+</nz-modal>
 <!-- Modal -->
+<!-- Modal Start -->
+<nz-modal [(nzVisible)]="activityServiceListMovePopupVisiblity" nzTitle={{activityMovePopupTitle}}
+(nzOnCancel)="handleCancel()" [nzFooter]="activityServiceListMoveModalFooters" nzWidth="75%"
+[nzOkLoading]="isActivityServiceListMoveLoading"> 
+    <ng-template #activityServiceListMoveModalFooters>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+            <button nz-button nzType="primary"(click)="onConfirmMove();"
+                [nzLoading]="isActivityServiceListMoveLoading">Move</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>  
+        <div class="tab-content bg-white" style="padding: 20px;">
+            <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab">
+                <form [formGroup]="moveFormGroup" class="form">
+                    <div class="row">
+                        <div nz-row [nzSpan]="24">
+                            <div class="form-group" nz-row [nzSpan]="24">
+                                <div nz-col [nzSpan]="14" >
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">New Service or Activity ID*</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter Service Activity ID">
+                                                    <input nz-input type="number" placeholder="" 
+                                                    [(ngModel)]="moveExistingAccountData.id" value="" formControlName="id" required/>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-container>
+</nz-modal>

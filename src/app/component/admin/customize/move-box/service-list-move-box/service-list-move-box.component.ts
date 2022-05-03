@@ -43,6 +43,18 @@ export class ServiceListMoveBoxComponent implements OnInit {
     this.createForm();
   }
 
+
+
+  onDismiss(): void {
+    // Close the dialog, return false
+    this.dialogRef.close(false);
+  }
+
+  createForm() {
+    this.formGroup = this.formBuilder.group({
+      'id': ['', Validators.required]
+    });
+  }
   onConfirm(): void {
     // Close the dialog, return true
     if (this.formGroup.valid) {
@@ -55,18 +67,7 @@ export class ServiceListMoveBoxComponent implements OnInit {
       this.formGroup.markAllAsTouched();
     }
   }
-
-  onDismiss(): void {
-    // Close the dialog, return false
-    this.dialogRef.close(false);
-  }
-
-  createForm() {
-    this.formGroup = this.formBuilder.group({
-      'id': ['', Validators.required]
-    });
-  }
-
+  
   getDeletedItemById(id: any) {
     const verifyData = {
       id: id,
@@ -121,10 +122,6 @@ export class ServiceListMoveBoxComponent implements OnInit {
     let status = true;
     const data = this.activityList.filter((item: any) => ((item.id) === (currentId)));
     if (data && data.length > 0) {
-      // this.toastr.info('Id already exist in list please use other id', '', {
-      //   timeOut: 5000,
-      //   closeButton: true
-      // });
       let message = "Enter a different number as the number is already in use or To combine to lists use the merge option instead";
       const confirmDialog = this.dialog.open(MoveMergeDialogBoxComponent, {
         data: {
