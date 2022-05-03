@@ -14,53 +14,42 @@
 
         <div class="row marg-top1">
             <div class="col-md-12 display-content">
-                <div class="col-md-2 left-div" id="leftBlock">
+                <div class="col-md-3 left-div" id="leftBlock">
                     <div *ngFor="let role of roleNameList">
                         <div class="list" style="margin-top: 5%;white-space: nowrap;" (click)="setBgColorForSelectedRole(role.id, role.name)" id="{{role.id}}">
                             {{role.name}} {{role.default ? '(Default)': ''}}
                         </div>
                     </div>
                 </div>
-                <div class="col-md-9 right-div" id="rightBlock">
-                    <div class="row" *ngFor="let parentNode of userRoles">
-                        <div class="col-md-12">
-                            <input type="checkbox" (click)="setValue()" *ngIf="parentNode?.privileges?.length > 0" />
-                            <mat-radio-button [checked]="parentNode?.accessType == 'Y'" class="marg-top1 marg-left2">
-                                Y</mat-radio-button>&nbsp;&nbsp;&nbsp;
-                            <mat-radio-button [checked]="parentNode?.accessType == 'R'" class="marg-top1">
-                                N
-                            </mat-radio-button>&nbsp;&nbsp;&nbsp;
-                            <mat-radio-button [checked]="parentNode?.accessType == 'N'" class="marg-top1">
-                                R
-                            </mat-radio-button>
-                            &nbsp;&nbsp;&nbsp; ** {{parentNode?.name}} **
-                        </div>
-                        <div *ngIf="isExpandChildren">
-                            <div class="col-md-12 marg-left2"
-                                *ngFor="let childrenNode of parentNode?.privileges; let ind = index">
-                                <input type="checkbox" (click)="setChildValue()" *ngIf="childrenNode?.privileges?.length > 0" />
-                                <mat-radio-button [checked]="childrenNode?.accessType == 'Y'" class="marg-left2"
-                                    name="{{ind}}">Y</mat-radio-button>&nbsp;&nbsp;&nbsp;
-                                <mat-radio-button [checked]="childrenNode?.accessType == 'R'" class="marg-left2"
-                                    name="{{ind}}">R</mat-radio-button>&nbsp;&nbsp;&nbsp;
-                                <mat-radio-button [checked]="childrenNode?.accessType == 'N'" class="marg-left2"
-                                    name="{{ind}}">N</mat-radio-button>
-                                &nbsp;&nbsp;&nbsp; {{childrenNode?.name}}
-                                <div *ngIf="isExpandChild">
-                                    <div class="marg-left3"
-                                        *ngFor="let childNode of childrenNode?.privileges; let idx = index;">
-                                        <mat-radio-button [checked]="childNode?.accessType == 'Y'" class="marg-left2"
-                                            name="child_{{idx}}">Y</mat-radio-button>&nbsp;&nbsp;&nbsp;
-                                        <mat-radio-button [checked]="childNode?.accessType == 'R'" class="marg-left2"
-                                            name="child_{{idx}}">R</mat-radio-button>&nbsp;&nbsp;&nbsp;
-                                        <mat-radio-button [checked]="childNode?.accessType == 'N'" class="marg-left2"
-                                            name="child_{{idx}}">N</mat-radio-button>
-                                        &nbsp;&nbsp;&nbsp; {{childNode?.name}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-md-8 right-div" id="rightBlock">
+                    <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource">
+                        <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>
+                          <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
+                          <nz-tree-node-option [nzDisabled]="node.disabled" (nzClick)="leafItemSelectionToggle(node)">
+                          <nz-radio-group [(ngModel)]="node.accessType" (ngModelChange)="leafItemSelectionToggle(node)">
+                          <label nz-radio nzValue="Y">Y</label>
+                          <label nz-radio nzValue="R">R</label>
+                          <label nz-radio nzValue="N">N</label>
+                        </nz-radio-group>
+                          </nz-tree-node-option>
+                        {{ node.name }}
+                        </nz-tree-node>
+                    
+                        <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
+                          <nz-tree-node-toggle>
+                            <i nz-icon [nzType]="treeControl.isExpanded(node) ? 'minus-square' : 'plus-square'"
+                            ></i>
+                          </nz-tree-node-toggle>
+                          <nz-tree-node-option [nzDisabled]="node.disabled" (nzClick)="itemSelectionToggle(node)">
+                          <nz-radio-group [(ngModel)]="node.accessType"  (ngModelChange)="itemSelectionToggle(node)">
+                          <label nz-radio nzValue="Y">Y</label>
+                          <label nz-radio nzValue="R">R</label>
+                          <label nz-radio nzValue="N">N</label>
+                        </nz-radio-group>
+                        {{ node.name }}
+                      </nz-tree-node-option>
+                        </nz-tree-node>
+                      </nz-tree-view>
                 </div>
             </div>
         </div>
@@ -78,7 +67,7 @@
             <a class="nav-link" href="javascript:void(0);">Rename</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0);">Save</a>
+            <a class="nav-link" href="javascript:void(0);" (click)="updateRole()">Save</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0);">Delete</a>

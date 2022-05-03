@@ -36,10 +36,7 @@ export class RolesService {
     }
 
     updateRole(request: any): Observable<any> {
-        const URL = ServiceUrls.UPDATE_NEW_ROLE+'?copyRoleName=' 
-        + request.copyRoleName
-        + '&isDefault=' + request.isDefault + '&newRoleCode=' + request.newRoleCode + '&newRoleName=' +
-        request.newRoleName + '&orgId=' + 1;
-        return this.dataService.callPostService(URL, request);
+        const URL = ServiceUrls.UPDATE_NEW_ROLE;
+        return this.dataService.callPutService(URL, request);
     }
 }

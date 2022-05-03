@@ -6,11 +6,13 @@
                 <form [formGroup]="formGroup" class="form">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>New Service or Grade ID*</mat-label>
-                                            <input matInput type="number" placeholder="" value="" formControlName="id">
-                                        </mat-form-field>
+                            <div nz-col [nzSpan]="16">
+                                <nz-form-item>
+                                    <nz-form-label class="lable-style">New Service or Grade ID*</nz-form-label>
+                                    <nz-form-control nzErrorTip="Please Enter New Grade Id">
+                                        <input nz-input type="number" formControlName="id" placeholder="" value="" />
+                                    </nz-form-control>
+                                </nz-form-item>
                             </div>
                         </div>
                     </div>

@@ -147,7 +147,9 @@
     font-weight: bold;
 }
 
-.staff-form input, .staff-form .ant-select, .staff-form textarea {
+.staff-form input,
+.staff-form .ant-select,
+.staff-form textarea {
     border: 1px solid black;
     color: black;
 }
@@ -158,7 +160,10 @@
     font-weight: bold;
 }
 
-.staff-address-form input, .staff-address-form .ant-select, .staff-address-form textarea, .staff-address-form input[type='checkbox'] {
+.staff-address-form input,
+.staff-address-form .ant-select,
+.staff-address-form textarea,
+.staff-address-form input[type='checkbox'] {
     border: 1px solid black;
 }
 
@@ -168,7 +173,8 @@
     color: #1366a0;
 }
 
-button.upload-btn.ant-btn:active, button.upload-btn.ant-btn:hover {
+button.upload-btn.ant-btn:active,
+button.upload-btn.ant-btn:hover {
     color: #1366a0;
     border-color: #1366a0;
 }
@@ -183,13 +189,13 @@ button.upload-btn.ant-btn:active, button.upload-btn.ant-btn:hover {
     bottom: 1px;
 }
 
-.lable-checkbox{
+.lable-checkbox {
     font-size: 14px;
     color: black;
     font-weight: bold;
 }
 
-.lable-checkbox1{
+.lable-checkbox1 {
     font-size: 14px;
     color: black;
     font-weight: bold;
@@ -225,24 +231,53 @@ button.upload-btn.ant-btn:active, button.upload-btn.ant-btn:hover {
 
 ::-webkit-scrollbar {
     width: 5px;
-  }
-  
-  /* Track */
-   ::-webkit-scrollbar-track {
-    background: white; 
-  } 
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #1366a0; 
-  }
-  
-  /* Handle on hover */
-  /* ::-webkit-scrollbar-thumb:hover {
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #1366a0;
+}
+
+/* Handle on hover */
+/* ::-webkit-scrollbar-thumb:hover {
     background: blue; 
   } */
 
-  .toggle-btn {
-      position: relative;
-      bottom: 4px;
-  }
+.toggle-btn {
+    position: relative;
+    bottom: 4px;
+}
+
+.icon-pt {
+    cursor: pointer;
+    color: #1366a0;
+    font-size: 15px;
+    padding-right: 15px;
+}
+
+.nav-bar {
+    margin-top: 1.3%;
+}
+
+.header-elements {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.print {
+    padding-left: 5px;
+}
+
+.sort {
+    cursor: pointer;
+}
+
+.filter_Datepicker {
+    margin: 0 8px 0px 0 !important;
+}

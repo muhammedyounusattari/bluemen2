@@ -1,16 +1,4 @@
 <div class="container-fluid" style="background:#EFF4F8;">
-    <!-- Full Screen Loader Start -->
-    <div id="loading"></div>
-    <!-- Full Screen Loader End -->
-
-    <!-- Header Start-->
-    <!-- <div class="row bg-white">
-        <div class="col-md-12">
-            <h3>College / School List</h3>
-        </div>
-    </div> -->
-    <!-- Header End-->
-
     <!-- Two Tabs Start-->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -27,108 +15,108 @@
     <!-- Two Tabs Start-->
 
     <!-- Search Box Start-->
-    <div class="row ">
+    <!-- Search Box Start-->
+    <div class="row">
         <div class="col-md-6 mt-3 mb-3 ">
-            <form class="example">
+            <nz-input-group [nzSuffix]="suffixIconSearch">
+                <input type="text" #searchText nz-input placeholder="input search text"  (keyup)="applyFilter(searchText.value)"/>
+              </nz-input-group>
+              <ng-template #suffixIconSearch>
+                <i nz-icon nzType="search"></i>
+              </ng-template>
+            <!-- <form class="example">
                 <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
                 <i class="fa fa-search search"></i>
-            </form>
+            </form> -->
+        </div>
+        <div nz-row nzJustify="end" class="col-md-6 mt-3 mb-3 ">
+            <nz-form-item class="search-filter-item">
+                <nz-form-control>
+                    <button (click)="resetFields()" nz-button nzType="primary" class="search-filter-btn">
+                        <span> New</span>
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item class="search-filter-item print">
+                <nz-form-control>
+                    <button (click)="print()" nz-button nzType="primary" class="search-filter-btn">
+                        <i nz-icon nzType="printer" nzTheme="fill"></i>
+                        <span> Print </span>
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
         </div>
     </div>
     <!-- Search Box End-->
-
-    <!-- Spinner Start-->
-    <div class="spinner-container" *ngIf="isLoading">
-        <mat-spinner id="spinner"></mat-spinner>
-    </div>
-    <!-- Spinner End-->
     <!-- Data Table Start-->
-    <div class="mat-elevation-z8 data-table-height dt-max-height" *ngIf="!isLoading">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> School Name </th>
-                <td mat-cell *matCellDef="let schoolObj; let row = dataIndex;"> {{schoolObj.name}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="inPullDown">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> In Pulldown</th>
-                <td mat-cell *matCellDef="let schoolObj; let row = dataIndex;">{{schoolObj.inPullDown ? 'YES' : 'NO'}}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="ncesId">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>NCES ID </th>
-                <td mat-cell *matCellDef="let schoolObj; let row = dataIndex;"> {{schoolObj.ncesId}} </td>
-            </ng-container>
-            <ng-container matColumnDef="country">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Country Name </th>
-                <td mat-cell *matCellDef="let schoolObj; let row = dataIndex;"> {{schoolObj.country}} </td>
-            </ng-container>
-            <ng-container matColumnDef="phone1">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 1 </th>
-                <td mat-cell *matCellDef="let schoolObj; let row = dataIndex;"> {{schoolObj.phone1 | phoneMask: '(000) 000-0000'}} </td>
-            </ng-container>
-            <ng-container matColumnDef="phone2">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 2 </th>
-                <td mat-cell *matCellDef="let schoolObj; let row = dataIndex;"> {{schoolObj.phone2 | phoneMask: '(000) 000-0000'}} </td>
-            </ng-container>
-            <ng-container matColumnDef="phone3">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone 3 </th>
-                <td mat-cell *matCellDef="let schoolObj; let row = dataIndex;"> {{schoolObj.phone3 | phoneMask: '(000) 000-0000'}} </td>
-            </ng-container>
-            <ng-container matColumnDef="fax">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> FAX </th>
-                <td mat-cell *matCellDef="let schoolObj; let row = dataIndex;"> {{schoolObj.fax | phoneMask: '(000) 000-0000'}} </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-            <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
-                [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
+    <div class="mat-elevation-z8 data-table-height dt-max-height" >
+        <nz-table #schoolDataListTable [nzNoResult]="noResultTemplate" [nzLoading]="isLoading" [nzData]="schoolDataList">
+            <ng-template #noResultTemplate>
+                <nz-empty [nzNotFoundContent]="'No Data Found'">
+                </nz-empty> 
+            </ng-template>
+            <thead>
+            <tr>
+                <th>School Name <i  class="sort" (click)="sorting('name')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('name')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                <th>In Pulldown <i  class="sort" (click)="sorting('inPullDown')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('inPullDown')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                <th>NCES ID <i  class="sort" (click)="sorting('ncesId')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('ncesId')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                <th>Country Name  <i  class="sort" (click)="sorting('country')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('country')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                <th>Phone 1 <i  class="sort" (click)="sorting('phone1')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                        <i  class="sort" (click)="sorting2('phone1')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>  
+                <th>Phone 2 <i  class="sort" (click)="sorting('phone2')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                            <i  class="sort" (click)="sorting2('phone2')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>    
+                <th>Phone 3 <i  class="sort" (click)="sorting('phone3')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                                <i  class="sort" (click)="sorting2('phone3')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>    
+                <th>FAX <i  class="sort" (click)="sorting('fax')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                                    <i  class="sort" (click)="sorting2('fax')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>    
+                <th>Action</th>
             </tr>
-        </table>
-        <div *ngIf="!isLoading && schoolDataList?.length == 0" class="bg-colr-wht py-4">
-            <div class="center">
-                <h3>No Data Found</h3>
-            </div>
-        </div>
+            </thead>
+            
+            <tbody>
+            <tr *ngFor="let data of schoolDataListTable.data;let idx = index;">
+                <td>{{ data.name }}</td>
+                <td>{{ data.inPullDown ? 'YES' : 'NO'}}</td>
+                <td>{{ data.ncesId}}</td>
+                <td> {{data.country}} </td>
+                <td> {{data.phone1 | phoneMask: '(000) 000-0000'}}</td>
+                <td> {{data.phone2 | phoneMask: '(000) 000-0000'}}</td>
+                <td> {{data.phone3 | phoneMask: '(000) 000-0000'}}</td>
+                <td> {{data.fax | phoneMask: '(000) 000-0000'}}</td>
+                <!-- <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus(data)"></td> -->
+                <td class="edit-icon-div"> 
+                    <i class="icon-pt" nz-icon nzType="edit" (click)="setValuesToUpdate(data, idx)" 
+                        nzTheme="outline" nz-tooltip
+                        nzTooltipTitle="Edit"
+                        nzTooltipPlacement="bottom" nz-button>
+                    </i>
+                    <i class="icon-pt" nz-icon nzType="export" nzTheme="outline" (click)="showMoveItemPopup(data, idx)" 
+                        nz-tooltip
+                        nzTooltipTitle="Move"
+                        nzTooltipPlacement="bottom" nz-button>
+                    </i>
+                    <i class="icon-pt" nz-icon nzType="merge-cells" nzTheme="outline"
+                        (click)="showMergeItemPopup(data, idx)"
+                        nz-tooltip
+                        nzTooltipTitle="Merge"
+                        nzTooltipPlacement="bottom" nz-button>
+                    </i>
+                    <i class="icon-pt" nz-icon nzType="delete" nzTheme="outline"
+                        (click)="deleteSelectedRow(data, idx)"
+                        nz-tooltip
+                        nzTooltipTitle="Delete"
+                        nzTooltipPlacement="bottom" nz-button>
+                    </i>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
     </div>
-        <mat-paginator [pageSize]="10"  [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
-    <!-- Data Table End-->
 </div>
-
-<!-- Buttons Start-->
-<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" (click)="resetFields()">New</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="javascript:void(0);" (click)="setValuesToUpdate()">Edit</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="javascript:void(0);" (click)="showMoveItemPopup()">Move</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="javascript:void(0);" (click)="showMergeItemPopup()">Merge</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="javascript:void(0)" (click)="deleteSelectedRow()">Delete</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="javascript:void(0)" (click)="print()">Print</a>
-                </li>
-
-            </ul>
-
-        </div>
-    </div>
-</nav>
-<!-- Buttons End-->
 
 <!-- Modal Start-->
 <ng-template #schoolNamePopup>
@@ -145,139 +133,168 @@
                 <div class="row">
                     <div class="col-md-12 flex">
                         <div class="form-group col-md-4">
-                            <mat-form-field appearance="fill" class="mat-select-width">
-                                <mat-label>Name</mat-label>
-                                <input matInput placeholder="Enter Name" value="" formControlName="name" maxlength="50" readonly="{{isDisabled}}" required>
-                            </mat-form-field>
-                            <section class="example-section">
-                                <mat-checkbox formControlName="inPullDown" class="example-margin">
-                                    In Pulldown List </mat-checkbox>
-                            </section>
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Name</nz-form-label>
+                                <nz-form-control nzErrorTip="Please Enter School Name">
+                                    <input nz-input *ngIf="!isDisabled" placeholder="Enter Name" value="" formControlName="name" maxlength="50" required  (blur)="checkName($event)"/>
+                                    <input nz-input *ngIf="isDisabled" placeholder="Enter Name" value="" formControlName="name" maxlength="50" readonly="{{isDisabled}}"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                            <label nz-checkbox formControlName="inPullDown" > In Pulldown List</label> 
                         </div>
                         <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Codes</mat-label>
-                                <input matInput placeholder="Enter Codes" value="" formControlName="codes" maxlength ="50">
-                            </mat-form-field>
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Codes</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input placeholder="Enter Codes" value="" formControlName="codes" maxlength ="50"/>
+                                </nz-form-control>
+                            </nz-form-item>
                         </div>
                         <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Title</mat-label>
-                                <input matInput placeholder="Enter Title" value="" formControlName="title" maxlength="50">
-                            </mat-form-field>
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Title</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input placeholder="Enter Title" value="" formControlName="title" maxlength="50"/>
+                                </nz-form-control>
+                            </nz-form-item>
                         </div>
                     </div>
                     <div class="col-md-12 form-group flex">
                         <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Country</mat-label>
-                                <input matInput list="countries" placeholder="Enter Country" value="" formControlName="country" maxlength="50">
-                            </mat-form-field>
-
-                            <datalist id="countries">
-                                <option *ngFor="let countryObj of countryList" [ngValue]="countryObj.longpullna">
-                                    {{countryObj.longpullna}}</option>
-                            </datalist>
+                            <nz-form-item>
+                                <nz-form-label [nzSpan]="24" class="lable-style">Country</nz-form-label>
+                                <nz-form-control>
+                                    <nz-select nzShowSearch nzAllowClear formControlName="country" nzPlaceHolder="Enter Country">
+                                        <nz-option *ngFor="let countryObj of countryList" [nzLabel]="countryObj.longpullna" [nzValue]="countryObj.longpullna">
+                                        </nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>    
                         </div>
                         <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>State</mat-label>
-                                <input matInput list="states" placeholder="Enter State" value=""
-                                formControlName="states" maxlength="50">
-                            </mat-form-field>
-                            <datalist id="states">
-                                <option *ngFor="let stateObj of stateList" [ngValue]="stateObj.longpullna">
-                                    {{stateObj.longpullna}}</option>
-                            </datalist>
+                            <nz-form-item>
+                                <nz-form-label [nzSpan]="24" class="lable-style">State</nz-form-label>
+                                <nz-form-control>
+                                    <nz-select nzShowSearch nzAllowClear formControlName="states" nzPlaceHolder="Enter State">
+                                        <nz-option *ngFor="let stateObj of stateList" [nzLabel]="stateObj.longpullna" [nzValue]="stateObj.longpullna">
+                                        </nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>    
                         </div>
                         <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>City</mat-label>
-                                <input matInput list="cities" placeholder="Enter City" value="" formControlName="city" maxlength="50">
-                            </mat-form-field>
-
-                            <datalist id="cities">
-                                <option *ngFor="let cityObj of cityList" [ngValue]="cityObj.longpullna">
-                                    {{cityObj.longpullna}}</option>
-                            </datalist>
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-12">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Address</mat-label>
-                                <textarea matInput placeholder="Enter Address"
-                                formControlName="address" maxlength="2000"></textarea>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>NCES ID</mat-label>
-                                <input matInput placeholder="Enter NcesId" value="" formControlName="ncesId" maxlength="30" readonly="{{isDisabled}}" required>
-                            </mat-form-field>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Zip Code</mat-label>
-                                <input matInput placeholder="Enter Zip Code" mask="00000-0000" value="" formControlName="zipcode" maxlength="20">
-                            </mat-form-field>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Fiscal Years</mat-label>
-                                <input matInput placeholder="Enter Fiscal Years" value="" formControlName="fiscalYear" maxlength="50">
-                            </mat-form-field>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Phone 1</mat-label>
-                                <input matInput placeholder="Enter Phone1" mask="(000)000-0000" value="" formControlName="phone1">
-                            </mat-form-field>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Phone 2</mat-label>
-                                <input matInput placeholder="Enter Phone2" mask="(000)000-0000" value="" formControlName="phone2" maxlength="30">
-                            </mat-form-field>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Phone 3</mat-label>
-                                <input matInput placeholder="Enter Phone3" mask="(000)000-0000" value="" formControlName="phone3" maxlength="30">
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group flex">
-                        <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Fax</mat-label>
-                                <input matInput placeholder="Enter Fax" mask="(000)000-0000" value="" formControlName="fax" maxlength="30">
-                            </mat-form-field>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Web Site</mat-label>
-                                <input matInput placeholder="Enter Web Site" formControlName="website" value="" maxlength="50">
-                            </mat-form-field>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Email</mat-label>
-                                <input matInput placeholder="Enter Email" value="" formControlName="email" maxlength="50">
-                            </mat-form-field>
+                            <nz-form-item>
+                                <nz-form-label [nzSpan]="24" class="lable-style">City</nz-form-label>
+                                <nz-form-control>
+                                    <nz-select nzShowSearch nzAllowClear formControlName="city" nzPlaceHolder="Enter City">
+                                        <nz-option *ngFor="let cityObj of cityList" [nzLabel]="cityObj.longpullna" [nzValue]="cityObj.longpullna">
+                                        </nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>    
                         </div>
                     </div>
                     <div class="col-md-12 form-group flex">
                         <div class="form-group col-md-12">
-                            <mat-form-field class="mat-select-width" appearance="fill">
-                                <mat-label>Notes</mat-label>
-                                <textarea matInput placeholder="Enter Notes" formControlName="notes" maxlength="2000"></textarea>
-                            </mat-form-field>
+                                Address:
+                                <nz-form-item>
+                                    <nz-form-control>
+                                        <textarea nz-input placeholder="Enter Address"
+                                        formControlName="address" maxlength="2000"></textarea>
+                                    </nz-form-control>
+                                </nz-form-item>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group flex">
+                        <div class="form-group col-md-4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">NCES ID</nz-form-label>
+                                <nz-form-control nzErrorTip="Please Enter NCES ID">
+                                    <input nz-input placeholder="Enter NcesId" value="" formControlName="ncesId" maxlength="30" required/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Zip Code</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input  placeholder="Enter Zip Code" mask="00000-0000" value="" formControlName="zipcode" maxlength="20"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Fiscal Years</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input type="number" placeholder="Enter Fiscal Years" value="" formControlName="fiscalYear" maxlength="50"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 form-group flex">
+                        <div class="form-group col-md-4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Phone 1</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input   placeholder="Enter Phone1" mask="(000)000-0000" value="" formControlName="phone1"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                       
+                        <div class="form-group col-md-4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Phone 2</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input placeholder="Enter Phone2" mask="(000)000-0000" value="" formControlName="phone2" maxlength="30"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                       
+                        <div class="form-group col-md-4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Phone 3</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input placeholder="Enter Phone3" mask="(000)000-0000" value="" formControlName="phone3" maxlength="30"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                      
+                    </div>
+                    <div class="col-md-12 form-group flex">
+                        <div class="form-group col-md-4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Fax</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input  placeholder="Enter Fax" mask="(000)000-0000" value="" formControlName="fax" maxlength="30"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Web Site</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input  placeholder="Enter Web Site" formControlName="website" value="" maxlength="50"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Email</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input  placeholder="Enter Email" value="" formControlName="email" maxlength="50"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group flex">
+                        <div class="form-group col-md-12">
+                            Notes:
+                            <nz-form-item>
+                                <nz-form-control>
+                                    <textarea nz-input placeholder="Enter Notes" formControlName="notes" maxlength="2000"></textarea>
+                                </nz-form-control>
+                            </nz-form-item>
                         </div>
                     </div>
                 </div>

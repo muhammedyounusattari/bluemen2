@@ -51,13 +51,19 @@ export class GradeStandingGroupListMoveBoxComponent implements OnInit {
   onConfirm(): void {
     // Close the dialog, return true
     if (this.formGroup.valid) {
-      this.currentValId = this.formGroup ?.get('id') ?.value;
+      this.currentValId = this.formGroup?.get('id')?.value;
       let status = this.verifyGradeGroupId(this.currentValId);
       if (!status) {
         this.getDeletedItemById(this.currentValId);
       }
     } else {
-      this.formGroup.markAllAsTouched();
+      Object.values(this.formGroup.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+      return;
     }
   }
 
@@ -148,7 +154,7 @@ export class GradeStandingGroupListMoveBoxComponent implements OnInit {
       });
       confirmDialog.afterClosed().subscribe(result1 => {
         if (result1 == true) {
-          this.formGroup.get("id") ?.setValue('');
+          this.formGroup.get("id")?.setValue('');
           status = true;
         } else {
           status = true;

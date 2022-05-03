@@ -51,13 +51,19 @@ export class GradeStandingListMoveBoxComponent implements OnInit {
   onConfirm(): void {
     // Close the dialog, return true
     if (this.formGroup.valid) {
-      this.currentValId = this.formGroup ?.get('id') ?.value;
+      this.currentValId = this.formGroup?.get('id')?.value;
       let status = this.verifyGradeStandingId(this.currentValId);
       if (!status) {
         this.getDeletedItemById(this.currentValId);
       }
     } else {
-      this.formGroup.markAllAsTouched();
+      Object.values(this.formGroup.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+      return;
     }
   }
 
@@ -142,10 +148,6 @@ export class GradeStandingListMoveBoxComponent implements OnInit {
     let status = true;
     const data = this.gradeStandingList.filter((item: any) => ((item.id) === (currentId)));
     if (data && data.length > 0) {
-      // this.toastr.info('Id already exist in list please use other id', '', {
-      //   timeOut: 5000,
-      //   closeButton: true
-      // });
       let message = "Enter a different number as the number is already in use or To combine to lists use the merge option instead";
       const confirmDialog = this.dialog.open(MoveMergeDialogBoxComponent, {
         data: {
@@ -155,7 +157,7 @@ export class GradeStandingListMoveBoxComponent implements OnInit {
       });
       confirmDialog.afterClosed().subscribe(result1 => {
         if (result1 == true) {
-          this.formGroup.get("id") ?.setValue('');
+          this.formGroup.get("id")?.setValue('');
           status = true;
         } else {
           status = true;

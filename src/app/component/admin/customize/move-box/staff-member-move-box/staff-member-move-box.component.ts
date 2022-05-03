@@ -39,7 +39,7 @@ export class StaffMemberMoveBoxComponent implements OnInit {
   * @method ngOnInit
   * @description call all methods
   */
-   ngOnInit() {
+  ngOnInit() {
     this.createForm();
   }
 
@@ -50,13 +50,21 @@ export class StaffMemberMoveBoxComponent implements OnInit {
   onConfirm(): void {
     // Close the dialog, return true
     if (this.formGroup.valid) {
-      this.currentValId = this.formGroup ?.get('staffId') ?.value;
+      this.currentValId = this.formGroup?.get('staffId')?.value;
       let status = this.verifyStaffId(this.currentValId);
       if (!status) {
         this.getDeletedItemById(this.currentValId);
       }
     } else {
       this.formGroup.markAllAsTouched();
+      Object.values(this.formGroup.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+      //this.staffNameErrorTip = "Please Enter Staff Name";
+      return;
     }
   }
 
@@ -154,7 +162,7 @@ export class StaffMemberMoveBoxComponent implements OnInit {
       });
       confirmDialog.afterClosed().subscribe(result1 => {
         if (result1 == true) {
-          this.formGroup.get("staffId") ?.setValue('');
+          this.formGroup.get("staffId")?.setValue('');
           status = true;
         } else {
           status = true;

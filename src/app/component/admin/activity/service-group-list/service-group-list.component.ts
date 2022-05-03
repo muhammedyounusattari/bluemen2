@@ -604,10 +604,9 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
         //doc.save('college.pdf');  
     }
     unCheckAll() {
-        debugger;
         this.activityGroupData.map((item: any) => {
-                item.checked = false;
-        });
+            item.checked = false;
+    });
     }
     refreshStatus(data: any) {
         console.log('data:', data);

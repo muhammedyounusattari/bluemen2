@@ -7,10 +7,12 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Staff Member ID*</mat-label>
-                                            <input  matInput list="staffs" type="text" placeholder="" value="" formControlName="staffId">
-                                        </mat-form-field>
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style">Staff Member ID*</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter Staff Member ID">
+                                                <input nz-input list="staffs" type="text" placeholder="" value="" formControlName="staffId" />
+                                            </nz-form-control>
+                                          </nz-form-item>
                                         <datalist id="staffs">
                                             <option value="">Select</option>
                                             <option *ngFor="let act of staffList" [ngValue]="act.staffId">

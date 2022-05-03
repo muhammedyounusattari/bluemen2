@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MoveMergeDialogBoxComponent } from 'src/app/shared/components/move-merge-dialog-box/move-merge-dialog-box.component';
 import { CollegeAndSchoolService } from 'src/app/services/admin/college-school.service';
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
 /**
  * CollegeSchoolListMergeBox component
  */
@@ -23,12 +24,12 @@ export class CollegeSchoolListMergeBoxComponent implements OnInit {
   currentValId: any;
   selectedCollegeSchoolName: any;
 
-  constructor(public dialogRef: MatDialogRef<CollegeSchoolListMergeBoxComponent>, 
-               private toastr: ToastrService,
-               @Inject(MAT_DIALOG_DATA) public data: CollegeSchoolListMergeBoxModel, 
-               private formBuilder: FormBuilder,
-               private _collegeAndSchoolService: CollegeAndSchoolService,
-               private dialog: MatDialog, private router: Router) {
+  constructor(public dialogRef: MatDialogRef<CollegeSchoolListMergeBoxComponent>,
+    private notificationService: NotificationUtilities,
+    @Inject(MAT_DIALOG_DATA) public data: CollegeSchoolListMergeBoxModel,
+    private formBuilder: FormBuilder,
+    private _collegeAndSchoolService: CollegeAndSchoolService,
+    private dialog: MatDialog, private router: Router) {
     // Update view with given values
     this.title = data.title;
     this.message = data.message;
@@ -53,13 +54,10 @@ export class CollegeSchoolListMergeBoxComponent implements OnInit {
   onConfirm(): void {
     // Close the dialog, return true
     if (this.formGroup.valid) {
-      let val = this.formGroup ?.get('collegeSchoolName') ?.value;
+      let val = this.formGroup?.get('collegeSchoolName')?.value;
       if (this.selectedCollegeSchoolName.trim() == val.trim()) {
-        this.toastr.info('Same Name can not be merge!', '', {
-          timeOut: 5000,
-          closeButton: true
-        });
-        this.formGroup.get("collegeSchoolName") ?.setValue('');
+        this.notificationService.createNotificationBasic('info', "info", 'Same Name can not be merge!');
+        this.formGroup.get("collegeSchoolName")?.setValue('');
         return;
       } else {
         this.currentValId = val.trim();
@@ -128,11 +126,8 @@ export class CollegeSchoolListMergeBoxComponent implements OnInit {
     if (data && data.length > 0) {
       status = false;
     } else {
-      this.toastr.info('This record does not exist!', '', {
-        timeOut: 5000,
-        closeButton: true
-      });
-      this.formGroup.get("collegeSchoolName") ?.setValue('');
+      this.notificationService.createNotificationBasic('info', "info", 'This record does not exist!');
+      this.formGroup.get("collegeSchoolName")?.setValue('');
       status = true;
     }
     return status;

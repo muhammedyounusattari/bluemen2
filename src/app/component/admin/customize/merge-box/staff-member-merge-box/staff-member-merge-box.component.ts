@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { StaffMembersService } from 'src/app/services/staff/staff-members.service';
 import { MoveMergeDialogBoxComponent } from 'src/app/shared/components/move-merge-dialog-box/move-merge-dialog-box.component';
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
 
 @Component({
   selector: 'app-staff-member-merge-box',
@@ -23,7 +24,7 @@ export class StaffMemberMergeBoxComponent implements OnInit {
   currentValId: any;
   selectedStaffName: any;
 
-  constructor(public dialogRef: MatDialogRef<StaffMemberMergeBoxComponent>, private toastr: ToastrService,
+  constructor(public dialogRef: MatDialogRef<StaffMemberMergeBoxComponent>, private notificationService: NotificationUtilities,
     @Inject(MAT_DIALOG_DATA) public data: StaffMemberMergeBoxModel, private formBuilder: FormBuilder, private staffMembersService: StaffMembersService,
     private dialog: MatDialog, private router: Router) {
     // Update view with given values
@@ -51,29 +52,33 @@ export class StaffMemberMergeBoxComponent implements OnInit {
   onConfirm(): void {
     // Close the dialog, return true
     if (this.formGroup.valid) {
-      let val = this.formGroup ?.get('staffId') ?.value.split('|')[1];
+      let val = this.formGroup?.get('staffId')?.value.split('|')[1];
       if (val) {
         if (Number(this.selectedId) == Number(val.trim())) {
-          this.toastr.info('Same staff can not be merge!', '', {
-            timeOut: 5000,
-            closeButton: true
-          });
-          this.formGroup.get("staffId") ?.setValue('');
+          this.notificationService.createNotificationBasic('info', "info", 'Same staff can not be merge!');
+          this.formGroup.get("staffId")?.setValue('');
           return;
         } else {
           this.currentValId = val.trim();
         }
       } else {
-        this.toastr.info('Please select correct value!', '', {
-          timeOut: 5000,
-          closeButton: true
-        });
-        this.formGroup.get("staffId") ?.setValue('');
+        this.notificationService.createNotificationBasic('info', "info", 'Please select correct value!');
+        this.formGroup.get("staffId")?.setValue('');
         return;
       }
       this.getDeletedItemById(this.currentValId);
     } else {
       this.formGroup.markAllAsTouched();
+      if (!this.formGroup?.get('staffId')?.value) {
+        Object.values(this.formGroup.controls).forEach(control => {
+          if (control.invalid) {
+            control.markAsDirty();
+            control.updateValueAndValidity({ onlySelf: true });
+          }
+        });
+        return;
+      }
+
     }
   }
 
@@ -136,11 +141,8 @@ export class StaffMemberMergeBoxComponent implements OnInit {
     if (data && data.length > 0) {
       status = false;
     } else {
-      this.toastr.info('This record does not exist!', '', {
-        timeOut: 5000,
-        closeButton: true
-      });
-      this.formGroup.get("staffId") ?.setValue('');
+      this.notificationService.createNotificationBasic('info', "info", 'This record does not exist!');
+      this.formGroup.get("staffId")?.setValue('');
       status = true;
     }
     return status;

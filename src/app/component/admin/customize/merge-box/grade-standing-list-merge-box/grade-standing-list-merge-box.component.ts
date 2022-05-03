@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MoveMergeDialogBoxComponent } from 'src/app/shared/components/move-merge-dialog-box/move-merge-dialog-box.component';
 import { GradingGroupStandingService } from 'src/app/services/admin/grading-group-standing.service';
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
 
 
 @Component({
@@ -24,9 +25,9 @@ export class GradeStandingListMergeBoxComponent implements OnInit {
   currentValId: any;
   selectedGradingName: any;
 
-  constructor(public dialogRef: MatDialogRef<GradeStandingListMergeBoxComponent>, private toastr: ToastrService,
+  constructor(public dialogRef: MatDialogRef<GradeStandingListMergeBoxComponent>,
     @Inject(MAT_DIALOG_DATA) public data: GradingListMergeBoxModel, private formBuilder: FormBuilder, private _gradingGroupStandingService: GradingGroupStandingService,
-    private dialog: MatDialog, private router: Router) {
+    private dialog: MatDialog, private router: Router, private notificationService: NotificationUtilities) {
     // Update view with given values
     this.title = data.title;
     this.message = data.message;
@@ -52,29 +53,29 @@ export class GradeStandingListMergeBoxComponent implements OnInit {
   onConfirm(): void {
     // Close the dialog, return true
     if (this.formGroup.valid) {
-      let val = this.formGroup ?.get('id') ?.value.split('|')[1];
+      let val = this.formGroup?.get('id')?.value.split('|')[1];
       if (val) {
         if (Number(this.selectedId) == Number(val.trim())) {
-          this.toastr.info('Same grading can not be merge!', '', {
-            timeOut: 5000,
-            closeButton: true
-          });
-          this.formGroup.get("id") ?.setValue('');
+          this.notificationService.createNotificationBasic('info', "info", 'Same grading can not be merge!');
+          this.formGroup.get("id")?.setValue('');
           return;
         } else {
           this.currentValId = val.trim();
         }
       } else {
-        this.toastr.info('Please select correct value!', '', {
-          timeOut: 5000,
-          closeButton: true
-        });
-        this.formGroup.get("id") ?.setValue('');
+        this.notificationService.createNotificationBasic('info', "info", 'Please select correct value!');
+        this.formGroup.get("id")?.setValue('');
         return;
       }
       this.getDeletedItemById(this.currentValId);
     } else {
-      this.formGroup.markAllAsTouched();
+      Object.values(this.formGroup.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+      return;
     }
   }
 
@@ -137,11 +138,8 @@ export class GradeStandingListMergeBoxComponent implements OnInit {
     if (data && data.length > 0) {
       status = false;
     } else {
-      this.toastr.info('This record does not exist!', '', {
-        timeOut: 5000,
-        closeButton: true
-      });
-      this.formGroup.get("id") ?.setValue('');
+      this.notificationService.createNotificationBasic('info', "info", 'This record does not exist!');
+      this.formGroup.get("id")?.setValue('');
       status = true;
     }
     return status;

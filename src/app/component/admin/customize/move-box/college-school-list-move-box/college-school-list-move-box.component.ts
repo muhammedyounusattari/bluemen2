@@ -48,7 +48,7 @@ export class CollegeSchoolListMoveBoxComponent implements OnInit {
     fiscalYear: '',
     ncesId: '',
     inPullDown: false
-};
+  };
 
   constructor(public dialogRef: MatDialogRef<CollegeSchoolListMoveBoxComponent>, private toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: GradingListMoveBoxModel, private formBuilder: FormBuilder, private _collegeAndSchoolService: CollegeAndSchoolService,
@@ -77,7 +77,7 @@ export class CollegeSchoolListMoveBoxComponent implements OnInit {
   onConfirm(): void {
     // Close the dialog, return true
     if (this.formGroup.valid) {
-      this.currentValId = this.formGroup ?.get('collegeSchoolName') ?.value;
+      this.currentValId = this.formGroup?.get('collegeSchoolName')?.value;
       let status = this.verifyCollegeSchoolName(this.currentValId);
       if (!status) {
         this.getDeletedItemById(this.currentValId);
@@ -116,7 +116,7 @@ export class CollegeSchoolListMoveBoxComponent implements OnInit {
       name: name
     }
     this.requestData.orgName = this.message.trim();
-    this.requestData.name = name.toLowerCase().trim(); 
+    this.requestData.name = name.toLowerCase().trim();
     this._collegeAndSchoolService.getDeletedCollegeAndSchoolByNameAndOrgId(this.requestData).subscribe(result => {
       if (result && result != null && result > 0) {
         let message = this.message + " name was deleted. Do you want to recall the old name?";
@@ -174,7 +174,7 @@ export class CollegeSchoolListMoveBoxComponent implements OnInit {
       });
       confirmDialog.afterClosed().subscribe(result1 => {
         if (result1 == true) {
-          this.formGroup.get("collegeSchoolName") ?.setValue('');
+          this.formGroup.get("collegeSchoolName")?.setValue('');
           status = true;
         } else {
           status = true;

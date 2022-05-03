@@ -1,215 +1,202 @@
-<div class="container-fluid " style="background:#EFF4F8;">
-  <!-- Full Screen Loader Start -->
-  <div id="loading"></div>
-  <!-- Full Screen Loader End -->
-
-  <div class="row ">
-    <div class="col-md-6 mt-3 mb-3 ">
-      <form class="example">
-        <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
-        <i class="fa fa-search search"></i>
-      </form>
-    </div>
-  </div>
-
-  <!-- Spinner Start-->
-  <div class="spinner-container" *ngIf="isLoading">
-    <mat-spinner id="spinner"></mat-spinner>
-  </div>
-  <!-- Spinner End-->
-
-  <!-- Data Table Start-->
-  <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading" style="margin-right: 6px;">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff Id </th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffId}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="staffName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffName}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffTitle}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="staffActive">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffActive?'Yes':'No'}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="staffCounselor">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Counselor</th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffCounselor?'Yes':'No'}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="staffTutor">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tutor</th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffTutor?'Yes':'No'}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="staffTeacher">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Teacher</th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffTeacher?'Yes':'No'}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="staffBolt">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Bolt</th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffBolt?'Yes':'No'}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="staff">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff</th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staff?'Yes':'No'}} </td>
-      </ng-container>
-
-
-      <ng-container matColumnDef="staffLab">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lab</th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj.staffLab?'Yes':'No'}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="staffPhoneNumber">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj?.staffPhoneNumber | phoneMask: '(000) 000-0000'}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="staffHireDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Hire Date</th>
-        <td mat-cell *matCellDef="let groupObj; let row = dataIndex;"> {{groupObj?.staffHireDate | date:'dd/MM/y'}} </td>
-      </ng-container>
-
-      <!-- <ng-template [ngIf]="dataSource.data.length === 0">
-        <tr mat-footer-row *matFooterRowDef="['noRecord']"></tr>
-      </ng-template> -->
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-      <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
-        [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
-      </tr>
-    </table>
-    <div *ngIf="!spinner && staffMembersList?.length == 0" class="bg-colr-wht py-4">
-      <div class="center">
-          <h3>No Data Found</h3>
+<div class="main-container">
+  <div id="main-section" class="container-fluid ">
+      <div class="row">
+          <div class="col-md-6 mt-3 mb-3 ">
+              <!-- <form class="example">
+                  <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
+                  <i class="fa fa-search search"></i>
+              </form> -->
+              <nz-input-group [nzSuffix]="suffixIconSearch">
+                <input type="text" #searchText nz-input placeholder="input search text"  (keyup)="applyFilter(searchText.value)"/>
+              </nz-input-group>
+              <ng-template #suffixIconSearch>
+                <i nz-icon nzType="search"></i>
+              </ng-template>
+          </div>
+          <div nz-row nzJustify="end" class="col-md-6 mt-3 mb-3 ">
+              <nz-form-item class="search-filter-item">
+                  <nz-form-control>
+                      <button (click)="showStaffNamePop()" nz-button nzType="primary" class="search-filter-btn">
+                         <span> New</span>
+                      </button>
+                  </nz-form-control>
+              </nz-form-item>
+              <nz-form-item class="search-filter-item print">
+                  <nz-form-control>
+                      <button (click)="print()" nz-button nzType="primary" class="search-filter-btn">
+                          <i nz-icon nzType="printer" nzTheme="fill"></i>
+                         <span> Print </span>
+                      </button>
+                  </nz-form-control>
+              </nz-form-item>
+           </div>
+           
       </div>
-  </div>
-  </div>
-  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]" style="margin-right: 6px;"></mat-paginator>
-  <!-- Data Table End-->
-  <br/>
-  <!-- Search Filter Start-->
-  <div class="row">
-    <div class="col-md-12">
-      <form [formGroup]="searchFormGroup" class="form" >
-      <div class="tab-content bg-white" id="myTabContent">
-        <div aria-labelledby="home-tab" class="tab-pane fade show active" id="home" role="tabpanel">
-          <div class="d-flex">
-            <div class="col-md-12 ">
-              <h5 class="mt-3 mb-3">Select a value for the fields to set the filters</h5>
+      <!-- Data Table Start-->
+      <!-- *ngIf="!isLoading" -->
+      <div class="mat-elevation-z8 data-table-height dt-max-height">
+          <nz-table #staffMembersDataTable [nzNoResult]="noResultTemplate" [nzLoading]="isLoading" [nzData]="staffMembersList">
+              <ng-template #noResultTemplate>
+                  <nz-empty [nzNotFoundContent]="'No Data Found'">
+                  </nz-empty> 
+              </ng-template>
+              <thead>
+              <tr>
+                  <th>Staff Id<i  class="sort" (click)="sorting('staffId')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('staffId')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Name<i  class="sort" (click)="sorting('staffName')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('staffName')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Title<i  class="sort" (click)="sorting('staffTitle')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('staffTitle')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Active<i  class="sort" (click)="sorting('staffActive')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('staffActive')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Counselor<i  class="sort" (click)="sorting('staffCounselor')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('staffCounselor')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Tutor<i  class="sort" (click)="sorting('staffTutor')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('staffTutor')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Teacher<i  class="sort" (click)="sorting('staffTeacher')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('staffTeacher')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Bolt<i  class="sort" (click)="sorting('staffBolt')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('staffBolt')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Staff<i  class="sort" (click)="sorting('staff')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('staff')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Lab<i  class="sort" (click)="sorting('staffLab')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('staffLab')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Phone Number<i  class="sort" (click)="sorting('staffPhoneNumber')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('staffPhoneNumber')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Hire Date<i  class="sort" (click)="sorting('staffHireDate')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                    <i  class="sort" (click)="sorting2('staffHireDate')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of staffMembersDataTable.data ;let idx = index;">
+                  <td>{{ data.staffId }}</td>
+                  <td>{{ data.staffName }}</td>
+                  <td>{{ data.staffTitle}}</td>
+                  <td> {{data.staffActive ? 'YES' : 'NO'}} </td>
+                  <td>{{ data.staffCounselor ? 'YES' : 'NO' }}</td>
+                  <td>{{ data.staffTutor ? 'YES' : 'NO'}}</td>
+                  <td>{{ data.staffTeacher ? 'YES' : 'NO'}}</td>
+                  <td> {{data.staffBolt ? 'YES' : 'NO'}} </td>
+                  <td>{{ data.staff ? 'YES':'NO' }}</td>
+                  <td>{{ data.staffLab ?'YES':'NO'}}</td>
+                  <td>{{ data.staffPhoneNumber | phoneMask: '(000) 000-0000'}}</td>
+                  <td> {{data.staffHireDate | date:'dd/MM/y'}} </td>
+                  <td class="edit-icon-div"> 
+                      <i class="icon-pt" nz-icon nzType="edit" (click)="getSelectedOption('Edit',data, idx)"
+                          nzTheme="outline" nz-tooltip
+                          nzTooltipTitle="Edit"
+                          nzTooltipPlacement="bottom" nz-button>
+                      </i>
+                      <i class="icon-pt" nz-icon nzType="export" nzTheme="outline" (click)="showMoveItemPopup(data, idx)"
+                          nz-tooltip
+                          nzTooltipTitle="Move"
+                          nzTooltipPlacement="bottom" nz-button>
+                      </i>
+                      <i class="icon-pt" nz-icon nzType="merge-cells" nzTheme="outline"
+                         (click)="showMergeItemPopup(data, idx)"
+                          nz-tooltip
+                          nzTooltipTitle="Merge"
+                          nzTooltipPlacement="bottom" nz-button>
+                      </i>
+                      <i class="icon-pt" nz-icon nzType="delete" nzTheme="outline"
+                         (click)="deleteStaffMembers(data, idx)"
+                          nz-tooltip
+                          nzTooltipTitle="Delete"
+                          nzTooltipPlacement="bottom" nz-button>
+                      </i>
+                  </td>
+              </tr>
+              </tbody>
+        </nz-table>
+      </div>
+     <br/>
+      <div class="mat-elevation-z8 data-table-height dt-max-height">
+        <div class="custom-modal-header">
+          <div nz-row>
+            <div nz-col nzSpan="8">
+              <span class="modal-title popHeader-staff" id="exampleModalLabel">Select a value for the fields to set the filters</span>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-2">
-              <div class="form-group">
-                <mat-form-field appearance="fill" class="mb-m-6 example-full-width">
-                  <mat-label>Hire Date From:</mat-label>
-                  <input matInput [matDatepicker]="picker3" [min]="minHireDate" (dateChange)="checkValidDate($event)" 
-                  formControlName="staffHireDate1">
-                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                  <mat-datepicker #picker3></mat-datepicker>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="form-group">
-                <mat-form-field appearance="fill" class="mb-m-6 example-full-width">
-                  <mat-label>To:</mat-label>
-                  <input matInput [matDatepicker]="picker4" [min]="minHireDate" (dateChange)="checkValidDate($event)" 
-                  formControlName="staffHireDate2">
-                  <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
-                  <mat-datepicker #picker4></mat-datepicker>
-                </mat-form-field>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-2">
-              <div class="form-group">
-                <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                  <mat-label>Codes</mat-label>
-                  <input matInput list="codeList" value="" formControlName="codesStaff" minlength="3" maxlength="50">
-                </mat-form-field>
-                <datalist id="codeList">
-                  <option *ngFor="let code of codeListArray" [ngValue]="code.longpullna">
-                    {{code.longpullna}}</option>
-                </datalist>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-group">
-            <div class="col-md-4">
-              <label class="radio-inline"> Active:
-                  <input class="ml-2" type="radio" formControlName="activeStaff" value="true"> Yes </label>
-              <label class="radio-inline">
-                  <input class="ml-2" type="radio" formControlName="activeStaff" value="false"> No
-              </label>
-              <label class="radio-inline">
-                  <input class="ml-2" type="radio" formControlName="activeStaff" value="all"> All
-              </label>
-          </div>
-          </div>
           </div>
         </div>
+        <div class="modal-body custom-modal-body"> 
+          <div nz-row>
+            <div nz-col [nzSpan]="12">
+                  <div nz-row class="tabStyle">
+                    <div nz-col [nzSpan]="24">
+                      <!--Form Section Start-->
+                      <div nz-row class="form_section">
+                        <form nz-form class="staff-form" [nzLayout]="searchFormGroup.get('formLayout')?.value"
+                          [formGroup]="searchFormGroup">
+                          <div nz-row [nzGutter]="24">
+                            <div nz-col [nzSpan]="24"> 
+                              <nz-form-item>
+                                  <nz-form-label class="lable-style">Hire Date From:</nz-form-label>
+                                  <nz-form-control>
+                                      <nz-date-picker class="filter_Datepicker"
+                                         nzPlaceHolder="MM/DD/YYYY" formControlName="staffHireDate1"  [min]="minHireDate" (dateChange)="checkValidDate($event)" >
+                                      </nz-date-picker>
+                                  </nz-form-control>
+                              </nz-form-item>
+                            </div>
+    
+                            <div nz-col [nzSpan]="24"> 
+                              <nz-form-item>
+                                  <nz-form-label class="lable-style">To:</nz-form-label>
+                                  <nz-form-control>
+                                      <nz-date-picker class="filter_Datepicker"
+                                         nzPlaceHolder="MM/DD/YYYY" formControlName="staffHireDate2"  [min]="minHireDate" (dateChange)="checkValidDate($event)" >
+                                      </nz-date-picker>
+                                  </nz-form-control>
+                              </nz-form-item>
+                            </div>
+    
+                            <div nz-col [nzSpan]="24">
+                              <nz-form-item>
+                                <nz-form-label class="lable-style">Codes:</nz-form-label>
+                                <nz-form-control nzErrorTip="Please Select Codes">
+                                    <nz-select nzShowSearch nzAllowClear formControlName="codesStaff"
+                                        nzPlaceHolder="Codes">
+                                        <nz-option *ngFor="let code of codeListArray"
+                                            [nzLabel]="code.longpullna" [nzValue]="code.longpullna">
+                                        </nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>
+                            </div>
+
+                            <div nz-col [nzSpan]="24">
+                              <nz-form-item>
+                              <nz-form-label class="lable-style">Active:</nz-form-label>
+                              <nz-radio-group formControlName="activeStaff">
+                                <label nz-radio nzValue="true">YES</label>
+                                <label nz-radio nzValue="false">NO</label>
+                                <label nz-radio nzValue="all">ALL</label>
+                              </nz-radio-group>
+                            </nz-form-item>
+                            </div>
+                          </div>
+                      </form>
+                      </div>
+                      <!--Form Section End-->
+                    </div>
+                    
+                  </div>
+                  <div nz-row class="tabStyle-btn">
+                    <div nz-col nzSpan="4" nzOffset="20">
+                      <button nz-button nzType="primary" class="btn-color" (click)="searchFields();">SEARCH</button>
+                    </div>
+                  </div>
+            </div>
+          </div>
+    
+        </div>
       </div>
-      </form>
-    </div>
   </div>
-  <br/>
-  <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5; margin-right: 6px;">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-        aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <!-- <li class="nav-item">
-            <a class="nav-link active" aria-current="page">Reset</a>
-          </li> -->
-          <li class="nav-item">
-            <a class="nav-link" (click)="getSelectedOption('New')">New</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" (click)="getSelectedOption('Edit')">Edit</a>
-          </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link">Rename</a>
-          </li> -->
-          <li class="nav-item">
-            <a class="nav-link" (click)="showMoveItemPopup()">Move</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" (click)="showMergeItemPopup()">Merge</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" (click)="deleteStaffMembers()">Delete</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" (click)="print()">Print</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" (click)="searchFields()">Submit</a>
-          </li>
-        </ul>
+  <!-- Buttons Start-->
 
-      </div>
-    </div>
-
-  </nav>
+</div>
 
   <!-- Modal Start-->
   <ng-template #staffDataEntryPopup>
@@ -222,7 +209,8 @@
         <div nz-col nzSpan="4" nzOffset="11">
           <div class="btn-right">
             <a nz-button nzType="link" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()">Cancel</a>
-            <button nz-button nzType="primary" class="btn-color">SAVE</button>
+            <button nz-button nzType="primary" class="btn-color" *ngIf="!isEdit" (click)="addStaffMembers();">SAVE</button>
+                  <button nz-button nzType="primary" class="btn-color" *ngIf="isEdit" (click)="updateSelectedRow();">UPDATE</button>
           </div>
         </div>
         <div nz-col nzSpan="1">
@@ -239,7 +227,7 @@
                 <div nz-col [nzSpan]="24">
                   <div nz-row class="logo_section">
                     <div nz-col nzSpan="9">
-                      <h1 class="logo_header">Karintha Ashe</h1>
+                      <h1 class="logo_header">{{displayStaffName}}</h1>
                     </div>
                     <div nz-col nzSpan="10">
                      
@@ -271,8 +259,8 @@
 
                   <!--Form Section Start-->
                   <div nz-row class="form_section">
-                    <form nz-form class="staff-form" [nzLayout]="staffDetailsForm.get('formLayout')?.value"
-                      [formGroup]="staffDetailsForm">
+                    <form nz-form class="staff-form" [nzLayout]="formGroup.get('formLayout')?.value"
+                      [formGroup]="formGroup">
                       <div nz-row>
                         <h6 class="section-head">Staff Details</h6>
                       </div>
@@ -281,7 +269,7 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">Title</nz-form-label>
                               <nz-form-control nzErrorTip="Please Enter Title">
-                                <input nz-input type="text" formControlName="staff_title" placeholder="Title" />
+                                <input nz-input type="text" formControlName="title" placeholder="Title" />
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -290,7 +278,7 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">SS.No</nz-form-label>
                               <nz-form-control nzErrorTip="Please Enter SS.No">
-                                <input nz-input type="text" formControlName="staff_SSNo" placeholder="SS.No" />
+                                <input nz-input type="text" formControlName="ssn" placeholder="SS.No" />
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -299,24 +287,37 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">Staff ID</nz-form-label>
                               <nz-form-control nzErrorTip="Please Enter Staff ID">
-                                <input nz-input type="text" formControlName="staff_id" placeholder="Staff ID" />
+                                <input nz-input type="text" formControlName="staffId" placeholder="Staff ID" readonly/>
                               </nz-form-control>
                           </nz-form-item>
                         </div>
                         <div nz-col [nzSpan]="8">
                           <nz-form-item>
-                              <nz-form-label class="lable-style">Codes</nz-form-label>
-                              <nz-form-control nzErrorTip="Please Enter Codes">
-                                <input nz-input type="text" formControlName="staff_codes" placeholder="Codes" />
+                              <nz-form-label class="lable-style">Staff Name</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Staff Name">
+                                <input nz-input type="text" formControlName="staffName" placeholder="Staff Name" readonly/>
                               </nz-form-control>
                           </nz-form-item>
+                        </div>
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                            <nz-form-label class="lable-style">Codes</nz-form-label>
+                            <nz-form-control nzErrorTip="Please Select Codes">
+                                <nz-select nzShowSearch nzAllowClear formControlName="codes"
+                                    nzPlaceHolder="Codes">
+                                    <nz-option *ngFor="let code of codeListArray"
+                                        [nzLabel]="code.longpullna" [nzValue]="code.longpullna">
+                                    </nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
                         </div>
 
                         <div nz-col [nzSpan]="8">
                           <nz-form-item>
                               <nz-form-label class="lable-style">Driver License#</nz-form-label>
                               <nz-form-control nzErrorTip="Please Enter Driver License">
-                                <input nz-input type="text" formControlName="staff_license" placeholder="Driver License" />
+                                <input nz-input type="text" formControlName="license" placeholder="Driver License" />
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -326,7 +327,7 @@
                               <nz-form-label class="lable-style">Date Of Birth</nz-form-label>
                               <nz-form-control>
                                   <nz-date-picker class="filter_Datepicker"
-                                     nzPlaceHolder="MM/DD/YYYY" formControlName="staff_dob">
+                                     nzPlaceHolder="MM/DD/YYYY" formControlName="dob" [max]="maxDob" (dateChange)="checkValidDate($event)">
                                   </nz-date-picker>
                               </nz-form-control>
                           </nz-form-item>
@@ -337,7 +338,7 @@
                               <nz-form-label class="lable-style">Hire Date</nz-form-label>
                               <nz-form-control>
                                   <nz-date-picker class="filter_Datepicker"
-                                     nzPlaceHolder="MM/DD/YYYY" formControlName="staff_hire">
+                                     nzPlaceHolder="MM/DD/YYYY" formControlName="staffHireDate"  [min]="minHireDate" (dateChange)="checkValidDate($event)" >
                                   </nz-date-picker>
                               </nz-form-control>
                           </nz-form-item>
@@ -348,17 +349,18 @@
                               <nz-form-label class="lable-style">Termination Date</nz-form-label>
                               <nz-form-control>
                                   <nz-date-picker class="filter_Datepicker"
-                                     nzPlaceHolder="MM/DD/YYYY" formControlName="staff_terminate">
+                                     nzPlaceHolder="MM/DD/YYYY" formControlName="terminationDate" [min]="minTermDate">
                                   </nz-date-picker>
                               </nz-form-control>
                           </nz-form-item>
                         </div>
+                        
 
                         <div nz-col [nzSpan]="8">
                           <nz-form-item>
                               <nz-form-label class="lable-style">Spouse Name</nz-form-label>
                               <nz-form-control nzErrorTip="Please Enter Spouse Name">
-                                <input nz-input type="text" formControlName="staff_spouse" placeholder="Spouse Name" />
+                                <input nz-input type="text" formControlName="spouse" placeholder="Spouse Name" />
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -367,10 +369,10 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">&nbsp;</nz-form-label>
                               <nz-form-control nzErrorTip="">
-                                <nz-switch class="toggle-btn" formControlName="active_toggle" [(ngModel)]="activeToggle"></nz-switch> <label class="toggle-lable">Active</label>
-                                <label class="lable-checkbox" nz-checkbox formControlName="tutuor_chk" [(ngModel)]="tutorChecked">Tutor</label>
-                                <label class="lable-checkbox" nz-checkbox formControlName="bolt_chk" [(ngModel)]="boltChecked">Bolt</label>
-                                <label class="lable-checkbox" nz-checkbox formControlName="staff_chk" [(ngModel)]="staffChecked">Staff</label>
+                                <nz-switch class="toggle-btn" formControlName="staffActive"></nz-switch> <label class="toggle-lable">Active</label>
+                                <label class="lable-checkbox" nz-checkbox formControlName="staffTutor">Tutor</label>
+                                <label class="lable-checkbox" nz-checkbox formControlName="staffBolt">Bolt</label>
+                                <label class="lable-checkbox" nz-checkbox formControlName="staff">Staff</label>
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -379,19 +381,26 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">&nbsp;</nz-form-label>
                               <nz-form-control nzErrorTip="">
-                                <label class="lable-checkbox1" nz-checkbox formControlName="counselor_chk" [(ngModel)]="counselorChecked">Counselor</label>
-                                <label class="lable-checkbox1" nz-checkbox formControlName="teacher_chk" [(ngModel)]="teacherChecked">Teacher</label>
-                                <label class="lable-checkbox1" nz-checkbox formControlName="lab_chk" [(ngModel)]="labChecked">Lab</label>
+                                <label class="lable-checkbox1" nz-checkbox formControlName="staffCounselor">Counselor</label>
+                                <label class="lable-checkbox1" nz-checkbox formControlName="staffTeacher">Teacher</label>
+                                <label class="lable-checkbox1" nz-checkbox formControlName="staffLab">Lab</label>
                               </nz-form-control>
                           </nz-form-item>
                         </div>
-
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Phone Number</nz-form-label>
+                              <nz-form-control nzErrorTip="Please Enter Valid Phone Number">
+                                <input nz-input type="text" formControlName="staffPhoneNumber" mask="(000)000-0000" placeholder="Staff Phone Number" />
+                              </nz-form-control>
+                          </nz-form-item>
+                        </div>
                         <div nz-col [nzSpan]="8">
                           <nz-form-item>
                               <nz-form-label class="lable-style">Custom Field 1</nz-form-label>
                               <nz-form-control>
-                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_custom1" nzPlaceHolder="Custom Field 1">
-                                      <nz-option *ngFor="let option of viewOptions" [nzLabel]="option" [nzValue]="option">
+                                  <nz-select nzShowSearch nzAllowClear formControlName="customField1" nzPlaceHolder="Custom Field 1">
+                                      <nz-option *ngFor="let code of customFieldListArray1" [nzLabel]="code.longpullna" [nzValue]="code.longpullna">
                                       </nz-option>
                                   </nz-select>
                               </nz-form-control>
@@ -402,8 +411,8 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">Custom Field 2</nz-form-label>
                               <nz-form-control>
-                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_custom2" nzPlaceHolder="Custom Field 2">
-                                      <nz-option *ngFor="let option of viewOptions" [nzLabel]="option" [nzValue]="option">
+                                  <nz-select nzShowSearch nzAllowClear formControlName="customField2" nzPlaceHolder="Custom Field 2">
+                                      <nz-option *ngFor="let code of customFieldListArray2" [nzLabel]="code.longpullna" [nzValue]="code.longpullna">
                                       </nz-option>
                                   </nz-select>
                               </nz-form-control>
@@ -414,8 +423,8 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">Custom Field 3</nz-form-label>
                               <nz-form-control>
-                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_custom3" nzPlaceHolder="Custom Field 3">
-                                      <nz-option *ngFor="let option of viewOptions" [nzLabel]="option" [nzValue]="option">
+                                  <nz-select nzShowSearch nzAllowClear formControlName="customField3" nzPlaceHolder="Custom Field 3">
+                                      <nz-option *ngFor="let code of customFieldListArray3" [nzLabel]="code.longpullna" [nzValue]="code.longpullna">
                                       </nz-option>
                                   </nz-select>
                               </nz-form-control>
@@ -426,8 +435,8 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">Custom Field 4</nz-form-label>
                               <nz-form-control>
-                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_custom4" nzPlaceHolder="Custom Field 4">
-                                      <nz-option *ngFor="let option of viewOptions" [nzLabel]="option" [nzValue]="option">
+                                  <nz-select nzShowSearch nzAllowClear formControlName="customField4" nzPlaceHolder="Custom Field 4">
+                                      <nz-option *ngFor="let code of customFieldListArray4" [nzLabel]="code.longpullna" [nzValue]="code.longpullna">
                                       </nz-option>
                                   </nz-select>
                               </nz-form-control>
@@ -438,7 +447,7 @@
                             <nz-form-item class="flexArr">
                                 <nz-form-label class="lable-style">Notes</nz-form-label>
                                 <nz-form-control nzErrorTip="Please Enter Notes">
-                                    <textarea class="notes-style" formControlName="staff_notes" nz-input placeholder="Enter Notes"
+                                    <textarea class="notes-style" formControlName="notes" nz-input placeholder="Enter Notes"
                                          [nzAutosize]="{ minRows: 3, maxRows: 3 }">
                                     </textarea>
                                     <span class="spell-icon"><i nz-icon nzType="edit" nzTheme="outline"></i></span>
@@ -455,7 +464,8 @@
               <div nz-row class="tabStyle-btn">
                 <div nz-col nzSpan="4" nzOffset="20">
                   <a nz-button nzType="link" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()">Cancel</a>
-                  <button nz-button nzType="primary" class="btn-color">SAVE</button>
+                  <button nz-button nzType="primary" class="btn-color" *ngIf="!isEdit" (click)="addStaffMembers();">SAVE</button>
+                  <button nz-button nzType="primary" class="btn-color" *ngIf="isEdit" (click)="updateSelectedRow();">UPDATE</button>
                 </div>
               </div>
             </nz-tab>
@@ -464,7 +474,7 @@
                 <div nz-col [nzSpan]="24">
                   <div nz-row class="logo_section">
                     <div nz-col nzSpan="9">
-                      <h1 class="logo_header">Karintha Ashe</h1>
+                      <h1 class="logo_header">{{displayStaffName}}</h1>
                     </div>
                     <div nz-col nzSpan="10">
                      
@@ -495,8 +505,8 @@
                   </div>
                   <!--Form Section Start-->
                   <div nz-row class="form_section">
-                    <form nz-form class="staff-address-form" [nzLayout]="staffAddressForm.get('formLayout')?.value"
-                      [formGroup]="staffAddressForm">
+                    <form nz-form class="staff-address-form" [nzLayout]="formGroup.get('formLayout')?.value"
+                      [formGroup]="formGroup">
                       <div nz-row>
                         <h6 class="section-head">Staff Address</h6>
                       </div>
@@ -504,7 +514,7 @@
                         <div nz-col [nzSpan]="8">
                           <nz-form-item>
                               <nz-form-control>
-                                <label nz-checkbox class="lable-checkbox" formControlName="staff_mailing_address"><span>Use this for mailling address</span>
+                                <label nz-checkbox class="lable-checkbox" formControlName="usedForMailling"><span>Use this for mailling address</span>
                                 </label>
                               </nz-form-control>
                           </nz-form-item>
@@ -513,7 +523,7 @@
                         <div nz-col [nzSpan]="8">
                           <nz-form-item>
                               <nz-form-control>
-                                <label nz-checkbox class="lable-checkbox" formControlName="staff_primary_address"><span>Primary Address</span>
+                                <label nz-checkbox class="lable-checkbox" formControlName="permanentAddress"><span>Primary Address</span>
                                 </label>
                               </nz-form-control>
                           </nz-form-item>
@@ -532,7 +542,7 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">Mailing Name</nz-form-label>
                               <nz-form-control nzErrorTip="Please Enter Mailing Name">
-                                <input nz-input type="text" formControlName="staff_mailing_name" placeholder="Mailing Name" />
+                                <input nz-input type="text" formControlName="staffMaillingName" placeholder="Mailing Name" (blur)="checkMallingStaffName($event)"/>
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -541,8 +551,8 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">City</nz-form-label>
                               <nz-form-control>
-                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_city" nzPlaceHolder="City">
-                                      <nz-option *ngFor="let option of viewOptions" [nzLabel]="option" [nzValue]="option">
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staffCity" nzPlaceHolder="City">
+                                      <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna" [nzValue]="obj.longpullna">
                                       </nz-option>
                                   </nz-select>
                               </nz-form-control>
@@ -553,8 +563,8 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">State</nz-form-label>
                               <nz-form-control>
-                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_state" nzPlaceHolder="State">
-                                      <nz-option *ngFor="let option of viewOptions" [nzLabel]="option" [nzValue]="option">
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staffState" nzPlaceHolder="State">
+                                      <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna" [nzValue]="obj.longpullna">
                                       </nz-option>
                                   </nz-select>
                               </nz-form-control>
@@ -565,8 +575,8 @@
                         <div nz-col [nzSpan]="8">
                           <nz-form-item>
                               <nz-form-label class="lable-style">Phone1</nz-form-label>
-                              <nz-form-control nzErrorTip="Please Enter Phone1">
-                                <input nz-input type="number" formControlName="staff_phone1" placeholder="Phone1" />
+                              <nz-form-control nzErrorTip="Please Enter Valid Phone1">
+                                <input nz-input formControlName="staffPhone1" placeholder="Phone1"  mask="(000)000-0000"/>
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -575,8 +585,8 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">Phone1 Type</nz-form-label>
                               <nz-form-control>
-                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_phone1_type" nzPlaceHolder="Phone1 Type">
-                                      <nz-option *ngFor="let option of viewphoneType" [nzLabel]="option" [nzValue]="option">
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staffPhoneType1" nzPlaceHolder="Phone1 Type">
+                                      <nz-option *ngFor="let obj of phoneTypesList" [nzLabel]="obj.longpullna" [nzValue]="obj.longpullna">
                                       </nz-option>
                                   </nz-select>
                               </nz-form-control>
@@ -586,8 +596,8 @@
                         <div nz-col [nzSpan]="8">
                           <nz-form-item>
                               <nz-form-label class="lable-style">Email</nz-form-label>
-                              <nz-form-control nzErrorTip="Please Enter Email">
-                                <input nz-input type="text" formControlName="staff_email" placeholder="Email" />
+                              <nz-form-control nzErrorTip="Please Enter Valid Email">
+                                <input nz-input type="text" formControlName="staffEmail" placeholder="Email" />
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -595,8 +605,8 @@
                         <div nz-col [nzSpan]="8">
                           <nz-form-item>
                               <nz-form-label class="lable-style">Phone2</nz-form-label>
-                              <nz-form-control nzErrorTip="Please Enter Phone2">
-                                <input nz-input type="number" formControlName="staff_phone2" placeholder="Phone2" />
+                              <nz-form-control nzErrorTip="Please Enter Valid Phone2">
+                                <input nz-input type="text" formControlName="staffPhone2" mask="(000)000-0000" />
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -605,8 +615,8 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">Phone2 Type</nz-form-label>
                               <nz-form-control>
-                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_phone2_type" nzPlaceHolder="Phone2 Type">
-                                      <nz-option *ngFor="let option of viewphoneType" [nzLabel]="option" [nzValue]="option">
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staffPhoneType2" nzPlaceHolder="Phone2 Type">
+                                      <nz-option *ngFor="let obj of phoneTypesList" [nzLabel]="obj.longpullna" [nzValue]="obj.longpullna">
                                       </nz-option>
                                   </nz-select>
                               </nz-form-control>
@@ -617,7 +627,7 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">Website</nz-form-label>
                               <nz-form-control nzErrorTip="Please Enter Website">
-                                <input nz-input type="text" formControlName="staff_website" placeholder="Website" />
+                                <input nz-input type="text" formControlName="staffWebsite" placeholder="Website" />
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -625,8 +635,8 @@
                         <div nz-col [nzSpan]="8">
                           <nz-form-item>
                               <nz-form-label class="lable-style">Phone3</nz-form-label>
-                              <nz-form-control nzErrorTip="Please Enter Phone3">
-                                <input nz-input type="number" formControlName="staff_phone3" placeholder="Phone3" />
+                              <nz-form-control nzErrorTip="Please Enter Valid Phone3">
+                                <input nz-input type="text" formControlName="staffPhone3" placeholder="Phone3" mask="(000)000-0000"/>
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -635,8 +645,8 @@
                           <nz-form-item>
                               <nz-form-label class="lable-style">Phone3 Type</nz-form-label>
                               <nz-form-control>
-                                  <nz-select nzShowSearch nzAllowClear formControlName="staff_phone3_type" nzPlaceHolder="Phone3 Type">
-                                      <nz-option *ngFor="let option of viewphoneType" [nzLabel]="option" [nzValue]="option">
+                                  <nz-select nzShowSearch nzAllowClear formControlName="staffPhoneType3" nzPlaceHolder="Phone3 Type">
+                                      <nz-option *ngFor="let obj of phoneTypesList" [nzLabel]="obj.longpullna" [nzValue]="obj.longpullna">
                                       </nz-option>
                                   </nz-select>
                               </nz-form-control>
@@ -646,8 +656,8 @@
                         <div nz-col [nzSpan]="8">
                           <nz-form-item>
                               <nz-form-label class="lable-style">Zip Code</nz-form-label>
-                              <nz-form-control nzErrorTip="Please Enter Zip Code">
-                                <input nz-input type="text" formControlName="staff_zip_code" placeholder="Zip Code" />
+                              <nz-form-control nzErrorTip="Please Enter Valid Zip Code">
+                                <input nz-input type="text" formControlName="staffZipcodes" mask="00000-0000" placeholder="Zip Code" />
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -655,8 +665,8 @@
                         <div nz-col [nzSpan]="8">
                           <nz-form-item>
                               <nz-form-label class="lable-style">Fax</nz-form-label>
-                              <nz-form-control nzErrorTip="Please Enter Fax">
-                                <input nz-input type="text" formControlName="staff_fax" placeholder="Fax" />
+                              <nz-form-control nzErrorTip="Please Enter Valid Fax">
+                                <input nz-input type="text" formControlName="staffFax" mask="(000)000-0000" placeholder="Fax" />
                               </nz-form-control>
                           </nz-form-item>
                         </div>
@@ -665,7 +675,7 @@
                           <nz-form-item class="flexArr">
                               <nz-form-label class="lable-style">Address</nz-form-label>
                               <nz-form-control nzErrorTip="Please Enter Address">
-                                  <textarea formControlName="staff_address" nz-input placeholder="Enter Address"
+                                  <textarea formControlName="staffAddress" nz-input placeholder="Enter Address"
                                        [nzAutosize]="{ minRows: 3, maxRows: 3 }">
                                   </textarea>
                               </nz-form-control>
@@ -675,8 +685,8 @@
                       <div nz-row>
                         <div nz-col nzSpan="4">
                           <!-- <button nz-button nzType="primary" class="btn-color">Reset</button> -->
-                          <a nz-button nzType="link">Reset</a>
-                          <button nz-button nzType="primary" class="btn-color">Add</button>
+                          <a nz-button nzType="link" *ngIf="!isEditAddress" (click)="bindAddressValueToFB()">Reset</a>
+                          <button nz-button nzType="primary" class="btn-color" (click)="addAddressToList()">{{!isEditAddress ? 'Add' : 'Update'}}</button>
                         </div>
                       </div>
 
@@ -684,29 +694,47 @@
                       <!--Table Start-->
                       <div nz-row>
                         
-                          <nz-table #staffDetails nzShowPagination nzShowSizeChanger [nzData]="staffData" style="margin-top: 75px">
+                          <nz-table #staffDetails nzShowPagination nzShowSizeChanger [nzData]="addressList" style="margin-top: 75px">
                               <thead>
                                   <tr>
-                                    <th style="width: 150px">Mailing Name</th>
-                                    <th style="width: 150px">Email Address</th>
-                                    <th style="width: 150px">Phone1</th>
-                                    <th style="width: 150px">Phone2</th>
-                                    <th style="width: 150px">Phone3</th>
-                                    <th style="width: 150px">Fax</th>
+                                    <th style="width: 150px">Mailing Name<i  class="sort" (click)="sorting3('staffMaillingName')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                                      <i  class="sort" (click)="sorting4('staffMaillingName')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                                    <th style="width: 150px">Email Address<i  class="sort" (click)="sorting3('staffEmail')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                                      <i  class="sort" (click)="sorting4('staffEmail')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                                    <th style="width: 150px">Phone1<i  class="sort" (click)="sorting3('staffPhone1')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                                      <i  class="sort" (click)="sorting4('staffPhone1')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                                    <th style="width: 150px">Phone2<i  class="sort" (click)="sorting3('staffPhone2')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                                      <i  class="sort" (click)="sorting4('staffPhone2')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                                    <th style="width: 150px">Phone3<i  class="sort" (click)="sorting3('staffPhone3')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                                      <i  class="sort" (click)="sorting4('staffPhone3')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                                    <th style="width: 150px">Fax<i  class="sort" (click)="sorting3('staffFax')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                                      <i  class="sort" (click)="sorting4('staffFax')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
                                     <th style="width: 100px">Action</th>
                                   </tr>
                               </thead>
                               <tbody>
-                                  <tr *ngFor="let data of staffDetails.data">
-                                      <td>{{ data.mailing_name }}</td>
-                                      <td>{{ data.email_address }}</td>
-                                      <td>{{ data.phone1 }}</td>
-                                      <td>{{ data.phone2 }}</td>
-                                      <td>{{ data.phone3 }}</td>
-                                      <td>{{ data.fax }}</td>
-                                      <td>{{ data.action }}</td>
-                                      
-                                  </tr>
+                                <tr *ngFor="let data of addressList;let indexOfelement=index;">
+                                  <td>{{ data.staffMaillingName }}</td>
+                                  <td>{{ data.staffEmail }}</td>
+                                  <td>{{ data.staffPhone1 | phoneMask: '(000) 000-0000' }}</td>
+                                  <td>{{ data.staffPhone2 | phoneMask: '(000) 000-0000' }}</td>
+                                  <td>{{ data.staffPhone3 | phoneMask: '(000) 000-0000' }}</td>
+                                  <td>{{ data.staffFax | phoneMask: '(000) 000-0000' }}</td>
+                                  <td class="edit-icon-div">
+                                    <i class="icon-pt" nz-icon nzType="edit" (click)="editAddress(data,indexOfelement)" 
+                                    nzTheme="outline" nz-tooltip
+                                    nzTooltipTitle="Edit"
+                                    nzTooltipPlacement="bottom" nz-button>
+                                </i>
+                                <i class="icon-pt" nz-icon nzType="delete" nzTheme="outline"
+                                    (click)="deleteAddress(data, indexOfelement)"
+                                    nz-tooltip
+                                    nzTooltipTitle="Delete"
+                                    nzTooltipPlacement="bottom" nz-button>
+                                </i>
+                                  </td>
+                                  
+                              </tr>
                               </tbody>
                           </nz-table>
                       
@@ -722,7 +750,9 @@
               <div nz-row class="tabStyle-btn">
                 <div nz-col nzSpan="4" nzOffset="20">
                   <a nz-button nzType="link" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()">Cancel</a>
-                  <button nz-button nzType="primary" class="btn-color">SAVE</button>
+                  <button nz-button nzType="primary" class="btn-color" *ngIf="!isEdit" (click)="addStaffMembers();">SAVE</button>
+                  <button nz-button nzType="primary" class="btn-color" *ngIf="isEdit" (click)="updateSelectedRow();">UPDATE</button>
+
                 </div>
               </div>
             </nz-tab>
@@ -743,5 +773,38 @@
         (click)="isEdit = false; selectedRowIndex = null;selectedRow = null;modalRef.hide()">Cancel</button>
     </div> -->
   </ng-template>
+
+  <nz-modal [(nzVisible)]="staffNameListPopupVisiblity" nzTitle={{staffNameModalHeader}} (nzOnCancel)="handleCancel()"
+    [nzFooter]="staffNameModalFooter" nzWidth="25%" [nzOkLoading]="isConfirmStaffNameLoading">
+    <!-- Modal -->
+    <ng-template #staffNameModalFooter>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+            <button nz-button nzType="primary" [nzLoading]="isConfirmStaffNameLoading" (click)="addStaffMemberName()">Save</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <form nz-form class="staff-form" [nzLayout]="formGroup.get('formLayout')?.value"
+              [formGroup]="formGroup">
+                    <div class="row">
+                        <div nz-row [nzGutter]="16" [nzSpan]="24">
+                            <div class="form-group" nz-col [nzSpan]="24">
+                                <div>
+                                    <nz-form-item>
+                                      <nz-form-label class="lable-style">Add Staff Member*</nz-form-label>
+                                      <nz-form-control nzErrorTip="Please Enter Staff Name">
+                                        <input nz-input type="text" formControlName="staffName" placeholder="Staff Name"/>
+                                      </nz-form-control>
+                                  </nz-form-item>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-container>
+</nz-modal>
   <!-- Modal End-->
-</div>

@@ -165,7 +165,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
             }, 500);
             this.isLoading = false;
             if (result) {
-                // const userList = result.users.filter((item: any) => { item.active === true; }); 
+                // const userList = result.users.filter((item: any) => { item.active === true; });
                 this.dataSource = new MatTableDataSource(result.users);
                 this.userList = result.users;
                 this.dataSource.paginator = this.paginator;
@@ -189,7 +189,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     populateUserList() {
         const result = this.organizationsList.filter((item: any) => item.orgId === Number(this.selectedOrgId));
         if (result[0].users) {
-            // const userList = result[0].users.filter((item: any) => { item.active === true; }); 
+            // const userList = result[0].users.filter((item: any) => { item.active === true; });
             this.dataSource = new MatTableDataSource(result[0].users);
             this.userList = result[0].users;
             this.dataSource.paginator = this.paginator;
