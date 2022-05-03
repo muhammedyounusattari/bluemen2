@@ -1,11 +1,11 @@
 import { Component, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { FlatTreeControl, NestedTreeControl } from '@angular/cdk/tree';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { RolesService } from 'src/app/services/admin/roles.service';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { NzTreeFlattener, NzTreeFlatDataSource } from 'ng-zorro-antd/tree-view';
-import { NzTreeNode } from 'ng-zorro-antd/tree';
+import { FlatTreeControl } from 'ng-zorro-antd/node_modules/@angular/cdk/tree';
+
 
 
 interface TreeNode {
@@ -243,7 +243,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
 
 
   getUpdateRequestPayload(): UpdateRole {
-    let topNode: any = this.treeControl.dataNodes.find(dn => dn.code === 1);
+    let topNode: any = this.treeControl.dataNodes.find((dn: { code: number; }) => dn.code === 1);
     let updateRole: UpdateRole = {
       code: this.userRoles[0].code,
       copyRoleName: this.userRoles[0].copyRoleName,
@@ -268,7 +268,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
 
     //Add others privilges from tree control
     const descendants = this.treeControl.getDescendants(topNode);
-    descendants.forEach(privilege => {
+    descendants.forEach((privilege: { id: any; name: any; code: any; accessType: any; orgId: any; parentCode: any; }) => {
       updatePrivileges.push({
         id: privilege.id,
         name: privilege.name,
@@ -344,9 +344,9 @@ export class RolesComponent implements AfterViewInit, OnInit {
   flatNodeMap = new Map<FlatNode, TreeNode>();
   nestedNodeMap = new Map<TreeNode, FlatNode>();
 
-  treeControl = new FlatTreeControl<FlatNode>(
-    node => node.level,
-    node => node.expandable
+  treeControl = new FlatTreeControl<FlatNode, FlatNode>(
+    (    node: { level: any; }) => node.level,
+    (    node: { expandable: any; }) => node.expandable
   );
 
   treeFlattener = new NzTreeFlattener(
@@ -367,7 +367,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
   itemSelectionToggle(node: FlatNode): void {
     const descendants = this.treeControl.getDescendants(node);
 
-    descendants.forEach(child => {
+    descendants.forEach((child: { accessType: string | null | undefined; }) => {
       child.accessType = node.accessType;
     });
   }
