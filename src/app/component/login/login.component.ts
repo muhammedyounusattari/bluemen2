@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
     isTwoFactorEnabled: boolean = false;
     otpCode: any = '';
     authenticateResponse: any;
+    isRunning: boolean = false;
 
     constructor(private _loginService: LoginService
         , private formBuilder: FormBuilder
@@ -211,17 +212,23 @@ export class LoginComponent implements OnInit {
         }
     }
     getSecurityCode() {
+        this.isRunning = true;
         this._loginService.generateCode().subscribe((result: any) => {
             if (result) {
+                this.isRunning = false;
                 this.modalRef.hide();
+                this.openModal(this.validateCodePopupRef);   
             }
         });
     }
 
     validateCode() {
+        this.isRunning = true;
         this._loginService.validateCode(this.otpCode).subscribe((result: any) => {
             if (result) {
+                this.isRunning = false;
                 this.validateLogin.emit(this.authenticateResponse);
+                this.modalRef.hide();
             }
         });
     }

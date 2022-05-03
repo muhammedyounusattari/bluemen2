@@ -414,8 +414,8 @@ export class UserNamesAndPasswordComponent implements OnInit {
     }
 
     resetPassword(test: any) {
-        this._userManagementService.resetPassword(test.email).subscribe(result => {
-            alert(result.message); //here we have added link in message aswell.
+        this._userManagementService.resetPassword(test.email,test.orgCode).subscribe(result => {
+            alert("Reset password link is sent");
         });
     }
 
