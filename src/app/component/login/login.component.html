@@ -29,7 +29,7 @@
                         <div class="form-group first txtAlign">
                             <mat-form-field class="example-full-width" appearance="fill">
                                 <mat-label>Organization  Code</mat-label>
-                                <input matInput value="" formControlName="organization" minlength="3" required>
+                                <input matInput value="" formControlName="organization" [readOnly]="isValidUser" minlength="3" required>
                                 <!-- <mat-error *ngIf="formGroup.controls['orgCode'].invalid">
                                     {{getError('orgCode')}}
                                 </mat-error> -->
@@ -38,7 +38,7 @@
                         <div class="form-group first txtAlign">
                             <mat-form-field class="example-full-width" appearance="fill">
                                 <mat-label>EmailId</mat-label>
-                                <input matInput value="" required formControlName="email">
+                                <input matInput value="" required formControlName="email" [readOnly]="isValidUser">
                                 <!-- <mat-error *ngIf="formGroup.controls['username'].invalid">
                                     {{getError('user')}}
                                 </mat-error> -->
@@ -68,12 +68,12 @@
                             {{errorMessage}}
                         </mat-error>
 
-                        <div class="d-flex align-items-center mts-5" *ngIf="isValidUser">
+                        <div class="d-flex align-items-center mts-5" *ngIf="isValidUser && !isFirstTime">
                             <span class="mr-auto"><a href="javascript:void(0)" (click)="forgotPwd()"
                                     class="forgot-pass forgot">Forgot
                                     Password ?</a></span>
                         </div>
-                    </form>
+                    </form> 
                 </div>
             </div>
         </div>
@@ -166,7 +166,7 @@
                 <div class="row">
                     <div class="form-group first txtAlign">
                         <mat-radio-group aria-label="Select an option">
-                            <mat-radio-button value="1">Email</mat-radio-button>
+                            <mat-radio-button value="1">Email</mat-radio-button>  &nbsp;&nbsp;
                             <mat-radio-button value="2">Phone</mat-radio-button>
                           </mat-radio-group>
                     </div>
@@ -176,6 +176,32 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-v .primary" (click)="getSecurityCode();">Send</button>
+        <button type="button" class="btn btn-secondary" id="closePopup" (click)="modalRef.hide();">Cancel</button>
+    </div>
+</ng-template>
+<!-- Modal End-->
+
+<!-- Modal Start-->
+<ng-template #validateCodePopup>
+    <!-- Modal -->
+    <div class="modal-header popHeaderBG">
+        <span class="modal-title popHeader" id="exampleModalLabel">Validate Code To Login</span>
+        <button type="button" class="btn-close" (click)="modalRef.hide()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="form-group">
+                    <mat-form-field class="forgot-password-textbox" appearance="fill">
+                        <mat-label>Enter Code</mat-label>
+                        <input matInput value="" [(ngModel)]="otpCode" required>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-v .primary" (click)="validateCode();">Validate</button>
         <button type="button" class="btn btn-secondary" id="closePopup" (click)="modalRef.hide();">Cancel</button>
     </div>
 </ng-template>

@@ -265,7 +265,7 @@ export class StaffMemberComponent {
   }
 
   bindDropDownValues() {
-    let data: any = 'CITY,STATE,CODES, CUSTOMFIELDONE, CUSTOMFIELDTWO, CUSTOMFIELDTHREE, CUSTOMFIELDFOUR, PHONETYPE';
+    let data: any = 'CITY,STATE,CODES,CUSTOMFIELDONE,CUSTOMFIELDTWO,CUSTOMFIELDTHREE,CUSTOMFIELDFOUR,PHONETYPE';
     this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
         if (result?.CITY) {
             this.cityList = result.CITY;
@@ -778,15 +778,7 @@ export class StaffMemberComponent {
     }
   }
   validateToAdd() {
-    // if (this.validationClass.isEmpty(this.formGroup.get('staffMaillingName')?.value)
-    //   && this.validationClass.isEmpty(this.formGroup.get('staffEmail')?.value)
-    //   && this.validationClass.isEmpty(this.formGroup.get('staffFax')?.value)
-    //   && this.validationClass.isEmpty(this.formGroup.get('staffPhone1')?.value)
-    //   && this.validationClass.isEmpty(this.formGroup.get('staffPhone2')?.value)
-    //   && this.validationClass.isEmpty(this.formGroup.get('staffPhone3')?.value)) {
-    //   return false
-    // }
-    // return true;
+
     if (this.validationClass.isEmpty(this.formGroup.get('staffMaillingName')?.value)) {
       return false
     }

@@ -23,7 +23,7 @@
 }
 
 .tabStyle {
-    border: 1px solid #1366a0;
+    /* border: 1px solid #1366a0; */
 }
 
 .tabStyle-btn {
@@ -197,17 +197,11 @@ button.upload-btn.ant-btn:active, button.upload-btn.ant-btn:hover {
     background-color: #1366a0;
 }
 
-.modal-footer-btn {
-    border-right: 1px solid #1366a0;
-    margin-left: 12px;
+/* .modal-footer-btn {
     position: relative;
-    bottom: 11px;
-    margin-right: 12px;
-    border-left: 1px solid #1366a0;
-    border-bottom: 1px solid #1366a0;
-    padding: 15px 45px 15px 0px;
-    background: white;
-}
+    padding: 10px 45px 10px 0px;
+    background: #e8ebed;
+} */
 
 .search-filter-item {
     margin-bottom: 5px;

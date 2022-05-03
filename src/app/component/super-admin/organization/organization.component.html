@@ -275,7 +275,7 @@
                             <div class="form-group col-md-6">
                                 <mat-form-field class="example-full-width" appearance="fill">
                                     <mat-label>Organization Code</mat-label>
-                                    <input matInput placeholder="" value="" formControlName="orgCode" required>
+                                    <input matInput placeholder="" value="" [readOnly]="orgId" formControlName="orgCode" required>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -359,8 +359,9 @@
                                             <mat-label>City</mat-label>
                                             <select matNativeControl formControlName="orgCity">
                                                 <option value="" selected>--Select--</option>
-                                                <option value="austin">Austin</option>
-                                                <option value="dallas">Dallas</option>
+                                                <option [value]="cityObj.id" *ngFor="let cityObj of cityList" selected>
+                                                    {{cityObj.longpullna}}
+                                                  </option>
                                             </select>
                                         </mat-form-field>
                                     </div>
@@ -369,8 +370,9 @@
                                             <mat-label>State</mat-label>
                                             <select matNativeControl formControlName="orgState">
                                                 <option value="" selected>--Select--</option>
-                                                <option value="al">AL</option>
-                                                <option value="ca">CA</option>
+                                                <option [value]="stateObj.id" *ngFor="let stateObj of stateList" selected>
+                                                    {{stateObj.longpullna}}
+                                                  </option>
                                             </select>
                                         </mat-form-field>
                                     </div>
@@ -555,7 +557,8 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-v .primary" [disabled]="isDisabledBtn" *ngIf="orgId" (click)="openUserPopup()">Users</button>
-        <button type="button" class="btn btn-primary" *ngIf="orgId" [disabled]="isDisabledBtn" (click)="addOrganization()">Save</button>
+        <!-- <button type="button" class="btn btn-primary" *ngIf="orgId && !isEdit" [disabled]="isDisabledBtn" (click)="addOrganization()">Save</button> -->
+        <button type="button" class="btn btn-primary" *ngIf="orgId && isEdit" [disabled]="isDisabledBtn" (click)="updateOrganization()">Save</button>
         <button type="button" class="btn btn-primary" *ngIf="!orgId" [disabled]="isDisabledBtn" (click)="addOrganization();">Save & Next</button>
         <button type="button" class="btn btn-secondary" id="closePopup" [disabled]="isDisabledBtn"
             (click)="isEdit = false; selectedRowIndex = null;isDisabledBtn = false; selectedRow=null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>

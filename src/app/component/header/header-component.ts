@@ -11,6 +11,8 @@ import { LoginService } from '../../services/login.service';
 export class HeaderComponent implements OnInit {
   userName: any = '';
   user : any;
+  fiscalYear = '-';
+  semester = '-';
   constructor(private sharedService: SharedService
             , private router: Router
             , private loginService: LoginService) {}
@@ -20,9 +22,13 @@ export class HeaderComponent implements OnInit {
     if (data) {
       this.userName = data;
     }
+    this.user = sessionStorage.getItem('state');
+    this.user = JSON.parse(this.user);
   }
   logout() {
-
+    sessionStorage.clear();
+    localStorage.clear();
+    window.location.reload();
     this.loginService.logoutUser().subscribe((result)=>{
       if(result){
         sessionStorage.clear();

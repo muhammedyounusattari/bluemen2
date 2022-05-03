@@ -10,8 +10,25 @@ const routes: Routes = [
    },
    {
     path: 'home/change-password',
-    component: ChangePasswordComponent
-   }
+    component: ChangePasswordComponent,
+    data: {
+      title: 'Change Password',
+      breadcrumb: [
+        {
+          label: 'My Home',
+          url: '/'
+        },
+        {
+          label: 'Home',
+          url: '/home'
+        },
+        {
+          label: 'Change Password',
+          url: 'home/change-password'
+        }
+      ]
+    }
+  },
 ];
 
 @NgModule({

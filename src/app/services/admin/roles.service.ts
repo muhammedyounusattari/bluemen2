@@ -27,7 +27,7 @@ export class RolesService {
         const URL = ServiceUrls.ADD_NEW_ROLE+'?copyRoleName=' 
         + request.copyRoleName
         + '&isDefault=' + request.isDefault + '&newRoleCode=' + request.newRoleCode + '&newRoleName=' +
-        request.newRoleName + '&orgId=' + 1;
+        request.newRoleName + '&orgId=' + request.orgId;
         return this.dataService.callPostService(URL, request);
     }
 
@@ -36,7 +36,7 @@ export class RolesService {
     }
 
     updateRole(request: any): Observable<any> {
-        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/roles/addRole/v1?copyRoleName=' 
+        const URL = ServiceUrls.UPDATE_NEW_ROLE+'?copyRoleName=' 
         + request.copyRoleName
         + '&isDefault=' + request.isDefault + '&newRoleCode=' + request.newRoleCode + '&newRoleName=' +
         request.newRoleName + '&orgId=' + 1;

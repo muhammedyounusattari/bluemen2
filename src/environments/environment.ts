@@ -7,7 +7,6 @@ export const environment = {
 
   // Dev environment
   apiUrl : 'https://blumen-api.azurewebsites.net/api'
-
 };
 
 /*

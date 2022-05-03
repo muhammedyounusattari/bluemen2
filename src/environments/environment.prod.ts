@@ -1,6 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   // Dev environment
   apiUrl : 'https://blumen-api.azurewebsites.net/api'
-
 };

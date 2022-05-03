@@ -23,3 +23,14 @@
     flex-direction: row;
     justify-content: space-around; */
 }
+.sort {
+    cursor: pointer;
+}
+/* .modal-footer-btn {
+    position: relative;
+    padding: 10px 45px 10px 0px;
+    background: #e8ebed;
+} */
+.check-bx {
+    padding-top: 25px;
+}

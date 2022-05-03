@@ -293,18 +293,23 @@ export class ServiceUrls {
     public static UPDATE_PASSWORD = environment.apiUrl + '/blumen-api/updatePassword/v1/';
     public static FORGOT_PASSWORD = environment.apiUrl +'/blumen-api/forgotPassword/v1';
     public static SSO_CONFIG = environment.apiUrl + '/blumen-api/ssoConfig';
+    public static GENERATE_CODE = environment.apiUrl + '/blumen-api/generateCode';
+    public static VALIDATE_CODE = environment.apiUrl + '/blumen-api/validateCode';
 
     // Organizations API's
     public static GET_ORGANIZATIONS_LIST = environment.apiUrl + '/blumen-api/admin/home/getOrganizationsList/v1';
     public static GET_ORGANIZATIONS_USER_LIST = environment.apiUrl + '/blumen-api/admin/home/getOrganizationUserList/v1/';
     public static ADD_ORGANIZATION = environment.apiUrl + '/blumen-api/admin/home/addOrganization/v1/';
+    public static UPDATE_ORGANIZATION = environment.apiUrl + '/blumen-api/admin/home/updateOrganization/v1/';
     public static CREATE_ORGANIZATION_USER = environment.apiUrl+'/blumen-api/admin/home/createUser/v1';
+    public static UPDATE_ORGANIZATION_USER = environment.apiUrl+'/blumen-api/admin/home/updateUser/v1';
     public static GET_ORG_BASED_USER_LIST = environment.apiUrl + '/blumen-api/admin/home/getUsers/v1';
 
     // Roles API's
     public static GET_ROLENAMES_LIST = environment.apiUrl + '/blumen-api/roles/getRoles/v1';
     public static GET_PRIVILEDGES_BY_ROLENAME = environment.apiUrl + '/blumen-api/roles/getRolesAsTree/v1?roleName=';
     public static ADD_NEW_ROLE = environment.apiUrl + '/blumen-api/roles/addRole/v1';
+    public static UPDATE_NEW_ROLE = environment.apiUrl + '/blumen-api/roles/updateRole/v1';
     public static DELETE_ROLE = environment.apiUrl + '/blumen-api/roles/deleteRole/v1?roleId=';
     public static GET_MENU_LIST = environment.apiUrl + '/blumen-api/roles/getMenus/v1';
 

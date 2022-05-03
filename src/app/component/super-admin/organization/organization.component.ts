@@ -11,6 +11,7 @@ import { ValidationClass } from 'src/app/shared/validation/common-validation-cla
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { OrganizationsService } from 'src/app/services/super-admin/organizations.service';
 import { UserNamesAndPasswordComponent } from 'src/app/component/admin/home/user-names-password/user-names-and-pwd.component';
+import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
 
 @Component({
     selector: 'app-organization',
@@ -62,19 +63,42 @@ export class OrganizationComponent implements OnInit {
     organizationList: any;
     organizationCode: any;
     isDisabledBtn: boolean = false;
+    siteLocationList: any = [{ 'id': 1, 'name': 'Location1' }, { 'id': 2, 'name': 'Location2' }, { 'id': 2, 'name': 'Location3' }];
+    cityList: any = [{ 'id': 1, 'name': 'Pune' }, { 'id': 2, 'name': 'Mumbai' }];
+    stateList: any = [{ 'id': 1, 'name': 'Maharashtra' }, { 'id': 2, 'name': 'Delhi' }];
 
     constructor(private modalService: BsModalService
         , private dialog: MatDialog
         , private toastr: ToastrService
         , private formBuilder: FormBuilder
         , private sharedService: SharedService
-        , private organizationService: OrganizationsService) { }
+        , private organizationService: OrganizationsService
+        , private pullDownService: PullDownListService) { }
 
     ngOnInit(): void {
         this.sharedService.setPageTitle('Organization Information');
         this.createForm();
         this.myElement = window.document.getElementById('loading');
         this.getOrgList();
+    }
+
+    /**
+    * @method bindDropDownValues
+    * @description Get the all pull down item list
+    */
+     bindDropDownValues() {
+        let data: any = 'CITY,STATE,SITE LOCATION';
+        this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
+            if (result?.CITY) {
+                this.cityList = result?.CITY;
+            }
+            if (result?.STATE) {
+                this.stateList = result?.STATE;
+            }
+            if (result?.SITELOCATION) {
+                this.siteLocationList = result?.SITELOCATION;
+            }
+        });
     }
 
     createForm() {
@@ -219,15 +243,14 @@ export class OrganizationComponent implements OnInit {
             this.organizationService.saveOrganization(request).subscribe(result => {
                 this.isDisabledBtn = false;
                 if (result) {
-                    if (!this.orgId) {
-                        this.orgId = JSON.parse(result).body;
-                        this.organizationCode = this.formGroup?.get('orgCode')?.value;
-                        this.hidePopupLoader();
-                    } else {
-                        this.showLoader();
-                        this.getOrgList();
-                        this.modalRef.hide();
-                    }
+                    this.orgId = JSON.parse(result).body;
+                    this.organizationCode = this.formGroup?.get('orgCode')?.value;
+                    this.hidePopupLoader();
+                    this.toastr.success('Organization created successfully.', '', {
+                        timeOut: 5000,
+                        closeButton: true
+                    });
+                    this.getOrgList();
                 }
             });
         } else {
@@ -282,6 +305,7 @@ export class OrganizationComponent implements OnInit {
 
     editSelectedOrg() {
         if (this.selectedRow) {
+            this.isEdit = true;
             this.formGroup.get('orgId')?.setValue(this.orgId);
             this.formGroup.get('orgName')?.setValue(this.selectedRow.orgName);
             this.formGroup.get('mailServer')?.setValue(this.selectedRow.mailServer);
@@ -331,9 +355,49 @@ export class OrganizationComponent implements OnInit {
         if (this.selectedRow) {
             this.selectedRow.orgActive = false;
             this.showLoader();
-            this.organizationService.saveOrganization(this.selectedRow).subscribe(result => {
+            const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+                data: {
+                    title: 'Confirm remove record',
+                    message: 'Are you sure, you want to remove this record: ' + this.selectedRow.orgName
+                }
+            });
+            confirmDialog.afterClosed().subscribe(result => {
+                if (result === true) {
+                    this.organizationService.updateOrganization(this.selectedRow).subscribe(result => {
+                        if (result) {
+                            this.toastr.success('Deleted successfully.', '', {
+                                timeOut: 5000,
+                                closeButton: true
+                            });
+                            this.getOrgList();
+                            this.hideLoader();
+                        }
+                    });
+                } else {
+                    this.hideLoader();
+                }
+            });
+        } else {
+            this.toastr.info('Please select a row to delete', '', {
+                timeOut: 5000,
+                closeButton: true
+            });
+        }
+    }
+
+    updateOrganization() {
+        if (this.selectedRow) {
+            this.showLoader();
+            const request = this.requestPayload();
+            request.orgId = this.selectedRow.orgId;
+            this.organizationService.updateOrganization(request).subscribe(result => {
                 if (result) {
+                    this.toastr.success('Updated successfully.', '', {
+                        timeOut: 5000,
+                        closeButton: true
+                    });
                     this.getOrgList();
+                    this.modalRef.hide();
                 }
             });
         } else {

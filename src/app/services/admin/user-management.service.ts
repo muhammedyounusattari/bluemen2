@@ -20,7 +20,6 @@ export class UserManagementService {
     }
 
     public createUser(request: any): Observable<any> {
-        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/admin/home/createUser/v1';
         return this.dataService.callPostService(
             ServiceUrls.CREATE_ORGANIZATION_USER,
             JSON.stringify(request)
@@ -28,9 +27,8 @@ export class UserManagementService {
     }
 
     public updateUser(request: any): Observable<any> {
-        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/admin/home/updateUser/v1';
         return this.dataService.callPostService(
-            URL,
+            ServiceUrls.UPDATE_ORGANIZATION_USER,
             JSON.stringify(request)
         );
     }
@@ -38,5 +36,9 @@ export class UserManagementService {
     public resetPassword(user: string) {
         const URL = ServiceUrls.RESET_PASSWORD + "" + user;
         return this.dataService.callGetService(URL);
+    }
+
+    getRoleNamesList() {
+        return this.dataService.callGetService(ServiceUrls.GET_ROLENAMES_LIST, '');
     }
 }

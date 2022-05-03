@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from '../services/data-service';
 import { ServiceUrls } from '../constants/serviceUrl';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -28,23 +29,21 @@ export class LoginService {
     }
 
     updateSecurityQuestions(request: any) {
-        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/updateSecurityQuestions';
+        const URL =  environment.apiUrl+'/blumen-api/updateSecurityQuestions';
         return this.dataService.callPutService(URL, request);
     }
 
     getSecurityQuestionList(orgCode: any) {
-        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/admin/' + orgCode + '/securityQuestions';
+        const URL = environment.apiUrl+'/blumen-api/admin/' + orgCode + '/securityQuestions';
         return this.dataService.callGetService(URL);
     }
 
     getSecurityQuestions2(orgCode: any) {
-        const URL = 'https://blumen-api.azurewebsites.net:443/api/blumen-api/admin/' + orgCode + '/securityQuestions/2';
+        const URL = environment.apiUrl+'/blumen-api/admin/' + orgCode + '/securityQuestions/2';
         return this.dataService.callGetService(URL);
     }
 
     resetPasswordUsingLink(request: any, hasCode: string) {
-        // https://blumen-api.azurewebsites.net:443/api/blumen-api/keycloak/resetPassword/
-        //53624853-73ea-4c42-bffe-df9fe87700e8
         const URL = ServiceUrls.UPDATE_PASSWORD + hasCode.replace('#', '');
         return this.dataService.callLoginPostService(URL, request);
     }
@@ -56,5 +55,16 @@ export class LoginService {
 
     logoutUser() {
         return this.dataService.callGetService(ServiceUrls.LOGOUT_USER);
+    }
+
+    generateCode() {
+        return this.dataService.callGetService(ServiceUrls.GENERATE_CODE);
+    }
+
+    validateCode(code: any) {
+        const request = {
+            'authCode': code
+        };
+        return this.dataService.callPostService(ServiceUrls.VALIDATE_CODE, request);
     }
 }

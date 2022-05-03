@@ -21,6 +21,7 @@ import { MatCardModule } from '@angular/material/card';
 import {ShowLoggedUsersComponent} from '../myhome/home/show-logged-users/show-logged-users';
 import {ChangePasswordComponent} from '../myhome/home/change-my-password/change-password';
 import { TimeClockComponent } from './home/time-clock/time-clock.component';
+import { DemoNgZorroAntdModule } from 'src/app/ng-zorro-antd.module';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { TimeClockComponent } from './home/time-clock/time-clock.component';
     MatDialogModule,
     MatCheckboxModule,
     MatCardModule,
-    MatSelectModule
+    MatSelectModule,
+    DemoNgZorroAntdModule
   ],
   providers: [
     MatDatepickerModule,

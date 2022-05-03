@@ -29,6 +29,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
   }
   formGroup: FormGroup;
   selectedRoleId: any;
+  user: any;
 
   constructor(private modalService: BsModalService
     , private sharedService: SharedService
@@ -156,12 +157,15 @@ export class RolesComponent implements AfterViewInit, OnInit {
   }
 
   getRequestPayload() {
+    this.user = sessionStorage.getItem('state');
+    this.user = JSON.parse(this.user);
+    const orgId = this.user.orgId;
     return {
       'copyRoleName' : this.formGroup ?.get('copyRoleName') ?.value,
       'newRoleName' : this.formGroup ?.get('newRoleName') ?.value,
       'newRoleCode' : this.formGroup ?.get('newRoleName') ?.value,
       'isDefault' : this.formGroup ?.get('isDefault') ?.value,
-      'orgId' : 1,
+      'orgId' : orgId
     }
   }
 }

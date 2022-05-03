@@ -7,7 +7,7 @@
         </div>
     </ng-template>
     <ng-container *nzModalContent>
-        <div nz-row>
+        <div class="tab-content" nz-row>
             <div nz-col [nzSpan]="24">
                 <form nz-form class="staff-form" [nzLayout]="pullTypeForm.get('formLayout')?.value"
                     [formGroup]="pullTypeForm">
@@ -185,7 +185,7 @@
                                 </nz-form-item>
                             </div>
         
-                            <div nz-col [nzSpan]="6">
+                            <div nz-col [nzSpan]="7">
                                 <nz-form-item class="search-filter-item">
                                     <nz-form-label class="lable-style">Program Type</nz-form-label>
                                     <nz-form-control>
@@ -245,12 +245,12 @@
                     <nz-table #staffDetails [nzData]="pullTypeData" [nzPageSize]="10" [nzLoading]="dataLoading">
                         <thead>
                             <tr>
-                                <th [nzWidth]="'490px'">Pull Description</th>
-                                <th [nzWidth]="'250px'">Pull Type</th>
-                                <th [nzWidth]="'110px'">Program Type</th>
-                                <th [nzWidth]="'250px'">Sort Order</th>
-                                <th [nzWidth]="'50px'">APR</th>
-                                <th [nzWidth]="'60px'">Action</th>
+                                <th [nzWidth]="'40%'">Pull Description</th>
+                                <th [nzWidth]="'19%'">Pull Type</th>
+                                <th [nzWidth]="'11%'">Program Type</th>
+                                <th [nzWidth]="'20%'">Sort Order</th>
+                                <th [nzWidth]="'5%'">APR</th>
+                                <th [nzWidth]="'5%'">Action </th>
                             </tr>
                         </thead>
                         <tbody>

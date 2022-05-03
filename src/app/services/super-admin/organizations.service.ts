@@ -18,4 +18,8 @@ export class OrganizationsService {
     saveOrganization(request: any): Observable<any> {
         return this.dataService.callPostService(ServiceUrls.ADD_ORGANIZATION, request);
     }
+
+    updateOrganization(request: any): Observable<any> {
+        return this.dataService.callPutService(ServiceUrls.UPDATE_ORGANIZATION, request);
+    }
 }

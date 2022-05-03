@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { ActivityGroupServicesService } from '../../../../services/admin/activity-group-services.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,7 +16,9 @@ import { ServiceGroupListMergeBoxComponent } from '../../customize/merge-box/ser
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable';
 import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
     selector: 'app-service-group-list',
@@ -41,7 +43,7 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
 
     };
     @ViewChild('activityServiceGroupListPopup') activityServiceGroupListPopupRef: TemplateRef<any>;
-    modalRef: BsModalRef;
+    // modalRef: BsModalRef;
     modalConfigSM = {
         backdrop: true,
         ignoreBackdropClick: true,
@@ -51,6 +53,7 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
     isEdit: boolean = false;
     myElement: any = null;
     public spinner: boolean = true;
+    isConfirmActivityGroupLoading = false;
     selectedRowIndex: any;
     columnsToDisplay: string[] = ['id', 'activityGroupName', 'activityReportActivityGroup', 'activityCalculateHoursforActivityGroup'];
     dataSource: MatTableDataSource<any>;
@@ -61,14 +64,19 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
             this.dataSource.sort = sort;
         }
     }
+    activityServiceGroupModalHeader = 'Customize Activity/Service Group';
     isLoading: boolean = true;
     activityGroupTypes: any = [];
     formGroup: FormGroup;
     indeterminate = false;
+    activityServiceGroupListPopupVisiblity = false;
     allChecked = false;
+    isActivityServiceGrpLoading = false;
     validationClass: ValidationClass = new ValidationClass();
     constructor(private modalService: BsModalService
         , private router: Router
+        ,private modal: NzModalService
+        , private notificationService: NotificationUtilities
         , private dialog: MatDialog
         , private _activityGroupServicesService: ActivityGroupServicesService
         , private toastr: ToastrService
@@ -173,7 +181,8 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
             this.formGroup.get('activityReportActivityGroup') ?.setValue(this.selectedRow.activityReportActivityGroup);
             this.formGroup.get('activityGroupTypeName') ?.setValue(this.selectedRow.activityGroupTypeName);
             this.formGroup.get('activityGroupType') ?.setValue(this.selectedRow.activityGroupType);
-            this.openModal(this.activityServiceGroupListPopupRef);
+            // this.openModal(this.activityServiceGroupListPopupRef);
+            this.activityServiceGroupListPopupVisiblity = true;
         } 
         // else {
         //     this.toastr.info('Please select a row to update', '', {
@@ -187,9 +196,9 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
     * @method openModal
     * @description open model
     */
-    openModal(template: TemplateRef<any>) {
-        this.modalRef = this.modalService.show(template, this.modalConfigSM)
-    }
+    // openModal(template: TemplateRef<any>) {
+    //     this.modalRef = this.modalService.show(template, this.modalConfigSM)
+    // }
 
     /**
     * @method resetFields
@@ -206,7 +215,8 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
             } else {
                 this.formGroup.get('id') ?.setValue(1);
             }
-            this.openModal(this.activityServiceGroupListPopupRef);
+            // this.openModal(this.activityServiceGroupListPopupRef);
+            this.activityServiceGroupListPopupVisiblity = true;
         });
     }
 
@@ -261,31 +271,35 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
             this.requestData.activityBoltService = '';
             this._activityGroupServicesService.getActivityGroupByActivityGroupNameAndActivityGroupType(this.requestData).subscribe(result3 => {
                 if (result3) {
-                    this.toastr.info('Activity group name should be unique in all activity group type!', '', {
-                        timeOut: 5000,
-                        closeButton: true
-                    });
+                    // this.toastr.info('Activity group name should be unique in all activity group type!', '', {
+                    //     timeOut: 5000,
+                    //     closeButton: true
+                    // });
+                    this.notificationService.createNotificationBasic('info', "Info", 'Activity group name should be unique in all activity group type!');
                     this.formGroup.get('activityGroupName') ?.setValue('');
                     return;
                 } else {
                     this.showLoader();
                     this._activityGroupServicesService.postActivityGroupList(this.requestData).subscribe(result => {
                         if (result) {
-                            this.modalRef.hide();
+                            // this.modalRef.hide();
                             this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
                                 this.hideLoader();
                                 if (result) {
-                                    debugger;
+                                    // debugger;
                                     console.log('Result:', result);
-                                    this.dataSource = new MatTableDataSource(result);
-                                    this.dataSource.paginator = this.paginator;
-                                    this.dataSource.sort = this.sort;
+                                    this.isActivityServiceGrpLoading = false;
+                                    this.activityServiceGroupListPopupVisiblity = false;
+                                    // this.dataSource = new MatTableDataSource(result);
+                                    // this.dataSource.paginator = this.paginator;
+                                    // this.dataSource.sort = this.sort;
                                     this.selectedRowIndex = null;
                                     this.activityGroupData = result;
-                                    this.toastr.success('Saved successfully!', '', {
-                                        timeOut: 5000,
-                                        closeButton: true
-                                    });
+                                    // this.toastr.success('Saved successfully!', '', {
+                                    //     timeOut: 5000,
+                                    //     closeButton: true
+                                    // });
+                                    this.notificationService.createNotificationBasic('success', "Success", 'Saved successfully!');
                                 }
                             });
                         }
@@ -307,15 +321,53 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
             const data = {
                 activityGroupId: this.selectedRow.activityGroupId
             }
-            const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
-                data: {
-                    title: 'Confirm remove record',
-                    message: 'Are you sure, you want to remove this record: ' + this.selectedRow.activityGroupName
-                }
-            });
-            confirmDialog.afterClosed().subscribe(result => {
-                if (result === true) {
-                    this.showLoader();
+            // const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+            //     data: {
+            //         title: 'Confirm remove record',
+            //         message: 'Are you sure, you want to remove this record: ' + this.selectedRow.activityGroupName
+            //     }
+            // });
+            // confirmDialog.afterClosed().subscribe(result => {
+            //     if (result === true) {
+            //         this.showLoader();
+            //         this._activityGroupServicesService.deleteActivityGroupList(data).subscribe(result1 => {
+            //             this._activityGroupServicesService.getActivityGroupList('').subscribe(result2 => {
+            //                 this.hideLoader();
+            //                 if (result2) {
+            //                     this.dataSource = new MatTableDataSource(result2);
+            //                     this.dataSource.paginator = this.paginator;
+            //                     this.dataSource.sort = this.sort;
+            //                     this.selectedRowIndex = null;
+            //                     this.selectedRow = null;
+            //                     this.unCheckAll();
+            //                     this.activityGroupData = result2;
+            //                     // this.toastr.success('Deleted successfully!', '', {
+            //                     //     timeOut: 5000,
+            //                     //     closeButton: true
+            //                     // });
+            //                     this.notificationService.createNotificationBasic('success', "Success", 'Deleted successfully!');
+            //                 }
+            //             });
+            //         });
+            //     } else {
+            //         this.hideLoader();
+            //     }
+            // });
+            const message = 'Are you sure, you want to remove this record:';
+            this.modal.confirm({
+                nzTitle: 'Confirm Remove Record?',
+                nzContent: message + ' ' +this.selectedRow.activityGroupName,
+                nzOkText: 'Yes',
+                nzOkType: 'primary',
+                nzOkDanger: true,
+                nzOnOk: () => this.deleteRecord(data),
+                nzCancelText: 'No',
+                nzOnCancel: () => this.hideLoader()
+              });
+        }
+    }
+    deleteRecord(data: any) {
+                 this.showLoader();
                     this._activityGroupServicesService.deleteActivityGroupList(data).subscribe(result1 => {
                         this._activityGroupServicesService.getActivityGroupList('').subscribe(result2 => {
                             this.hideLoader();
@@ -327,25 +379,11 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
                                 this.selectedRow = null;
                                 this.unCheckAll();
                                 this.activityGroupData = result2;
-                                this.toastr.success('Deleted successfully!', '', {
-                                    timeOut: 5000,
-                                    closeButton: true
-                                });
+                                this.notificationService.createNotificationBasic('success', "Success", 'Deleted successfully!');
                             }
                         });
                     });
-                } else {
-                    this.hideLoader();
-                }
-            });
-        } else {
-            this.toastr.info('Please select a row to delete', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
-        }
     }
-
     /**
     * @method updateSelectedRow
     * @description update the record
@@ -370,10 +408,11 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
                     ) {
                         this.updateActivityGroupList();
                     } else {
-                    this.toastr.info('Activity group name should be unique in all activity group type!', '', {
-                        timeOut: 5000,
-                        closeButton: true
-                    });
+                    // this.toastr.info('Activity group name should be unique in all activity group type!', '', {
+                    //     timeOut: 5000,
+                    //     closeButton: true
+                    // });
+                    this.notificationService.createNotificationBasic('info', "Info", 'Activity group name should be unique in all activity group type!');
                     this.formGroup.get('activityGroupName') ?.setValue('');
                     return;
                 }
@@ -387,7 +426,7 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
     updateActivityGroupList(){
         this.showLoader();
         this._activityGroupServicesService.updateActivityGroupList(this.requestData).subscribe(response => {
-            this.modalRef.hide();
+            // this.modalRef.hide();
             this.selectedRow = null;
             this.unCheckAll();
             this._activityGroupServicesService.getActivityGroupList('').subscribe(result => {
@@ -399,10 +438,11 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
                     this.selectedRowIndex = null;
                     this.isEdit = false;
                     this.activityGroupData = result;
-                    this.toastr.success('Updated successfully!', '', {
-                        timeOut: 5000,
-                        closeButton: true
-                    });
+                    // this.toastr.success('Updated successfully!', '', {
+                    //     timeOut: 5000,
+                    //     closeButton: true
+                    // });
+                    this.notificationService.createNotificationBasic('info', "Info", 'Updated successfully!');
                 }
             });
         });
@@ -443,12 +483,7 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
                     });
                 }
             });
-        } else {
-            this.toastr.info('Please select a row to move', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
-        }
+        } 
     }
 
     /**
@@ -484,11 +519,6 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
                         }
                     });
                 }
-            });
-        } else {
-            this.toastr.info('Please select a row to merge', '', {
-                timeOut: 5000,
-                closeButton: true
             });
         }
     }
@@ -592,4 +622,20 @@ export class ServiceGroupListComponent implements OnInit, AfterViewInit {
             this.selectedRow = null;
         }
     }
+    sorting(attr: string) {
+        if (this.activityGroupData.length > 0) {
+            this.activityGroupData = [...this.activityGroupData].sort((a, b) => (a[attr] > b[attr]) ? 1 : -1)
+        }
+    }
+    
+    sorting2(attr: string) {
+        if (this.activityGroupData.length > 0) {
+            this.activityGroupData = [...this.activityGroupData].sort((a, b) => (a[attr] < b[attr]) ? 1 : -1)
+        }
+    }
+    handleCancel () {
+        this.isActivityServiceGrpLoading = false;
+        this.activityServiceGroupListPopupVisiblity = false;
+    }
+    
 }

@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
     }
     isVisible = false;
     @ViewChild('twoFactorPopup') twoFactorPopupRef: TemplateRef<any>;
+    @ViewChild('validateCodePopup') validateCodePopupRef: TemplateRef<any>;
     modalRef1: BsModalRef;
     modalConfigSM1 = {
         backdrop: true,
@@ -45,6 +46,10 @@ export class LoginComponent implements OnInit {
     errorFPMessage = '';
     fpError = false;
     isValidUser: boolean = false;
+    isFirstTime: boolean = false;
+    isTwoFactorEnabled: boolean = false;
+    otpCode: any = '';
+    authenticateResponse: any;
 
     constructor(private _loginService: LoginService
         , private formBuilder: FormBuilder
@@ -109,7 +114,9 @@ export class LoginComponent implements OnInit {
                         sessionStorage.setItem('username', this.requestData.email);
                         sessionStorage.setItem('state', JSON.stringify(result));
                         sessionStorage.setItem('orgId', result.orgId);
-                        if (result.isTwoFactorEnabled) {
+                        this.authenticateResponse = result;
+                        if (result.twoFactorEnabled) {
+                            this.isTwoFactorEnabled = result.twoFactorEnabled;
                             this.openModal(this.twoFactorPopupRef);
                         } else {
                             this.validateLogin.emit(result);
@@ -204,7 +211,19 @@ export class LoginComponent implements OnInit {
         }
     }
     getSecurityCode() {
+        this._loginService.generateCode().subscribe((result: any) => {
+            if (result) {
+                this.modalRef.hide();
+            }
+        });
+    }
 
+    validateCode() {
+        this._loginService.validateCode(this.otpCode).subscribe((result: any) => {
+            if (result) {
+                this.validateLogin.emit(this.authenticateResponse);
+            }
+        });
     }
 
     checkUserExist() {
@@ -217,12 +236,25 @@ export class LoginComponent implements OnInit {
                 orgType: this.requestData.organization
             }
             this._loginService.getSSOConfig(request).subscribe(result => {
-                this.isLoading = false;
-                this.isValidUser = true;
-            }, (error: any) => {
-                if (error.status === 200 || error.status === 0) {
+                if (result.status === 200) {
                     this.isLoading = false;
                     this.isValidUser = true;
+                    this.isFirstTime = result.isFirstTime;
+                } else {
+                    this.isLoading = false;
+                    this.sharedService.sendErrorMessage(result.message);
+                    this.sharedService.showErrorMessage();
+                    if (result.status === '403') {
+                        this.isLoginEnabled = false;
+                    }                    
+                }
+            }, (error: any) => {
+                error = error.error;
+                this.isLoading = false;
+                this.sharedService.sendErrorMessage(error.message);
+                this.sharedService.showErrorMessage();
+                if (error.status === '403') {
+                    this.isLoginEnabled = false;
                 }
             });
         } else {

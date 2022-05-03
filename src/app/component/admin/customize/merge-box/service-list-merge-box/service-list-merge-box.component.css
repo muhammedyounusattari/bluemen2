@@ -1,3 +1,10 @@
 .example-full-width {
     width: 100% !important;
 }
+.title {
+    color: #00396b;
+}
+.modal-footer{
+    position: relative;
+    top: 90px;
+}

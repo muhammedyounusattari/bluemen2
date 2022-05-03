@@ -27,7 +27,7 @@ export class ShowLoggedUsersComponent {
        public spinner: boolean = true;
     public dataSource: MatTableDataSource<any>;
     public columnsToDisplay: string[] =
-     ['email', 'orgCode', 'lastLogin'];
+     ['email', 'orgCode', 'issueDate'];
 
     constructor(private modalService: BsModalService, private homeService: HomeService) {
       this.getLoggedUsers();
