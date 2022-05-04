@@ -1,3 +1,62 @@
+<!-- <nz-modal  nzTitle="Staff Time Clock" (nzOnCancel)="timeClockForm.reset(); closeModal()"
+    [nzFooter]="timeClockModalFooter" nzWidth="75%" [nzOkLoading]="isStaffListLoading">
+    <ng-template #timeClockModalFooter>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="closeModal()">Cancel</a>
+            <button nz-button nzType="primary" (click)="submitTime()" [nzLoading]="isStaffListLoading">{{clockLabel}}</button>
+        </div>
+    </ng-template> -->
+<!-- <ng-container *nzModalContent> -->
+<div class="custom-body">
+  <div nz-row class="page-alignment">
+    <div nz-col [nzSpan]="24">
+      <form nz-form class="staff-form" nzLayout="horizontal" [formGroup]="timeClockForm">
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="24">
+            <nz-form-item>
+              <nz-form-label class="lable-style">Staff Member</nz-form-label>
+              <nz-form-control nzErrorTip="Please Select Staff Name">
+                <nz-select nzShowSearch nzAllowClear formControlName="staffName"
+                  (ngModelChange)="selectedStaff(timeClockForm.value.staffName)" [(ngModel)]="selectedStaffName"
+                  nzPlaceHolder="Staff Name">
+                  <nz-option *ngFor="let staff of staffMembersList" [nzLabel]="staff.name" [nzValue]="staff">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+
+          </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="24">
+           {{staffClock?.message}} {{(staffClock?.date ? (staffClock?.date | date: 'dd/MM/y h:mm:ss a') :
+              '')}}
+          </div>
+          <br> <br>
+        </div>
+
+        <div nz-row>
+          <div nz-col [nzSpan]="24">
+
+            <button nz-button nzType="primary" (click)="submitTime()"
+              [nzLoading]="isStaffListLoading">{{clockLabel}}</button>
+
+            <button nz-button nzType="primary" (click)="closeModal()">Cancel</button>
+
+          </div>
+
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- </ng-container> -->
+<!-- </nz-modal> -->
+
+<!-- 
 <div class="modal-header popHeaderBG">
   <span class="modal-title popHeader" id="exampleModalLabel"> Staff Time Clock </span>
   <button type="button" class="btn-close" (click)="closeModal()"></button>
@@ -7,7 +66,7 @@
     <div class="row">
       <div class="col-md-8 mt-3">
         <mat-form-field class="mat-select-width" appearance="fill">
-            <mat-label>Activity/Service Group</mat-label>
+            <mat-label>Staff Member</mat-label>
             <mat-select formControlName="staffName">
               <mat-option value="" selected> Please select </mat-option>
               <mat-option (click)="selectedStaff(timeClockForm.value.staffName)" *ngFor="let staffMember of staffMembersList"
@@ -28,4 +87,4 @@
       </div>
     </div>
   </div>
-</form>
+</form> -->

@@ -26,6 +26,9 @@ export class HomeService {
     return this.dataService.callPutService(ServiceUrls.PUT_CHANGE_PASSWORD , payload);
   }
 
+  public getCurrentUser() {
+    return this.dataService.callGetService(ServiceUrls.GET_CURRENT_USER);
+  }
   public getSecurityQuestionList(){
     return this.dataService.callGetService(ServiceUrls.GET_SECURITY_QUESTIONS);
   }

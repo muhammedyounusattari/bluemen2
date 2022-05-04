@@ -1,10 +1,12 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { TimeClockService } from 'src/app/services/home/time-clock.service';
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
 
 @Component({
   selector: 'app-time-clock',
@@ -12,17 +14,16 @@ import { TimeClockService } from 'src/app/services/home/time-clock.service';
   styleUrls: ['./time-clock.component.css']
 })
 export class TimeClockComponent implements OnInit {
-
-  @ViewChild('timeClockPopup') timeClockPopupRef: TemplateRef<any>;
-  public timeClockModalRef: BsModalRef;
   public timeClockForm: FormGroup;
   public clockLabel: string;
   public staffClock: any;
   public staffMembersList: any = [];
-  public selectedStaffName: string;
+  selectedStaffName: any;
+  isStaffListLoading: boolean = false;
+
 
   constructor(private fb: FormBuilder, private service: TimeClockService,
-    private dialogRef: MatDialogRef<TimeClockComponent>, private router: Router) { }
+     private router: Router,private modal: NzModalRef, private notificationService: NotificationUtilities) { }
 
   ngOnInit(): void {
     this.timeClockForm = this.fb.group({
@@ -36,7 +37,9 @@ export class TimeClockComponent implements OnInit {
    * @method getStaffMembers
    */
   public getStaffMembers() {
+    this.isStaffListLoading = true;
     this.service.getStaffMember().subscribe((resp: any) => {
+      this.isStaffListLoading = false;
       if (resp)
       resp.forEach((element: any) => {
         if (element.id && element.staffName) {
@@ -46,20 +49,20 @@ export class TimeClockComponent implements OnInit {
     })
   }
 
+
   /**
    * @method closeModal
    */
   public closeModal(): void {
-    this.dialogRef.close();
-    this.router.navigate(['/']);
+    this.modal.destroy({ data: 'closing modal' });
   }
 
   /**
    * @method selectedStaff
    */
   public selectedStaff(staffMember: any) {
-    this.selectedStaffName = staffMember.name;
-    this.service.getTimeClock(staffMember.id, this.selectedStaffName).subscribe((resp: any) => {
+    if(staffMember == undefined || !staffMember) return;
+    this.service.getTimeClock(staffMember.id, staffMember.name).subscribe((resp: any) => {
       if (resp && resp.code == 200 && resp.msg) {
         this.clockLabel = resp.msg?.toLowerCase()?.includes('clocked out') ? 'Clock In' : 'Clock Out';
         const data = resp.msg.split(' ');
@@ -81,11 +84,13 @@ export class TimeClockComponent implements OnInit {
   public submitTime() {
     if (this.clockLabel == 'Clock In') {
       this.service.addTimeClock(this.requestPayload()).subscribe(resp => {
-        this.closeModal()
+        this.notificationService.createNotificationBasic('Success', "Clock In", 'Clock In Successful!');
+        this.closeModal();
       });
     } else {
       this.service.editTimeClock(this.requestPayload()).subscribe(resp => {
-        this.closeModal()
+        this.notificationService.createNotificationBasic('Success', "Clock Out", 'Clock Out Successful!');
+        this.closeModal();
       });
     }
   }

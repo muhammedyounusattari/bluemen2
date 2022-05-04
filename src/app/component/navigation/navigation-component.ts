@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { RolesService } from 'src/app/services/admin/roles.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { TimeClockComponent } from '../myhome/home/time-clock/time-clock.component';
 
 @Component({
   selector: 'app-navigation',
@@ -11,8 +13,8 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 export class NavigationComponent implements OnInit {
   menus: String[];
   user: any;
-  constructor(private router: Router
-    , public sharedService: SharedService, private roleService: RolesService) {
+  constructor(private router: Router, public sharedService: SharedService, private roleService: RolesService, 
+    private modal: NzModalService, private viewContainerRef: ViewContainerRef) {
   }
   ngOnInit(): void {
     this.roleService.getMenuList().subscribe((result: any) => {
@@ -151,9 +153,32 @@ export class NavigationComponent implements OnInit {
     } else if (componentName === 'staff-classes') {
       this.router.navigate(['admin/staff-classes'])
     } else if (componentName === 'time-clock') {
-      this.router.navigate(['/'], { queryParams: { popup: 'time-clock' } })
+      //this.router.navigate(['/'], { queryParams: { popup: 'time-clock' } })
+      this.openModal("Staff Time Clock" );
+      
     } else if (componentName === 'global-filter' && subComponent != '') {
       this.router.navigate(['utilities/global-filter'], { queryParams: { page: subComponent } });
     }
+  }
+
+  openModal(title: string) {
+    const modal = this.modal.create({
+      nzTitle: title,
+      nzWidth: "60%",
+      nzContent: TimeClockComponent,
+      nzViewContainerRef: this.viewContainerRef,
+      nzComponentParams: {
+      },
+      nzOnOk: () => new Promise(resolve => setTimeout(resolve, 1000)),
+      nzFooter: []
+    });
+    // const instance = modal.getContentComponent();
+    // // Return a result when closed
+    // modal.afterClose.subscribe(result => console.log('[afterClose] The result is:', result));
+
+    // // delay until modal instance created
+    // setTimeout(() => {
+    //   instance.clockLabel = 'sub title is changed';
+    // }, 2000);
   }
 }

@@ -34,7 +34,7 @@
                           </nz-tree-node-option>
                         {{ node.name }}
                         </nz-tree-node>
-                    
+
                         <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
                           <nz-tree-node-toggle>
                             <i nz-icon [nzType]="treeControl.isExpanded(node) ? 'minus-square' : 'plus-square'"
@@ -67,7 +67,7 @@
             <a class="nav-link" href="javascript:void(0);">Rename</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0);" (click)="updateRole()">Save</a>
+            <a class="nav-link" href="javascript:void(0);">Save</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0);">Delete</a>
@@ -129,7 +129,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-v .primary" (click)="addNewRole()">Save </button>
-        
+
         <button type="button" class="btn btn-secondary" id="closePopup"
             (click)="modalRef.hide();">Cancel</button>
 

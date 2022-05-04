@@ -4,6 +4,7 @@ export class ServiceUrls {
 
     //HOME
     public static GET_LOGGED_USERS = environment.apiUrl + '/blumen-api/logged-user/getLoggedUsers/v1';
+    public static GET_CURRENT_USER = environment.apiUrl + '/blumen-api/logged-user/getCurrentUser/v1';
     public static PUT_CHANGE_PASSWORD = environment.apiUrl + '/blumen-api/changePassword/v1';
     public static GET_SECURITY_QUESTIONS = environment.apiUrl +'/blumen-api/admin/securityQuestions';
     public static POST_SECURITY_QUESTIONS = environment.apiUrl +'/blumen-api/admin/addSecurityQuestion';

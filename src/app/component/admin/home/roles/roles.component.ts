@@ -67,9 +67,7 @@ interface UpdatePrivilege {
 })
 export class RolesComponent implements AfterViewInit, OnInit {
   roleList: any;
-  userRoles: Role[] = [];
-  userRolesFromUI: Role[] = [];
-
+  userRoles: any = [];
   toggler: any;
   favoriteFruit: string;
   isExpandChildren = false;
@@ -99,7 +97,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
     this.createForm();
     this.loadRoleNames();
 
-    //get 'All' privilege from api a d replace accessType 
+    //get 'All' privilege from api a d replace accessType
     this.defaultTopPrivilege = {
       accessType: 'Y',
       code: 1,
@@ -125,7 +123,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
   }
 
   createForm() {
-    this.formGroup = this.formBuilder.group({
+    this.roleFormGroup = this.formBuilder.group({
       'id': [''],
       'newRoleName': ['', Validators.required],
       'roleCode': [''],
@@ -140,11 +138,13 @@ export class RolesComponent implements AfterViewInit, OnInit {
       const roleId = document.getElementById(element.id);
       if (roleId) {
         roleId.style.backgroundColor = 'white';
+        roleId.style.color = 'black';
       }
     });
     const roleId = document.getElementById(id);
     if (roleId) {
-      roleId.style.backgroundColor = '#00396b';
+      roleId.style.backgroundColor = '#1366a0';
+      roleId.style.color = 'white';
     }
     this.userRoles = [];
     this.getPriviledgesByRoleName(roleName);
@@ -160,23 +160,17 @@ export class RolesComponent implements AfterViewInit, OnInit {
     //     });
     //   }
     // }
-    const innerHeight = window.innerHeight;
-    const domElement = window.document.getElementById('leftBlock');
-    const domElement1 = window.document.getElementById('rightBlock');
-    if (domElement != null) {
-      domElement.style.height = (innerHeight - 320) + 'px';
-      domElement.style.overflowY = 'scroll';
-    }
-    if (domElement1 != null) {
-      domElement1.style.height = (innerHeight - 302) + 'px';
-      domElement1.style.overflowY = 'scroll';
-    }
-  }
-  setValue() {
-    this.isExpandChildren = !this.isExpandChildren;
-  }
-  setChildValue() {
-    this.isExpandChild = !this.isExpandChild;
+    // const innerHeight = window.innerHeight;
+    // const domElement = window.document.getElementById('leftBlock');
+    // const domElement1 = window.document.getElementById('rightBlock');
+    // if (domElement != null) {
+    //   domElement.style.height = (innerHeight - 320) + 'px';
+    //   domElement.style.overflowY = 'scroll';
+    // }
+    // if (domElement1 != null) {
+    //   domElement1.style.height = (innerHeight - 302) + 'px';
+    //   domElement1.style.overflowY = 'scroll';
+    // }
   }
 
   openModal(template: TemplateRef<any>) {
@@ -189,7 +183,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
   }
 
   addNewRole() {
-    if (this.formGroup.valid) {
+    if (this.roleFormGroup.valid) {
       const request = this.getRequestPayload();
       this.rolesService.addNewRole(request).subscribe(result => {
         if (result) {
@@ -198,7 +192,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
         }
       });
     } else {
-      this.formGroup.markAllAsTouched();
+      this.roleFormGroup.markAllAsTouched();
     }
   }
 
@@ -309,10 +303,10 @@ export class RolesComponent implements AfterViewInit, OnInit {
     this.user = JSON.parse(this.user);
     const orgId = this.user.orgId;
     return {
-      'copyRoleName': this.formGroup?.get('copyRoleName')?.value,
-      'newRoleName': this.formGroup?.get('newRoleName')?.value,
-      'newRoleCode': this.formGroup?.get('newRoleName')?.value,
-      'isDefault': this.formGroup?.get('isDefault')?.value,
+      'copyRoleName': this.roleFormGroup?.get('copyRoleName')?.value,
+      'newRoleName': this.roleFormGroup?.get('newRoleName')?.value,
+      'newRoleCode': this.roleFormGroup?.get('newRoleName')?.value,
+      'isDefault': this.roleFormGroup?.get('isDefault')?.value,
       'orgId': orgId
     }
   }

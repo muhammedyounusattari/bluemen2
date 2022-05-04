@@ -1,4 +1,4 @@
-<div class="container-fluid " style="background:#EFF4F8;">
+<!-- <div class="container-fluid " style="background:#EFF4F8;">
   <div class="row bg-white">
     <div class="col-md-12">
       <h3>Logged-in Users</h3>
@@ -78,3 +78,52 @@
     </div>
   </div>
 </nav>
+ -->
+
+
+<div class="main-container">
+  <div id="main-section" class="container-fluid ">
+
+      <!-- Search Box Start-->
+      <div class="row">
+          <div class="col-md-6 mt-3 mb-3 ">
+              <form class="example">
+                  <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
+                  <i class="fa fa-search search"></i>
+              </form>
+          </div>
+         
+      </div>
+     
+         
+      <div class="mat-elevation-z8 data-table-height dt-max-height">
+          <nz-table #loggedUserTable [nzNoResult]="noResultTemplate" [nzLoading]="isLoading" [nzData]="usersList">
+              <ng-template #noResultTemplate>
+                  <nz-empty [nzNotFoundContent]="'No Data Found'">
+                  </nz-empty> 
+              </ng-template>
+              <thead>
+              <tr>
+                  <th>Email<i  class="sort" (click)="sorting('email')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                      <i  class="sort" (click)="sorting2('email')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Organization Code<i  class="sort" (click)="sorting('orgCode')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                      <i  class="sort" (click)="sorting2('orgCode')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                  <th>Logged In since <i  class="sort" (click)="sorting('issueDate')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                      <i  class="sort" (click)="sorting2('issueDate')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of loggedUserTable.data">
+                  <td>{{ data.email }}</td>
+                  <td>{{ data.orgCode }}</td>
+                  <td>{{ data.issueDate}}</td>
+              </tr>
+              </tbody>
+          </nz-table>
+      </div>
+  </div>
+  <!-- Buttons Start-->
+
+</div>
+

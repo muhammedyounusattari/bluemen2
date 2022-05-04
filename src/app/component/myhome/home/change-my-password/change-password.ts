@@ -13,7 +13,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-change-password',
-  templateUrl: './change-password.html'
+  templateUrl: './change-password.html',
+  styleUrls: ['./change-password.css']
 })
 export class ChangePasswordComponent implements OnInit {
   public changePasswordForm!: FormGroup;
@@ -29,6 +30,9 @@ export class ChangePasswordComponent implements OnInit {
   public securityQuesLst1: any = [];
   public securityQuesLst2: any = [];
   public passwordVisible: boolean = false;
+  public newPasswordVisible: boolean = false;
+  public confPasswordVisible: boolean = false;
+
   public passwordLength: string = "fa fa-close";;
   public isUppercase: string = "fa fa-close";;
   public isLowercase: string = "fa fa-close";;
@@ -36,9 +40,9 @@ export class ChangePasswordComponent implements OnInit {
   public isSpecialChar: string = "fa fa-close";;
   public passwordMatch: string = "fa fa-close";
 
-  constructor(public homeService: HomeService, private toastr: ToastrService,
+  constructor(public homeService: HomeService,
     private sharedService: SharedService, private fb: FormBuilder,
-    private message: NzMessageService, private notificationService: NotificationUtilities,
+    private notificationService: NotificationUtilities,
     private router: Router
   ) {
   }
@@ -70,19 +74,25 @@ export class ChangePasswordComponent implements OnInit {
     },
       (error: any) => {
         const errorResponse = JSON.parse(error.error);
-        this.toastr.error(errorResponse.message, '', {
-          timeOut: 5000,
-          closeButton: true
-        });
+        this.notificationService.createNotificationBasic(errorResponse.message, 'Security questions','Loading Security questions failed');
+      });
+
+    this.homeService.getCurrentUser().subscribe((result) => {
+      if (result) {
+        this.securityQues1 = result.securityQuestion1;
+        this.securityQues2 = result.securityQuestion2;
+        this.answer1 = result.securityAnswer1;
+        this.answer2 = result.securityAnswer2;
+      }
+    },
+      (error: any) => {
+        const errorResponse = JSON.parse(error.error);
+        this.notificationService.createNotificationBasic(errorResponse.message, 'Security Questions','Users security questions failed');
       });
 
   }
 
   onSubmit() {
-    // for (const i in this.changePasswordForm.controls) {
-    //   this.changePasswordForm.controls[i].markAsDirty();
-    //   this.changePasswordForm.controls[i].updateValueAndValidity();
-    // }
     if (this.changePasswordForm.valid) {
       let payload = {
         "password": this.password,
@@ -197,4 +207,9 @@ export class ChangePasswordComponent implements OnInit {
       }
     }
   }
+
+  cancelClick() {
+    //window.location.assign('');
+    this.router.navigate(['/']);
+}
 }

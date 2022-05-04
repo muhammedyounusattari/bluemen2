@@ -1,0 +1,63 @@
+
+.page-alignment {
+    padding: 15px 30px 30px 30px;
+    background: white;
+    border: 1px solid #1366a0;
+}
+
+button {
+    margin-right: 8px;
+}
+
+.custom-body {
+    padding: 2rem;
+}
+
+
+.form_section {
+    padding: 30px;
+    background: #ffffff;
+}
+
+
+.staff-form .lable-style {
+    font-size: 15px;
+    color: black;
+    font-weight: bold;
+}
+
+.staff-form input, .staff-form .ant-select, .staff-form textarea {
+    border: 1px solid black;
+    color: black;
+}
+
+.close-icon {
+    font-size: 17px;
+    color: #1366a0;
+    float: right;
+    position: relative;
+    font-weight: 900;
+    top: 4px;
+    right: 5px;
+    cursor: pointer;
+}
+
+.btn-right {
+    float: right;
+}
+
+
+.full-width-container {
+    width: 100%;
+}
+
+.btn-color {
+    background-color: #1366a0;
+}
+
+.modal-footer-btn {
+    position: relative;
+    padding: 10px 45px 10px 0px;
+    background: #e8ebed;
+}
+
