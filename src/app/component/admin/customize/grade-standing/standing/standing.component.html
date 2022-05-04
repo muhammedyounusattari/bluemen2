@@ -1,0 +1,258 @@
+<div nz-row>
+    <div nz-col [nzSpan]="11">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input placeholder="Search.." class="search-input" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+        </ng-template>
+    </div>
+    <div nz-col [nzSpan]="4" nzOffset="9">
+        <nz-form-item class="search-filter-item">
+            <nz-form-control>
+                <button nz-button nzType="primary" class="search-filter-btn" (click)="addNewData()">
+                    <i nz-icon nzType="file-add" nzTheme="outline" class="search-filter-icon"></i>
+                    New
+                  </button>
+                  <button nz-button nzType="primary" class="search-filter-btn" (click)="print()">
+                    <i nz-icon nzType="printer" nzTheme="outline" class="search-filter-icon"></i>
+                    Print
+                  </button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</div>
+
+<div nz-row>
+    <div nz-col [nzSpan]="24">
+        <nz-table #standingDetails [nzNoResult]="noResultTemplate" [nzData]="standingData" [nzPageSize]="10"
+            [nzLoading]="dataLoading" style="margin-top: 15px;">
+            <ng-template #noResultTemplate>
+                <nz-empty [nzNotFoundContent]="'No Data Found'">
+                </nz-empty>
+            </ng-template>
+            <thead>
+                <tr>
+                    <th>Grade/Standing ID</th>
+                    <th>Grade/Standing Name</th>
+                    <th>Group</th>
+                    <th>Grade/Standing (next year)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of standingDetails.data">
+                    <td>{{ data.id }}</td>
+                    <td>{{ data.gradingName }}</td>
+                    <td>{{ data.gradingGroupName }}</td>
+                    <td>{{ data.gradingFiscalYear }}</td>
+                    <td class="edit-icon-div">
+                        <i class="action-icon" nz-icon nzType="edit" nzTheme="outline" nz-tooltip nzTooltipTitle="Edit"
+                            nzTooltipPlacement="bottom" nz-button (click)="editStandingType(data.id)">
+                        </i>
+                        <i class="action-icon" nz-icon nzType="export" nzTheme="outline" nz-tooltip
+                            nzTooltipTitle="Move" nzTooltipPlacement="bottom" nz-button (click)="showMoveItemPopup(data)">
+                        </i>
+                        <i class="action-icon" nz-icon nzType="merge-cells" nzTheme="outline" nz-tooltip
+                            nzTooltipTitle="Merge" nzTooltipPlacement="bottom" nz-button (click)="showMergeItemPopup(data)">
+                        </i>
+                        <i class="action-icon" nz-icon nzType="delete" nzTheme="outline" nz-tooltip
+                            nz-popconfirm
+                            nzPopconfirmTitle="Confirm Remove Record. Are you sure, you want to remove this record."
+                            (nzOnConfirm)="deleteStandingData(data.gradingId, data.gradingName)"
+                            (nzOnCancel)="cancelDelete()"
+                            nzPopconfirmPlacement="bottom"
+                            nzOkText="Confirm"
+                            nzCancelText="Cancel"
+                            nzTooltipTitle="Delete" nzTooltipPlacement="bottom" nz-button>
+                        </i>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<!--Modal-->
+<nz-modal [(nzVisible)]="standingModalVisible" nzTitle={{standingModalHeader}} (nzOnCancel)="handleStandingCancel()"
+    [nzFooter]="standingModalFooter" nzWidth="75%" [nzOkLoading]="isConfirmStandingLoading">
+    <ng-template #standingModalFooter>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleStandingCancel()">Cancel</a>
+            <button nz-button nzType="primary" *ngIf="addMode" (click)="standingFormSubmit()" [nzLoading]="isConfirmStandingLoading">SAVE</button>
+            <button nz-button nzType="primary" *ngIf="editMode" (click)="standingFormSubmit()" [nzLoading]="isConfirmStandingLoading">UPDATE</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div nz-row>
+            <div nz-col [nzSpan]="24">
+                <form nz-form class="staff-form" [nzLayout]="standingForm.get('formLayout')?.value"
+                    [formGroup]="standingForm">
+                    <div nz-row class="tabStyle">
+                        <div nz-col [nzSpan]="24">
+                            <div nz-row class="form_section">
+                                <div nz-row [nzGutter]="24" class="form-width-container">
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style">Grade/Standing ID</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter Grade/Standing ID">
+                                                <input nz-input type="text" formControlName="id"
+                                                    [(ngModel)]="existingStandingData.id"
+                                                    placeholder="Grade/Standing ID" readonly class="disInputStyle"/>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style" nzRequired>Grade/Standing Name</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter Grade/Standing Name">
+                                                <textarea formControlName="gradingName" nz-input placeholder="Enter Grade/Standing Name"
+                                                    [(ngModel)]="existingStandingData.gradingName" [nzAutosize]="{ minRows: 0, maxRows: 3 }">
+                                                </textarea>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style" nzRequired>Group Name</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Select Group Name">
+                                                <nz-select nzMode="tags" nzPlaceHolder="Group Name" formControlName="gradingGroupName"
+                                                    [(ngModel)]="existingStandingData.gradingGroupName" [nzMaxMultipleCount]="1">
+                                                    <nz-option *ngFor="let groupObj of ddlGroupList" [nzLabel]="groupObj.gradeGroupName" [nzValue]="groupObj.gradeGroupName"></nz-option>
+                                                </nz-select>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style">New Grade/Standing for next Fiscal Year</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Select New Grade/Standing for next Fiscal Year">
+                                                <nz-select nzMode="tags" nzPlaceHolder="New Grade/Standing for next Fiscal Year" formControlName="gradingFiscalYear"
+                                                    [(ngModel)]="existingStandingData.gradingFiscalYear" [nzMaxMultipleCount]="1">
+                                                    <nz-option *ngFor="let fyObj of gradingFiscalYearList" [nzLabel]="fyObj?.longpullna" [nzValue]="fyObj?.longpullna"></nz-option>
+                                                </nz-select>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style">Participant Status for next Fiscal Year</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Select Participant Status for next Fiscal Year">
+                                                <nz-select nzMode="tags" nzPlaceHolder="Participant Status for next Fiscal Year" formControlName="gradingParticipantStatus"
+                                                    [(ngModel)]="existingStandingData.gradingParticipantStatus" [nzMaxMultipleCount]="1">
+                                                    <nz-option *ngFor="let part of participantList" [nzLabel]="part?.longpullna" [nzValue]="part?.longpullna"></nz-option>
+                                                </nz-select>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style">End Status for current Fiscal Year</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Select End Status for current Fiscal Year">
+                                                <nz-select nzMode="tags" nzPlaceHolder="End Status for current Fiscal Year" formControlName="gradingYearEnbStatus"
+                                                    [(ngModel)]="existingStandingData.gradingYearEnbStatus" [nzMaxMultipleCount]="1">
+                                                    <nz-option *ngFor="let esfy of yearEndFYList" [nzLabel]="esfy?.longpullna" [nzValue]="esfy?.longpullna"></nz-option>
+                                                </nz-select>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </ng-container>
+</nz-modal>
+<!--Edit Modal End-->
+
+<!--MoveItem Modal Start-->
+<nz-modal [(nzVisible)]="standingMoveModalVisible" nzTitle="Customize Grade and Grade Group Name" (nzOnCancel)="moveHandleCancel()"
+    [nzFooter]="moveItemModalFooter" nzWidth="30%" [nzOkLoading]="ismoveItemLoading">
+    <ng-template #moveItemModalFooter>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="moveHandleCancel()">Cancel</a>
+            <button nz-button nzType="primary" (click)="moveFormSubmit()" [nzLoading]="ismoveItemLoading">Move</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div nz-row>
+            <div nz-col [nzSpan]="24">
+                <form nz-form class="staff-form" [nzLayout]="moveItemForm.get('formLayout')?.value"
+                    [formGroup]="moveItemForm">
+                    <div nz-row class="tabStyle">
+                        <div nz-col [nzSpan]="24">
+                            <div nz-row class="form_section">
+                                <div nz-row [nzGutter]="24" class="form-width-container">
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style" nzRequired>New Service or Grading ID</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter New Service or Grading ID">
+                                                <input nz-input type="number" formControlName="id"
+                                                    placeholder="New Service or Grading ID" />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </ng-container>
+</nz-modal>
+<!--MoveItem MOdal End-->
+
+<!--MergeItem Modal Start-->
+<nz-modal [(nzVisible)]="gradeMergeModalVisible" nzTitle="Customize Grade and Grade Group Name" (nzOnCancel)="mergeHandleCancel()"
+    [nzFooter]="mergeItemModalFooter" nzWidth="30%" [nzOkLoading]="ismergeItemLoading">
+    <ng-template #mergeItemModalFooter>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="mergeHandleCancel()">Cancel</a>
+            <button nz-button nzType="primary" (click)="mergeFormSubmit()" [nzLoading]="ismergeItemLoading">Move</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div nz-row>
+            <div nz-col [nzSpan]="24">
+                <form nz-form class="staff-form" [nzLayout]="mergeItemForm.get('formLayout')?.value"
+                    [formGroup]="mergeItemForm">
+                    <div nz-row class="tabStyle">
+                        <div nz-col [nzSpan]="24">
+                            <div nz-row class="form_section">
+                                <div nz-row [nzGutter]="24" class="form-width-container">
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style" nzRequired>Service Grading ID</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Select Service Grading ID">
+                                                <nz-select nzShowSearch formControlName="id" nzAllowClear nzPlaceHolder="Service Grading ID">
+                                                    <nz-option *ngFor="let act of mergeServiceid" [nzLabel]="act.gradingName+' | '+act.id"
+                                                        [nzValue]="act.id">
+                                                    </nz-option>
+                                                </nz-select>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </ng-container>
+</nz-modal>
+<!--MoveItem MOdal End-->

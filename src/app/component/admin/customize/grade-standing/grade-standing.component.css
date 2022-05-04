@@ -1,0 +1,210 @@
+.custom-body {
+    padding: 1rem 2rem 0rem 2rem;
+}
+
+.tabStyle {
+    border: 1px solid #1366a0;
+    position: relative;
+    bottom: 17px;
+}
+
+.tabStyle-btn {
+    border-left: 1px solid #1366a0;
+    border-right: 1px solid #1366a0;
+    border-bottom: 1px solid #1366a0;
+    background: #ffffff;
+    padding: 15px 0px;
+    position: relative;
+    bottom: 17px;
+}
+
+.logo_section {
+    padding: 5px 0px 0px 0px;
+    background: #f2f2f2;
+    border-bottom: 1px solid #1366a0;
+}
+
+.logo_header {
+    font-size: 32px !important;
+    font-weight: bolder !important;
+    margin: 70px 0px 0px 30px;
+}
+
+.image-caption {
+    color: #1366a0 !important;
+    text-decoration: underline;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-left: 50px;
+}
+
+.logo_image {
+    border: 1px solid #1366a0;
+}
+
+.logo_image_section {
+    margin-left: 50px;
+}
+
+.checkbox-align {
+    margin: 60px 0px 20px 0px;
+}
+
+.form_section {
+    padding: 30px 30px 30px 30px;
+    background: #ffffff;
+}
+
+.form_section1 {
+    padding: 0px 30px 30px 30px;
+    background: #ffffff;
+}
+
+.section-head {
+    width: 100%;
+    color: #1366a0;
+    font-size: 16px !important;
+    font-weight: bolder !important;
+    border-bottom: 1px solid #1366a0;
+}
+
+.ant-picker {
+    padding: 4px 11px !important;
+    width: 100% !important;
+    border: 1px solid black;
+}
+
+
+.filter_Datepicker {
+    margin: 0 8px 0px 0 !important;
+}
+
+
+
+.staff-form .lable-style {
+    font-size: 15px;
+    color: black;
+    font-weight: bold;
+}
+
+.staff-form input, .staff-form .ant-select, .staff-form textarea {
+    border: 1px solid black;
+    color: black;
+}
+
+.staff-address-form .lable-style {
+    font-size: 15px;
+    color: black;
+    font-weight: bold;
+}
+
+.staff-address-form input, .staff-address-form .ant-select, .staff-address-form textarea, .staff-address-form input[type='checkbox'] {
+    border: 1px solid black;
+}
+
+.upload-btn {
+    margin: 5px 0px;
+    font-weight: bold;
+    color: #1366a0;
+}
+
+button.upload-btn.ant-btn:active, button.upload-btn.ant-btn:hover {
+    color: #1366a0;
+    border-color: #1366a0;
+}
+
+.toggle-lable {
+    font-size: 14px;
+    color: black;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-right: 15px;
+    position: relative;
+    bottom: 1px;
+}
+
+.lable-checkbox {
+    font-size: 14px;
+    color: black;
+    font-weight: bold;
+}
+
+.lable-checkbox1 {
+    font-size: 14px;
+    color: black;
+    font-weight: bold;
+    position: relative;
+    bottom: 2px;
+}
+
+.notes-style {
+    width: 96%;
+}
+
+.spell-icon {
+    margin-left: 10px;
+    position: relative;
+    bottom: 15px;
+    color: #1366a0;
+}
+
+.close-icon {
+    font-size: 17px;
+    color: #1366a0;
+    float: right;
+    position: relative;
+    font-weight: 900;
+    top: 4px;
+    right: 5px;
+    cursor: pointer;
+}
+
+.btn-right {
+    float: right;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #1366a0;
+}
+
+/* Handle on hover */
+/* ::-webkit-scrollbar-thumb:hover {
+    background: blue; 
+  } */
+
+.toggle-btn {
+    position: relative;
+    bottom: 4px;
+}
+
+.marginTop30 {
+    margin-top: 30px;
+}
+
+.fundedStyle {
+    width: 75%;
+}
+
+.funded-percentage {
+    margin: 0px 0px 0px 20px;
+    font-weight: bold;
+}
+
+.full-width-container {
+    width: 100%;
+    display: block;
+}
+
+.btn-color {
+    background-color: #1366a0;
+}

@@ -111,12 +111,11 @@
                         </i>
                         <i class="icon-pt" nz-icon nzType="export" nzTheme="outline" nz-tooltip nzTooltipTitle="Move"
                             (click)="showMoveItemPopup(data)" nzTooltipPlacement="bottom" nz-button>
-                        </i>
-                        <!-- 
+                        </i>                        
                         <i class="icon-pt" nz-icon nzType="merge-cells" nzTheme="outline" nz-tooltip
                             (click)="showMergeItemPopup(data)" nzTooltipTitle="Merge" nzTooltipPlacement="bottom"
                             nz-button>
-                        </i>  -->
+                        </i> 
                         <i class="icon-pt" nz-icon nzType="delete" nzTheme="outline" (click)="deleteSelectedRow(data)"
                             nz-tooltip nzTooltipTitle="Delete" nzTooltipPlacement="bottom" nz-button>
                         </i>
@@ -383,4 +382,43 @@
 
 
 <!-- Merge Modal Start-->
+<nz-modal [(nzVisible)]="collegeMergePopupVisiblity" nzTitle={{collegeMergePopupTitle}} (nzOnCancel)="handleCancel()"
+    [nzFooter]="collegeMergeModalFooters" nzWidth="75%" [nzOkLoading]="isCollegeMergeLoading">
+    <ng-template #collegeMergeModalFooters>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+            <button nz-button nzType="primary" (click)="onConfirmMerge();"
+                [nzLoading]="isCollegeMergeLoading">Move</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div class="modal-body">
+            <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <form [formGroup]="mergeFormGroup" class="form">
+                        <div [nzSpan]="24" [nzSpan]="24" class="row">
+                            <div class="form-group" nz-col [nzSpan]="8">
+                                <div nz-col [nzSpan]="18">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style">Name To*</nz-form-label>
+                                        <nz-form-control>
+                                            <input nz-input list="collegeSchool" type="text" placeholder="" value=""
+                                                formControlName="collegeSchoolName" />
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                    <datalist id="collegeSchool">
+                                        <option value="">Select</option>
+                                        <option *ngFor="let act of collegeDataList" [ngValue]="act.collegeSchoolId">
+                                            <span *ngIf="selectedRow.name != act?.name">{{act.name }} </span>
+                                        </option>
+                                    </datalist>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</nz-modal>
 <!-- Merge Modal End -->

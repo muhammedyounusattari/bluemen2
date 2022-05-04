@@ -70,6 +70,9 @@ import { OrganizationComponent } from '../super-admin/organization/organization.
 import { SecurityQuestionsComponent } from '../super-admin/security-question/security-questions.component';
 import { StaffMemberMergeBoxComponent } from './customize/merge-box/staff-member-merge-box/staff-member-merge-box.component';
 import { StaffMemberMoveBoxComponent } from './customize/move-box/staff-member-move-box/staff-member-move-box.component';
+import { GradeStandingComponent } from './customize/grade-standing/grade-standing.component';
+import { GradeComponent } from './customize/grade-standing/grade/grade.component';
+import { StandingComponent } from './customize/grade-standing/standing/standing.component';
 
 const maskConfigFunction: () => Partial<IConfig> = () => {
   return {
@@ -121,7 +124,10 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
     OrganizationComponent,
     SecurityQuestionsComponent,
     StaffMemberMergeBoxComponent,
-    StaffMemberMoveBoxComponent
+    StaffMemberMoveBoxComponent,
+    GradeStandingComponent,
+    GradeComponent,
+    StandingComponent
   ],
   imports: [
     AdminRoutingModule,

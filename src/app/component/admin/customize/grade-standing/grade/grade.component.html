@@ -1,0 +1,230 @@
+<div nz-row>
+    <div nz-col [nzSpan]="11">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input placeholder="Search.." class="search-input" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+        </ng-template>
+    </div>
+    <div nz-col [nzSpan]="4" nzOffset="9">
+        <nz-form-item class="search-filter-item">
+            <nz-form-control>
+                <button nz-button nzType="primary" class="search-filter-btn" (click)="addNewData()">
+                    <i nz-icon nzType="file-add" nzTheme="outline" class="search-filter-icon"></i>
+                    New
+                  </button>
+                  <button nz-button nzType="primary" class="search-filter-btn" (click)="print()">
+                    <i nz-icon nzType="printer" nzTheme="outline" class="search-filter-icon"></i>
+                    Print
+                  </button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</div>
+
+<div nz-row>
+    <div nz-col [nzSpan]="24">
+        <nz-table #gradeDetails [nzNoResult]="noResultTemplate" [nzData]="gradeData" [nzPageSize]="8"
+            [nzLoading]="dataLoading" style="margin-top: 15px;">
+            <ng-template #noResultTemplate>
+                <nz-empty [nzNotFoundContent]="'No Data Found'">
+                </nz-empty>
+            </ng-template>
+            <thead>
+                <tr>
+                    <th>Grade/Standing Group ID</th>
+                    <th>Grade/Standing Group Name</th>
+                    <th>APR Column</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of gradeDetails.data">
+                    <td>{{ data.id }}</td>
+                    <td>{{ data.gradeGroupName }}</td>
+                    <td>{{ data.gradeGroupAprColumn }}</td>
+                    <td class="edit-icon-div">
+                        <i class="action-icon" nz-icon nzType="edit" nzTheme="outline" nz-tooltip nzTooltipTitle="Edit"
+                            nzTooltipPlacement="bottom" nz-button (click)="editGradeType(data.id)">
+                        </i>
+                        <i class="action-icon" nz-icon nzType="export" nzTheme="outline" nz-tooltip
+                            nzTooltipTitle="Move" nzTooltipPlacement="bottom" nz-button (click)="showMoveItemPopup(data)">
+                        </i>
+                        <i class="action-icon" nz-icon nzType="merge-cells" nzTheme="outline" nz-tooltip
+                            nzTooltipTitle="Merge" nzTooltipPlacement="bottom" nz-button (click)="showMergeItemPopup(data)">
+                        </i>
+                        <i class="action-icon" nz-icon nzType="delete" nzTheme="outline" nz-tooltip
+                            nz-popconfirm
+                            nzPopconfirmTitle="Confirm Remove Record. Are you sure, you want to remove this record."
+                            (nzOnConfirm)="deleteGradeData(data.gradeGroupId, data.gradeGroupName)"
+                            (nzOnCancel)="cancelDelete()"
+                            nzPopconfirmPlacement="bottom"
+                            nzOkText="Confirm"
+                            nzCancelText="Cancel"
+                            nzTooltipTitle="Delete" nzTooltipPlacement="bottom" nz-button>
+                        </i>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<!--Modal-->
+<nz-modal [(nzVisible)]="gradeModalVisible" nzTitle={{gradeModalHeader}} (nzOnCancel)="handleCancel()"
+    [nzFooter]="gradeModalFooter" nzWidth="75%" [nzOkLoading]="isConfirmGradeLoading">
+    <ng-template #gradeModalFooter>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+            <button nz-button nzType="primary" *ngIf="addMode" (click)="gradeFormSubmit()" [nzLoading]="isConfirmGradeLoading">SAVE</button>
+            <button nz-button nzType="primary" *ngIf="editMode" (click)="gradeFormSubmit()" [nzLoading]="isConfirmGradeLoading">UPDATE</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div nz-row>
+            <div nz-col [nzSpan]="24">
+                <form nz-form class="staff-form" [nzLayout]="gradeForm.get('formLayout')?.value"
+                    [formGroup]="gradeForm">
+                    <div nz-row class="tabStyle">
+                        <div nz-col [nzSpan]="24">
+                            <div nz-row class="form_section">
+                                <div nz-row [nzGutter]="24" class="form-width-container">
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style">Grade/Standing Group ID</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter Grade/Standing Group ID">
+                                                <input nz-input type="text" formControlName="id"
+                                                    [(ngModel)]="existingGradeData.id"
+                                                    placeholder="Grade/Standing Group ID" readonly class="disInputStyle"/>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style" nzRequired>Grade/Standing Group Name</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter Grade/Standing Group Name (size must be minimum 3 character )">
+                                                <input nz-input type="text" formControlName="gradeGroupName"
+                                                    [(ngModel)]="existingGradeData.gradeGroupName"
+                                                    placeholder="Grade/Standing Group Name" />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style" nzRequired>Group Type</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Select Group Type">
+                                                <nz-select nzMode="tags" nzPlaceHolder="Group Type" formControlName="gradeGroupGradeType"
+                                                    [(ngModel)]="existingGradeData.gradeGroupGradeType" [nzMaxMultipleCount]="1">
+                                                    <nz-option *ngFor="let gType of gradeGroupGradeTypeList" [nzLabel]="gType?.longpullna" [nzValue]="gType?.longpullna"></nz-option>
+                                                </nz-select>
+                                                
+                                                <!--<nz-select nzShowSearch nzAllowClear formControlName="gradeGroupGradeType"
+                                                    [(ngModel)]="existingGradeData.gradeGroupGradeType"
+                                                    nzPlaceHolder="Group Type">
+                                                    <nz-option *ngFor="let gType of gradeGroupGradeTypeList"
+                                                        [nzLabel]="gType?.longpullna" [nzValue]="gType?.longpullna">
+                                                    </nz-option>
+                                                </nz-select> -->
+
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </ng-container>
+</nz-modal>
+<!--Edit Modal End-->
+
+<!--MoveItem Modal Start-->
+<nz-modal [(nzVisible)]="gradeMoveModalVisible" nzTitle="Customize Grade and Grade Group Name" (nzOnCancel)="moveHandleCancel()"
+    [nzFooter]="moveItemModalFooter" nzWidth="30%" [nzOkLoading]="ismoveItemLoading">
+    <ng-template #moveItemModalFooter>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="moveHandleCancel()">Cancel</a>
+            <button nz-button nzType="primary" (click)="moveFormSubmit()" [nzLoading]="ismoveItemLoading">Move</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div nz-row>
+            <div nz-col [nzSpan]="24">
+                <form nz-form class="staff-form" [nzLayout]="moveItemForm.get('formLayout')?.value"
+                    [formGroup]="moveItemForm">
+                    <div nz-row class="tabStyle">
+                        <div nz-col [nzSpan]="24">
+                            <div nz-row class="form_section">
+                                <div nz-row [nzGutter]="24" class="form-width-container">
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style" nzRequired>New Service or Grade ID*</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter New Service or Grade ID*">
+                                                <input nz-input type="number" formControlName="id"
+                                                    placeholder="New Service or Grade ID*" />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </ng-container>
+</nz-modal>
+<!--MoveItem MOdal End-->
+
+
+<!--MergeItem Modal Start-->
+<nz-modal [(nzVisible)]="gradeMergeModalVisible" nzTitle="Customize Grade and Grade Group Name" (nzOnCancel)="mergeHandleCancel()"
+    [nzFooter]="mergeItemModalFooter" nzWidth="30%" [nzOkLoading]="ismergeItemLoading">
+    <ng-template #mergeItemModalFooter>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="mergeHandleCancel()">Cancel</a>
+            <button nz-button nzType="primary" (click)="mergeFormSubmit()" [nzLoading]="ismergeItemLoading">Move</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div nz-row>
+            <div nz-col [nzSpan]="24">
+                <form nz-form class="staff-form" [nzLayout]="mergeItemForm.get('formLayout')?.value"
+                    [formGroup]="mergeItemForm">
+                    <div nz-row class="tabStyle">
+                        <div nz-col [nzSpan]="24">
+                            <div nz-row class="form_section">
+                                <div nz-row [nzGutter]="24" class="form-width-container">
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style" nzRequired>Service Grading Group ID</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Select Service Grading Group ID">
+                                                <!--new-->
+                                                <nz-select nzShowSearch formControlName="id" nzAllowClear nzPlaceHolder="Service Grading Group ID">
+                                                    <nz-option *ngFor="let actGroup of mergeServiceid" [nzLabel]="actGroup.gradeGroupName+' | '+actGroup.id"
+                                                        [nzValue]="actGroup.id">
+                                                    </nz-option>
+                                                </nz-select>
+                                                <!--end-->
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </ng-container>
+</nz-modal>
+<!--MoveItem MOdal End-->

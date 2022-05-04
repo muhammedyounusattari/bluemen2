@@ -31,6 +31,7 @@ import { PullTypeComponent } from './home/pull-type/pull-type.component';
 
 import { OrganizationComponent } from '../super-admin/organization/organization.component';
 import { SecurityQuestionsComponent } from '../super-admin/security-question/security-questions.component';
+import { GradeStandingComponent } from './customize/grade-standing/grade-standing.component';
 const routes: Routes = [
   {
     path: 'admin/customize/pulldown-list',
@@ -187,6 +188,23 @@ const routes: Routes = [
         },
         {
           label: 'Grade Group List',
+          url: ''
+        }
+      ]
+    }
+  },
+  {
+    path: 'admin/customize/grade-standing',
+    component: GradeStandingComponent,
+    data: {
+      title: 'Grade/Standing List',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'Grade/Standing List',
           url: ''
         }
       ]

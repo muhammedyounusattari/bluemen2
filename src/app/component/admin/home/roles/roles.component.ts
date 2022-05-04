@@ -4,7 +4,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 import { RolesService } from 'src/app/services/admin/roles.service';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { NzTreeFlattener, NzTreeFlatDataSource } from 'ng-zorro-antd/tree-view';
-import { FlatTreeControl } from 'ng-zorro-antd/node_modules/@angular/cdk/tree';
+import { FlatTreeControl } from '@angular/cdk/tree';
 
 
 interface TreeNode {
