@@ -1,11 +1,11 @@
-import { Component, TemplateRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { Component,  OnInit } from '@angular/core';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { RolesService } from 'src/app/services/admin/roles.service';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { NzTreeFlattener, NzTreeFlatDataSource } from 'ng-zorro-antd/tree-view';
 import { FlatTreeControl } from 'ng-zorro-antd/node_modules/@angular/cdk/tree';
-
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
+import { Router } from '@angular/router';
 
 
 interface TreeNode {
@@ -66,7 +66,7 @@ interface UpdatePrivilege {
   templateUrl: './roles.component.html',
   styleUrls: ['./roles.component.css']
 })
-export class RolesComponent implements AfterViewInit, OnInit {
+export class RolesComponent implements  OnInit {
   roleList: any;
   userRoles: Role[] = [];
   userRolesFromUI: Role[] = [];
@@ -77,22 +77,22 @@ export class RolesComponent implements AfterViewInit, OnInit {
   isExpandChild = false;
   roleNameList: any;
 
-  @ViewChild('addNewRolePopup') addNewRolePopupRef: TemplateRef<any>;
-  modalRef: BsModalRef;
-  modalConfigSM = {
-    backdrop: true,
-    ignoreBackdropClick: true,
-    class: 'modal-sm'
-  }
   roleFormGroup: FormGroup;
   selectedRoleId: any;
   user: any;
   defaultTopPrivilege: TreeNode;
 
-  constructor(private modalService: BsModalService
-    , private sharedService: SharedService
+  isAddRoleModalVisible =  false;
+  isConfirmRolesLoading = true;
+
+  renameRoleFormGroup: FormGroup;
+  isRenameRoleModalVisible = false;
+
+  constructor(private sharedService: SharedService
     , private rolesService: RolesService
-    , private formBuilder: FormBuilder) {
+    , private formBuilder: FormBuilder
+    , private notificationService: NotificationUtilities
+    , private router: Router) {
   }
 
   ngOnInit(): void {
@@ -100,7 +100,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
     this.createForm();
     this.loadRoleNames();
 
-    //get 'All' privilege from api a d replace accessType
+    //get 'All' privilege from api a d replace accessType 
     this.defaultTopPrivilege = {
       accessType: 'Y',
       code: 1,
@@ -110,11 +110,14 @@ export class RolesComponent implements AfterViewInit, OnInit {
       parentCode: null,
       privileges: []
     };
+    
   }
 
   loadRoleNames() {
     this.roleNameList = [];
+    this.isConfirmRolesLoading = true;
     this.rolesService.getRoleNamesList().subscribe(result => {
+      this.isConfirmRolesLoading = false;
       if (result) {
         this.roleNameList = result;
         setTimeout(() => {
@@ -131,8 +134,19 @@ export class RolesComponent implements AfterViewInit, OnInit {
       'newRoleName': ['', Validators.required],
       'roleCode': [''],
       'copyRoleName': ['', Validators.required],
-      'isDefault': ['']
+      'isDefault': [false]
     });
+  }
+
+  renameForm() {
+    this.renameRoleFormGroup = this.formBuilder.group({
+      'id': this.selectedRoleId,
+      'newRoleName': ['', Validators.required]
+    });
+  }
+
+  cancel() {
+    this.router.navigate(['admin/home']);
   }
 
   setBgColorForSelectedRole(id: any, roleName: string) {
@@ -150,49 +164,33 @@ export class RolesComponent implements AfterViewInit, OnInit {
       roleId.style.color = 'white';
     }
     this.userRoles = [];
-    this.getPriviledgesByRoleName(roleName);
+    this.getPriviledgesByRoleName(id, roleName);
   }
 
-  ngAfterViewInit(): void {
-    // this.toggler = document.getElementsByClassName("caret");
-    // if (this.toggler != null) {
-    //   for (let i = 0; i < this.toggler.length; i++) {
-    //     this.toggler[i].addEventListener("click", function (element: any) {
-    //       element.parentElement.querySelector(".nested").classList.toggle("active");
-    //       element.classList.toggle("caret-down");
-    //     });
-    //   }
-    // }
-    // const innerHeight = window.innerHeight;
-    // const domElement = window.document.getElementById('leftBlock');
-    // const domElement1 = window.document.getElementById('rightBlock');
-    // if (domElement != null) {
-    //   domElement.style.height = (innerHeight - 320) + 'px';
-    //   domElement.style.overflowY = 'scroll';
-    // }
-    // if (domElement1 != null) {
-    //   domElement1.style.height = (innerHeight - 302) + 'px';
-    //   domElement1.style.overflowY = 'scroll';
-    // }
-  }
-
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, this.modalConfigSM)
-  }
-
-  resetFields() {
+  showAddForm() {
     this.createForm();
-    this.openModal(this.addNewRolePopupRef);
+    this.isAddRoleModalVisible = true;
   }
+
+  showRenameForm() {
+    this.renameForm();
+    this.isRenameRoleModalVisible = true;
+  }
+
 
   addNewRole() {
     if (this.roleFormGroup.valid) {
       const request = this.getRequestPayload();
       this.rolesService.addNewRole(request).subscribe(result => {
         if (result) {
+          this.notificationService.createNotificationBasic('success', 'Add Role', 'Added new role successfully');
           this.loadRoleNames();
-          this.modalRef.hide();
+          this.isAddRoleModalVisible = false;
         }
+      }, (error: any) => {
+        this.notificationService.createNotificationBasic('error', 'Add Role', 'Adding new role failed');
+        console.log(error);
+        this.isAddRoleModalVisible = false;
       });
     } else {
       this.roleFormGroup.markAllAsTouched();
@@ -202,15 +200,20 @@ export class RolesComponent implements AfterViewInit, OnInit {
   deleteRole() {
     this.rolesService.deleteRole(this.selectedRoleId).subscribe(result => {
       if (result) {
+        this.notificationService.createNotificationBasic('success', 'Delete Role', 'Role deleted successfully');
         this.loadRoleNames();
       }
+    }, (error: any) => {
+      this.notificationService.createNotificationBasic('error', 'Delete Role', 'Deleting of role failed');
+      console.log(error);
     });
   }
 
-  getPriviledgesByRoleName(roleName: string) {
+  getPriviledgesByRoleName(roleId: any, roleName: string) {
     this.rolesService.getPriviledgesByRoleName(roleName).subscribe(result => {
       if (result) {
-        this.userRoles = result;
+        const allUserRoles: Role[] = JSON.parse(JSON.stringify(result));
+        this.userRoles = allUserRoles.filter(r => r.id === roleId);
         console.log(this.userRoles);
         this.loadTreeData();
       }
@@ -283,22 +286,44 @@ export class RolesComponent implements AfterViewInit, OnInit {
     return updateRole;
   }
 
-  //update role needs flat privilieges inside role
-  updateRole() {
-    if (this.selectedRoleId) {
+  renameRole() {
+    if (this.selectedRoleId) {      
       let updateRole: UpdateRole = this.getUpdateRequestPayload();
+      updateRole.name = this.renameRoleFormGroup?.get('newRoleName')?.value;
       this.rolesService.updateRole(updateRole).subscribe(result => {
         if (result) {
+          this.notificationService.createNotificationBasic('success', 'Rename Role', 'Role Name Successfully');
           this.loadRoleNames();
         }
       }, (error: any) => {
         console.log(error);
-        const errorResponse = JSON.parse(error.error);
-      });
+        this.notificationService.createNotificationBasic('error', 'Rename Role', 'Role Name Failed');      });
 
     } else {
       //TODO
     }
+  }
+  //update role needs flat privilieges inside role
+  updateRole() {
+    if (this.selectedRoleId) {      
+      let updateRole: UpdateRole = this.getUpdateRequestPayload();
+      this.rolesService.updateRole(updateRole).subscribe(result => {
+        if (result) {
+          this.notificationService.createNotificationBasic('success', 'Update Role', 'Role & Privileges updated successfully');
+          this.loadRoleNames();
+        }
+      }, (error: any) => {
+        console.log(error);
+        this.notificationService.createNotificationBasic('error', 'Update Role', 'Role update failed');      });
+
+    } else {
+      //TODO
+    }
+  }
+
+  saveAndClose() {
+    this.updateRole();
+    this.cancel();
   }
 
   getRequestPayload() {
@@ -314,6 +339,11 @@ export class RolesComponent implements AfterViewInit, OnInit {
     }
   }
 
+  handleCancel(): void {
+    //this.clearPullFormValue();
+    this.isAddRoleModalVisible = false;
+    this.isRenameRoleModalVisible = false;
+  }
 
   private transformer = (node: TreeNode, level: number): FlatNode => {
     const existingNode = this.nestedNodeMap.get(node);

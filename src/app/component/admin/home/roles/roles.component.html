@@ -1,17 +1,21 @@
 <div class="custom-body">
   <div nz-row class="page-alignment">
     <div nz-col [nzSpan]="24">
-      <div nz-row [nzGutter]="24">
+      <div nz-row [nzGutter]="24" class="outer-div">
         <div nz-col [nzSpan]="6">
-          <nz-list nzBordered>
-            <nz-list-item *ngFor="let role of roleNameList" (click)="setBgColorForSelectedRole(role.id, role.name)"
-              id="{{role.id}}">
-              {{ role.name }} {{role.default ? '(Default)': ''}}
-            </nz-list-item>
-          </nz-list>
+          <div nz-row [nzGutter]="24" class="inner-div">
+            <div nz-col [nzSpan]="24">
+              <nz-list nzBordered>
+                <nz-list-item *ngFor="let role of roleNameList" (click)="setBgColorForSelectedRole(role.id, role.name)"
+                  id="{{role.id}}">
+                  {{ role.name }} {{role.default ? '(Default)': ''}}
+                </nz-list-item>
+              </nz-list>
+            </div>
+          </div>
         </div>
         <div nz-col [nzSpan]="18">
-          <div nz-row [nzGutter]="24">
+          <div nz-row [nzGutter]="24" class="inner-div">
             <div nz-col [nzSpan]="24">
               <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource">
                 <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>
@@ -45,66 +49,106 @@
         </div>
       </div>
       <div nz-row [nzGutter]="24">
-        <button nz-button nzType="primary" (click)="resetFields()">New</button>
-        <button nz-button nzType="primary">Rename</button>
+        <button nz-button nzType="primary" (click)="showAddForm()">New</button>
+        <button nz-button nzType="primary" (click)="showRenameForm()">Rename</button>
         <button nz-button nzType="primary" (click)="updateRole()">Save</button>
         <button nz-button nzType="primary" (click)="deleteRole()">Delete</button>
-        <button nz-button nzType="primary" (click)="updateRole()">Save & Close</button>
-        <button nz-button nzType="primary">Cancel</button>
+        <button nz-button nzType="primary" (click)="saveAndClose()">Save & Close</button>
+        <button nz-button nzType="primary" (click)="cancel()">Cancel</button>
       </div>
     </div>
   </div>
 </div>
 
 
-
-<!-- Modal Start-->
-<ng-template #addNewRolePopup>
-  <!-- Modal -->
-  <div class="modal-header popHeaderBG">
-    <span class="modal-title popHeader" id="exampleModalLabel">Role Information</span>
-    <button type="button" class="btn-close" (click)="modalRef.hide();" aria-label="Close"></button>
-  </div>
-  <div class="modal-body">
-    <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-        <form [formGroup]="roleFormGroup" class="staff-form">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group ">
-                <mat-form-field class="example-full-width" appearance="fill">
-                  <mat-label>Role Name</mat-label>
-                  <input matInput placeholder="" value="" formControlName="newRoleName" required>
-                </mat-form-field>
+<nz-modal [(nzVisible)]="isAddRoleModalVisible" nzTitle="Copy Role" (nzOnCancel)="handleCancel()"
+  [nzFooter]="addRoleModalFooter" nzWidth="50%" [nzOkLoading]="isConfirmRolesLoading">
+  <ng-template #addRoleModalFooter>
+    <div class="modal-footer-btn">
+      <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+      <button nz-button nzType="primary" (click)="addNewRole()" [nzLoading]="isConfirmRolesLoading">Copy</button>
+    </div>
+  </ng-template>
+  <ng-container *nzModalContent>
+    <div class="tab-content" nz-row>
+      <div nz-col [nzSpan]="24">
+        <form nz-form class="staff-form" nzLayout="horizontal" [formGroup]="roleFormGroup">
+          <div nz-row class="tabStyle">
+            <div nz-col [nzSpan]="24">
+              <div nz-row [nzGutter]="24" class="full-width-container">
+                <div nz-col [nzSpan]="16">
+                  <nz-form-item>
+                    <nz-form-label class="lable-style">Role Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Please Enter Role Name">
+                      <input nz-input type="text" formControlName="newRoleName" placeholder="New Role Name"/>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
               </div>
-              <div class="form-group">
-                <mat-form-field appearance="fill" class="mat-select-width">
-                  <mat-label>Role</mat-label>
-                  <select matNativeControl formControlName="copyRoleName" required>
-                    <option value="" selected>--Select--</option>
-                    <option value="{{roleObj.name}}" *ngFor="let roleObj of roleNameList">{{roleObj.name}}</option>
-                  </select>
-                </mat-form-field>
-              </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                  <div nz-col [nzSpan]="16">
+                    <nz-form-item>
+                      <nz-form-label class="lable-style">Role</nz-form-label>
+                      <nz-form-control nzErrorTip="Please Select Role">
+                        <nz-select nzShowSearch nzAllowClear formControlName="copyRoleName" nzPlaceHolder="Role">
+                          <nz-option *ngFor="let roleName of roleNameList" [nzLabel]="roleName.name"
+                            [nzValue]="roleName.name">
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                  <div nz-col [nzSpan]="16">
+                    <nz-form-item>
+                      <nz-form-label class="lable-style">Default</nz-form-label>
+                      <nz-form-control nzErrorTip="">
+                        <label class="lable-checkbox1" nz-checkbox formControlName="isDefault"></label>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
 
-              <div class="form-group">
-                <section class="example-section">
-                  <mat-checkbox formControlName="isDefault" class="example-margin">
-                    Default
-                  </mat-checkbox>
-                </section>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </ng-container>
+</nz-modal>
+
+
+<nz-modal [(nzVisible)]="isRenameRoleModalVisible" nzTitle="Rename Role" (nzOnCancel)="handleCancel()"
+  [nzFooter]="renameRoleModalFooter" nzWidth="50%" [nzOkLoading]="isConfirmRolesLoading">
+  <ng-template #renameRoleModalFooter>
+    <div class="modal-footer-btn">
+      <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+      <button nz-button nzType="primary" (click)="renameRole()" [nzLoading]="isConfirmRolesLoading">Save</button>
+    </div>
+  </ng-template>
+  <ng-container *nzModalContent>
+    <div class="tab-content" nz-row>
+      <div nz-col [nzSpan]="24">
+        <form nz-form class="staff-form" nzLayout="horizontal" [formGroup]="renameRoleFormGroup">
+          <div nz-row class="tabStyle">
+            <div nz-col [nzSpan]="24">
+              <div nz-row [nzGutter]="24" class="full-width-container">
+                <div nz-col [nzSpan]="16">
+                  <nz-form-item>
+                    <nz-form-label class="lable-style">Role Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Please Enter Role Name">
+                      <input nz-input type="text" formControlName="newRoleName" placeholder="New Role Name"/>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
               </div>
             </div>
           </div>
         </form>
       </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-v .primary" (click)="addNewRole()">Save </button>
 
-    <button type="button" class="btn btn-secondary" id="closePopup" (click)="modalRef.hide();">Cancel</button>
-
-  </div>
-</ng-template>
-<!-- Modal End-->
+  </ng-container>
+</nz-modal>
