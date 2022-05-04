@@ -4,7 +4,8 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 import { RolesService } from 'src/app/services/admin/roles.service';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { NzTreeFlattener, NzTreeFlatDataSource } from 'ng-zorro-antd/tree-view';
-import { FlatTreeControl } from '@angular/cdk/tree';
+import { FlatTreeControl } from 'ng-zorro-antd/node_modules/@angular/cdk/tree';
+
 
 
 interface TreeNode {
@@ -99,7 +100,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
     this.createForm();
     this.loadRoleNames();
 
-    //get 'All' privilege from api a d replace accessType 
+    //get 'All' privilege from api a d replace accessType
     this.defaultTopPrivilege = {
       accessType: 'Y',
       code: 1,
@@ -174,7 +175,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
     //   domElement1.style.overflowY = 'scroll';
     // }
   }
- 
+
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, this.modalConfigSM)
   }
