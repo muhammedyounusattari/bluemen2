@@ -1,138 +1,110 @@
-<div class="main-container">
-    <div id="main-section" class="container-fluid ">
-        <!-- Full Screen Loader Start -->
-        <!-- <div id="loading"></div> -->
-        <!-- Full Screen Loader End -->
-
-        <!-- Header Start-->
-        <!-- <div class="row bg-white">
-            <div class="col-md-12">
-                <h3>Roles</h3>
-            </div>
-        </div> -->
-        <!-- Header End-->
-
-        <div class="row marg-top1">
-            <div class="col-md-12 display-content">
-                <div class="col-md-3 left-div" id="leftBlock">
-                    <div *ngFor="let role of roleNameList">
-                        <div class="list" style="margin-top: 5%;white-space: nowrap;" (click)="setBgColorForSelectedRole(role.id, role.name)" id="{{role.id}}">
-                            {{role.name}} {{role.default ? '(Default)': ''}}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8 right-div" id="rightBlock">
-                    <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource">
-                        <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>
-                          <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
-                          <nz-tree-node-option [nzDisabled]="node.disabled" (nzClick)="leafItemSelectionToggle(node)">
-                          <nz-radio-group [(ngModel)]="node.accessType" (ngModelChange)="leafItemSelectionToggle(node)">
-                          <label nz-radio nzValue="Y">Y</label>
-                          <label nz-radio nzValue="R">R</label>
-                          <label nz-radio nzValue="N">N</label>
-                        </nz-radio-group>
-                          </nz-tree-node-option>
-                        {{ node.name }}
-                        </nz-tree-node>
-
-                        <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
-                          <nz-tree-node-toggle>
-                            <i nz-icon [nzType]="treeControl.isExpanded(node) ? 'minus-square' : 'plus-square'"
-                            ></i>
-                          </nz-tree-node-toggle>
-                          <nz-tree-node-option [nzDisabled]="node.disabled" (nzClick)="itemSelectionToggle(node)">
-                          <nz-radio-group [(ngModel)]="node.accessType"  (ngModelChange)="itemSelectionToggle(node)">
-                          <label nz-radio nzValue="Y">Y</label>
-                          <label nz-radio nzValue="R">R</label>
-                          <label nz-radio nzValue="N">N</label>
-                        </nz-radio-group>
-                        {{ node.name }}
-                      </nz-tree-node-option>
-                        </nz-tree-node>
-                      </nz-tree-view>
-                </div>
-            </div>
+<div class="custom-body">
+  <div nz-row class="page-alignment">
+    <div nz-col [nzSpan]="24">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="6">
+          <nz-list nzBordered>
+            <nz-list-item *ngFor="let role of roleNameList" (click)="setBgColorForSelectedRole(role.id, role.name)"
+              id="{{role.id}}">
+              {{ role.name }} {{role.default ? '(Default)': ''}}
+            </nz-list-item>
+          </nz-list>
         </div>
-    </div>
+        <div nz-col [nzSpan]="18">
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="24">
+              <nz-tree-view [nzTreeControl]="treeControl" [nzDataSource]="dataSource">
+                <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding>
+                  <nz-tree-node-toggle nzTreeNodeNoopToggle></nz-tree-node-toggle>
+                  <nz-tree-node-option [nzDisabled]="node.disabled" (nzClick)="leafItemSelectionToggle(node)">
+                    <nz-radio-group [(ngModel)]="node.accessType" (ngModelChange)="leafItemSelectionToggle(node)">
+                      <label nz-radio nzValue="Y">Y</label>
+                      <label nz-radio nzValue="R">R</label>
+                      <label nz-radio nzValue="N">N</label>
+                    </nz-radio-group>
+                  </nz-tree-node-option>
+                  {{ node.name }}
+                </nz-tree-node>
 
-    <!-- Buttons Start-->
-  <nav class="navbar navbar-expand-lg navbar-light bg-bottom " id="navbarTag">
-    <div class="container-fluid">
-      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0);" (click)="resetFields()">New</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0);">Rename</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0);">Save</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0);">Delete</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0);">Save & Close</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0);">Cancel</a>
-          </li>
-        </ul>
+                <nz-tree-node *nzTreeNodeDef="let node; when: hasChild" nzTreeNodePadding>
+                  <nz-tree-node-toggle>
+                    <i nz-icon [nzType]="treeControl.isExpanded(node) ? 'minus-square' : 'plus-square'"></i>
+                  </nz-tree-node-toggle>
+                  <nz-tree-node-option [nzDisabled]="node.disabled" (nzClick)="itemSelectionToggle(node)">
+                    <nz-radio-group [(ngModel)]="node.accessType" (ngModelChange)="itemSelectionToggle(node)">
+                      <label nz-radio nzValue="Y">Y</label>
+                      <label nz-radio nzValue="R">R</label>
+                      <label nz-radio nzValue="N">N</label>
+                    </nz-radio-group>
+                    {{ node.name }}
+                  </nz-tree-node-option>
+                </nz-tree-node>
+              </nz-tree-view>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24">
+        <button nz-button nzType="primary" (click)="resetFields()">New</button>
+        <button nz-button nzType="primary">Rename</button>
+        <button nz-button nzType="primary" (click)="updateRole()">Save</button>
+        <button nz-button nzType="primary" (click)="deleteRole()">Delete</button>
+        <button nz-button nzType="primary" (click)="updateRole()">Save & Close</button>
+        <button nz-button nzType="primary">Cancel</button>
       </div>
     </div>
-  </nav>
+  </div>
 </div>
+
+
 
 <!-- Modal Start-->
 <ng-template #addNewRolePopup>
-    <!-- Modal -->
-    <div class="modal-header popHeaderBG">
-        <span class="modal-title popHeader" id="exampleModalLabel">Role Information</span>
-        <button type="button" class="btn-close" (click)="modalRef.hide();" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <form [formGroup]="formGroup" class="form">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group ">
-                            <mat-form-field class="example-full-width" appearance="fill">
-                                <mat-label>Role Name</mat-label>
-                                <input matInput placeholder="" value="" formControlName="newRoleName" required>
-                            </mat-form-field>
-                        </div>
+  <!-- Modal -->
+  <div class="modal-header popHeaderBG">
+    <span class="modal-title popHeader" id="exampleModalLabel">Role Information</span>
+    <button type="button" class="btn-close" (click)="modalRef.hide();" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <form [formGroup]="roleFormGroup" class="staff-form">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group ">
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>Role Name</mat-label>
+                  <input matInput placeholder="" value="" formControlName="newRoleName" required>
+                </mat-form-field>
+              </div>
+              <div class="form-group">
+                <mat-form-field appearance="fill" class="mat-select-width">
+                  <mat-label>Role</mat-label>
+                  <select matNativeControl formControlName="copyRoleName" required>
+                    <option value="" selected>--Select--</option>
+                    <option value="{{roleObj.name}}" *ngFor="let roleObj of roleNameList">{{roleObj.name}}</option>
+                  </select>
+                </mat-form-field>
+              </div>
 
-                        <div class="form-group">
-                            <mat-form-field appearance="fill" class="mat-select-width">
-                                <mat-label>Role</mat-label>
-                                <select matNativeControl formControlName="copyRoleName" required>
-                                    <option value="" selected>--Select--</option>
-                                    <option value="{{roleObj.name}}" *ngFor="let roleObj of roleNameList">{{roleObj.name}}</option>
-                                </select>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="form-group">
-                            <section class="example-section">
-                                <mat-checkbox formControlName="isDefault" class="example-margin">
-                                    Default
-                                </mat-checkbox>
-                            </section>
-                        </div>
-                    </div>
-                </div>
-                </form>
+              <div class="form-group">
+                <section class="example-section">
+                  <mat-checkbox formControlName="isDefault" class="example-margin">
+                    Default
+                  </mat-checkbox>
+                </section>
+              </div>
             </div>
-        </div>
+          </div>
+        </form>
+      </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-v .primary" (click)="addNewRole()">Save </button>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-v .primary" (click)="addNewRole()">Save </button>
 
-        <button type="button" class="btn btn-secondary" id="closePopup"
-            (click)="modalRef.hide();">Cancel</button>
+    <button type="button" class="btn btn-secondary" id="closePopup" (click)="modalRef.hide();">Cancel</button>
 
-    </div>
+  </div>
 </ng-template>
 <!-- Modal End-->

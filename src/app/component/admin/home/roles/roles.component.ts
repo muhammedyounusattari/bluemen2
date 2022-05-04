@@ -67,7 +67,9 @@ interface UpdatePrivilege {
 })
 export class RolesComponent implements AfterViewInit, OnInit {
   roleList: any;
-  userRoles: any = [];
+  userRoles: Role[] = [];
+  userRolesFromUI: Role[] = [];
+
   toggler: any;
   favoriteFruit: string;
   isExpandChildren = false;
@@ -81,7 +83,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
     ignoreBackdropClick: true,
     class: 'modal-sm'
   }
-  formGroup: FormGroup;
+  roleFormGroup: FormGroup;
   selectedRoleId: any;
   user: any;
   defaultTopPrivilege: TreeNode;
@@ -97,7 +99,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
     this.createForm();
     this.loadRoleNames();
 
-    //get 'All' privilege from api a d replace accessType
+    //get 'All' privilege from api a d replace accessType 
     this.defaultTopPrivilege = {
       accessType: 'Y',
       code: 1,
@@ -172,7 +174,7 @@ export class RolesComponent implements AfterViewInit, OnInit {
     //   domElement1.style.overflowY = 'scroll';
     // }
   }
-
+ 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, this.modalConfigSM)
   }
