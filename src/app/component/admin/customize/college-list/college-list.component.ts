@@ -179,6 +179,7 @@ export class CollegeListComponent implements OnInit {
 */
     addNewCollegeName() {
         if (this.formGroup.valid) {
+            this.isCollegeNamePopupLoading = true;
             let val = this.formGroup.get('name')?.value;
             this.requestData.orgName = 'College';
             this.requestData.name = val.toLowerCase().trim();
@@ -186,6 +187,7 @@ export class CollegeListComponent implements OnInit {
                 if (result && result != null) {
                     this.notificationService.createNotificationBasic('info', 'Info', 'College name is already exist');
                     this.formGroup.get('name')?.setValue('');
+                    this.isCollegeNamePopupLoading = false;
                     return;
                 } else {
                     let val = this.formGroup.get('fafsaId')?.value;
@@ -195,9 +197,9 @@ export class CollegeListComponent implements OnInit {
                         if (result && result != null) {
                             this.notificationService.createNotificationBasic('info', 'Info', 'Entered FAFSAID is alreay exist, to add this organization name please change entered FAFSAID.');
                             this.formGroup.get('fafsaId')?.setValue('');
+                            this.isCollegeNamePopupLoading = false;
                             return;
                         } else {
-                            this.isCollegeNamePopupLoading = true;
                             this.requestData.collegeSchoolId = this.formGroup?.get('collegeSchoolId')?.value;
                             this.requestData.orgName = this.formGroup?.get('name')?.value.trim();
                             this.requestData.inPullDown = this.formGroup?.get('inPullDown')?.value;

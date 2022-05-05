@@ -24,3 +24,6 @@
     flex-direction: column;
     align-items: flex-end;
 }
+.drop {
+    width: 200px;
+}
