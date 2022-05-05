@@ -429,6 +429,7 @@ export class StaffMemberComponent {
         this.addressList = [];
         this.isEdit = true;
         this.stctlbName = this.selectedRow.staffName;
+        this.displayStaffName = this.selectedRow.staffName;
         this.formGroup.get('staffName')?.setValue(this.selectedRow.staffName);
         this.formGroup.get('staffId')?.setValue(this.selectedRow.staffId);
         this.formGroup.get('id')?.setValue(this.selectedRow.id);

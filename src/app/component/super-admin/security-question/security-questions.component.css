@@ -32,3 +32,85 @@
 .display-flex{
     display: flex;
 }
+
+.security-form .lable-style {
+    font-size: 15px;
+    color: black;
+    font-weight: bold;
+}
+
+.form_section {
+    padding: 30px;
+    background: #ffffff;
+}
+
+.section-head {
+    width: 100%;
+    color: #1366a0;
+    font-size: 16px !important;
+    font-weight: bolder !important;
+    border-bottom: 1px solid #1366a0;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #1366a0;
+}
+
+
+.icon-pt {
+    cursor: pointer;
+    color: #1366a0;
+    font-size: 15px;
+    padding-right: 15px;
+}
+
+.print {
+    padding-left: 5px;
+}
+
+.sort {
+    cursor: pointer;
+}
+
+.set-height{
+max-height: 274px;
+}
+
+.tabStyle {
+    border: 1px solid #1366a0;
+    position: relative;
+    bottom: 17px;
+}
+
+.tabStyle-btn {
+    border-left: 1px solid #1366a0;
+    border-right: 1px solid #1366a0;
+    border-bottom: 1px solid #1366a0;
+    background: #ffffff;
+    padding: 15px 0px;
+    position: relative;
+    bottom: 17px;
+}
+
+.staff-form .lable-style {
+    font-size: 15px;
+    color: black;
+    font-weight: bold;
+}
+
+.staff-form input,
+.staff-form .ant-select,
+.staff-form textarea {
+    border: 1px solid black;
+    color: black;
+}

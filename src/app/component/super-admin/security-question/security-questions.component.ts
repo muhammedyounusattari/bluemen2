@@ -1,15 +1,10 @@
 import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog-box/confirm-dialog-box.component';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { HomeService } from 'src/app/services/home/home.service';
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable';
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
 
 
 @Component({
@@ -19,33 +14,22 @@ import { HomeService } from 'src/app/services/home/home.service';
 })
 
 export class SecurityQuestionsComponent implements OnInit {
-    @ViewChild('securityQuestionPopup') securityQuestionPopupRef: TemplateRef<any>;
-    modalRef: BsModalRef;
-    modalConfigSM = {
-        backdrop: true,
-        ignoreBackdropClick: true,
-        class: 'modal-md'
-    }
+
     selectedRow: any = '';
     isEdit: boolean = false;
-    myElement: any = null;
-    public spinner: boolean = true;
     selectedRowIndex: any;
     public securityQuesLst1: any = [];
     public securityQuesLst2: any = [];
     formGroup: FormGroup;
     securityQuestionsFormGroup:FormGroup;
-    columnsToDisplay: string[] = ['name'];
-    dataSource: MatTableDataSource<any>;
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-    @ViewChild(MatSort) set matSort(sort: MatSort) {
-        if (this.dataSource && !this.dataSource.sort) {
-            this.dataSource.sort = sort;
-        }
-    }
+    securityQuesLst: any = [];
+    securityQuesSearchLst: any = [];
     isLoading: boolean = true;
-    //securityQuestionsNameList = [{ 'name': 'Security Questions 1' }, { 'name': 'Security Questions 2' }];
+    securityQuestionModalHeader = 'Security Questions';
+    securityQuestionListPopupVisiblity = false;
+    isSecurityQuestionLoading = false;
+    isConfirmSecurityQuestionLoading = false;
+    selectedSecurityQuestionName : any = 'Security Questions 1';
     securityQuestionsNameList = [
        
         { key: 'Security Questions 1', value: '1', isSelected: true},
@@ -53,16 +37,13 @@ export class SecurityQuestionsComponent implements OnInit {
       ];
       defaultSelectedValue: any;
 
-    constructor(private modalService: BsModalService
-        , private dialog: MatDialog
-        , private toastr: ToastrService
-        , private formBuilder: FormBuilder
+    constructor(private formBuilder: FormBuilder
         , private sharedService: SharedService
-        , private homeService: HomeService) { }
+        , private homeService: HomeService
+        , private notificationService: NotificationUtilities) { }
 
     ngOnInit(): void {
         this.sharedService.setPageTitle('Security Questions');
-        this.myElement = window.document.getElementById('loading');
         this.createForm();
         this.hideLoader();
         this.getSecurityQuestionList();
@@ -72,38 +53,34 @@ export class SecurityQuestionsComponent implements OnInit {
         this.securityQuestionsNameList[0].isSelected = true; 
     }
 
-    applyFilter(filterValue: any) {
-        this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
-        if (this.dataSource.paginator) {
-            this.dataSource.paginator.firstPage();
-        }
+    applyFilter(search: any) {
+        const targetValue: any[] = [];
+        this.securityQuesSearchLst.forEach((value: any) => {
+          //let keys = Object.keys(value);
+          let keys = ["name"];
+          for (let i = 0; i < keys.length; i++) {
+            if (value[keys[i]] && value[keys[i]].toString().toLocaleLowerCase().includes(search)) {
+              targetValue.push(value);
+              break;
+            }
+          }
+        });
+        this.securityQuesLst = targetValue;
     }
 
-    openModal(template: TemplateRef<any>) {
-        this.modalRef = this.modalService.show(template, this.modalConfigSM)
-    }
 
     resetFields() {
         this.isEdit = false;
         this.createSecurityQuestionsForm();
-        this.openModal(this.securityQuestionPopupRef);
+        this.securityQuestionListPopupVisiblity = true;
     }
 
     hideLoader() {
-        this.myElement = window.document.getElementById('loading');
-        if (this.myElement !== null) {
-            this.spinner = false;
-            this.isLoading = false;
-            this.myElement.style.display = 'none';
-        }
+        this.isLoading = false;
     }
 
     showLoader() {
-        if (this.myElement !== null) {
-            this.spinner = true;
-            this.isLoading = true;
-            this.myElement.style.display = 'block';
-        }
+        this.isLoading = true;
     }
 
     setSelectedRow(selectedRowItem: any, index: Number) {
@@ -130,20 +107,18 @@ export class SecurityQuestionsComponent implements OnInit {
         this.homeService.getSecurityQuestionList().subscribe((result) => {
             this.hideLoader();
             if (result) {
-                if(result.body.question1){
                 this.securityQuesLst1 = result.body.question1;
                 this.securityQuesLst2 = result.body.question2;
-                this.dataSource = new MatTableDataSource(result.body.question1);
-                this.dataSource.paginator = this.paginator;
-                this.selectedRowIndex = null;
-                this.dataSource.sort = this.sort;
+                if(result.body.question1){
+                this.securityQuesLst = result.body.question1;
+                this.securityQuesSearchLst = result.body.question1;
+                this.securityQuestionsNameList[0].isSelected = true; 
+                this.securityQuestionsNameList[1].isSelected = false; 
                 }else if(result.body.question2){
-                    this.securityQuesLst1 = result.body.question1;
-                    this.securityQuesLst2 = result.body.question2;
-                    this.dataSource = new MatTableDataSource(result.body.question2);
-                    this.dataSource.paginator = this.paginator;
-                    this.selectedRowIndex = null;
-                    this.dataSource.sort = this.sort;
+                    this.securityQuesLst = result.body.question2;
+                    this.securityQuesSearchLst = result.body.question2;
+                    this.securityQuestionsNameList[0].isSelected = false; 
+                    this.securityQuestionsNameList[1].isSelected = true; 
                 }
             }
         });
@@ -151,17 +126,18 @@ export class SecurityQuestionsComponent implements OnInit {
 
     selectSecurityQuestions() {
         let securityQuestionsName = this.formGroup?.get('securityQuestionsName')?.value;
-        console.log(securityQuestionsName);
+        this.selectedSecurityQuestionName = this.formGroup?.get('securityQuestionsName')?.value;
         if(securityQuestionsName == '1'){
         this.securityQuesLst1 = this.securityQuesLst1;
-        this.dataSource = new MatTableDataSource(this.securityQuesLst1);
+        this.securityQuesLst = this.securityQuesLst1;
+        this.securityQuesSearchLst =  this.securityQuesLst1;
+        this.selectedSecurityQuestionName = 'Security Questions 1';
         }else{
             this.securityQuesLst2 = this.securityQuesLst2;
-            this.dataSource = new MatTableDataSource(this.securityQuesLst2);
+            this.securityQuesLst = this.securityQuesLst2;
+            this.securityQuesSearchLst =  this.securityQuesLst2;
+            this.selectedSecurityQuestionName = 'Security Questions 2';
         }
-        this.dataSource.paginator = this.paginator;
-        this.selectedRowIndex = null;
-        this.dataSource.sort = this.sort;
     }
 
     addSecurityQuestions(){
@@ -171,28 +147,23 @@ export class SecurityQuestionsComponent implements OnInit {
             this.homeService.postSecurityQuestion(this.requestPayload())
               .subscribe((result: any) => {
                 if (result) {
-                  this.toastr.success('Saved Successfully !', '', {
-                    timeOut: 5000,
-                    closeButton: true
-                  });
-                  this.modalRef.hide();
+                  this.notificationService.createNotificationBasic('success', "success", 'Saved Successfully');
+                  this.securityQuestionListPopupVisiblity = false;
                   this.homeService.getSecurityQuestionList().subscribe((result) => {
                     if (result) {
                        let val =  this.formGroup?.get('securityQuestionsName')?.value;
                         if(val == 1){
                         this.securityQuesLst1 = result.body.question1;
                         this.securityQuesLst2 = result.body.question2;
-                        this.dataSource = new MatTableDataSource(result.body.question1);
-                        this.dataSource.paginator = this.paginator;
-                        this.selectedRowIndex = null;
-                        this.dataSource.sort = this.sort;
+                        this.securityQuesLst =  result.body.question1;
+                        this.securityQuesSearchLst =  result.body.question1;
+
                         }else if(val == 2){
                             this.securityQuesLst1 = result.body.question1;
                             this.securityQuesLst2 = result.body.question2;
-                            this.dataSource = new MatTableDataSource(result.body.question2);
-                            this.dataSource.paginator = this.paginator;
-                            this.selectedRowIndex = null;
-                            this.dataSource.sort = this.sort;
+                            this.securityQuesLst =  result.body.question2;
+                            this.securityQuesSearchLst =  result.body.question2;
+
                         }
                     }
                 });
@@ -202,7 +173,13 @@ export class SecurityQuestionsComponent implements OnInit {
                 }
               });
           } else {
-            this.securityQuestionsFormGroup.markAllAsTouched();
+            Object.values(this.securityQuestionsFormGroup.controls).forEach(control => {
+                if (control.invalid) {
+                  control.markAsDirty();
+                  control.updateValueAndValidity({ onlySelf: true });
+                }
+              });
+              return;
           }
     }
 
@@ -210,19 +187,16 @@ export class SecurityQuestionsComponent implements OnInit {
    * @method setValuesToUpdate
    * @description Set the select row values in formgroup
    */
-    setValuesToUpdate() {
-        console.log(this.selectedRow);
+    setValuesToUpdate(selectedRowItem: any, index: any) {
+        this.setSelectedRow(selectedRowItem, index);
         if (this.selectedRow) {
             this.isEdit = true;
             this.securityQuestionsFormGroup.get('name') ?.setValue(this.selectedRow.name);
             this.securityQuestionsFormGroup.get('id') ?.setValue(this.selectedRow.id);
             this.formGroup.get('securityQuestionsName') ?.setValue(this.formGroup?.get('securityQuestionsName')?.value);
-            this.openModal(this.securityQuestionPopupRef);
+            this.securityQuestionListPopupVisiblity = true;
         } else {
-            this.toastr.info('Please select a row to update', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
+            this.notificationService.createNotificationBasic('info', "info", 'Please select a row to update');
         }
     }
 
@@ -231,48 +205,103 @@ export class SecurityQuestionsComponent implements OnInit {
     * @description update the record
     */
      updateSelectedRow() {
-        if (this.selectedRow && this.formGroup.valid) {
+        if (this.selectedRow && this.securityQuestionsFormGroup.valid) {
             this.isEdit = true;
             this.showLoader();
             this.homeService.postSecurityQuestion(this.requestPayload()).subscribe(result => {
                 if (result) {
                     this.isEdit = false;
                     this.selectedRow = null;
-                    this.toastr.success('Updated successfully!', '', {
-                        timeOut: 5000,
-                        closeButton: true
-                    });
-
+                    this.notificationService.createNotificationBasic('success', "success", 'Updated Successfully');
                     this.homeService.getSecurityQuestionList().subscribe((result) => {
                         if (result) {
                            let val =  this.formGroup?.get('securityQuestionsName')?.value;
                             if(val == 1){
                             this.securityQuesLst1 = result.body.question1;
                             this.securityQuesLst2 = result.body.question2;
-                            this.dataSource = new MatTableDataSource(result.body.question1);
-                            this.dataSource.paginator = this.paginator;
-                            this.selectedRowIndex = null;
-                            this.dataSource.sort = this.sort;
+                            this.securityQuesLst =  result.body.question1;
+                            this.securityQuesSearchLst =  result.body.question1;
                             }else if(val == 2){
                                 this.securityQuesLst1 = result.body.question1;
                                 this.securityQuesLst2 = result.body.question2;
-                                this.dataSource = new MatTableDataSource(result.body.question2);
-                                this.dataSource.paginator = this.paginator;
-                                this.selectedRowIndex = null;
-                                this.dataSource.sort = this.sort;
-                            }
+                                this.securityQuesLst =  result.body.question2;
+                                this.securityQuesSearchLst =  result.body.question2;                            }
                         }
-                    });    
-                this.modalRef.hide();
+                    });
+                this.securityQuestionListPopupVisiblity = false;        
                 this.hideLoader();
                 }else{
                   this.hideLoader();
                 }
             });
         } else {
-            this.formGroup.markAllAsTouched();
+            Object.values(this.securityQuestionsFormGroup.controls).forEach(control => {
+                if (control.invalid) {
+                  control.markAsDirty();
+                  control.updateValueAndValidity({ onlySelf: true });
+                }
+              });
+              return;
         }
     }
+
+     /**
+     * @method print
+     * @description show print and download the data.
+     */
+      print() {
+        var doc = new jsPDF('l', 'mm', 'a4');
+        const head = [['Security Questions Name']]
+        let data: any = [];
+        this.securityQuesLst.forEach((e: any) => {
+            var tempObj = [];
+            tempObj.push(e.name);
+            data.push(tempObj);
+        });
+        var name = this.selectedSecurityQuestionName;
+        autoTable(doc, {
+            head: head,
+            body: data,
+            theme: "grid",
+            showHead: "everyPage",
+            margin: { left: 20, right: 20, top: 30, bottom: 40 },
+            startY: 25,
+            headStyles: {
+                fillColor: [0, 57, 107]
+            },
+            alternateRowStyles: {
+                fillColor: [240, 240, 240]
+            },
+            tableLineColor: [208, 208, 208],
+            tableLineWidth: 0.1,
+            bodyStyles: {
+                fontSize: 12
+            },
+            styles: {
+                cellPadding: 3
+            },
+            didDrawPage: function (data) {
+                // Header
+                doc.setFontSize(20);
+                doc.setTextColor(40);
+                doc.text("Compansol TRIO Security Questions Name Listing", 140, 10, {
+                    align: 'center'
+                });
+                 doc.text(name, 140, 20, {
+                    align: 'center'
+                });
+
+            },
+            didDrawCell: (data) => { },
+        });
+        doc.setProperties({
+            title: "Security Questions Name"
+        });
+        window.open(doc.output('bloburl').toString(), '_blank');
+        //doc.output('dataurlnewwindow', { filename: 'standingGroup.pdf' });
+        //doc.save('college.pdf');  
+    }
+
 
 
     /**
@@ -286,4 +315,33 @@ export class SecurityQuestionsComponent implements OnInit {
       securityAnswer:  this.formGroup?.get('securityQuestionsName')?.value
     };
   }
+
+      /**
+   * @method handleCancel
+   * @description this method is used for hide popup and loading
+   */
+    handleCancel() {
+        this.isSecurityQuestionLoading = false;
+        this.securityQuestionListPopupVisiblity = false;
+    }
+
+     /**
+    * @method sorting
+    * @description this method is used for asc sorting
+    */
+      sorting(attr: string) {
+        if (this.securityQuesLst.length > 0) {
+            this.securityQuesLst = [...this.securityQuesLst].sort((a, b) => (a[attr] > b[attr]) ? 1 : -1)
+        }
+    }
+
+    /**
+    * @method sorting
+    * @description this method is used for desc sorting
+    */
+    sorting2(attr: string) {
+        if (this.securityQuesLst.length > 0) {
+            this.securityQuesLst = [...this.securityQuesLst].sort((a, b) => (a[attr] < b[attr]) ? 1 : -1)
+        }
+    }
 }
