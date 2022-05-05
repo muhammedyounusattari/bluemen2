@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 })
 export class ChangePasswordComponent implements OnInit {
   public changePasswordForm!: FormGroup;
+  public changeSecuiryQuestionsForm!: FormGroup;
 
   public userName: string;
   public password: string;
@@ -40,6 +41,8 @@ export class ChangePasswordComponent implements OnInit {
   public isSpecialChar: string = "fa fa-close";;
   public passwordMatch: string = "fa fa-close";
 
+  areSecurityQuestionsVisible = false;
+
   constructor(public homeService: HomeService,
     private sharedService: SharedService, private fb: FormBuilder,
     private notificationService: NotificationUtilities,
@@ -48,13 +51,18 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sharedService.setPageTitle('Change Password');
+    this.sharedService.setPageTitle('Choose a new password');
     this.changePasswordForm = this.fb.group({
       formLayout: ['horizontal'],
       email: [{ disabled: true, value: "" }, [Validators.required]],
       password: [null, [Validators.required]],
       newPassword: [null, [Validators.required], [this.newPasswordAsyncValidator]],
-      confPassword: [null, [Validators.required, this.confirmValidator]],
+      confPassword: [null, [Validators.required, this.confirmValidator]]
+    });
+
+    this.changeSecuiryQuestionsForm = this.fb.group({
+      formLayout: ['horizontal'],
+      email: [{ disabled: true, value: "" }, [Validators.required]],
       securityQues1: [null, [Validators.required]],
       answer1: [null, [Validators.required]],
       securityQues2: [null, [Validators.required]],
@@ -92,11 +100,32 @@ export class ChangePasswordComponent implements OnInit {
 
   }
 
-  onSubmit() {
+  onPasswordSubmit() {
     if (this.changePasswordForm.valid) {
       let payload = {
         "password": this.password,
-        "confPassword": this.confPassword,
+        "confPassword": this.confPassword
+      };
+      this.homeService.changePassword(payload).subscribe((result) => {
+        result = JSON.parse(result);
+        if (result.status === '200') {
+          this.notificationService.createNotificationBasic('success', "Change Password", 'Password changed Successfully!');
+          this.areSecurityQuestionsVisible = true;
+        } else {
+          this.notificationService.createNotificationBasic('error', "Change Password", 'Password change failed!');
+        }
+
+      }, (error: any) => {
+        console.log(error);
+        this.notificationService.createNotificationBasic('error', "Change Password", 'Password change failed!');
+      });
+    }
+  }
+
+  onSecurityQuestionsSubmit() {
+    if (this.changePasswordForm.valid) {
+      let payload = {
+
         "securityQuestion1": this.securityQues1,
         "securityQuestion2": this.securityQues2,
         "securityAnswer1": this.answer1,
@@ -106,6 +135,7 @@ export class ChangePasswordComponent implements OnInit {
         result = JSON.parse(result);
         if (result.status === '200') {
           this.notificationService.createNotificationBasic('success', "Change Password", 'Password changed Successfully!');
+          this.areSecurityQuestionsVisible = false;
           window.location.assign('');
         } else {
           this.notificationService.createNotificationBasic('error', "Change Password", 'Password change failed!');
@@ -117,6 +147,7 @@ export class ChangePasswordComponent implements OnInit {
       });
     }
   }
+
 
   newPasswordAsyncValidator = (control: FormControl) =>
     new Observable((observer: Observer<ValidationErrors | null>) => {

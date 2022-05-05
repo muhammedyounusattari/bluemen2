@@ -73,6 +73,7 @@ import { StaffMemberMoveBoxComponent } from './customize/move-box/staff-member-m
 import { GradeStandingComponent } from './customize/grade-standing/grade-standing.component';
 import { GradeComponent } from './customize/grade-standing/grade/grade.component';
 import { StandingComponent } from './customize/grade-standing/standing/standing.component';
+import { LabSettingPreferencesComponent } from './customize/lab-setting-preferences/lab-setting-preferences.component';
 
 const maskConfigFunction: () => Partial<IConfig> = () => {
   return {
@@ -127,7 +128,8 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
     StaffMemberMoveBoxComponent,
     GradeStandingComponent,
     GradeComponent,
-    StandingComponent
+    StandingComponent,
+    LabSettingPreferencesComponent
   ],
   imports: [
     AdminRoutingModule,

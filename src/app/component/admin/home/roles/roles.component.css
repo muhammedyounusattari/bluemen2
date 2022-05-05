@@ -62,10 +62,6 @@ button {
     padding: 2rem;
 }
 
-.tabStyle {
-    /* border: 1px solid #1366a0; */
-}
-
 .tabStyle-btn {
     border-left: 1px solid #1366a0;
     border-right: 1px solid #1366a0;
@@ -80,7 +76,7 @@ button {
 }
 
 .form_section {
-    padding: 0px 30px 30px 30px;
+    padding: 30px;
     background: #ffffff;
 }
 
@@ -96,7 +92,6 @@ button {
     font-size: 15px;
     color: black;
     font-weight: bold;
-    margin: 8px;
 }
 
 .staff-form input, .staff-form .ant-select, .staff-form textarea {

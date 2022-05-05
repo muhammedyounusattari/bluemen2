@@ -6,6 +6,7 @@
     border: 1px solid #1366a0;
     position: relative;
     bottom: 17px;
+    margin-top: 17px;
 }
 
 .tabStyle-btn {
@@ -51,7 +52,7 @@
 }
 
 .form_section {
-    padding: 30px;
+    padding: 30px 30px 0px 30px;
     background: #ffffff;
 }
 
@@ -87,11 +88,6 @@
     font-weight: bold;
 }
 
-.staff-form input, .staff-form .ant-select, .staff-form textarea {
-    border-color: black;
-    color: black;
-}
-
 .staff-address-form .lable-style {
     font-size: 15px;
     color: black;
@@ -99,7 +95,7 @@
 }
 
 .staff-address-form input, .staff-address-form .ant-select, .staff-address-form textarea, .staff-address-form input[type='checkbox'] {
-    border-color: black;
+    border: 1px solid black;
 }
 
 .upload-btn {
@@ -202,37 +198,25 @@ button.upload-btn.ant-btn:active, button.upload-btn.ant-btn:hover {
 
 .full-width-container {
     width: 100%;
-    display: block;
 }
 
 .btn-color {
     background-color: #1366a0;
 }
 
-.action-icon {
-    cursor: pointer;
-    color: #1366a0;
-    font-size: 15px;
-    padding-right: 15px;
-}
-
-.search-input {
-    border: 1px solid #1366a0;
-}
-
-.search-filter-item {
-    margin-bottom: 0px;
-}
-
-.search-filter-btn {
-    margin-right: 15px;
-}
-
-.search-filter-icon {
-    position: relative;
-    bottom: 2px;
-}
-
-.form-width-container {
+.section-para {
     width: 100%;
+    color: #1366a0;
+    font-size: 16px !important;
+    font-weight: bolder !important;
+}
+
+.marTop30 {
+    position: relative;
+    top: 30px;
+}
+
+.staff-form input, .staff-form .ant-select, .staff-form textarea {
+    border-color: black;
+    color: black;
 }

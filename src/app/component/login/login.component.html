@@ -11,8 +11,7 @@
 
     <div class="row">
         <div class="col-md-6 text-center  ">
-            <img src="../../../assets/img/left-img.png" class="mt-5 ml-5" alt="Blumen Online for TRIO"
-                title="">
+            <img src="../../../assets/img/left-img.png" class="mt-5 ml-5" alt="Blumen Online for TRIO" title="">
         </div>
 
         <div class="col-md-6">
@@ -25,55 +24,83 @@
                             Welcome! </h4>
                         <p>Please login with your credentials…</p>
                     </div>
-                    <form [formGroup]="formGroup" (ngSubmit)="validate(formGroup.value)" class="form">
-                        <div class="form-group first txtAlign">
-                            <mat-form-field class="example-full-width" appearance="fill">
-                                <mat-label>Organization  Code</mat-label>
-                                <input matInput value="" formControlName="organization" [readOnly]="isValidUser" minlength="3" required>
-                                <!-- <mat-error *ngIf="formGroup.controls['orgCode'].invalid">
-                                    {{getError('orgCode')}}
-                                </mat-error> -->
-                            </mat-form-field>
-                        </div>
-                        <div class="form-group first txtAlign">
-                            <mat-form-field class="example-full-width" appearance="fill">
-                                <mat-label>EmailId</mat-label>
-                                <input matInput value="" required formControlName="email" [readOnly]="isValidUser">
-                                <!-- <mat-error *ngIf="formGroup.controls['username'].invalid">
-                                    {{getError('user')}}
-                                </mat-error> -->
-                            </mat-form-field>
-                        </div>
-                        <div class="form-group last mb-login txtAlign" *ngIf="isValidUser">
-                            <mat-form-field class="example-full-width" appearance="fill">
-                                <mat-label>Password</mat-label>
-                                <input [type]="hide ? 'password' : 'text'" matInput value="" formControlName="password"
-                                    required>
-                                    <!-- (window:mousedown)="hide = false;" (window:mouseup)="hide = true;" -->
-                                <mat-icon matSuffix>
-                                    <i *ngIf="!hide" class="fa fa-eye" id="eye-icon"></i>
-                                    <i *ngIf="hide" class="fa fa-eye-slash" id="eye-icon"></i>
-                                </mat-icon>
-                                <!-- <mat-error *ngIf="!formGroup.controls['password'].valid">
-                                    {{getError('pass')}}
-                                </mat-error> -->
-                            </mat-form-field>
-                        </div>
+                    <div nz-col [nzSpan]="24" nz-row class="login-box">
+                        <form nz-form [formGroup]="formGroup" [nzLayout]="formGroup.get('formLayout')?.value">
+                            <div nz-col [nzSpan]="24">
+                                <div nz-row [nzGutter]="24" class="full-width-container">
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item class="space-between">
+                                            <nz-form-label class="lable-style">Organization Code</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter Organization Code">
+                                                <input nz-input type="text" formControlName="organization"
+                                                    [(ngModel)]="loginModel.organization"
+                                                    placeholder="Organization Code" [disabled]="isValidUser" />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <!-- <div class="form-group first txtAlign">
+                                        <mat-form-field class="example-full-width" appearance="fill">
+                                            <mat-label>Organization  Code</mat-label>
+                                            <input matInput value="" formControlName="organization" [readOnly]="isValidUser" minlength="3" required>
+                                        </mat-form-field>
+                                    </div> -->
+                                </div>
+                                <div nz-row [nzGutter]="24" class="full-width-container">
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item class="space-between">
+                                            <nz-form-label class="lable-style">Email Id</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter Email Id">
+                                                <input nz-input type="text" formControlName="email"
+                                                    [(ngModel)]="loginModel.email" placeholder="Email Id"
+                                                    [disabled]="isValidUser" />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <!-- <div class="form-group first txtAlign">
+                                        <mat-form-field class="example-full-width" appearance="fill">
+                                            <mat-label>EmailId</mat-label>
+                                            <input matInput value="" required formControlName="email" [readOnly]="isValidUser">
+                                        </mat-form-field>
+                                    </div> -->
+                                </div>
+                                <div nz-row [nzGutter]="24" class="full-width-container">
+                                    <div nz-col [nzSpan]="24" *ngIf="isValidUser">
+                                        <nz-form-item class="space-between">
+                                            <nz-form-label class="lable-style">Password</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter Password">
+                                                <input nz-input [type]="hide ? 'password' : 'text'"
+                                                    formControlName="password" [(ngModel)]="loginModel.password"
+                                                    placeholder="Password" />
+                                            </nz-form-control>
+                                            <!-- <ng-template #suffixIconShowHidePwd>
+                                                <i *ngIf="!hide" class="fa fa-eye" (window:mouseup)="hide = true;"
+                                                id="eye-icon"></i>
+                                                <i *ngIf="hide" class="fa fa-eye-slash" id="eye-icon"
+                                                (window:mousedown)="hide = false;"></i>
+                                              </ng-template> -->
+                                        </nz-form-item>
+                                    </div>
+                                </div>
 
-                        <button mat-raised-button color="primary" type="submit" *ngIf="!isValidUser" style="width:30%"
-                            class="submit btn text-white btn-block btn-primary button" (click)="checkUserExist()">Proceed to Login</button>
-                        <button mat-raised-button color="primary" type="submit" *ngIf="isValidUser"
-                            class="submit btn text-white btn-block btn-primary button">LOGIN</button>
-                        <mat-error class="mts-5" *ngIf="isInvalidCredentials">
-                            {{errorMessage}}
-                        </mat-error>
+                                <div class="modal-footer-btn">
+                                    <button nz-button nzType="primary" type="submit" *ngIf="!isValidUser"
+                                        style="width:40%" class="submit btn text-white btn-block btn-primary button"
+                                        (click)="checkUserExist()">Proceed to Login</button>
+                                    <button nz-button nzType="primary" type="submit" *ngIf="isValidUser"
+                                        class="submit btn text-white btn-block btn-primary button" (click)="validate(formGroup)">LOGIN</button>&nbsp;&nbsp;
+                                    <div class="mts-5" *ngIf="isInvalidCredentials">
+                                        {{errorMessage}}
+                                    </div>
 
-                        <div class="d-flex align-items-center mts-5" *ngIf="isValidUser && !isFirstTime">
-                            <span class="mr-auto"><a href="javascript:void(0)" (click)="forgotPwd()"
-                                    class="forgot-pass forgot">Forgot
-                                    Password ?</a></span>
-                        </div>
-                    </form> 
+                                    <div class="d-flex align-items-center mts-5" *ngIf="isValidUser && !isFirstTime">
+                                        <span class="mr-auto"><a href="javascript:void(0)" (click)="forgotPwd()"
+                                                class="forgot-pass forgot">Forgot
+                                                Password ?</a></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -89,123 +116,154 @@
     </div>
 </div>
 
-<!-- Modal Start-->
-<ng-template #forgotPasswordPopup>
-    <!-- Modal -->
-    <div class="modal-header popHeaderBG">
-        <span class="modal-title popHeader" id="exampleModalLabel">Forgot Password</span>
-        <button type="button" class="btn-close" (click)="modalRef.hide()" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <form [formGroup]="formGroup1" class="form">
-                    <div class="form-group first txtAlign">
-                        <mat-form-field class="forgot-password-textbox" appearance="fill">
-                            <mat-label>Organization Type</mat-label>
-                            <input matInput value="" formControlName="fpOrgCode" minlength="3" required>
-                        </mat-form-field>
+<!-- Forgot Password Modal Start-->
+<nz-modal [(nzVisible)]="isFPModalVisible" nzTitle={{fpModalHeader}} (nzOnCancel)="handleCancel()"
+    [nzFooter]="activityModalFooter" nzWidth="75%" [nzOkLoading]="isConfirmFPLoading">
+    <ng-template #activityModalFooter>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+            <button nz-button nzType="primary" [nzLoading]="isConfirmFPLoading" (click)="validateAnswer();"
+                [disabled]="!isVisible">Submit</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div class="tab-content paddingModal" nz-row>
+            <div nz-col [nzSpan]="24" nz-row>
+                <form nz-form [formGroup]="formGroup1" [nzLayout]="formGroup1.get('formLayout')?.value">
+                    <div nz-col [nzSpan]="24">
+                        <div nz-row [nzGutter]="24" class="full-width-container">
+                            <div nz-col [nzSpan]="24">
+                                <nz-form-item class="space-between">
+                                    <nz-form-label class="lable-style">Organization Code</nz-form-label>
+                                    <nz-form-control nzErrorTip="Please Enter Organization Code">
+                                        <input nz-input type="text" formControlName="fpOrgCode"
+                                            placeholder="Organization Code" class="fpOrgCode-txt" required />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+                        <div nz-row [nzGutter]="24" class="full-width-container">
+                            <div nz-col [nzSpan]="24">
+                                <nz-form-item class="space-between">
+                                    <nz-form-label class="lable-style">Email</nz-form-label>
+                                    <nz-form-control nzErrorTip="Please Enter Email Id">
+                                        <input nz-input type="text" formControlName="fpEmail" placeholder="Email Id"
+                                            (blur)="getSecQuestions()" class="fpEmail-txt" required />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+                        <div nz-row [nzGutter]="24" class="full-width-container" *ngIf="isVisible">
+                            <div nz-col [nzSpan]="24">
+                                <nz-form-item class="space-between">
+                                    <nz-form-label class="lable-style">Security Question 1</nz-form-label>
+                                    <nz-form-control nzErrorTip="Please Enter Security Question 1">
+                                        <input nz-input type="text" formControlName="securityQuestion1"
+                                            placeholder="Email Security Question 1" class="fpSec1" required />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+                        <div nz-row [nzGutter]="24" class="full-width-container" *ngIf="isVisible">
+                            <div nz-col [nzSpan]="24">
+                                <nz-form-item class="space-between">
+                                    <nz-form-label class="lable-style">Answer</nz-form-label>
+                                    <nz-form-control nzErrorTip="Please Enter Security Question 1 Answer">
+                                        <input nz-input type="text" formControlName="securityAnswer1"
+                                            placeholder="Email Security Answer 1" class="fpAnswer" required />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+                        <div nz-row [nzGutter]="24" class="full-width-container" *ngIf="isVisible">
+                            <div nz-col [nzSpan]="24">
+                                <nz-form-item class="space-between">
+                                    <nz-form-label class="lable-style">Security Question 2</nz-form-label>
+                                    <nz-form-control nzErrorTip="Please Enter Security Question 2">
+                                        <input nz-input type="text" formControlName="securityQuestion2"
+                                            placeholder="Email Security Question 2" class="fpSec1" required />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+                        <div nz-row [nzGutter]="24" class="full-width-container" *ngIf="isVisible">
+                            <div nz-col [nzSpan]="24">
+                                <nz-form-item class="space-between">
+                                    <nz-form-label class="lable-style">Answer</nz-form-label>
+                                    <nz-form-control nzErrorTip="Please Enter Security Question 2 Answer">
+                                        <input nz-input type="text" formControlName="securityAnswer2"
+                                            placeholder="Email Security Answer 2" class="fpAnswer" required />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+                        <div class="mts-5" *ngIf="fpError">
+                            {{errorFPMessage}}
+                        </div>
                     </div>
-                    <div class="form-group first txtAlign">
-                        <mat-form-field class="forgot-password-textbox" appearance="fill">
-                            <mat-label>Email</mat-label>
-                            <input matInput value="" required (blur)="getSecQuestions()" formControlName="fpEmail">
-                        </mat-form-field>
-                    </div>
-                    <div class="form-group last mb-login txtAlign" *ngIf="isVisible">
-                        <mat-form-field class="forgot-password-textbox" appearance="fill">
-                            <mat-label>Security Question 1</mat-label>
-                            <input matInput value="" formControlName="securityQuestion1" minlength="3" required
-                                readonly>
-                        </mat-form-field>
-                    </div>
-                    <div class="form-group last mb-login txtAlign" *ngIf="isVisible">
-                        <mat-form-field class="forgot-password-textbox" appearance="fill">
-                            <mat-label>Answer</mat-label>
-                            <input matInput value="" formControlName="securityAnswer1" minlength="3" required>
-                        </mat-form-field>
-                    </div>
-                    <div class="form-group last mb-login txtAlign" *ngIf="isVisible">
-                        <mat-form-field class="forgot-password-textbox" appearance="fill">
-                            <mat-label>Security Question 2</mat-label>
-                            <input matInput value="" formControlName="securityQuestion2" minlength="3" required
-                                readonly>
-                        </mat-form-field>
-                    </div>
-                    <div class="form-group last mb-login txtAlign" *ngIf="isVisible">
-                        <mat-form-field class="forgot-password-textbox" appearance="fill">
-                            <mat-label>Answer</mat-label>
-                            <input matInput value="" formControlName="securityAnswer2" minlength="3" required>
-                        </mat-form-field>
-                    </div>
-                    <mat-error class="mts-5" *ngIf="fpError">
-                        {{errorFPMessage}}
-                    </mat-error>
                 </form>
             </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-v .primary" (click)="validateAnswer();"
-            [disabled]="!isVisible">Submit</button>
-        <button type="button" class="btn btn-secondary" id="closePopup" (click)="modalRef.hide();">Cancel</button>
-    </div>
-</ng-template>
-<!-- Modal End-->
-
-<!-- Modal Start-->
-<ng-template #twoFactorPopup>
-    <!-- Modal -->
-    <div class="modal-header popHeaderBG">
-        <span class="modal-title popHeader" id="exampleModalLabel">Two Factor Authentication</span>
-        <button type="button" class="btn-close" (click)="modalRef.hide()" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <div class="row">
-                    <div class="form-group first txtAlign">
-                        <mat-radio-group aria-label="Select an option">
-                            <mat-radio-button value="1">{{authenticateResponse.maskedEmail}}</mat-radio-button>  &nbsp;&nbsp;
-                            <mat-radio-button value="2">Phone</mat-radio-button>
-                          </mat-radio-group>
+    </ng-container>
+</nz-modal>
+<!-- Forgot Password Modal End-->
+ 
+<!-- TFA Modal Start-->
+<nz-modal [(nzVisible)]="isTFAModalVisible" nzTitle={{tfaModalHeader}} (nzOnCancel)="handleCancel()"
+    [nzFooter]="activityModalFooter1" nzWidth="40%" [nzOkLoading]="isConfirmTFALoading">
+    <ng-template #activityModalFooter1>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+            <button nz-button nzType="primary" [disabled]="isRunning" [nzLoading]="isConfirmTFALoading" (click)="getSecurityCode();">Submit</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div class="tab-content paddingModal" nz-row>
+            <div nz-col [nzSpan]="24" nz-row>
+                <form nz-form [formGroup]="formGroup2" [nzLayout]="formGroup2.get('formLayout')?.value">
+                    <div nz-col [nzSpan]="24">
+                        <div nz-row [nzGutter]="24" class="full-width-container">
+                            <div nz-col [nzSpan]="24">
+                                <nz-radio-group [(ngModel)]="tfaValue" formControlName="twoFactor">
+                                    <label nz-radio [nzValue]="1" selected>{{authenticateResponse.maskedEmail}}</label>
+                                    <label nz-radio [nzValue]="2">Phone</label>
+                                </nz-radio-group>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
-        <div class="spin-loader" *ngIf="isRunning">
-            <nz-spin nzSimple></nz-spin>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-v .primary" [disabled]="isRunning" (click)="getSecurityCode();">Send</button>
-        <button type="button" class="btn btn-secondary" [disabled]="isRunning" id="closePopup" (click)="modalRef.hide();">Cancel</button>
-    </div>
-</ng-template>
-<!-- Modal End-->
+    </ng-container>
+</nz-modal>
+<!-- TFA Modal Start-->
 
-<!-- Modal Start-->
-<ng-template #validateCodePopup>
-    <!-- Modal -->
-    <div class="modal-header popHeaderBG">
-        <span class="modal-title popHeader" id="exampleModalLabel">Validate Code To Login</span>
-        <button type="button" class="btn-close" (click)="modalRef.hide()" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <div class="form-group">
-                    <mat-form-field class="forgot-password-textbox" appearance="fill">
-                        <mat-label>Enter Code</mat-label>
-                        <input matInput value="" [(ngModel)]="otpCode" required>
-                    </mat-form-field>
-                </div>
+<!-- Validate Code Modal Start-->
+<nz-modal [(nzVisible)]="isVCModalVisible" nzTitle={{vcModalHeader}} (nzOnCancel)="handleCancel()"
+    [nzFooter]="activityModalFooter2" nzWidth="40%" [nzOkLoading]="isConfirmVCLoading">
+    <ng-template #activityModalFooter2>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+            <button nz-button nzType="primary" [nzLoading]="isConfirmVCLoading" (click)="validateCode();"
+            [disabled]="isRunning">Validate</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div class="tab-content paddingModal" nz-row>
+            <div nz-col [nzSpan]="24" nz-row>
+                <form nz-form [formGroup]="formGroup3" [nzLayout]="formGroup3.get('formLayout')?.value">
+                    <div nz-col [nzSpan]="24">
+                        <nz-form-item class="space-between">
+                            <nz-form-label class="lable-style">Validate Code</nz-form-label>
+                            <nz-form-control nzErrorTip="Please Enter OTP">
+                                <input nz-input type="text" formControlName="otpCode"
+                                    placeholder="Enter OTP" required />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-v .primary" (click)="validateCode();" [disabled]="isRunning">Validate</button>
-        <button type="button" class="btn btn-secondary" id="closePopup" (click)="modalRef.hide();" [disabled]="isRunning">Cancel</button>
-    </div>
-</ng-template>
-<!-- Modal End-->
+    </ng-container>
+</nz-modal>
+<!-- Validate Code Modal End -->

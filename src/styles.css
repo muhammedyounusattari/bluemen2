@@ -37,9 +37,9 @@ a {
 }
 .login-footer{bottom: 0px!important; position: absolute;}
 .bottom-left{margin-left:22px;}
-.loginlogo{margin-bottom: 7%;  margin-top: 5%;}
+.loginlogo{margin-bottom: 5%;  margin-top: 5%;}
 .welcome{color: #00396b !important;; font-weight: 500!important; font-size: 40px!important; font-family: 'Montserrat', sans-serif!important; 
-                            letter-spacing: 1px!important; margin-bottom: 7%!important;}
+                            letter-spacing: 1px!important; margin-bottom: 5%!important;}
 .crediential{color: #222222; padding-left:44px; font-family: 'Montserrat', sans-serif; margin: 0px 0 5px 0!important; font-size: 15px; font-weight: 500;}
 .submit{background: #00396b!important; border-radius: 0px!important; font-weight: 600; font-size: 16px; background: #1672B7!important; font-family: 'Montserrat', sans-serif; width: 140px; height: 40px;}
 .forgot{color: #1671B6;  font-family:Montserrat, sans-serif; font-size: 15px;}
@@ -839,24 +839,24 @@ div.validation-info.active {
     margin-left: 30px;
 }
 
-nz-select-item.ant-select-selection-item {
+/* nz-select-item.ant-select-selection-item {
     background: #1366a0 !important;
     padding: 0px 11px !important;
     color: #ffffff;
     border: 1px solid #1366a0;
-}
+} */
 
 nz-select-item.ant-select-selection-item .ant-select-arrow {
     color: white;
 }
 
-.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+/* .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
     padding: 0px;
-}
+} */
 
-.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+/* .ant-select:not(.ant-select-customize-input) .ant-select-selector {
     border: none;
-}
+} */
 
 .ant-picker-suffix {
     color: #1366a0;
@@ -873,7 +873,7 @@ nz-select-item.ant-select-selection-item .ant-select-arrow {
 .ant-table-thead > tr > th {
     color: white;
     background: #1366a0;
-    border: 1px solid #1366a0;
+    border: 1px solid white;
     padding: 6px;
     font-size: 14px;
     font-weight: bold;
@@ -1017,4 +1017,13 @@ a.ant-btn.ant-btn-link {
     margin-bottom: 20px;
     padding: 30px 50px;
     margin: 20px 0;
+}
+
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border: 1px solid black;
+}
+
+.ant-select-multiple .ant-select-selection-item {
+    background: #1366a0;
+    color: white;   
 }

@@ -32,6 +32,7 @@ import { PullTypeComponent } from './home/pull-type/pull-type.component';
 import { OrganizationComponent } from '../super-admin/organization/organization.component';
 import { SecurityQuestionsComponent } from '../super-admin/security-question/security-questions.component';
 import { GradeStandingComponent } from './customize/grade-standing/grade-standing.component';
+import { LabSettingPreferencesComponent } from './customize/lab-setting-preferences/lab-setting-preferences.component';
 const routes: Routes = [
   {
     path: 'admin/customize/pulldown-list',
@@ -294,9 +295,26 @@ const routes: Routes = [
     path: 'teacher/teachers',
     component: TeacherComponent
   },
+  // {
+  //   path: 'admin/customize/lab-settings',
+  //   component: LabSettingsPreferencesComponent,
+  //   data: {
+  //     title: 'Lab Settings',
+  //     breadcrumb: [
+  //       {
+  //         label: 'Home',
+  //         url: 'admin/home'
+  //       },
+  //       {
+  //         label: 'Lab Settings',
+  //         url: ''
+  //       }
+  //     ]
+  //   }
+  // },
   {
-    path: 'admin/customize/lab-settings',
-    component: LabSettingsPreferencesComponent,
+    path: 'admin/customize/lab-settings-preferences',
+    component: LabSettingPreferencesComponent,
     data: {
       title: 'Lab Settings',
       breadcrumb: [

@@ -89,4 +89,26 @@ export class SharedService {
     getUserInformation() {
         return this.userInfo;
     }
+
+    isSuperAdmin(): boolean {
+        let user: any = '';
+        user = sessionStorage.getItem('state');
+        if(user) {
+            user = JSON.parse(user);
+            if (user.roleName == 'Super Admin') {
+                return true;
+            }
+        } 
+        return false;
+    }
+
+    getOrgId(): number|undefined {
+        let user: any = '';
+        user = sessionStorage.getItem('state');
+        if(user) {
+            user = JSON.parse(user);
+            return user.orgId;
+        } 
+        return undefined;
+    }
 }

@@ -77,7 +77,7 @@
 }
 
 .staff-form input, .staff-form .ant-select, .staff-form textarea {
-    border: 1px solid black;
+    border-color: black;
     color: black;
 }
 

@@ -88,7 +88,7 @@
 }
 
 .staff-form input, .staff-form .ant-select, .staff-form textarea {
-    border: 1px solid black;
+    border-color: black;
     color: black;
 }
 
@@ -99,7 +99,7 @@
 }
 
 .staff-address-form input, .staff-address-form .ant-select, .staff-address-form textarea, .staff-address-form input[type='checkbox'] {
-    border: 1px solid black;
+    border-color: black;
 }
 
 .upload-btn {

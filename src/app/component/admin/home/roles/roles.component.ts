@@ -79,6 +79,7 @@ export class RolesComponent implements  OnInit {
 
   roleFormGroup: FormGroup;
   selectedRoleId: any;
+  isSelectedRoleDefault: boolean;
   user: any;
   defaultTopPrivilege: TreeNode;
 
@@ -87,6 +88,9 @@ export class RolesComponent implements  OnInit {
 
   renameRoleFormGroup: FormGroup;
   isRenameRoleModalVisible = false;
+
+  isSuperAdmin = false;
+  isDisabled = true;
 
   constructor(private sharedService: SharedService
     , private rolesService: RolesService
@@ -97,6 +101,9 @@ export class RolesComponent implements  OnInit {
 
   ngOnInit(): void {
     this.sharedService.setPageTitle('Roles');
+    if (this.sharedService.isSuperAdmin()) {
+      this.isSuperAdmin = true;
+    }
     this.createForm();
     this.loadRoleNames();
 
@@ -152,6 +159,17 @@ export class RolesComponent implements  OnInit {
   setBgColorForSelectedRole(id: any, roleName: string) {
     this.selectedRoleId = id;
     this.roleNameList.forEach((element: any) => {
+      if( element.id === id) {
+        //find if clicked role in list is default or not
+        this.isSelectedRoleDefault = element.default;
+        if (this.isSuperAdmin) {
+          this.isDisabled = false;
+        } else if(!this.isSelectedRoleDefault) {
+          this.isDisabled = false;
+        } else {
+          this.isDisabled = true;
+        }
+      }
       const roleId = document.getElementById(element.id);
       if (roleId) {
         roleId.style.backgroundColor = 'white';
@@ -163,6 +181,7 @@ export class RolesComponent implements  OnInit {
       roleId.style.backgroundColor = '#1366a0';
       roleId.style.color = 'white';
     }
+
     this.userRoles = [];
     this.getPriviledgesByRoleName(id, roleName);
   }
@@ -294,10 +313,13 @@ export class RolesComponent implements  OnInit {
         if (result) {
           this.notificationService.createNotificationBasic('success', 'Rename Role', 'Role Name Successfully');
           this.loadRoleNames();
+          this.isRenameRoleModalVisible = false;
         }
       }, (error: any) => {
         console.log(error);
-        this.notificationService.createNotificationBasic('error', 'Rename Role', 'Role Name Failed');      });
+        this.notificationService.createNotificationBasic('error', 'Rename Role', 'Role Name Failed');  
+        this.isRenameRoleModalVisible = false;
+      });
 
     } else {
       //TODO

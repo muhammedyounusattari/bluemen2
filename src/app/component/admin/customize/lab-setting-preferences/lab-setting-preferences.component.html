@@ -1,0 +1,227 @@
+<div class="custom-body">
+    <div nz-row>
+        <div nz-col [nzSpan]="24">
+            <form nz-form class="staff-form" [nzLayout]="labSettingForm.get('formLayout')?.value"
+            [formGroup]="labSettingForm">
+                <div nz-row class="tabStyle">
+                    <div nz-col [nzSpan]="24">
+                        <div nz-row class="form_section">
+                            <div nz-row [nzGutter]="24" class="full-width-container">
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style" nzRequired>Search Priority</nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Enter Search Priority">
+                                            <nz-select nzMode="tags" nzPlaceHolder="Search Priority" formControlName="lapSearchPriority"
+                                                 [nzMaxMultipleCount]="1" [(ngModel)]="labSettingData.lapSearchPriority">
+                                                <nz-option *ngFor="let lap of lapSearchPriorityList" [nzLabel]="lap.longpullna" [nzValue]="lap.longpullna"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style" nzRequired>Component</nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Enter Component">
+                                            <nz-select nzMode="tags" nzPlaceHolder="Component" formControlName="labComponents"
+                                                 [nzMaxMultipleCount]="1" [(ngModel)]="labSettingData.labComponents">
+                                                <nz-option *ngFor="let lab of labComponentsList" [nzLabel]="lab.longpullna" [nzValue]="lab.longpullna"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style" nzRequired>Fiscal Year</nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Enter Fiscal Year">
+                                            <input nz-input type="text" formControlName="labFiscalYear"
+                                                [(ngModel)]="labSettingData.labFiscalYear"
+                                                placeholder="Fiscal Year" />
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style" nzRequired>Wait Window Time</nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Enter Wait Window Time">
+                                            <input nz-input type="text" formControlName="labWaitWindowTime"
+                                                [(ngModel)]="labSettingData.labWaitWindowTime"
+                                                placeholder="Wait Window Time" />
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style">Maximum Checkout Time</nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Enter Maximum Checkout Time">
+                                            <input nz-input type="text" formControlName="labMaxCheckoutTime"
+                                                [(ngModel)]="labSettingData.labMaxCheckoutTime"
+                                                placeholder="Maximum Checkout Time" />
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style">Forced Time Spent</nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Enter Forced Time Spent">
+                                            <input nz-input type="text" formControlName="labForcedTimeSpent"
+                                                [(ngModel)]="labSettingData.labForcedTimeSpent"
+                                                placeholder="Forced Time Spent" />
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                            </div>
+
+                            <div nz-row class="full-width-container">
+                                <h6 class="section-head">Hide Options</h6>
+                            </div>
+                            
+                            <div nz-row [nzGutter]="24" class="full-width-container">
+
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="">
+                                            <label class="lable-checkbox" nz-checkbox [(ngModel)]="labSettingData.labHideStudentList"
+                                                formControlName="labHideStudentList">Hide Student List
+                                            </label>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="">
+                                            <label class="lable-checkbox" nz-checkbox [(ngModel)]="labSettingData.labHideCheckOutList"
+                                                formControlName="labHideCheckOutList">Hide Check Out Button in list
+                                            </label>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+
+                            <div nz-row class="full-width-container">
+                                <h6 class="section-head">Automatically Check In/Out</h6>
+                            </div>
+
+                            <div nz-row [nzGutter]="24" class="full-width-container">
+                                <div nz-col [nzSpan]="24">
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="">
+                                            <label class="lable-checkbox" nz-checkbox [(ngModel)]="labSettingData.labAutomaticallyCheckInCheckOut"
+                                                formControlName="labAutomaticallyCheckInCheckOut">Yes, Student will be automatically checked in/out when ID is scanned
+                                            </label>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+
+                            <div nz-row class="full-width-container">
+                                <h6 class="section-para">If Automatically Check-In/out Box is checked, the following options will not display at Check-In/Out.Lab Services</h6>
+                            </div>
+
+                            <div nz-row class="full-width-container">
+                                <h6 class="section-head">Lab Services</h6>
+                            </div>
+
+                            <div nz-row [nzGutter]="24" class="full-width-container">
+
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="">
+                                            <label class="lable-checkbox" nz-checkbox [(ngModel)]="labSettingData.labServicesVisibile"
+                                                formControlName="labServicesVisibile" [attr.disabled]="!isDisabled" (change)="setEnableDisable()">Yes, Lab service is visible
+                                            </label>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="">
+                                            <label class="lable-checkbox" nz-checkbox [(ngModel)]="labSettingData.labServicerRequired"
+                                                formControlName="labServicerRequired" [attr.disabled]="!isDisabled">Yes, Lab service is a required input
+                                            </label>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+
+                            <div nz-row [nzGutter]="24" class="full-width-container">
+
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style">Default Lab Service</nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Select Default Lab Service">
+                                            <nz-select nzMode="tags" nzPlaceHolder="Default Lab Service" formControlName="labDefaultService"
+                                                 [nzMaxMultipleCount]="1" [(ngModel)]="labSettingData.labDefaultService" [nzDisabled]="isDisabled">
+                                                <nz-option *ngFor="let defLab of labServiceList" [nzLabel]="defLab.longpullna" [nzValue]="defLab.longpullna"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col [nzSpan]="8" class="marTop30">
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="">
+                                            <label class="lable-checkbox" nz-checkbox [(ngModel)]="labSettingData.labStudentsCanChooseMultipleService"
+                                                formControlName="labStudentsCanChooseMultipleService" 
+                                                [attr.disabled]="!isDisabled ? '' : null">Students can choose multiple lab services
+                                            </label>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+
+                            <div nz-row [nzGutter]="24" class="full-width-container">
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="">
+                                            <h6 class="section-para">Reason for Visit</h6>
+                                            <label class="lable-checkbox" nz-checkbox [(ngModel)]="labSettingData.labReasonForVisitOptionVisible"
+                                                formControlName="labReasonForVisitOptionVisible">Yes, this option is visible
+                                            </label>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col [nzSpan]="8">
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="">
+                                            <h6 class="section-para">Staff Member</h6>
+                                            <label class="lable-checkbox" nz-checkbox [(ngModel)]="labSettingData.labStaffMemberOptionVisible"
+                                                formControlName="labStaffMemberOptionVisible">Yes, this option is visible
+                                            </label>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col [nzSpan]="24">
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="">
+                                            <label class="lable-checkbox" nz-checkbox [(ngModel)]="labSettingData.labAcknowledgement"
+                                                formControlName="labAcknowledgement">Acknowledge and understand the settings and have made the appropriate changes for my program.
+                                            </label>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+            <div nz-row class="tabStyle-btn">
+                <div nz-col nzSpan="4" nzOffset="20">
+                    <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+                    <button nz-button nzType="primary" class="btn-color" [nzLoading]="isConfirmFormLoading" (click)="addLabSettingsPreferences()">SAVE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
