@@ -65,7 +65,7 @@ export class StaffMembersService {
     return this.dataService.callGetService(
       ServiceUrls.GET_PULL_DOWN_LIST);
   }
-  
+
   public getPullDownItems(id:any): Observable<any> {
     return this.dataService.callGetService(
       ServiceUrls.GET_PULL_DOWN_ITEMS+id);
@@ -100,5 +100,5 @@ export class StaffMembersService {
  updateStaffByStaffId(request: any): Observable<any> {
   return this.dataService.callPutService(ServiceUrls.UPDATE_STAFF_BY_STAFF_ID, request);
 }
-  
+
 }

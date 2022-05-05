@@ -115,7 +115,7 @@ export class ServiceUrls {
     public static GET_DELETED_STAFF_BY_STAFF_ID = environment.apiUrl + '/blumen-api/staff/getDeletedStaffByStaffId/v1/';
     public static RECOVER_DELETED_STAFF_BY_STAFF_ID = environment.apiUrl + '/blumen-api/staff/recoverDeletedStaffByStaffId/v1';
     public static UPDATE_STAFF_BY_STAFF_ID = environment.apiUrl + '/blumen-api/staff/updateStaffByStaffId/v1';
-
+    public static UPLOAD_FILE = environment.apiUrl +'/blumen-api/staff/uploadFile';
 
     // Config setting API URL's
    public static GET_CONFIG_SETTINGS = environment.apiUrl + '/blumen-api/admin/getConfigSettingList/v1';

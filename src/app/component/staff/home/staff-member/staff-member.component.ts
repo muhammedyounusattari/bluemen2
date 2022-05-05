@@ -8,7 +8,8 @@ import { ValidationClass } from 'src/app/shared/validation/common-validation-cla
 import { SharedService } from 'src/app/shared/services/shared.service';
 
 import { NzButtonSize } from 'ng-zorro-antd/button';
-import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import { NzUploadChangeParam,NzUploadFile } from 'ng-zorro-antd/upload';
+import { Observable, Observer } from 'rxjs';
 
 
 import jsPDF from 'jspdf'
@@ -18,6 +19,8 @@ import { StaffMemberMoveBoxComponent } from 'src/app/component/admin/customize/m
 import { StaffMemberMergeBoxComponent } from 'src/app/component/admin/customize/merge-box/staff-member-merge-box/staff-member-merge-box.component';
 import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
 import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
+import { NzUploadXHRArgs } from 'ng-zorro-antd/upload';
+import { ServiceUrls } from 'src/app/constants/serviceUrl';
 
 @Component({
   selector: 'app-staff-member',
@@ -87,6 +90,7 @@ export class StaffMemberComponent {
   staffNameListPopupVisiblity = false;
   isConfirmStaffNameLoading = false;
   displayStaffName: any;
+  uploadAction:any;
 
   constructor(
     private modalService: BsModalService
@@ -117,14 +121,53 @@ export class StaffMemberComponent {
     this.bindDropDownValues();
     this.isEdit = false;
     this.searchFormGroup?.get('activeStaff')?.setValue('all');
+
   }
 
+  setHeaders = () => {
+
+   const state = sessionStorage.getItem("state");
+      let access_token = "";
+      if (state) {
+        access_token = JSON.parse(state)?.access_token;
+      }
+    return  { authorization: 'Bearer '+ access_token }
+
+  };
+
+  beforeUpload = (file: NzUploadFile, _fileList: NzUploadFile[]) => {
+
+      return new Observable((observer: Observer<boolean>) => {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        if (!isJpgOrPng) {
+          alert("You can only upload JPG/PNG file!")
+          observer.complete();
+          return;
+        }
+        const isLt2M = file.size! / 1024 / 1024 < 2;
+        if (!isLt2M) {
+          alert("Image must smaller than 2MB!");
+          observer.complete();
+          return;
+        }
+        observer.next(isJpgOrPng && isLt2M);
+        observer.complete();
+      });
+    };
+
+    fileList: NzUploadFile[] = [];
+
   imageChange(info: NzUploadChangeParam): void {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-    } else if (info.file.status === 'error') {
+
+  let fileList = [...info.fileList];
+
+      // 1. Limit the number of uploaded files
+      // Only to show two recent uploaded files, and old ones will be replaced by the new
+      fileList = fileList.slice(-1);
+
+      this.fileList = fileList;
+    if(info.file.response && info.file.response.body.staffPicture) {
+      this.imageSrc = info.file.response.body.staffPicture;
     }
   }
 
@@ -306,6 +349,8 @@ export class StaffMemberComponent {
         return;
       }
     }
+
+    this.getStaffMembers();
   }
 
   /**
@@ -422,12 +467,14 @@ export class StaffMemberComponent {
   public getSelectedOption(selectedOption: string, selectedRowItem: any, index: any) {
     this.selectedOption = selectedOption;
     if (this.selectedOption === 'Edit') {
+      this.imageSrc = "../../../../../assets/img/photo.png";
       this.selectedRowIndex = index;
       const data = this.customFieldList.filter((item: any) => item.id === selectedRowItem.id);
       this.selectedRow = selectedRowItem;
       if (this.selectedRow) {
         this.addressList = [];
         this.isEdit = true;
+        this.uploadAction = ServiceUrls.UPLOAD_FILE+"/"+this.selectedRow.id;
         this.stctlbName = this.selectedRow.staffName;
         this.displayStaffName = this.selectedRow.staffName;
         this.formGroup.get('staffName')?.setValue(this.selectedRow.staffName);
@@ -454,6 +501,8 @@ export class StaffMemberComponent {
         this.formGroup.get('staffBolt')?.setValue(this.selectedRow.staffBolt);
         this.formGroup.get('staff')?.setValue(this.selectedRow.staff);
         this.formGroup.get('staffPhoneNumber')?.setValue(this.selectedRow.staffPhoneNumber);
+        if(this.selectedRow.staffPicture)
+         this.imageSrc = this.selectedRow.staffPicture;
         if (this.selectedRow.address && this.selectedRow.address.length > 0) {
           this.addressData = this.selectedRow.address;
           this.permanentAddress = this.selectedRow.address.filter((item: any) => item.permanentAddress)[0];
@@ -477,7 +526,7 @@ export class StaffMemberComponent {
 
   /**
     * @method addStaffMemberName
-    * @description Adding staff member using staffId 
+    * @description Adding staff member using staffId
     */
   public addStaffMemberName() {
     if (this.formGroup.valid) {
@@ -501,6 +550,7 @@ export class StaffMemberComponent {
                 this.formGroup.get('staffId')?.setValue(jsonObj.staffId);
                 this.formGroup.get('id')?.setValue(jsonObj.id);
                 this.staffNameListPopupVisiblity = false;
+                this.uploadAction = ServiceUrls.UPLOAD_FILE+"/"+jsonObj.id;
                 this.getStaffMembers();
                 this.isConfirmStaffNameLoading = false;
                 this.openModal(this.staffDataEntryPopupRef);
@@ -525,7 +575,7 @@ export class StaffMemberComponent {
 
   /**
    * @method showStaffNamePop
-   * @description Showing add staff name pop 
+   * @description Showing add staff name pop
    */
   showStaffNamePop() {
     this.addressList = [];
@@ -537,7 +587,7 @@ export class StaffMemberComponent {
 
   /**
    * @method bindAddressValueToFB
-   * @description binging the formgroup 
+   * @description binging the formgroup
    */
   bindAddressValueToFB() {
     this.formGroup.get('staffMaillingName')?.setValue('');
@@ -584,7 +634,9 @@ export class StaffMemberComponent {
               'staffPhoneType3': this.formGroup.get('staffPhoneType3')?.value,
               'staffAddress': this.formGroup.get('staffAddress')?.value,
               'permanentAddress': this.formGroup.get('permanentAddress')?.value,
-              'usedForMailling': this.formGroup.get('usedForMailling')?.value
+              'usedForMailling': this.formGroup.get('usedForMailling')?.value,
+              'staffPicture':this.imageSrc
+
             }
             this.addressList.push(data);
           } else if (this.isEditAddress) {
@@ -660,6 +712,7 @@ export class StaffMemberComponent {
         }
       }
     }
+    this.getStaffMembers();
   }
 
   /**
@@ -842,6 +895,7 @@ export class StaffMemberComponent {
     */
   resetFields() {
     this.createForm();
+    this.imageSrc = "../../../../../assets/img/photo.png";
     this.staffMembersService.getStaffMaxId().subscribe(result => {
       if (!this.validationClass.isNullOrUndefined(result)) {
         this.formGroup.get('staffId')?.setValue(result + 1);
@@ -1205,5 +1259,6 @@ export class StaffMemberComponent {
     */
   handleCancel() {
     this.staffNameListPopupVisiblity = false;
+    this.getStaffMembers();
   }
 }

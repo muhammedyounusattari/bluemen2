@@ -184,7 +184,7 @@
               </form>
             </div>
             <!--Form Section End-->
-           
+
           </div>
 
         </div>
@@ -212,7 +212,7 @@
       </div>
       <div nz-col nzSpan="4" nzOffset="11">
         <div class="btn-right">
-          <a nz-button nzType="link" (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()">Cancel</a>
+          <a nz-button nzType="link" (click)="getStaffMembers();selectedRowIndex = null; selectedRow = null; modalRef.hide()">Cancel</a>
           <button nz-button nzType="primary" class="btn-color" *ngIf="!isEdit"
             (click)="addStaffMembers();">SAVE</button>
           <button nz-button nzType="primary" class="btn-color" *ngIf="isEdit"
@@ -221,7 +221,7 @@
       </div>
       <div nz-col nzSpan="1">
         <i nz-icon nzType="close" nzTheme="outline"
-          (click)="selectedRowIndex = null; selectedRow = null; modalRef.hide()" class="close-icon"></i>
+          (click)="getStaffMembers();selectedRowIndex = null; selectedRow = null; modalRef.hide()" class="close-icon"></i>
       </div>
     </div>
   </div>
@@ -242,9 +242,11 @@
                   <div nz-col nzSpan="5">
                     <div class="logo_image_section">
                       <img class="logo_image" nz-image width="150px" height="150px"
-                        nzSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" alt="" />
-                      <nz-upload nzAction="" [nzHeaders]="{ authorization: 'authorization-text' }"
-                        (nzChange)="imageChange($event)">
+                           [nzSrc]="imageSrc" alt="Image missing" />
+                      <nz-upload [nzAction]="uploadAction"
+                                 [nzFileList]="fileList"
+                                 [nzHeaders]="setHeaders"
+                                 (nzChange)="imageChange($event)">
                         <button nz-button class="upload-btn">
                           <i nz-icon nzType="upload"></i>
                           Click to Upload
@@ -493,8 +495,11 @@
                   <div nz-col nzSpan="5">
                     <div class="logo_image_section">
                       <img class="logo_image" nz-image width="150px" height="150px"
-                        nzSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" alt="" />
-                      <nz-upload nzAction="" [nzHeaders]="{ authorization: 'authorization-text' }"
+                        [nzSrc]="imageSrc" alt="Image missing" />
+                      <nz-upload
+                        [nzFileList]="fileList"
+                        [nzAction]="uploadAction"
+                        [nzHeaders]="setHeaders"
                         (nzChange)="imageChange($event)">
                         <button nz-button class="upload-btn">
                           <i nz-icon nzType="upload"></i>
