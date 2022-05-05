@@ -118,7 +118,7 @@
 
 <!-- Forgot Password Modal Start-->
 <nz-modal [(nzVisible)]="isFPModalVisible" nzTitle={{fpModalHeader}} (nzOnCancel)="handleCancel()"
-    [nzFooter]="activityModalFooter" nzWidth="75%" [nzOkLoading]="isConfirmFPLoading">
+    [nzFooter]="activityModalFooter" nzWidth="60%" [nzOkLoading]="isConfirmFPLoading">
     <ng-template #activityModalFooter>
         <div class="modal-footer-btn">
             <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>

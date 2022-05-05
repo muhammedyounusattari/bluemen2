@@ -24,7 +24,7 @@ export class LoginService {
         return this.dataService.callLoginPostService(ServiceUrls.FORGOT_PASSWORD, request);
     }
 
-    forgotPassword(request: any, orgCode: string) {
+    forgotPassword(request: any) {
         return this.dataService.callLoginPostService(ServiceUrls.FORGOT_PASSWORD , request);
     }
 

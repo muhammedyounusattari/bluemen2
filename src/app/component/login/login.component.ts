@@ -63,11 +63,6 @@ export class LoginComponent implements OnInit {
     
     constructor(private _loginService: LoginService
         , private formBuilder: FormBuilder
-        , private modalService: BsModalService
-        , private dialog: MatDialog
-        , private toastr: ToastrService
-        , private sharedService: SharedService
-        , private message: NzMessageService
         , private notificationService: NotificationUtilities) { }
 
     ngOnInit(): void {
@@ -166,8 +161,8 @@ export class LoginComponent implements OnInit {
             formLayout: ['horizontal'],
             fpOrgCode: ['', Validators.required],
             fpEmail: ['', Validators.required],
-            securityQuestion1: ['', Validators.required],
-            securityQuestion2: ['', Validators.required],
+            securityQuestion1: [{ disabled: true, value: '' }, Validators.required],
+            securityQuestion2: [{ disabled: true, value: '' } , Validators.required],
             securityAnswer1: ['', Validators.required],
             securityAnswer2: ['', Validators.required]
         });
@@ -220,14 +215,18 @@ export class LoginComponent implements OnInit {
                 'securityAnswer1': this.formGroup1?.get('securityAnswer1')?.value,
                 'securityAnswer2': this.formGroup1?.get('securityAnswer2')?.value
             };
-            this._loginService.forgotPassword(data, this.formGroup1?.get('fpOrgCode')?.value).subscribe((result: any) => {
+            this._loginService.forgotPassword(data).subscribe((result: any) => {
                 if (result) {
                     result = JSON.parse(result);
-                    // this.sharedService.sendSuccessMessage(result.message);
-                    // this.sharedService.showSuccessMessage();
-                    this.notificationService.createNotificationBasic('success', "Validate Question & Answer", result.message);
-                    this.isConfirmFPLoading = false;
-                    this.isFPModalVisible = false;
+                    if( result.status  >= 400) {
+                        this.notificationService.createNotificationBasic('error', "Validate Question & Answer", result.message);
+                        this.isConfirmFPLoading = false;
+                    } else {
+                        this.notificationService.createNotificationBasic('success', "Validate Question & Answer", result.message);
+                        this.isConfirmFPLoading = false;
+                        this.isFPModalVisible = false;
+                    }
+               
                 }
             },
                 (error: any) => {
@@ -247,7 +246,7 @@ export class LoginComponent implements OnInit {
     createValidateVC() {
         this.formGroup3 = this.formBuilder.group({
             formLayout: ['horizontal'],
-            otpCode: [null]    
+            otpCode: [null,Validators.required]    
         });
     }
     getSecurityCode() {
@@ -267,14 +266,18 @@ export class LoginComponent implements OnInit {
     validateCode() {
         this.isRunning = true;
         this.isConfirmVCLoading = true;
-        this._loginService.validateCode(this.otpCode).subscribe((result: any) => {
+        let otp_code = this.formGroup3?.get('otpCode')?.value;
+        this._loginService.validateCode(otp_code).subscribe((result: any) => {
             if (result) {
                 this.isConfirmVCLoading = false;
                 this.isRunning = false;
                 this.validateLogin.emit(this.authenticateResponse);
                 this.isVCModalVisible = false;
             }
-        });
+        }, (error: any) => {
+            this.notificationService.createNotificationBasic('error','OTP Validate','Invalid OTP');
+            console.error(error.message);
+          });
     }
 
     checkUserExist() {
