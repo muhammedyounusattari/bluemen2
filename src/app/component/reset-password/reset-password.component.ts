@@ -26,16 +26,16 @@ export class ResetPasswordComponent implements OnInit {
   userName: any = '';
   securityId: any = '';
   @Input() hashcode = '';
-  newPasswordErrorMsg = '';
+  newPasswordErrorMsg = 'Please Enter New Password';
   newPasswordError = false;
   conrirmPasswordMatch = false;
-  conrirmPasswordMatchMsg = '';
+  conrirmPasswordMatchMsg = 'Please Enter Re-Type Password';
 
   constructor(private _loginService: LoginService
     , private formBuilder: FormBuilder
     , private modalService: BsModalService
     , private dialog: MatDialog
-    , private toastr: ToastrService, private router: Router ) { }
+    , private toastr: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
     this.hide = true;
@@ -44,6 +44,7 @@ export class ResetPasswordComponent implements OnInit {
 
   createForm() {
     this.formGroup = this.formBuilder.group({
+      formLayout: ['vertical'],
       'newPassword': ['', Validators.required],
       'reTypePassword': ['', Validators.required],
     });
@@ -113,7 +114,11 @@ export class ResetPasswordComponent implements OnInit {
     return true;
   }
   resetPassword() {
-    if (this.formGroup.valid && this.validatePassword() && this.passwordMatchCompare()) {
+    for (const i in this.formGroup.controls) {
+      this.formGroup.controls[i].markAsDirty();
+      this.formGroup.controls[i].updateValueAndValidity();
+    }
+    if (this.formGroup.valid && !this.newPasswordError && !this.conrirmPasswordMatch) {
       const data = {
         'password': this.formGroup?.get('newPassword')?.value,
         'confPassword': this.formGroup?.get('reTypePassword')?.value

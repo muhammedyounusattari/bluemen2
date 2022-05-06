@@ -48,19 +48,19 @@ export class LoginComponent implements OnInit {
         "password": ''
     };
 
-    isFPModalVisible: boolean= false;
+    isFPModalVisible: boolean = false;
     fpModalHeader = 'Forgot password';
     isConfirmFPLoading: boolean = false;
 
-    isTFAModalVisible: boolean= false;
+    isTFAModalVisible: boolean = false;
     tfaModalHeader = 'Two Factor Authentication';
     isConfirmTFALoading: boolean = false;
     tfaValue = '';
 
-    isVCModalVisible: boolean= false;
+    isVCModalVisible: boolean = false;
     vcModalHeader = 'Validate Code';
     isConfirmVCLoading: boolean = false;
-    
+
     constructor(private _loginService: LoginService
         , private formBuilder: FormBuilder
         , private notificationService: NotificationUtilities) { }
@@ -105,7 +105,12 @@ export class LoginComponent implements OnInit {
         return null;
     }
 
-    validate(data: any) {
+    validate() {
+        for (const i in this.formGroup.controls) {
+            this.formGroup.controls[i].markAsDirty();
+            this.formGroup.controls[i].updateValueAndValidity();
+        }
+
         if (this.formGroup.valid) {
             this.isInvalidCredentials = false;
             this.isLoading = true;
@@ -126,7 +131,7 @@ export class LoginComponent implements OnInit {
                         if (result.twoFactorEnabled) {
                             this.isTwoFactorEnabled = result.twoFactorEnabled;
                             this.createTFAFB();
-                            this.tfaValue = this.authenticateResponse.maskedEmail;
+                            this.tfaValue = '1';
                             this.isTFAModalVisible = true;
                         } else {
                             this.validateLogin.emit(result);
@@ -153,9 +158,10 @@ export class LoginComponent implements OnInit {
     createTFAFB() {
         this.formGroup2 = this.formBuilder.group({
             formLayout: ['vertical'],
-            twoFactor: 1    
+            twoFactor: 1
         });
     }
+
     createForgotPasswordForm() {
         this.formGroup1 = this.formBuilder.group({
             formLayout: ['horizontal'],
@@ -171,9 +177,9 @@ export class LoginComponent implements OnInit {
     handleCancel(): void {
         this.createForgotPasswordForm();
         this.isFPModalVisible = false;
-        this.isTFAModalVisible= false;
+        this.isTFAModalVisible = false;
         this.isVCModalVisible = false;
-      }
+    }
 
     forgotPwd() {
         this.createForgotPasswordForm();
@@ -184,29 +190,40 @@ export class LoginComponent implements OnInit {
 
     getSecQuestions() {
         this.fpError = false;
-        this._loginService.getSecurityQuestions(this.formGroup1?.get('fpEmail')?.value, this.formGroup1?.get('fpOrgCode')?.value)
-            .subscribe(result => {
-                if (result) {
-                    result = JSON.parse(result);
-                    if (result.status === '200') {
-                        this.formGroup1?.get('securityQuestion1')?.setValue(result.SecurityQuestion1);
-                        this.formGroup1?.get('securityQuestion2')?.setValue(result.SecurityQuestion2);
-                        this.isVisible = true;
+        if (this.formGroup1?.get('fpEmail')?.value && this.formGroup1?.get('fpOrgCode')?.value) {
+            this._loginService.getSecurityQuestions(this.formGroup1?.get('fpEmail')?.value, this.formGroup1?.get('fpOrgCode')?.value)
+                .subscribe(result => {
+                    if (result) {
+                        result = JSON.parse(result);
+                        if (result.status === '200') {
+                            this.formGroup1?.get('securityQuestion1')?.setValue(result.SecurityQuestion1);
+                            this.formGroup1?.get('securityQuestion2')?.setValue(result.SecurityQuestion2);
+                            this.isVisible = true;
+                        }
                     }
-                }
-            },
-                (error: any) => {
-                    this.isLoading = false;
-                    this.isInvalidCredentials = true;
-                    const errorResponse = JSON.parse(error.error);
-                    // this.sharedService.sendErrorMessage(errorResponse.message);
-                    // this.sharedService.showErrorMessage();
-                    this.notificationService.createNotificationBasic('error', "Get Security Questions", "System error : " + errorResponse.message);
-                });
+                },
+                    (error: any) => {
+                        this.isLoading = false;
+                        this.isInvalidCredentials = true;
+                        const errorResponse = JSON.parse(error.error);
+                        // this.sharedService.sendErrorMessage(errorResponse.message);
+                        // this.sharedService.showErrorMessage();
+                        this.notificationService.createNotificationBasic('error', "Get Security Questions", "System error : " + errorResponse.message);
+                    });
+        } else {
+            for (const i in this.formGroup1.controls) {
+                this.formGroup1.controls[i].markAsDirty();
+                this.formGroup1.controls[i].updateValueAndValidity();
+            }
+        }
     }
 
     validateAnswer() {
         this.fpError = false;
+        for (const i in this.formGroup1.controls) {
+            this.formGroup1.controls[i].markAsDirty();
+            this.formGroup1.controls[i].updateValueAndValidity();
+        }
         if (this.formGroup1.valid) {
             this.isConfirmFPLoading = true;
             const data = {
@@ -218,15 +235,13 @@ export class LoginComponent implements OnInit {
             this._loginService.forgotPassword(data).subscribe((result: any) => {
                 if (result) {
                     result = JSON.parse(result);
-                    if( result.status  >= 400) {
-                        this.notificationService.createNotificationBasic('error', "Validate Question & Answer", result.message);
-                        this.isConfirmFPLoading = false;
-                    } else {
-                        this.notificationService.createNotificationBasic('success', "Validate Question & Answer", result.message);
-                        this.isConfirmFPLoading = false;
-                        this.isFPModalVisible = false;
-                    }
-               
+                    // this.sharedService.sendSuccessMessage(result.message);
+                    // this.sharedService.showSuccessMessage();
+                    this.notificationService.createNotificationBasic('success', "Validate Question & Answer", result.message);
+                    this.isConfirmFPLoading = false;
+                    this.isFPModalVisible = false;
+                }
+
                 }
             },
                 (error: any) => {
@@ -246,38 +261,48 @@ export class LoginComponent implements OnInit {
     createValidateVC() {
         this.formGroup3 = this.formBuilder.group({
             formLayout: ['horizontal'],
-            otpCode: [null,Validators.required]    
+            otpCode: [null,Validators.required]
         });
     }
+
     getSecurityCode() {
         this.isRunning = true;
         this.isConfirmTFALoading = true;
-        this._loginService.generateCode().subscribe((result: any) => {
-            if (result) {
-                this.isRunning = false;
-                this.isConfirmTFALoading = false;
-                this.isTFAModalVisible = false;
-                this.isVCModalVisible = true;
-                this.createValidateVC();
-            }
-        });
+        for (const i in this.formGroup2.controls) {
+            this.formGroup2.controls[i].markAsDirty();
+            this.formGroup2.controls[i].updateValueAndValidity();
+        }
+
+        if (this.formGroup2.valid) {
+            this._loginService.generateCode().subscribe((result: any) => {
+                if (result) {
+                    this.isRunning = false;
+                    this.isConfirmTFALoading = false;
+                    this.isTFAModalVisible = false;
+                    this.isVCModalVisible = true;
+                    this.createValidateVC();
+                }
+            });
+        }
     }
 
     validateCode() {
         this.isRunning = true;
         this.isConfirmVCLoading = true;
-        let otp_code = this.formGroup3?.get('otpCode')?.value;
-        this._loginService.validateCode(otp_code).subscribe((result: any) => {
-            if (result) {
-                this.isConfirmVCLoading = false;
-                this.isRunning = false;
-                this.validateLogin.emit(this.authenticateResponse);
-                this.isVCModalVisible = false;
-            }
-        }, (error: any) => {
-            this.notificationService.createNotificationBasic('error','OTP Validate','Invalid OTP');
-            console.error(error.message);
-          });
+        for (const i in this.formGroup3.controls) {
+            this.formGroup3.controls[i].markAsDirty();
+            this.formGroup3.controls[i].updateValueAndValidity();
+        }
+        if (this.formGroup3.valid) {
+            this._loginService.validateCode(this.otpCode).subscribe((result: any) => {
+                if (result) {
+                    this.isConfirmVCLoading = false;
+                    this.isRunning = false;
+                    this.validateLogin.emit(this.authenticateResponse);
+                    this.isVCModalVisible = false;
+                }
+        });
+    }
     }
 
     checkUserExist() {
@@ -314,7 +339,10 @@ export class LoginComponent implements OnInit {
                 }
             });
         } else {
-            this.formGroup.markAllAsTouched();
+            for (const i in this.formGroup.controls) {
+                this.formGroup.controls[i].markAsDirty();
+                this.formGroup.controls[i].updateValueAndValidity();
+            }
         }
     }
 }
