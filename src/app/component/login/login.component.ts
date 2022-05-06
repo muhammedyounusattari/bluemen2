@@ -235,13 +235,15 @@ export class LoginComponent implements OnInit {
             this._loginService.forgotPassword(data).subscribe((result: any) => {
                 if (result) {
                     result = JSON.parse(result);
-                    // this.sharedService.sendSuccessMessage(result.message);
-                    // this.sharedService.showSuccessMessage();
-                    this.notificationService.createNotificationBasic('success', "Validate Question & Answer", result.message);
-                    this.isConfirmFPLoading = false;
-                    this.isFPModalVisible = false;
-                }
-
+                    if( result.status  >= 400) {
+                        this.notificationService.createNotificationBasic('error', "Validate Question & Answer", result.message);
+                        this.isConfirmFPLoading = false;
+                    } else {
+                        this.notificationService.createNotificationBasic('success', "Validate Question & Answer", result.message);
+                        this.isConfirmFPLoading = false;
+                        this.isFPModalVisible = false;
+                    }
+               
                 }
             },
                 (error: any) => {
@@ -261,7 +263,7 @@ export class LoginComponent implements OnInit {
     createValidateVC() {
         this.formGroup3 = this.formBuilder.group({
             formLayout: ['horizontal'],
-            otpCode: [null,Validators.required]
+            otpCode: [null,Validators.required]    
         });
     }
 
@@ -301,8 +303,8 @@ export class LoginComponent implements OnInit {
                     this.validateLogin.emit(this.authenticateResponse);
                     this.isVCModalVisible = false;
                 }
-        });
-    }
+            });
+        }
     }
 
     checkUserExist() {
