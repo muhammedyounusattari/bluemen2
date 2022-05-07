@@ -29,9 +29,9 @@ export class NavigationComponent implements OnInit {
     this.user = JSON.parse(this.user);
   }
 
-  // showMenu(element: String): boolean {
-  //   return this.menus.includes(element);
-  // }
+  showMenu(element: String): boolean {
+    return this.menus.includes(element);
+  }
 
   validate() {
     // alert('hi');

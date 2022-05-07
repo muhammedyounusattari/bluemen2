@@ -1,129 +1,69 @@
-<!-- <div class="container-fluid " style="background:#EFF4F8;">
-  <div class="row bg-white">
-    <div class="col-md-12">
-      <h3>Logged-in Users</h3>
-    </div>
-  </div>
-
-  <div class="row ">
-    <div class="col-md-6 mt-3 mb-3 ">
-      <form class="example">
-        <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event, dataSource)">
-        <i class="fa fa-search search"></i>
-      </form>
-    </div>
-  </div>
-  <div class="mat-elevation-z8 data-table-height mb-4" style="border:1px solid #1366A0;">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"
-           [ngStyle]="{'width': '100%', 'padding': '0.5rem 0'}" matSort>
-
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-        <td mat-cell *matCellDef="let entry; let row = dataIndex"> {{entry?.email}} </td>
-      </ng-container>
-      <ng-container matColumnDef="orgCode">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Organization Code </th>
-        <td mat-cell *matCellDef="let entry; let row = dataIndex"> {{entry?.orgCode}} </td>
-      </ng-container>
-      <ng-container matColumnDef="issueDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Login Time </th>
-        <td mat-cell *matCellDef="let entry; let row = dataIndex"> {{entry?.issueDate}} </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-      <tr mat-row *matRowDef="let row; columns: columnsToDisplay;let i = index;"
-          (click)="getSelectedRow(row, i)" [ngClass]="{'selected-row' : (usersList.length > 0) && (selectedRow == i)}"></tr>
-    </table>
-    <div *ngIf="spinner" class="spinner-container bg-colr-wht py-4">
-      <mat-progress-spinner class="center" [diameter]="50" color="default" mode="indeterminate">
-      </mat-progress-spinner>
-    </div>
-    <div *ngIf="!spinner && usersList?.length == 0" class="bg-colr-wht py-4">
-      <div class="center">
-        <h3>No Data Found</h3>
-      </div>
-    </div>
-  </div>
-  <mat-paginator [pageSize]="10"  [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
-  <div class="row" [ngStyle]="{'display': 'none'}">
-    <div class="col-md-12 mt-3">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination pagination-sm justify-content-right">
-          <li class="page-item disabled">
-            <a class="page-link" tabindex="-1">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link">1</a></li>
-          <li class="page-item"><a class="page-link">2</a></li>
-          <li class="page-item"><a class="page-link">3</a></li>
-          <li class="page-item">
-            <a class="page-link">Next</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-</div>
-
-<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Close</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
- -->
-
-
-<div class="main-container">
-  <div id="main-section" class="container-fluid ">
-
-      <!-- Search Box Start-->
-      <div class="row">
-          <div class="col-md-6 mt-3 mb-3 ">
-              <form class="example">
-                  <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
-                  <i class="fa fa-search search"></i>
-              </form>
+<div class="custom-body">
+  <div nz-row>
+    <div nz-col [nzSpan]="24">
+      <div nz-row class="tabStyle">
+        <div nz-col [nzSpan]="24">
+          <div nz-row class="form_section">
+            <div nz-row class="full-width-container">
+              <div nz-row>
+                <div nz-col [nzSpan]="11">
+                  <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                    <input type="text" nz-input placeholder="Search.."  (keyup)="applyFilter($event)" #searchText class="search-input" />
+                  </nz-input-group>
+                  <ng-template #suffixIconButton>
+                    <button nz-button nzType="primary"  (click)="applyFilter(searchText)" nzSearch><i nz-icon nzType="search"></i></button>
+                  </ng-template>
+                </div>
+                <div nz-col [nzSpan]="2" nzOffset="11">
+                  <nz-form-item class="search-filter-item">
+                    <nz-form-control>
+                      <button nz-button nzType="primary" class="search-filter-btn" (click)="print()"> 
+                        <i nz-icon nzType="printer" nzTheme="outline" class="search-filter-icon"></i>
+                        Print
+                      </button>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+              <div nz-row>
+                <div nz-col [nzSpan]="24">
+                  <nz-table #loggedUserTable [nzNoResult]="noResultTemplate" [nzData]="usersList" [nzPageSize]="8" 
+                  [nzLoading]="isLoading" style="margin-top: 15px;">
+                    <ng-template #noResultTemplate>
+                      <nz-empty [nzNotFoundContent]="'No Data Found'">
+                      </nz-empty>
+                    </ng-template>
+                    <thead>
+                      <tr>
+                        <th>Email<i class="sort" (click)="sorting('email')" nz-icon nzType="caret-up" nzTheme="outline"></i>
+                          <i class="sort" (click)="sorting2('email')" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                        </th>
+                        <th>Organization Code<i class="sort" (click)="sorting('orgCode')" nz-icon nzType="caret-up"
+                            nzTheme="outline"></i>
+                          <i class="sort" (click)="sorting2('orgCode')" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                        </th>
+                        <th>Logged In since <i class="sort" (click)="sorting('issueDate')" nz-icon nzType="caret-up"
+                            nzTheme="outline"></i>
+                          <i class="sort" (click)="sorting2('issueDate')" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                        </th>
+            
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of loggedUserTable.data">
+                        <td>{{ data.email }}</td>
+                        <td>{{ data.orgCode }}</td>
+                        <td>{{ data.issueDate}}</td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
+                </div>
+              </div>
+            </div>
           </div>
-         
+        </div>
       </div>
-     
-         
-      <div class="mat-elevation-z8 data-table-height dt-max-height">
-          <nz-table #loggedUserTable [nzNoResult]="noResultTemplate" [nzLoading]="isLoading" [nzData]="usersList">
-              <ng-template #noResultTemplate>
-                  <nz-empty [nzNotFoundContent]="'No Data Found'">
-                  </nz-empty> 
-              </ng-template>
-              <thead>
-              <tr>
-                  <th>Email<i  class="sort" (click)="sorting('email')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                      <i  class="sort" (click)="sorting2('email')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
-                  <th>Organization Code<i  class="sort" (click)="sorting('orgCode')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                      <i  class="sort" (click)="sorting2('orgCode')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
-                  <th>Logged In since <i  class="sort" (click)="sorting('issueDate')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                      <i  class="sort" (click)="sorting2('issueDate')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
-                
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let data of loggedUserTable.data">
-                  <td>{{ data.email }}</td>
-                  <td>{{ data.orgCode }}</td>
-                  <td>{{ data.issueDate}}</td>
-              </tr>
-              </tbody>
-          </nz-table>
-      </div>
+    </div>
   </div>
-  <!-- Buttons Start-->
-
 </div>
 

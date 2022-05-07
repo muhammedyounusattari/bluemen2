@@ -7,7 +7,6 @@ import { FlatTreeControl } from 'ng-zorro-antd/node_modules/@angular/cdk/tree';
 import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
 import { Router } from '@angular/router';
 
-
 interface TreeNode {
   id: number;
   name: string;
@@ -89,6 +88,10 @@ export class RolesComponent implements  OnInit {
   renameRoleFormGroup: FormGroup;
   isRenameRoleModalVisible = false;
 
+  isUpdating = false;
+  isDeleting = false;
+
+
   isSuperAdmin = false;
   isDisabled = true;
 
@@ -98,6 +101,13 @@ export class RolesComponent implements  OnInit {
     , private notificationService: NotificationUtilities
     , private router: Router) {
   }
+  
+  testSleep() {
+    console.log('Step 1 - Called');
+    setTimeout(function () {
+        console.log('Step 2 - Called');
+    }, 5000);
+}
 
   ngOnInit(): void {
     this.sharedService.setPageTitle('Roles');
@@ -158,6 +168,7 @@ export class RolesComponent implements  OnInit {
 
   setBgColorForSelectedRole(id: any, roleName: string) {
     this.selectedRoleId = id;
+    this.isDisabled = true;
     this.roleNameList.forEach((element: any) => {
       if( element.id === id) {
         //find if clicked role in list is default or not
@@ -199,10 +210,12 @@ export class RolesComponent implements  OnInit {
 
   addNewRole() {
     if (this.roleFormGroup.valid) {
+      this.isConfirmRolesLoading = true;
       const request = this.getRequestPayload();
       this.rolesService.addNewRole(request).subscribe(result => {
         if (result) {
           this.notificationService.createNotificationBasic('success', 'Add Role', 'Added new role successfully');
+          this.isConfirmRolesLoading = false;
           this.loadRoleNames();
           this.isAddRoleModalVisible = false;
         }
@@ -210,6 +223,7 @@ export class RolesComponent implements  OnInit {
         this.notificationService.createNotificationBasic('error', 'Add Role', 'Adding new role failed');
         console.log(error);
         this.isAddRoleModalVisible = false;
+        this.isConfirmRolesLoading = false;
       });
     } else {
       this.roleFormGroup.markAllAsTouched();
@@ -217,20 +231,26 @@ export class RolesComponent implements  OnInit {
   }
 
   deleteRole() {
+    this.isDeleting = true;
     this.rolesService.deleteRole(this.selectedRoleId).subscribe(result => {
       if (result) {
         this.notificationService.createNotificationBasic('success', 'Delete Role', 'Role deleted successfully');
+        this.isDeleting = false;
         this.loadRoleNames();
       }
     }, (error: any) => {
       this.notificationService.createNotificationBasic('error', 'Delete Role', 'Deleting of role failed');
       console.log(error);
+      this.isDeleting = false;
+
     });
   }
 
   getPriviledgesByRoleName(roleId: any, roleName: string) {
+    this.isConfirmRolesLoading = true;
     this.rolesService.getPriviledgesByRoleName(roleName).subscribe(result => {
       if (result) {
+        this.isConfirmRolesLoading = false;
         const allUserRoles: Role[] = JSON.parse(JSON.stringify(result));
         this.userRoles = allUserRoles.filter(r => r.id === roleId);
         console.log(this.userRoles);
@@ -306,12 +326,14 @@ export class RolesComponent implements  OnInit {
   }
 
   renameRole() {
-    if (this.selectedRoleId) {      
+    if (this.selectedRoleId) {     
+      this.isConfirmRolesLoading = true; 
       let updateRole: UpdateRole = this.getUpdateRequestPayload();
       updateRole.name = this.renameRoleFormGroup?.get('newRoleName')?.value;
       this.rolesService.updateRole(updateRole).subscribe(result => {
         if (result) {
           this.notificationService.createNotificationBasic('success', 'Rename Role', 'Role Name Successfully');
+          this.isConfirmRolesLoading = false;
           this.loadRoleNames();
           this.isRenameRoleModalVisible = false;
         }
@@ -319,6 +341,8 @@ export class RolesComponent implements  OnInit {
         console.log(error);
         this.notificationService.createNotificationBasic('error', 'Rename Role', 'Role Name Failed');  
         this.isRenameRoleModalVisible = false;
+        this.isConfirmRolesLoading = false;
+
       });
 
     } else {
@@ -327,16 +351,19 @@ export class RolesComponent implements  OnInit {
   }
   //update role needs flat privilieges inside role
   updateRole() {
-    if (this.selectedRoleId) {      
+    if (this.selectedRoleId) {    
+      this.isUpdating = true;  
       let updateRole: UpdateRole = this.getUpdateRequestPayload();
       this.rolesService.updateRole(updateRole).subscribe(result => {
-        if (result) {
+      if (result) {
           this.notificationService.createNotificationBasic('success', 'Update Role', 'Role & Privileges updated successfully');
+          this.isUpdating = false;
           this.loadRoleNames();
         }
       }, (error: any) => {
         console.log(error);
         this.notificationService.createNotificationBasic('error', 'Update Role', 'Role update failed');      });
+        this.isUpdating = false;
 
     } else {
       //TODO
@@ -420,4 +447,8 @@ export class RolesComponent implements  OnInit {
     });
   }
 
+}
+
+function wait(arg0: number) {
+  throw new Error('Function not implemented.');
 }

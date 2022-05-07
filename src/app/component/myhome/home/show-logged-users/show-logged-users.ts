@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { HomeService } from 'src/app/services/home/home.service';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-logged-users',
@@ -17,10 +18,14 @@ export class ShowLoggedUsersComponent {
   public isLoading: boolean = false;
 
 
-  constructor(private homeService: HomeService) {
+  constructor(private homeService: HomeService, private sharedService: SharedService) {
+    this.sharedService.setPageTitle('Logged Users');
     this.getLoggedUsers();
   }
   
+  print() {
+
+  }
 
   showLoader() {
     this.isLoading = true;;
@@ -59,7 +64,6 @@ export class ShowLoggedUsersComponent {
   applyFilter(event: any) {
     const targetValue: any[] = [];
     this.usersSearchList.forEach((value: any) => {
-        //let keys = Object.keys(value);
         let keys = ["email", "orgCode"];
         for (let i = 0; i < keys.length; i++) {
             if (value[keys[i]] && value[keys[i]].toString().toLocaleLowerCase().includes(event.target.value.trim().toLowerCase())) {

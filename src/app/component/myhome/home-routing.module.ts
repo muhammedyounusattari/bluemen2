@@ -6,7 +6,24 @@ import {ChangePasswordComponent} from '../myhome/home/change-my-password/change-
 const routes: Routes = [
    {
     path: 'home/logged-user',
-    component: ShowLoggedUsersComponent
+    component: ShowLoggedUsersComponent,
+    data: {
+      title: 'Logged In Password',
+      breadcrumb: [
+        {
+          label: 'My Home',
+          url: '/'
+        },
+        {
+          label: 'Home',
+          url: '/home'
+        },
+        {
+          label: 'Logged Users',
+          url: 'home/logged-user'
+        }
+      ]
+    }
    },
    {
     path: 'home/change-password',
