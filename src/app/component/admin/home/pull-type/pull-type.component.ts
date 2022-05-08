@@ -4,6 +4,7 @@ import { PullTypeServicesService } from '../../../../services/admin/pull-type.se
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NotificationUtilities } from '../../../../shared/utilities/notificationUtilities';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-pull-type',
@@ -20,6 +21,7 @@ export class PullTypeComponent implements OnInit {
   public pullTypeFilterForm!: FormGroup;
   public isConfirmPullTypeLoading: boolean = false;
   public isSearchPullTypeLoading: boolean = false;
+  public isDownloadingPullType: boolean = false;
   public programList: any = [
     {
       id: 1,
@@ -280,11 +282,21 @@ export class PullTypeComponent implements OnInit {
       "filterProgramType": this.filterProgramType === null ? '' : this.filterProgramType
     };
     const ids = this.message.loading('Downloading Pull Type Information...', { nzDuration: 0 }).messageId;
+    this.isDownloadingPullType = true;
     this._pullTypeServicesService.downloadPullTypeList(requestObj).subscribe((res: any) => {
       if (res) {
-        console.log('res', res);
+        const blob = new Blob([res.body],
+          { type: 'application/vnd.ms-excel' });
+        const file = new File([blob], 'PulltypeInfo.xlsx',
+          { type: 'application/vnd.ms-excel' });
+        FileSaver.saveAs(file);
+        this.message.remove(ids);
+        this.isDownloadingPullType = false;
+        this.notificationService.createNotificationBasic('success', "Pull Type Information", 'Pull Type Information Downloaded Successfully!');
       }
     }, (error: any) => {
+      this.message.remove(ids);
+      this.isDownloadingPullType = false;
       this.notificationService.createNotificationBasic('error', 'Pull Type Information', "System error : " + error.message);
     });
   }

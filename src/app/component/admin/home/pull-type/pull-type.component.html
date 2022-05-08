@@ -229,7 +229,7 @@
                     <div nz-col [nzSpan]="3" nzOffset="1">
                         <nz-form-item class="search-filter-item">
                             <nz-form-control>
-                                <button nz-button nzType="primary" class="search-filter-btn" (click)="exportExcel()">
+                                <button nz-button nzType="primary" class="search-filter-btn" [nzLoading]="isDownloadingPullType" (click)="exportExcel()">
                                     <i nz-icon nzType="download" class="search-filter-icon"></i>
                                     Download
                                   </button>
@@ -242,7 +242,11 @@
             </form>
             <div nz-row>
                 <div nz-col [nzSpan]="24">
-                    <nz-table #staffDetails [nzData]="pullTypeData" [nzPageSize]="10" [nzLoading]="dataLoading">
+                    <nz-table #staffDetails [nzNoResult]="noResultTemplate" [nzData]="pullTypeData" [nzPageSize]="10" [nzLoading]="dataLoading">
+                        <ng-template #noResultTemplate>
+                            <nz-empty [nzNotFoundContent]="'No Data Found'">
+                            </nz-empty>
+                        </ng-template>
                         <thead>
                             <tr>
                                 <th [nzWidth]="'40%'">Pull Description</th>

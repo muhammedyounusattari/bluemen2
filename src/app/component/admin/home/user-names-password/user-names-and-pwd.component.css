@@ -29,3 +29,35 @@
 .marg-b2{
     margin-bottom: 2%;
 }
+
+.custom-body {
+    padding: 1rem 2rem 0rem 2rem;
+}
+
+.user-form .lable-style {
+    font-size: 15px;
+    color: black;
+    font-weight: bold;
+}
+
+.user-form input, .user-form .ant-select, .user-form textarea {
+    border-color: black;
+    color: black;
+}
+
+.user-address-form .lable-style {
+    font-size: 15px;
+    color: black;
+    font-weight: bold;
+}
+
+.user-address-form input, .user-address-form .ant-select, .user-address-form textarea, .user-address-form input[type='checkbox'] {
+    border-color: black;
+}
+.boltLink{
+    border: 1px solid lightgray;
+    padding: 10px;
+}
+.paddTop3{
+    padding-top: 3%;
+}

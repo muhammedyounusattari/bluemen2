@@ -1,7 +1,5 @@
 import { Component, TemplateRef, ViewChild, OnInit, Input } from '@angular/core';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,6 +10,11 @@ import { UserManagementService } from 'src/app/services/admin/user-management.se
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalService } from "ng-zorro-antd/modal";
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable';
 
 @Component({
     selector: 'app-user-names-password',
@@ -21,44 +24,22 @@ import { PullDownListService } from 'src/app/services/admin/pulldown-list.servic
 
 export class UserNamesAndPasswordComponent implements OnInit {
     formGroup: FormGroup;
-    @ViewChild('userNamesAndPasswordPopup') userNamesAndPasswordPopupRef: TemplateRef<any>;
     isVisible: boolean = false;
-    modalRef: BsModalRef;
-    modalConfigSM = {
-        backdrop: true,
-        ignoreBackdropClick: true,
-        class: 'modal-xl'
-    }
-
-    userBasicInfo = true;
-    userAdvancedInfo = false;
     selectedRow: any = '';
     isEdit: boolean = false;
-    spinner: boolean = true;
     selectedRowIndex: any;
     isLoading: boolean = true;
-    myElement: any = null;
-    roleList: any = [{ 'id': 'Admin', 'name': 'Admin(Default)' }, { 'id': 'Manager', 'name': 'Manager(Default)' }, { 'id': 'Counselor', 'name': 'Counselor(Default)' }];
-    siteLocationList: any = [{ 'id': 1, 'name': 'Location1' }, { 'id': 2, 'name': 'Location2' }, { 'id': 2, 'name': 'Location3' }];
-    cityList: any = [{ 'id': 1, 'name': 'Pune' }, { 'id': 2, 'name': 'Mumbai' }];
-    stateList: any = [{ 'id': 1, 'name': 'Maharashtra' }, { 'id': 2, 'name': 'Delhi' }];
-
+    roleList: any;
+    siteLocationList: any;
+    cityList: any;
+    stateList: any;
     validationClass: ValidationClass = new ValidationClass();
 
-    columnsToDisplay: string[] = ['orgCode', 'username', 'firstName', 'lastName', 'email', 'roleName', 'siteLocation', 'active', 'action'];
-    dataSource: MatTableDataSource<any>;
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-    @ViewChild(MatSort) set matSort(sort: MatSort) {
-        if (this.dataSource && !this.dataSource.sort) {
-            this.dataSource.sort = sort;
-        }
-    }
     emailVerified = false;
     userEnabled = false;
     userId = null;
     boltId = 0;
-    userList = [];
+    userList: any;
 
     @Input() organizationId: any;
     @Input() organizationCode: any;
@@ -68,19 +49,25 @@ export class UserNamesAndPasswordComponent implements OnInit {
     selectedOrgId: any;
     user: any;
     isSuperAdmin: boolean = false;
-    request:any;
+    request: any;
 
-    constructor(private modalService: BsModalService
-        , private dialog: MatDialog
-        , private toastr: ToastrService
+    public dataLoading: boolean = false;
+    public userDataObject: any;
+    userModalVisible: boolean = false;
+    userModalHeader: string = 'User Information';
+    isConfirmUserLoading: boolean = false;
+
+    constructor(private dialog: MatDialog
         , private formBuilder: FormBuilder
         , private _userManagementService: UserManagementService
         , private router: Router
         , private sharedService: SharedService
-        , private pullDownService: PullDownListService) { }
+        , private pullDownService: PullDownListService
+        , private notificationService: NotificationUtilities) { }
 
     ngOnInit(): void {
         this.isSuperAdmin = false;
+        this.userDataObject = [];
         this.user = sessionStorage.getItem('state');
         this.user = JSON.parse(this.user);
         if (this.user.roleName !== 'Super Admin' || this.organizationId) {
@@ -93,15 +80,15 @@ export class UserNamesAndPasswordComponent implements OnInit {
             this.getOrganizationList();
         }
         this.createForm();
-        this.myElement = window.document.getElementById('loading1');
         this.bindDropDownValues();
+        this.fillUserDataObject();
     }
 
     /**
     * @method bindDropDownValues
     * @description Get the all pull down item list
     */
-     bindDropDownValues() {
+    bindDropDownValues() {
         let data: any = 'CITY,STATE,SITE LOCATION';
         this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
             if (result?.CITY) {
@@ -123,8 +110,8 @@ export class UserNamesAndPasswordComponent implements OnInit {
 
     createForm() {
         this.formGroup = this.formBuilder.group({
+            formLayout: ['vertical'],
             'id': [null],
-            'username': ['', Validators.required],
             'email': ['', Validators.required],
             'mobile': ['', Validators.required],
             'roleName': ['', Validators.required],
@@ -153,6 +140,58 @@ export class UserNamesAndPasswordComponent implements OnInit {
         });
     }
 
+    fillUserDataObject() {
+        this.userDataObject = {
+            id: null,
+            email: '',
+            mobile: '',
+            roleName: '',
+            siteLocation: '',
+            firstName: '',
+            lastName: '',
+            active: true,
+            address1: '',
+            sendMail: false,
+            address2: '',
+            city: '',
+            state: '',
+            phone2: '',
+            zipcode: '',
+            fax: '',
+            notes: '',
+            botLink: '',
+            startDate: '',
+            boltActive: false,
+            endDate: '',
+            link: '',
+            lastGenerated: '',
+            orgId: '',
+            emailVerified: false,
+            enabled: false
+        }
+    }
+
+    addNewData(): void {
+        this.createForm();
+        this.selectedRow = null;
+        this.selectedRowIndex = null;
+        this.isEdit = false;
+        this.userModalVisible = true;
+    }
+
+    handleCancel(): void {
+        this.clearMoveFormValue();
+        this.userModalVisible = false;
+    }
+
+    clearMoveFormValue() {
+        for (let control in this.formGroup.controls) {
+            this.formGroup.controls[control].markAsPristine();
+            this.formGroup.controls[control].markAsUntouched();
+            this.formGroup.controls[control].updateValueAndValidity();
+        }
+    }
+
     getUserList() {
         if (this.isSuperAdmin) {
             this.orgId = this.selectedOrgId;
@@ -160,25 +199,18 @@ export class UserNamesAndPasswordComponent implements OnInit {
             this.orgId = this.organizationId ? this.organizationId : this.user.orgId;
         }
         this._userManagementService.getUserList(this.orgId).subscribe(result => {
-            setTimeout(() => {
-                this.hideLoader();
-            }, 500);
-            this.isLoading = false;
+            this.hideLoader();
             if (result) {
-                // const userList = result.users.filter((item: any) => { item.active === true; });
-                this.dataSource = new MatTableDataSource(result.users);
-                this.userList = result.users;
-                this.dataSource.paginator = this.paginator;
+                this.userList = result.users.filter((item: any) => item.active);
                 this.selectedRowIndex = null;
-                this.dataSource.sort = this.sort;
             }
         });
     }
 
     getOrganizationList() {
         this._userManagementService.getOrganizationsList().subscribe(result => {
+            this.hideLoader();
             if (result) {
-                this.hideLoader();
                 this.organizationsList = result;//.filter((v: any, i: any, a: string | any[]) => a.indexOf(v) === i);
                 this.selectedOrgId = result[0].orgId;
                 this.populateUserList();
@@ -189,50 +221,19 @@ export class UserNamesAndPasswordComponent implements OnInit {
     populateUserList() {
         const result = this.organizationsList.filter((item: any) => item.orgId === Number(this.selectedOrgId));
         if (result[0].users) {
-            // const userList = result[0].users.filter((item: any) => { item.active === true; });
-            this.dataSource = new MatTableDataSource(result[0].users);
-            this.userList = result[0].users;
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
+            this.userList = result[0].users.filter((item: any) => item.active);
         }
         this.selectedRowIndex = null;
         this.orgId = this.selectedOrgId;
         this.organizationCode = result[0].orgCode;
     }
 
-    openModal(template: TemplateRef<any>) {
-        this.modalRef = this.modalService.show(template, this.modalConfigSM)
-    }
-
-    setSelectedRow(selectedRowItem: any, index: Number) {
-        this.selectedRowIndex = index;
-        this.selectedRow = selectedRowItem;
-        this.orgId = this.selectedRow.orgId;
-    }
-
     hideLoader() {
-        this.myElement = window.document.getElementById('loading1');
-        if (this.myElement !== null) {
-            this.spinner = false;
-            this.isLoading = false;
-            this.myElement.style.display = 'none';
-        }
+        this.isLoading = false;
     }
 
     showLoader() {
-        if (this.myElement !== null) {
-            this.spinner = true;
-            this.isLoading = true;
-            this.myElement.style.display = 'block';
-        }
-    }
-
-    resetFields() {
-        this.createForm();
-        this.selectedRow = null;
-        this.selectedRowIndex = null;
-        this.isEdit = false;
-        this.openModal(this.userNamesAndPasswordPopupRef);
+        this.isLoading = true;
     }
 
     numericOnly(e: any): boolean {
@@ -251,126 +252,87 @@ export class UserNamesAndPasswordComponent implements OnInit {
 
     createUser() {
         if (this.formGroup.valid) {
-            this.isDisabled = true;
+            this.isConfirmUserLoading = true;
             const request = this.getRequestPayload();
             this._userManagementService.createUser(request).subscribe(result => {
                 if (result) {
-                    this.isDisabled = false;
+                    this.isConfirmUserLoading = false;
+                    this.userModalVisible = false;
                     this.getUserList();
-                    this.toastr.success('Saved successfully !', '', {
-                        timeOut: 5000,
-                        closeButton: true
-                    });
-                    this.modalRef.hide();
+                    this.notificationService.createNotificationBasic('success', "User Creation", 'User created successfully !');
                 }
             }, (error: any) => {
                 if (error) {
+                    this.isConfirmUserLoading = false;
                     let message = JSON.parse(error.error).message;
-                    this.toastr.error(message, '', {
-                        timeOut: 5000,
-                        closeButton: true
-                    });
+                    this.notificationService.createNotificationBasic('error', "User Creation", "System error : " + message);
                 }
-                this.modalRef.hide();
             });
         } else {
             this.formGroup.markAllAsTouched();
         }
     }
 
-    setValuesToUpdate() {
-        if (this.selectedRow) {
+    setValuesToUpdate(data: any) {
+        if (data) {
             this.isEdit = true;
-            this.formGroup.get('username')?.setValue(this.selectedRow.username);
-            this.formGroup.get('siteLocation')?.setValue(this.selectedRow.siteLocation);
-            this.formGroup.get('firstName')?.setValue(this.selectedRow.firstName);
-            this.formGroup.get('lastName')?.setValue(this.selectedRow.lastName);
-            this.formGroup.get('roleName')?.setValue(this.selectedRow.roleName);
-            this.formGroup.get('email')?.setValue(this.selectedRow.email);
-            this.formGroup.get('mobile')?.setValue(this.selectedRow.mobile);
-            this.formGroup.get('phone2')?.setValue(this.selectedRow.phone2);
-            this.formGroup.get('active')?.setValue(true);
-            this.formGroup.get('sendMail')?.setValue(this.selectedRow.sendMail);
-            this.formGroup.get('city')?.setValue(this.selectedRow.city);
-            this.formGroup.get('state')?.setValue(this.selectedRow.state);
-            this.formGroup.get('zipcode')?.setValue(this.selectedRow.zipcode);
-            this.formGroup.get('fax')?.setValue(this.selectedRow.fax);
-            this.formGroup.get('address1')?.setValue(this.selectedRow.address1);
-            this.formGroup.get('address2')?.setValue(this.selectedRow.address2);
-            this.formGroup.get('notes')?.setValue(this.selectedRow.notes);
-            this.formGroup.get('link')?.setValue(this.selectedRow?.bolt?.link);
-            this.formGroup.get('startDate')?.setValue(this.selectedRow?.bolt?.startDate);
-            this.formGroup.get('endDate')?.setValue(this.selectedRow?.bolt?.endDate);
-            this.formGroup.get('boltActive')?.setValue(this.selectedRow?.bolt?.active);
-            this.formGroup.get('lastGenerated')?.setValue(this.selectedRow?.bolt?.lastGenerated);
-            this.openModal(this.userNamesAndPasswordPopupRef);
-        } else {
-            this.toastr.info('Please select a row to update', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
+            this.userDataObject.active = data.active;
+            this.userDataObject.address1 = data.address1;
+            this.userDataObject.address2 = data.address2;
+            this.userDataObject.city = data.city;
+            this.userDataObject.email = data.city;
+            this.userDataObject.fax = data.fax;
+            this.userDataObject.firstName = data.firstName
+            this.userDataObject.lastName = data.lastName;
+            this.userDataObject.mobile = data.mobile;
+            this.userDataObject.notes = data.notes;
+            this.userDataObject.orgId = Number(data.orgId);
+            this.organizationCode = data.orgCode;
+            this.userDataObject.phone2 = data.phone2;
+            this.userDataObject.roleName = data.roleName;
+            this.userDataObject.sendMail = data.sendMail;
+            this.userDataObject.siteLocation = data.siteLocation;
+            this.userDataObject.state = data.state;
+            this.userDataObject.zipcode = data.zipcode;
+            this.userModalVisible = true;
         }
     }
 
-    removeUser() {
-        if (this.selectedRow) {
+    removeUser(data: any) {
+        if (data) {
             this.showLoader();
-            this.selectedRow.active = false;
-            const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
-                data: {
-                    title: 'Confirm remove record',
-                    message: 'Are you sure, you want to remove this record: ' + this.selectedRow.username
-                }
-            });
-            confirmDialog.afterClosed().subscribe(result => {
-                if (result === true) {
-                    this._userManagementService.updateUser(this.selectedRow).subscribe(res => {
-                        if (res) {
-                            this.getUserList();
-                            this.toastr.success('Deleted successfully !', '', {
-                                timeOut: 5000,
-                                closeButton: true
-                            });
-                        }
-                    }, (error: any) => {
-                        const errorResponse = JSON.parse(error.error);
-                    });
-                } else {
+            data.active = false;
+            this._userManagementService.updateUser(data).subscribe(res => {
+                if (res) {
                     this.hideLoader();
+                    this.getUserList();
+                    this.notificationService.createNotificationBasic('success', "User Deletion", "System error : " + 'User deleted successfully !');
                 }
-            });
-        } else {
-            this.toastr.info('Please select a row to delete', '', {
-                timeOut: 5000,
-                closeButton: true
+            }, (error: any) => {
+                this.hideLoader();
+                const errorResponse = JSON.parse(error.error);
+                this.notificationService.createNotificationBasic('error', "User Deletion", "System error : " + errorResponse.message);
             });
         }
     }
 
     updateUser() {
         if (this.formGroup.valid) {
-            this.isDisabled = true;
+            this.isConfirmUserLoading = true;
             this.request = this.getRequestPayload();
-            this.request.id = this.selectedRow.id;
+            this.request.id = this.userDataObject.id;
             this._userManagementService.updateUser(this.request).subscribe(result => {
                 if (result) {
-                    this.isDisabled = false;
+                    this.isConfirmUserLoading = false;
+                    this.userModalVisible = false;
                     this.getUserList();
-                    this.toastr.success('Updated successfully !', '', {
-                        timeOut: 5000,
-                        closeButton: true
-                    });
-                    this.modalRef.hide();
+                    this.notificationService.createNotificationBasic('success', "User Updation", 'User updated successfully !');
                 }
             }, (error: any) => {
                 if (error) {
                     const errorResponse = JSON.parse(error);
-                    this.toastr.error(errorResponse.message, '', {
-                        timeOut: 5000,
-                        closeButton: true
-                    });
+                    this.notificationService.createNotificationBasic('error', "User Updation", "System error : " + errorResponse.message);
                 }
-                this.modalRef.hide();
             });
         } else {
             this.formGroup.markAllAsTouched();
@@ -379,42 +341,41 @@ export class UserNamesAndPasswordComponent implements OnInit {
 
     getRequestPayload() {
         const payload = {
-            'active': this.formGroup?.get('active')?.value,
-            'address1': this.formGroup?.get('address1')?.value,
-            'address2': this.formGroup?.get('address2')?.value,
+            'active': this.userDataObject.active,
+            'address1': this.userDataObject.address1,
+            'address2': this.userDataObject.address2,
             // 'bolt': {
-            //     'boltActive': this.formGroup?.get('boltActive')?.value,
-            //     'startDate': this.formGroup?.get('startDate')?.value,
-            //     'endDate': this.formGroup?.get('endDate')?.value,
+            //     'boltActive': this.userDataObject.boltActive,
+            //     'startDate': this.userDataObject.startDate,
+            //     'endDate': this.userDataObject.endDate,
             //     'id': this.boltId,
-            //     'lastGenerated': this.formGroup?.get('lastGenerated')?.value,
-            //     'link': this.formGroup?.get('link')?.value
+            //     'lastGenerated': this.userDataObject.lastGenerated,
+            //     'link': this.userDataObject.link
             // },
             'bolt': null,
-            'city': this.formGroup?.get('city')?.value,
-            'email': this.formGroup?.get('email')?.value,
+            'city': this.userDataObject.city,
+            'email': this.userDataObject.email,
             'emailVerified': this.emailVerified,
             'enabled': this.userEnabled,
-            'fax': this.formGroup?.get('fax')?.value,
-            'firstName': this.formGroup?.get('firstName')?.value,
-            'lastName': this.formGroup?.get('lastName')?.value,
-            'mobile': this.formGroup?.get('mobile')?.value,
-            'notes': this.formGroup?.get('notes')?.value,
+            'fax': this.userDataObject.fax,
+            'firstName': this.userDataObject.firstName,
+            'lastName': this.userDataObject.lastName,
+            'mobile': this.userDataObject.mobile,
+            'notes': this.userDataObject.notes,
             'orgId': Number(this.orgId),
             'orgCode': this.organizationCode,
-            'phone2': this.formGroup?.get('phone2')?.value,
-            'roleName': this.formGroup?.get('roleName')?.value,
-            'sendMail': this.formGroup?.get('sendMail')?.value,
-            'siteLocation': this.formGroup?.get('siteLocation')?.value,
-            'state': this.formGroup?.get('state')?.value,
-            'username': this.formGroup?.get('username')?.value,
-            'zipcode': this.formGroup?.get('zipcode')?.value
+            'phone2': this.userDataObject.phone2,
+            'roleName': this.userDataObject.roleName,
+            'sendMail': this.userDataObject.sendMail,
+            'siteLocation': this.userDataObject.siteLocation,
+            'state': this.userDataObject.state,
+            'zipcode': this.userDataObject.zipcode
         }
         return payload;
     }
 
     resetPassword(test: any) {
-        this._userManagementService.resetPassword(test.email,test.orgCode).subscribe(result => {
+        this._userManagementService.resetPassword(test.email, test.orgCode).subscribe(result => {
             alert("Reset password link is sent");
         });
     }
@@ -422,4 +383,86 @@ export class UserNamesAndPasswordComponent implements OnInit {
     navigateToBackScreen() {
         this.router.navigate(['admin/home']);
     }
-}
+
+    //Move Function Start
+    showMoveItemPopup(data: any): void {
+        this.selectedRow = null;
+        this.selectedRow = data;
+        this.initMoveItemForm();
+    }
+
+    initMoveItemForm() {
+    }
+
+    //Merge Function Start
+    showMergeItemPopup(data: any): void {
+        this.selectedRow = null;
+        this.selectedRow = data;
+        this.initMergeItemForm();
+    }
+
+    initMergeItemForm() {
+    }
+
+    cancelDelete(): void {}
+
+    //Print Function Start
+    print() {
+        var doc = new jsPDF('l', 'mm', 'a4');
+        const head = [['Organization Code', 'First Name', 'Last Name', 'Email', 'Role Name', 'Site Location', 'Active']]
+        let data: any = [];
+        this.userList.forEach((e: any) => {
+            var tempObj = [];
+            tempObj.push(e.id);
+            tempObj.push(e.orgCode);
+            tempObj.push(e.firstName);
+            tempObj.push(e.lastName);
+            tempObj.push(e.email);
+            tempObj.push(e.roleName);
+            tempObj.push(e.siteLocation);
+            tempObj.push(e.active);
+            data.push(tempObj);
+        });
+        autoTable(doc, {
+            head: head,
+            body: data,
+            theme: "grid",
+            showHead: "everyPage",
+            margin: { left: 20, right: 20, top: 30, bottom: 40 },
+            startY: 25,
+            headStyles: {
+                fillColor: [0, 57, 107]
+            },
+            alternateRowStyles: {
+                fillColor: [240, 240, 240]
+            },
+            tableLineColor: [208, 208, 208],
+            tableLineWidth: 0.1,
+            //styles : { halign : 'center'},
+            bodyStyles: {
+                fontSize: 12
+            },
+            styles: {
+                cellPadding: 3
+            },
+            didDrawPage: function (data) {
+
+                // Header
+                doc.setFontSize(20);
+                doc.setTextColor(40);
+                doc.text("Compansol TRIO User List", 140, 15, {
+                    align: 'center'
+                });
+
+            },
+            didDrawCell: (data) => { },
+        });
+        doc.setProperties({
+            title: "User List"
+        });
+        window.open(doc.output('bloburl').toString(), '_blank');
+        //doc.output('dataurlnewwindow', { filename: 'standing.pdf' });
+        //doc.save('college.pdf');  
+    }
+    //Print Function End
+}  

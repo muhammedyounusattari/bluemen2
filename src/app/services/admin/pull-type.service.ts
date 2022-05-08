@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from '../data-service';
 import { ServiceUrls } from '../../constants/serviceUrl';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Config } from 'src/app/config/config';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class PullTypeServicesService {
-    constructor(private dataService: DataService) {
+    constructor(private dataService: DataService, private http: HttpClient, private config: Config) {
     }
 
     getPullTypeList(): Observable<any> {
@@ -29,8 +31,13 @@ export class PullTypeServicesService {
         );
     }
 
+    // downloadPullTypeList(payload: any): Observable<any> {
+    //     debugger;
+    //     const URL = `https://blumen-api.azurewebsites.net/api/blumen-api/admin/home/downloadPullType/v1?description=${payload.filterDescription}&programType=${payload.filterProgramType}&pullType=${payload.filterPullType}`;
+    //     return this.dataService.callGetService(URL);
+    // }
     downloadPullTypeList(payload: any): Observable<any> {
         const URL = `https://blumen-api.azurewebsites.net/api/blumen-api/admin/home/downloadPullType/v1?description=${payload.filterDescription}&programType=${payload.filterProgramType}&pullType=${payload.filterPullType}`;
-        return this.dataService.callGetService(URL);
+        return this.http.get<any>(URL, { observe: 'response', headers:this.config.getHeader(), responseType: 'blob' as 'json' });
     }
 }
