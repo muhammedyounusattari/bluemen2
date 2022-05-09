@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 import { UserManagementService } from 'src/app/services/admin/user-management.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
 import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
@@ -63,9 +63,11 @@ export class UserNamesAndPasswordComponent implements OnInit {
         , private router: Router
         , private sharedService: SharedService
         , private pullDownService: PullDownListService
-        , private notificationService: NotificationUtilities) { }
+        , private notificationService: NotificationUtilities
+        , private route: ActivatedRoute) { }
 
     ngOnInit(): void {
+        this.selectedOrgId = this.route.snapshot.params.orgId;
         this.isSuperAdmin = false;
         this.userDataObject = [];
         this.user = sessionStorage.getItem('state');
@@ -212,8 +214,16 @@ export class UserNamesAndPasswordComponent implements OnInit {
             this.hideLoader();
             if (result) {
                 this.organizationsList = result;//.filter((v: any, i: any, a: string | any[]) => a.indexOf(v) === i);
+                if(!this.selectedOrgId){
                 this.selectedOrgId = result[0].orgId;
+                }else{
+                    const result = this.organizationsList.filter((item: any) => item.orgId === Number(this.selectedOrgId));
+                    if(result[0]){
+                    this.selectedOrgId  = result[0].orgId;
+                    }
+                }
                 this.populateUserList();
+                
             }
         });
     }

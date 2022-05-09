@@ -33,6 +33,7 @@ import { OrganizationComponent } from '../super-admin/organization/organization.
 import { SecurityQuestionsComponent } from '../super-admin/security-question/security-questions.component';
 import { GradeStandingComponent } from './customize/grade-standing/grade-standing.component';
 import { LabSettingPreferencesComponent } from './customize/lab-setting-preferences/lab-setting-preferences.component';
+import { OriginalPulldownListsComponent } from './home/original-pulldown-lists/original-pulldown-lists.component';
 const routes: Routes = [
   {
     path: 'admin/customize/pulldown-list',
@@ -246,6 +247,23 @@ const routes: Routes = [
     }
   },
   {
+    path: 'admin/home/organization/user-names-pwd/:orgId',
+    component: UserNamesAndPasswordComponent,
+    data: {
+      title: 'Usernames & Password',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/home'
+        },
+        {
+          label: 'Usernames & Password',
+          url: ''
+        }
+      ]
+    }
+  },
+  {
     path: 'admin/home/system-preferences',
     component: SystemPreferencesComponent,
     data: {
@@ -274,6 +292,23 @@ const routes: Routes = [
         },
         {
           label: 'Pull Type',
+          url: ''
+        }
+      ]
+    }
+  },
+  {
+    path: 'admin/home/original-pulldown-lists',
+    component: OriginalPulldownListsComponent,
+    data: {
+      title: 'Original Pulldown Lists',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/home'
+        },
+        {
+          label: 'Original Pulldown Lists',
           url: ''
         }
       ]

@@ -3,15 +3,14 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog-box/confirm-dialog-box.component';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { OrganizationsService } from 'src/app/services/super-admin/organizations.service';
-import { UserNamesAndPasswordComponent } from 'src/app/component/admin/home/user-names-password/user-names-and-pwd.component';
 import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable';
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
 
 @Component({
     selector: 'app-organization',
@@ -22,54 +21,48 @@ import { PullDownListService } from 'src/app/services/admin/pulldown-list.servic
 export class OrganizationComponent implements OnInit {
 
     formGroup: FormGroup;
-    @ViewChild('organizationPopup') organizationPopupRef: TemplateRef<any>;
-    isVisible: boolean = false;
-    modalRef: BsModalRef;
-    modalConfigSM = {
-        backdrop: true,
-        ignoreBackdropClick: true,
-        class: 'modal-xl'
-    };
-
-    @ViewChild('userComponentPopup') userComponentPopupRef: TemplateRef<any>;
-    userModalRef: BsModalRef;
-    modalConfigXL = {
-        backdrop: true,
-        ignoreBackdropClick: true,
-        class: 'modal-xl'
-    };
+    searchFormGroup: FormGroup;
     selectedRow: any = '';
     isEdit: boolean = false;
-    spinner: boolean = true;
     selectedRowIndex: any;
-    isLoading: boolean = true;
     myElement: any = null;
     validationClass: ValidationClass = new ValidationClass();
-
-    columnsToDisplay: string[] = ['orgId', 'orgName', 'orgCode', 'orgTwoFactor', 'orgDeviceAuth',
-        'orgExpiryTime', 'orgActive', 'orgDaysToExpire', 'orgRemindOne', 'orgRemindTwo',
-        'orgPurge', 'deleted', 'action'];
-    dataSource: MatTableDataSource<any>;
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-    @ViewChild(MatSort) set matSort(sort: MatSort) {
-        if (this.dataSource && !this.dataSource.sort) {
-            this.dataSource.sort = sort;
-        }
-    }
+    public dataLoading: boolean = false;
 
     otherInfo: boolean = false;
     orgId: any;
     organizationList: any;
     organizationCode: any;
     isDisabledBtn: boolean = false;
-    siteLocationList: any = [{ 'id': 1, 'name': 'Location1' }, { 'id': 2, 'name': 'Location2' }, { 'id': 2, 'name': 'Location3' }];
-    cityList: any = [{ 'id': 1, 'name': 'Pune' }, { 'id': 2, 'name': 'Mumbai' }];
-    stateList: any = [{ 'id': 1, 'name': 'Maharashtra' }, { 'id': 2, 'name': 'Delhi' }];
+
+    siteLocationList: any = [];
+    cityList: any = [];
+    stateList: any = [];
+    //organizationTypeList: any = [];
+    activeList: any = [{ 'longpullna': 'Yes'}, { 'longpullna': 'No' }];
+    purgeList: any = [{ 'longpullna': 'Yes'}, { 'longpullna': 'No' }];
+    //programTypeList: any = [];
+    deletedList: any = [{ 'longpullna': 'Yes'}, { 'longpullna': 'No' }];
+    panels = [
+        {
+          active: false,
+          name: 'Other Information',
+          disabled: false
+        }
+      ];
+    emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+    public organizationModalVisible: boolean = false;
+    public organizationModalHeader: string = 'Organization Information';
+    public isConfirmOrgnizationLoading: boolean = false;
+    organizationSearchList: any = [];
+    organizationActiveDeActiveList: any =[];
+
+    programTypeList: any = [{ 'longpullna': 'TS'}, { 'longpullna': 'EOC' },{'longpullna': 'UB' },{'longpullna': 'VUB' },{'longpullna': 'UBMS' },{'longpullna': 'SSS' },{'longpullna': 'MCN' }];
+    organizationTypeList: any =  [{ 'longpullna': 'Live Customer Data'}, { 'longpullna': 'Customer Demo' },{'longpullna': 'Tech Support Demo' },{'longpullna': 'Dev Team Demo' },{'longpullna': 'Testing Scenario Demo' }];
 
     constructor(private modalService: BsModalService
         , private dialog: MatDialog
-        , private toastr: ToastrService
+        , private notificationService: NotificationUtilities
         , private formBuilder: FormBuilder
         , private sharedService: SharedService
         , private organizationService: OrganizationsService
@@ -78,8 +71,11 @@ export class OrganizationComponent implements OnInit {
     ngOnInit(): void {
         this.sharedService.setPageTitle('Organization Information');
         this.createForm();
+        this.createSearchForm();
         this.myElement = window.document.getElementById('loading');
         this.getOrgList();
+        this.bindDropDownValues();
+        
     }
 
     /**
@@ -87,7 +83,7 @@ export class OrganizationComponent implements OnInit {
     * @description Get the all pull down item list
     */
      bindDropDownValues() {
-        let data: any = 'CITY,STATE,SITE LOCATION';
+        let data: any = 'CITY,STATE, ORGANIZATIONTYPE, PROGRAMTYPE';
         this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
             if (result?.CITY) {
                 this.cityList = result?.CITY;
@@ -95,9 +91,12 @@ export class OrganizationComponent implements OnInit {
             if (result?.STATE) {
                 this.stateList = result?.STATE;
             }
-            if (result?.SITELOCATION) {
-                this.siteLocationList = result?.SITELOCATION;
-            }
+            // if (result?.ORGANIZATIONTYPE) {
+            //     this.organizationTypeList = result?.ORGANIZATIONTYPE;
+            // }
+            // if (result?.PROGRAMTYPE) {
+            //     this.programTypeList = result?.PROGRAMTYPE;
+            // }
         });
     }
 
@@ -107,7 +106,7 @@ export class OrganizationComponent implements OnInit {
             'orgName': ['', Validators.required],
             'orgCode': ['', Validators.required],
             'orgProgramType': ['', Validators.required],
-            'orgOrganizationType': ['', Validators.required],
+            'orgOrganizationType': [''],
             'orgDescription': [''],
             'orgBulkTemplate': [''],
             'orgAddress1': [''],
@@ -121,7 +120,7 @@ export class OrganizationComponent implements OnInit {
             'orgFax': [''],
             'mailServer': [''],
             'orgWebSite': [''],
-            'orgEmail': [''],
+            'orgEmail': ['', [Validators.pattern(this.emailPattern)]],
             'orgUserName': [''],
             'orgDirector': [''],
             'orgTwoFactor': [false],
@@ -142,45 +141,80 @@ export class OrganizationComponent implements OnInit {
         });
     }
 
+        /**
+        * @method createSearchForm
+        * @description initialize serching fileds
+        */
+    createSearchForm() {
+        this.searchFormGroup = this.formBuilder.group({
+        'formLayout': ['vertical'],
+        'organizationType': [''],
+        'name': [''],
+        'code': [''],
+        'active': [''],
+        'purge': [''],
+        'city': [''],
+        'state': [''],
+        'programType': [''],
+        'deleted': ['']
+        });
+    }
+
+   /**
+    * @method getOrgList
+    * @description Get the org list
+    */
     getOrgList() {
         this.organizationService.getOrganizationsList().subscribe((result: any) => {
             this.hideLoader();
             if (result) {
-                this.organizationList = result;
+                this.organizationActiveDeActiveList = result;
                 result = result.filter((item: any) => item.orgActive);
-                this.spinner = false;
-                this.dataSource = new MatTableDataSource(result);
-                this.dataSource.paginator = this.paginator;
+                this.organizationList = result;
+                this.organizationSearchList = result;
                 this.selectedRowIndex = null;
-                this.dataSource.sort = this.sort;
             }
         });
     }
 
+   /**
+    * @method applyFilter
+    * @description apply the content search from list
+    */
     applyFilter(filterValue: any) {
-        this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
-        if (this.dataSource.paginator) {
-            this.dataSource.paginator.firstPage();
-        }
+        const targetValue: any[] = [];
+        this.organizationSearchList.forEach((value: any) => {
+          let keys = ["orgId","orgName","orgCode","orgTwoFactor","orgDeviceAuth","orgExpiryTime","orgActive","orgDaysToExpire","orgRemindOne","orgRemindTwo","orgPurge","deleted"];
+          for (let i = 0; i < keys.length; i++) {
+            if (value[keys[i]] && value[keys[i]].toString().toLocaleLowerCase().includes(filterValue)) {
+              targetValue.push(value);
+              break;
+            }
+          }
+        });
+        this.organizationList = targetValue;
     }
 
+    /**
+    * @method hideLoader
+    * @description hide the popup on list
+    */
     hideLoader() {
-        this.myElement = window.document.getElementById('loading');
-        if (this.myElement !== null) {
-            this.spinner = false;
-            this.isLoading = false;
-            this.myElement.style.display = 'none';
-        }
+        this.dataLoading = false;
     }
 
+    /**
+    * @method showLoader
+    * @description show the popup on list
+    */
     showLoader() {
-        if (this.myElement !== null) {
-            this.spinner = true;
-            this.isLoading = true;
-            this.myElement.style.display = 'block';
-        }
+        this.dataLoading = true;
     }
 
+    /**
+    * @method setSelectedRow
+    * @description set the selected fields
+    */
     setSelectedRow(selectedRowItem: any, index: Number) {
         this.selectedRowIndex = index;
         this.selectedRow = selectedRowItem;
@@ -188,44 +222,49 @@ export class OrganizationComponent implements OnInit {
         this.organizationCode = this.selectedRow.orgCode;
     }
 
+    /**
+    * @method resetFields
+    * @description reset all fields
+    */
     resetFields() {
         this.createForm();
         this.selectedRow = null;
         this.selectedRowIndex = null;
         this.isEdit = false;
         this.orgId = null;
-        this.openModal(this.organizationPopupRef);
+        this.organizationModalVisible = true;
     }
 
-    openModal(template: TemplateRef<any>, isUser?: boolean) {
-        if (!isUser) {
-            this.modalRef = this.modalService.show(template, this.modalConfigSM);
-            this.hidePopupLoader();
-        } else {
-            this.userModalRef = this.modalService.show(template, this.modalConfigXL)
-        }
-    }
-
+    /**
+    * @method hidePopupLoader
+    * @description hide the loader on list
+    */ 
     hidePopupLoader() {
-        const popupElement = window.document.getElementById('popupLoading');
-        if (popupElement != null) {
-            popupElement.style.display = 'none';
-        }
+        this.dataLoading = false;
     }
 
+    /**
+    * @method showPopupLoader
+    * @description show the loader on list
+    */ 
     showPopupLoader() {
-        const popupElement = window.document.getElementById('popupLoading');
-        if (popupElement != null) {
-            popupElement.style.display = 'block';
-        }
+        this.dataLoading = true;
     }
 
+    /**
+    * @method numericOnly
+    * @description
+    */ 
     numericOnly(e: any): boolean {
         return e.keyCode === 8 && e.keyCode === 46
             ? true
             : !isNaN(Number(e.key));
     }
 
+    /**
+    * @method imposeMinMax
+    * @description
+    */ 
     imposeMinMax(el: any) {
         if (
             el.value != '' &&
@@ -235,6 +274,10 @@ export class OrganizationComponent implements OnInit {
         }
     }
 
+    /**
+    * @method addOrganization
+    * @description add the organization
+    */ 
     addOrganization() {
         if (this.formGroup.valid) {
             this.isDisabledBtn = true;
@@ -246,18 +289,25 @@ export class OrganizationComponent implements OnInit {
                     this.orgId = JSON.parse(result).body;
                     this.organizationCode = this.formGroup?.get('orgCode')?.value;
                     this.hidePopupLoader();
-                    this.toastr.success('Organization created successfully.', '', {
-                        timeOut: 5000,
-                        closeButton: true
-                    });
+                    this.notificationService.createNotificationBasic('success', 'success', 'Organization created successfully.');
                     this.getOrgList();
                 }
             });
         } else {
-            this.formGroup.markAllAsTouched();
+            Object.values(this.formGroup.controls).forEach(control => {
+                if (control.invalid) {
+                  control.markAsDirty();
+                  control.updateValueAndValidity({ onlySelf: true });
+                }
+              });
+              return;
         }
     }
 
+    /**
+    * @method requestPayload
+    * @description add the add in this payload
+    */ 
     public requestPayload() {
         return {
             mailServer: this.formGroup?.get('mailServer')?.value,
@@ -299,14 +349,25 @@ export class OrganizationComponent implements OnInit {
         };
     }
 
+    /**
+    * @method openUserPopup
+    * @description show the user popup for the add organization
+    */ 
     openUserPopup() {
-        this.openModal(this.userComponentPopupRef, true);
+        //this.organizationModalVisible = true;
     }
 
-    editSelectedOrg() {
+    /**
+    * @method editSelectedOrg
+    * @description show the edit popup for the organization update
+    */ 
+    editSelectedOrg(selectedRowItem: any, index: any) {
+        this.selectedRowIndex = index;
+        this.selectedRow = selectedRowItem;
         if (this.selectedRow) {
+            this.orgId = this.selectedRow.orgId;
             this.isEdit = true;
-            this.formGroup.get('orgId')?.setValue(this.orgId);
+            this.formGroup.get('orgId')?.setValue(this.selectedRow.orgId);
             this.formGroup.get('orgName')?.setValue(this.selectedRow.orgName);
             this.formGroup.get('mailServer')?.setValue(this.selectedRow.mailServer);
             this.formGroup.get('orgActive')?.setValue(this.selectedRow.orgActive);
@@ -342,16 +403,19 @@ export class OrganizationComponent implements OnInit {
             this.formGroup.get('orgUserName')?.setValue(this.selectedRow.orgUserName);
             this.formGroup.get('orgWebSite')?.setValue(this.selectedRow.orgWebSite);
             this.formGroup.get('orgZipCode')?.setValue(this.selectedRow.orgZipCode);
-            this.openModal(this.organizationPopupRef, false);
+            this.organizationModalVisible = true;
         } else {
-            this.toastr.info('Please select a row to update', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
+            this.notificationService.createNotificationBasic('info', 'info', 'Please select a row to update');
         }
     }
 
-    deleteSelectedOrg() {
+    /**
+    * @method deleteSelectedOrg
+    * @description this method is used for deletd the selected organization
+    */ 
+    deleteSelectedOrg(selectedRowItem: any, index: any) {
+        this.selectedRowIndex = index;
+        this.selectedRow = selectedRowItem;
         if (this.selectedRow) {
             this.selectedRow.orgActive = false;
             this.showLoader();
@@ -365,10 +429,7 @@ export class OrganizationComponent implements OnInit {
                 if (result === true) {
                     this.organizationService.updateOrganization(this.selectedRow).subscribe(result => {
                         if (result) {
-                            this.toastr.success('Deleted successfully.', '', {
-                                timeOut: 5000,
-                                closeButton: true
-                            });
+                            this.notificationService.createNotificationBasic('success', 'success', 'Deleted successfully.');
                             this.getOrgList();
                             this.hideLoader();
                         }
@@ -378,13 +439,14 @@ export class OrganizationComponent implements OnInit {
                 }
             });
         } else {
-            this.toastr.info('Please select a row to delete', '', {
-                timeOut: 5000,
-                closeButton: true
-            });
+            this.notificationService.createNotificationBasic('info', 'info', 'Please select a row to delete.');
         }
     }
 
+    /**
+    * @method updateOrganization
+    * @description this method is used for update the organization
+    */ 
     updateOrganization() {
         if (this.selectedRow) {
             this.showLoader();
@@ -392,19 +454,302 @@ export class OrganizationComponent implements OnInit {
             request.orgId = this.selectedRow.orgId;
             this.organizationService.updateOrganization(request).subscribe(result => {
                 if (result) {
-                    this.toastr.success('Updated successfully.', '', {
-                        timeOut: 5000,
-                        closeButton: true
-                    });
+                    this.notificationService.createNotificationBasic('success', 'success', 'Updated successfully.');
                     this.getOrgList();
-                    this.modalRef.hide();
+                    this.organizationModalVisible = false;
+                    //this.modalRef.hide();
                 }
             });
         } else {
-            this.toastr.info('Please select a row to delete', '', {
-                timeOut: 5000,
-                closeButton: true
+            this.notificationService.createNotificationBasic('info', 'info', 'Please select a row to delete.');
+            Object.values(this.formGroup.controls).forEach(control => {
+                if (control.invalid) {
+                  control.markAsDirty();
+                  control.updateValueAndValidity({ onlySelf: true });
+                }
+              });
+              return;
+        }
+    }
+
+    /**
+    * @method updateOrganizationAfterSave
+    * @description this method is used for update the organization after first time save
+    */ 
+    updateOrganizationAfterSave() {
+        let name =  this.formGroup.get('orgName')?.value;
+        let orgCode =  this.formGroup.get('orgCode')?.value;
+        let orgProgramType =  this.formGroup.get('orgProgramType')?.value;
+        let orgOrganizationType =  this.formGroup.get('orgOrganizationType')?.value;
+          if(name && orgCode && orgProgramType){
+            this.showLoader();
+            const request = this.requestPayload();
+            request.orgId = this.orgId;
+            this.organizationService.updateOrganization(request).subscribe(result => {
+                if (result) {
+                    this.notificationService.createNotificationBasic('success', 'success', 'Updated successfully.');
+                    this.getOrgList();
+                    this.organizationModalVisible = false;
+                    //this.modalRef.hide();
+                }
             });
+     }else{
+        Object.values(this.formGroup.controls).forEach(control => {
+            if (control.invalid) {
+              control.markAsDirty();
+              control.updateValueAndValidity({ onlySelf: true });
+            }
+          });
+          return;
+     }
+   }
+
+    /**
+    * @method handleCancel
+    * @description this method is used for hide the pop
+    */ 
+    handleCancel(): void {
+        this.organizationModalVisible = false;
+      
+    }
+
+    /**
+    * @method checkOrgCode
+    * @description verifying org code already exist or not.
+    */
+    checkOrgCode(event: any) {
+        if (!this.validationClass.isNullOrUndefined(event)) {
+        let checkOrgCode = this.formGroup?.get('orgCode')?.value;
+        if(checkOrgCode){
+        const data = this.organizationActiveDeActiveList.filter((item: any) => item && (item.orgCode.trim().toLowerCase() === checkOrgCode.trim().toLowerCase()) && (item.orgId === this.orgId));
+        if(data && data.length > 0){
+         return;
+        }else{
+        const data = this.organizationActiveDeActiveList.filter((item: any) => item && item.orgCode.trim().toLowerCase() === checkOrgCode.trim().toLowerCase());
+          if(data && data.length> 0){ 
+          this.notificationService.createNotificationBasic('info', "info", 'Oragnization code is already exist!');
+            this.formGroup.get('orgCode')?.setValue('');
+          }
+        }
+       }
+      }
+    }
+
+    /**
+    * @method checkOrgCode
+    * @description verifying org code already exist or not.
+    */
+     checkOrgName(event: any) {
+        if (!this.validationClass.isNullOrUndefined(event)) {
+        let checkName = this.formGroup?.get('orgName')?.value;
+        if(checkName){
+        const data = this.organizationActiveDeActiveList.filter((item: any) => item && (item.orgName.trim().toLowerCase() === checkName.trim().toLowerCase()) && (item.orgId === this.orgId));
+        if(data && data.length > 0){
+         return;
+        }else{
+        const data = this.organizationActiveDeActiveList.filter((item: any) => item && item.orgName.trim().toLowerCase() === checkName.trim().toLowerCase());
+          if(data && data.length> 0){ 
+          this.notificationService.createNotificationBasic('info', "info", 'Oragnization name is already exist!');
+            this.formGroup.get('orgName')?.setValue('');
+          }
+        }
+       }
+      }
+    }
+
+
+    /**
+    * @method searchOragization
+    * @description this method is used for filter the data from organization list
+    */ 
+    searchOragization(){
+        let organizationType =  this.searchFormGroup.get('organizationType')?.value;
+        let name = this.searchFormGroup.get('name')?.value;
+        let code = this.searchFormGroup.get('code')?.value;
+        let active = this.searchFormGroup.get('active')?.value;
+        let purge = this.searchFormGroup.get('purge')?.value;
+        let city = this.searchFormGroup.get('city')?.value;
+        let state = this.searchFormGroup.get('state')?.value;
+        let programType = this.searchFormGroup.get('programType')?.value;
+         let deleted =  this.searchFormGroup.get('deleted')?.value;
+        let list = this.organizationSearchList;
+        let list1: any = [];
+         if (list && list.length > 0){
+         if(organizationType || name || code || active || purge || city || state|| programType || deleted ){
+             list1 = list.filter((item: any) =>{
+                let query: any = 'true';
+                if(organizationType){
+                    query = (query && organizationType && item.orgOrganizationType.trim().toLowerCase() == organizationType.trim().toLowerCase());
+                 }
+                 if(name){
+                    query = (query && name && item.orgName.trim().toLowerCase() == name.trim().toLowerCase());
+                 }
+                 if(code){
+                    query = (query && code && item.orgCode.trim().toLowerCase() == code.trim().toLowerCase());
+                }
+                 if(active){
+                    let activeVal = false;
+                    if(active == 'Yes'){
+                        activeVal = true;
+                    }else{
+                        activeVal = false; 
+                    } 
+                    query = (query && active && item.orgActive == activeVal);
+                }
+                if(purge){
+                    let purgeVal = false;
+                    if(purge == 'Yes'){
+                        purgeVal = true;
+                    }else{
+                        purgeVal = false; 
+                    } 
+                    query = (query && purge && item.orgPurge == purgeVal);
+                }
+                if(city){
+                    query = (query && city && item.orgCity.trim().toLowerCase() == city.trim().toLowerCase());
+                }
+                if(state){
+                    query = (query && state && item.orgState.trim().toLowerCase() == state.trim().toLowerCase());
+                }
+                if(programType){
+                    query = (query && programType && item.orgProgramType.trim().toLowerCase() == programType.trim().toLowerCase());
+                }
+                if(deleted){
+                    let deletedVal = false;
+                    if(deleted == 'Yes'){
+                        deletedVal = true;
+                    }else{
+                        deletedVal = false; 
+                    } 
+                    query = (query && deleted && item.deleted == deletedVal);
+                }
+
+                return query;   
+           })
+           this.organizationList = list1;
+        }else{
+            this.organizationList = this.organizationSearchList;
+        }
+        return this.organizationList;
+        }else{
+            return this.organizationList;
+        }
+        
+    
+    }
+
+   /**
+    * @method print
+    * @description this method is used for print the organization list
+    */  
+   print() {
+    var doc = new jsPDF('l', 'mm', 'a4');
+    const head = [['orgId', 'Organization Name', 'Code','Two Factor','Device Auth','Expiry Time','Active', 'Days To Expire'
+    ,'Remind One','Remind Two','Purge','Deleted']]
+    let data: any = [];
+    this.organizationList.forEach((e: any) => {
+      var tempObj = [];
+      tempObj.push(e.orgId);
+      tempObj.push(e.orgName);
+      tempObj.push(e.orgCode);
+      tempObj.push(e.orgExpiryTime);
+      tempObj.push(e.orgDaysToExpire);
+      tempObj.push(e.orgRemindOne);
+      tempObj.push(e.orgRemindTwo);
+    
+        if (e.orgTwoFactor == true) {
+            tempObj.push("Yes");
+        } else {
+            tempObj.push("No");
+        }
+
+        if (e.orgDeviceAuth == true) {
+            tempObj.push("Yes");
+        } else {
+            tempObj.push("No");
+        }
+
+        if (e.deleted == true) {
+            tempObj.push("Yes");
+        } else {
+            tempObj.push("No");
+        }
+
+        if (e.orgPurge == true) {
+            tempObj.push("Yes");
+        } else {
+            tempObj.push("No");
+        }
+
+        if (e.orgActive == true) {
+            tempObj.push("Yes");
+        } else {
+            tempObj.push("No");
+        }
+
+      data.push(tempObj);
+    });
+    autoTable(doc, {
+      head: head,
+      body: data,
+      theme: "grid",
+      showHead: "everyPage",
+      margin: { left: 20, right: 20, top: 30, bottom: 40 },
+      startY: 25,
+      headStyles: {
+        fillColor: [0, 57, 107]
+      },
+      alternateRowStyles: {
+        fillColor: [240, 240, 240]
+      },
+      tableLineColor: [208, 208, 208],
+      tableLineWidth: 0.1,
+      //styles : { halign : 'center'},
+      bodyStyles: {
+        fontSize: 12
+      },
+      styles: {
+        cellPadding: 3
+      },
+      didDrawPage: function (data) {
+
+        // Header
+        doc.setFontSize(20);
+        doc.setTextColor(40);
+        //doc.text("Compansol TRIO College Listing", data.settings.margin.left, 10);
+        doc.text("Compansol TRIO Organization Listing", 140, 15, {
+          align: 'center'
+        });
+
+      },
+      didDrawCell: (data) => { },
+    });
+    doc.setProperties({
+      title: "Organization"
+    });
+    window.open(doc.output('bloburl').toString(), '_blank');
+    //doc.output('dataurlnewwindow', { filename: 'standingGroup.pdf' });
+    //doc.save('college.pdf');  
+  }
+  //Print Function End
+
+    /**
+     * @method sorting
+     * @description this method is used for asc sorting
+     */
+     sorting(attr: string) {
+        if (this.organizationList.length > 0) {
+            this.organizationList = [...this.organizationList].sort((a, b) => (a[attr] > b[attr]) ? 1 : -1)
+        }
+    }
+
+    /**
+    * @method sorting
+    * @description this method is used for desc sorting
+    */
+    sorting2(attr: string) {
+        if (this.organizationList.length > 0) {
+            this.organizationList = [...this.organizationList].sort((a, b) => (a[attr] < b[attr]) ? 1 : -1)
         }
     }
 }
