@@ -216,7 +216,7 @@ export class OriginalPulldownListsComponent implements OnInit {
         const requestObj = {
           "inoriginal": true,
           "longpullna": frmValue.pulldownName,
-          "organizationid": 0,
+          "organizationid": this.orgId,
           "projtype": this.selectedProgram,
           "pulltype": this.selectedPulltype,
           "pullId": frmValue.pulldownNumber,
