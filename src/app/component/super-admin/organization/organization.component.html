@@ -1,586 +1,651 @@
-<div class="container-fluid " style="background:#EFF4F8;">
-    <!-- Full Screen Loader Start -->
-    <div id="loading"></div>
-    <!-- Full Screen Loader End -->
-
-    <div class="row ">
-        <div class="col-md-6 mt-3 mb-3 ">
-            <form class="example">
-                <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
-                <i class="fa fa-search search"></i>
-            </form>
-        </div>
-        <div class="col-md-6 mt-3 mb-3 ">
-            <a href="javascript:void(0)" class="newBtn" (click)="resetFields();">New</a>
-            &nbsp;&nbsp;
-            <a href="javascript:void(0)" class="newBtn" (click)="editSelectedOrg();">Edit</a>
-            &nbsp;&nbsp;
-            <a href="javascript:void(0)" class="newBtn" (click)="deleteSelectedOrg();">Remove</a>
-        </div>
-    </div>
-
-    <!-- Spinner Start-->
-    <div class="spinner-container" *ngIf="isLoading">
-        <mat-spinner id="spinner"></mat-spinner>
-    </div>
-    <!-- Spinner End-->
-
-    <!-- Data Table Start-->
-    <div class="mat-elevation-z8 data-table-height" *ngIf="!isLoading" style="margin-right: 6px;">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-
-            <ng-container matColumnDef="orgId">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Org Id </th>
-                <td mat-cell *matCellDef="let orgObj; let row = dataIndex;"> {{orgObj.orgId}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="orgName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Organization Name</th>
-                <td mat-cell *matCellDef="let orgObj; let row = dataIndex;"> {{orgObj.orgName}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="orgCode">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
-                <td mat-cell *matCellDef="let orgObj; let row = dataIndex;"> {{orgObj.orgCode}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="orgTwoFactor">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Two Factor</th>
-                <td mat-cell *matCellDef="let orgObj; let row = dataIndex;"> {{orgObj.orgTwoFactor?'Yes':'No'}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="orgDeviceAuth">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Device Auth</th>
-                <td mat-cell *matCellDef="let orgObj; let row = dataIndex;"> {{orgObj.orgDeviceAuth?'Yes':'No'}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="orgExpiryTime">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Expiry Time</th>
-                <td mat-cell *matCellDef="let orgObj; let row = dataIndex;"> {{orgObj.orgExpiryTime}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="orgActive">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
-                <td mat-cell *matCellDef="let orgObj; let row = dataIndex;"> {{orgObj.orgActive?'Yes':'No'}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="orgDaysToExpire">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Days To Expire</th>
-                <td mat-cell *matCellDef="let orgObj; let row = dataIndex;"> {{orgObj.orgDaysToExpire}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="orgRemindOne">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Remind 1</th>
-                <td mat-cell *matCellDef="let orgObj; let row = dataIndex;"> {{orgObj.orgRemindOne}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="orgRemindTwo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Remind Two</th>
-                <td mat-cell *matCellDef="let orgObj; let row = dataIndex;"> {{orgObj.orgRemindTwo}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="orgPurge">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Purge</th>
-                <td mat-cell *matCellDef="let orgObj; let row = dataIndex;"> {{orgObj.orgPurge?'Yes':'No'}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="deleted">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Deleted</th>
-                <td mat-cell *matCellDef="let orgObj; let row = dataIndex;"> {{orgObj.deleted? 'Yes': 'No'}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef> Navigate to Users </th>
-                <td mat-cell *matCellDef="let userObj; let i = index">
-                    <a href="javascript:void(0)">Users</a>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-            <tr mat-row *matRowDef="let row; let idx = index; columns: columnsToDisplay;"
-                [ngClass]="{'selected-row' : selectedRowIndex == idx}" (click)="setSelectedRow(row, idx)">
-            </tr>
-        </table>
-    </div>
-    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]" style="margin-right: 6px;"></mat-paginator>
-
-    <div class="filter row">
-        <div class="col-md-12 display-flex">
-            <div class="col-md-6">
-                <label>Filters:</label>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <mat-form-field appearance="fill" class="mat-select-width">
-                        <mat-label>Organization Type</mat-label>
-                        <select matNativeControl>
-                            <option value="" selected></option>
-                            <option value="volvo">SSS</option>
-                            <option value="saab">UB</option>
-                            <option value="mercedes">UBMS</option>
-                            <option value="audi">TS</option>
-                        </select>
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 display-flex">
-            <div class="col-md-3">
-                <div class="form-group">
-                    <mat-form-field class="mat-select-width" appearance="fill">
-                        <mat-label>Name </mat-label>
-                        <input matInput>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <mat-form-field class="mat-select-width" appearance="fill">
-                        <mat-label>Code </mat-label>
-                        <input matInput>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <mat-form-field appearance="fill" class="mat-select-width">
-                        <mat-label>Active</mat-label>
-                        <select matNativeControl>
-                            <option value="" selected></option>
-                            <option value="volvo">Yes</option>
-                            <option value="saab">No</option>
-                        </select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <mat-form-field appearance="fill" class="mat-select-width">
-                        <mat-label>Purge</mat-label>
-                        <select matNativeControl>
-                            <option value="" selected></option>
-                            <option value="volvo">Yes</option>
-                            <option value="saab">No</option>
-                        </select>
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 display-flex">
-            <div class="col-md-3">
-                <div class="form-group">
-                    <mat-form-field appearance="fill" class="mat-select-width">
-                        <mat-label>City</mat-label>
-                        <select matNativeControl>
-                            <option value="" selected>--Select--</option>
-                            <option value="austin">Austin</option>
-                            <option value="dallas">Dallas</option>
-                        </select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <mat-form-field appearance="fill" class="mat-select-width">
-                        <mat-label>State</mat-label>
-                        <select matNativeControl>
-                            <option value="" selected>--Select--</option>
-                            <option value="al">AL</option>
-                            <option value="ca">CA</option>
-                        </select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <mat-form-field appearance="fill" class="mat-select-width">
-                        <mat-label>Program Type</mat-label>
-                        <select matNativeControl>
-                            <option value="" selected>--Select--</option>
-                            <option value="ts">TS</option>
-                            <option value="eoc">EOC</option>
-                            <option value="ub">UB</option>
-                            <option value="vub">VUB</option>
-                            <option value="ubms">UBMS</option>
-                            <option value="sss">SSS</option>
-                            <option value="mcn">MCN</option>
-                        </select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <mat-form-field appearance="fill" class="mat-select-width">
-                        <mat-label>Deleted</mat-label>
-                        <select matNativeControl>
-                            <option value="" selected></option>
-                            <option value="volvo">Yes</option>
-                            <option value="saab">No</option>
-                        </select>
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #d7e8f5;">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link " href="#">Reset</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#">Submit</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#">Print</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Close</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div>
-
-<!-- Modal Start-->
-<ng-template #organizationPopup>
-    <!-- Modal -->
-    <div class="modal-header popHeaderBG">
-        <span class="modal-title popHeader" id="exampleModalLabel">Organization Information</span>
-        <button type="button" class="btn-close" (click)="selectedRowIndex = null;isDisabledBtn = false; formGroup?.markAsUntouched(); 
-            selectedRow = null; modalRef.hide()" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-        <!-- Full Screen Loader Start -->
-        <!-- <div id="popupLoading"></div> -->
-        <!-- Full Screen Loader End -->
-        <div class="tab-content bg-white" id="myTabContent">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <form [formGroup]="formGroup" class="form">
-                    <div class="row">
-                        <div class="col-md-12 display-flex">
-                            <div class="form-group col-md-6">
-                                <mat-form-field class="example-full-width" appearance="fill">
-                                    <mat-label>Organization Name</mat-label>
-                                    <input matInput placeholder="" value="" formControlName="orgName" required>
-                                </mat-form-field>
+<div class="custom-body">
+    <div nz-row>
+        <div nz-col [nzSpan]="24">
+            <div nz-row class="tabStyle">
+                <div nz-col [nzSpan]="24">
+                    <div nz-row class="form_section">
+                        <div nz-row class="full-width-container">
+                            <div nz-row>
+                                <div nz-col [nzSpan]="11">
+                                    <nz-input-group [nzSuffix]="suffixIconSearch">
+                                        <input type="text" #searchText nz-input placeholder="Search"
+                                            (keyup)="applyFilter(searchText.value)" />
+                                    </nz-input-group>
+                                    <ng-template #suffixIconSearch>
+                                        <i nz-icon nzType="search"></i>
+                                    </ng-template>
+                                </div>
+                                <div nz-col [nzSpan]="4" nzOffset="9">
+                                    <nz-form-item class="search-filter-item">
+                                        <nz-form-control>
+                                            <button nz-button nzType="primary" class="search-filter-btn"
+                                                (click)="resetFields()">
+                                                <i nz-icon nzType="file-add" nzTheme="outline"
+                                                    class="search-filter-icon"></i>
+                                                New
+                                            </button>
+                                            <button nz-button nzType="primary" class="search-filter-btn"
+                                                (click)="print()">
+                                                <i nz-icon nzType="printer" nzTheme="outline"
+                                                    class="search-filter-icon"></i>
+                                                Print
+                                            </button>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
                             </div>
-                            <div class="form-group col-md-6">
-                                <mat-form-field class="example-full-width" appearance="fill">
-                                    <mat-label>Organization Code</mat-label>
-                                    <input matInput placeholder="" value="" [readOnly]="orgId" formControlName="orgCode" required>
-                                </mat-form-field>
-                            </div>
-                        </div>
 
-                        <div class="col-md-12 display-content">
-                            <div class="form-group col-md-6">
-                                <mat-form-field appearance="fill" class="example-full-width">
-                                    <mat-label>Program Type</mat-label>
-                                    <select matNativeControl formControlName="orgProgramType" required>
-                                        <option value="" selected>--Select--</option>
-                                        <option value="ts">TS</option>
-                                        <option value="eoc">EOC</option>
-                                        <option value="ub">UB</option>
-                                        <option value="vub">VUB</option>
-                                        <option value="ubms">UBMS</option>
-                                        <option value="sss">SSS</option>
-                                        <option value="mcn">MCN</option>
-                                    </select>
-                                </mat-form-field>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <mat-form-field appearance="fill" class="example-full-width">
-                                    <mat-label>Organization Type</mat-label>
-                                    <select matNativeControl formControlName="orgOrganizationType">
-                                        <option value="" selected>--Select--</option>
-                                        <option value="lcd">Live Customer Data</option>
-                                        <option value="cd">Customer Demo</option>
-                                        <option value="tsd">Tech Support Demo</option>
-                                        <option value="saab">Dev Team Demo</option>
-                                        <option value="saab">Testing Scenario Demo</option>
-                                    </select>
-                                </mat-form-field>
+                            <div nz-row>
+                                <div nz-col [nzSpan]="24">
+                                    <nz-table #organizationDetails [nzNoResult]="noResultTemplate"
+                                        [nzData]="organizationList" [nzPageSize]="8" [nzLoading]="dataLoading"
+                                        style="margin-top: 15px;">
+                                        <ng-template #noResultTemplate>
+                                            <nz-empty [nzNotFoundContent]="'No Data Found'">
+                                            </nz-empty>
+                                        </ng-template>
+                                        <thead>
+                                            <tr>
+                                                <th>OrgId<i class="sort" (click)="sorting('orgId')" nz-icon
+                                                        nzType="caret-up" nzTheme="outline"></i>
+                                                    <i class="sort" (click)="sorting2('orgId')" nz-icon
+                                                        nzType="caret-down" nzTheme="outline"></i>
+                                                </th>
+                                                <th>Organization Name<i class="sort" (click)="sorting('orgName')"
+                                                        nz-icon nzType="caret-up" nzTheme="outline"></i>
+                                                    <i class="sort" (click)="sorting2('orgName')" nz-icon
+                                                        nzType="caret-down" nzTheme="outline"></i>
+                                                </th>
+                                                <th>Code<i class="sort" (click)="sorting('orgCode')" nz-icon
+                                                        nzType="caret-up" nzTheme="outline"></i>
+                                                    <i class="sort" (click)="sorting2('orgCode')" nz-icon
+                                                        nzType="caret-down" nzTheme="outline"></i>
+                                                </th>
+                                                <th>Two Factor<i class="sort" (click)="sorting('orgTwoFactor')" nz-icon
+                                                        nzType="caret-up" nzTheme="outline"></i>
+                                                    <i class="sort" (click)="sorting2('orgTwoFactor')" nz-icon
+                                                        nzType="caret-down" nzTheme="outline"></i>
+                                                </th>
+                                                <th>Device Auth<i class="sort" (click)="sorting('orgDeviceAuth')"
+                                                        nz-icon nzType="caret-up" nzTheme="outline"></i>
+                                                    <i class="sort" (click)="sorting2('orgDeviceAuth')" nz-icon
+                                                        nzType="caret-down" nzTheme="outline"></i>
+                                                </th>
+                                                <th>Expiry Time<i class="sort" (click)="sorting('orgExpiryTime')"
+                                                        nz-icon nzType="caret-up" nzTheme="outline"></i>
+                                                    <i class="sort" (click)="sorting2('orgExpiryTime')" nz-icon
+                                                        nzType="caret-down" nzTheme="outline"></i>
+                                                </th>
+                                                <th>Active<i class="sort" (click)="sorting('orgActive')" nz-icon
+                                                        nzType="caret-up" nzTheme="outline"></i>
+                                                    <i class="sort" (click)="sorting2('orgActive')" nz-icon
+                                                        nzType="caret-down" nzTheme="outline"></i>
+                                                </th>
+                                                <th>Days To Expire<i class="sort" (click)="sorting('orgDaysToExpire')"
+                                                        nz-icon nzType="caret-up" nzTheme="outline"></i>
+                                                    <i class="sort" (click)="sorting2('orgDaysToExpire')" nz-icon
+                                                        nzType="caret-down" nzTheme="outline"></i>
+                                                </th>
+                                                <th>Remind One<i class="sort" (click)="sorting('orgRemindOne')" nz-icon
+                                                        nzType="caret-up" nzTheme="outline"></i>
+                                                    <i class="sort" (click)="sorting2('orgRemindOne')" nz-icon
+                                                        nzType="caret-down" nzTheme="outline"></i>
+                                                </th>
+                                                <th>Remind Two<i class="sort" (click)="sorting('orgRemindTwo')" nz-icon
+                                                        nzType="caret-up" nzTheme="outline"></i>
+                                                    <i class="sort" (click)="sorting2('orgRemindTwo')" nz-icon
+                                                        nzType="caret-down" nzTheme="outline"></i>
+                                                </th>
+                                                <th>Purge<i class="sort" (click)="sorting('orgPurge')" nz-icon
+                                                        nzType="caret-up" nzTheme="outline"></i>
+                                                    <i class="sort" (click)="sorting2('orgPurge')" nz-icon
+                                                        nzType="caret-down" nzTheme="outline"></i>
+                                                </th>
+                                                <th>Deleted<i class="sort" (click)="sorting('deleted')" nz-icon
+                                                        nzType="caret-up" nzTheme="outline"></i>
+                                                    <i class="sort" (click)="sorting2('deleted')" nz-icon
+                                                        nzType="caret-down" nzTheme="outline"></i>
+                                                </th>
+                                                <th>Navigate to Users</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of organizationDetails.data;let idx = index;">
+                                                <td>{{ data.orgId }}</td>
+                                                <td>{{ data.orgName }}</td>
+                                                <td>{{ data.orgCode }}</td>
+                                                <td>{{ data.orgTwoFactor?'Yes':'No' }}</td>
+                                                <td>{{ data.orgDeviceAuth?'Yes':'No' }}</td>
+                                                <td>{{ data.orgExpiryTime }}</td>
+                                                <td>{{ data.orgActive?'Yes':'No' }}</td>
+                                                <td>{{ data.orgDaysToExpire }}</td>
+                                                <td>{{ data.orgRemindOne }}</td>
+                                                <td>{{ data.orgRemindTwo }}</td>
+                                                <td>{{ data.orgPurge?'Yes':'No' }}</td>
+                                                <td>{{ data.deleted?'Yes': 'No' }}</td>
+                                                <td> <a href="javascript:void(0)"
+                                                        [routerLink]="['user-names-pwd',data.orgId]">Users</a></td>
+                                                <td class="edit-icon-div">
+                                                    <i class="action-icon" nz-icon nzType="edit" nzTheme="outline"
+                                                        nz-tooltip nzTooltipTitle="Edit" nzTooltipPlacement="bottom"
+                                                        nz-button (click)="editSelectedOrg(data, idx)">
+                                                    </i>
+                                                    <i class="action-icon" nz-icon nzType="delete" nzTheme="outline"
+                                                        nz-tooltip nz-popconfirm
+                                                        nzPopconfirmTitle="Confirm Remove Record. Are you sure, you want to remove this record."
+                                                        (nzOnConfirm)="deleteSelectedOrg(data, idx)"
+                                                        nzPopconfirmPlacement="bottom" nzOkText="Confirm"
+                                                        nzCancelText="Cancel" nzTooltipTitle="Delete"
+                                                        nzTooltipPlacement="bottom" nz-button>
+                                                    </i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </nz-table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <mat-accordion *ngIf="orgId">
-                        <mat-expansion-panel (opened)="otherInfo = true" (closed)="otherInfo = false">
-                            <mat-expansion-panel-header class="accordion-bg">
-                                <mat-panel-title>
-                                    Other Information
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <div class="row marg-t2">
-                                <div class="col-md-12 display-flex">
-                                    <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                                        <mat-label>Description</mat-label>
-                                        <textarea matInput value="" formControlName="orgDescription"
-                                            rows="1"></textarea>
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-md-12 display-flex">
-                                    <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                                        <mat-label>Bulk Text Template</mat-label>
-                                        <textarea matInput value="" formControlName="orgBulkTemplate"
-                                            rows="1"></textarea>
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-md-12 display-content">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                                                <mat-label>Address 1</mat-label>
-                                                <textarea matInput value="" formControlName="orgAddress1"
-                                                    rows="1"></textarea>
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                                                <mat-label>Address 2</mat-label>
-                                                <textarea matInput value="" formControlName="orgAddress2"
-                                                    rows="1"></textarea>
-                                            </mat-form-field>
+                </div>
+            </div>
+            <br />
+            <div nz-row class="tabStyle">
+                <div nz-col [nzSpan]="24">
+                    <div nz-row class="form_section">
+                        <div nz-row class="full-width-container">
+                            <div nz-row>
+                                <div class="custom-modal-header">
+                                    <div nz-row>
+                                        <div nz-col nzSpan="24">
+                                            Select a value for the fields to set the filters
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12 display-flex">
-                                    <div class="form-group col-md-4">
-                                        <mat-form-field appearance="fill" class="example-full-width">
-                                            <mat-label>City</mat-label>
-                                            <select matNativeControl formControlName="orgCity">
-                                                <option value="" selected>--Select--</option>
-                                                <option [value]="cityObj.id" *ngFor="let cityObj of cityList" selected>
-                                                    {{cityObj.longpullna}}
-                                                  </option>
-                                            </select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <mat-form-field appearance="fill" class="example-full-width">
-                                            <mat-label>State</mat-label>
-                                            <select matNativeControl formControlName="orgState">
-                                                <option value="" selected>--Select--</option>
-                                                <option [value]="stateObj.id" *ngFor="let stateObj of stateList" selected>
-                                                    {{stateObj.longpullna}}
-                                                  </option>
-                                            </select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Zip Code</mat-label>
-                                            <input matInput placeholder="" type="number" value=""
-                                                formControlName="orgZipCode">
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 display-flex">
-                                    <div class="form-group col-md-4">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Phone 1</mat-label>
-                                            <input matInput placeholder="" minlength="10" maxlength="12" value=""
-                                                #orgPhoneOne (keyup)="imposeMinMax(orgPhoneOne)"
-                                                (keypress)="numericOnly($event)" formControlName="orgPhoneOne">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-md-4 form-group">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Phone 2</mat-label>
-                                            <input matInput placeholder="" minlength="10" maxlength="12" value=""
-                                                #orgPhoneTwo (keyup)="imposeMinMax(orgPhoneTwo)"
-                                                (keypress)="numericOnly($event)" formControlName="orgPhoneTwo">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-md-4 form-group">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Phone 3</mat-label>
-                                            <input matInput placeholder="" minlength="10" maxlength="12" value=""
-                                                #orgPhoneThree (keyup)="imposeMinMax(orgPhoneThree)"
-                                                (keypress)="numericOnly($event)" formControlName="orgPhoneThree">
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 display-flex">
-                                    <div class="form-group col-md-4">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Fax</mat-label>
-                                            <input matInput placeholder="" value="" formControlName="orgFax">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Mail Server</mat-label>
-                                            <input matInput placeholder="" value="" formControlName="mailServer">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Website</mat-label>
-                                            <input matInput placeholder="" value="" formControlName="orgWebSite">
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 display-flex">
-                                    <div class="form-group col-md-4">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>E-Mail</mat-label>
-                                            <input matInput placeholder="" value="" formControlName="orgEmail">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>User Name</mat-label>
-                                            <input matInput placeholder="" value="" formControlName="orgUserName">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Director</mat-label>
-                                            <input matInput placeholder="" value="" formControlName="orgDirector">
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 display-flex">
-                                    <div class="form-group col-md-3">
-                                        <section class="example-section">
-                                            <mat-checkbox formControlName="orgTwoFactor" class="example-margin">
-                                                Two Factor</mat-checkbox>
-                                        </section>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <section class="example-section">
-                                            <mat-checkbox formControlName="orgDeviceAuth" class="example-margin">
-                                                Device Authentication</mat-checkbox>
-                                        </section>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <section class="example-section">
-                                            <mat-checkbox formControlName="orgSendMail" class="example-margin">
-                                                Send Mail</mat-checkbox>
-                                        </section>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <section class="example-section">
-                                            <mat-checkbox formControlName="orgActive" class="example-margin">
-                                                Active</mat-checkbox>
-                                        </section>
-                                    </div>
-                                </div>
+                                <div nz-col [nzSpan]="24">
+                                    <!--Form Section Start-->
+                                    <div nz-row class="form_section">
+                                        <form nz-form class="staff-form"
+                                            [nzLayout]="searchFormGroup.get('formLayout')?.value"
+                                            [formGroup]="searchFormGroup">
+                                            <div nz-row [nzGutter]="24">
+                                                <div nz-col [nzSpan]="8">
+                                                    <nz-form-item>
+                                                        <nz-form-label class="lable-style">Organization Type:
+                                                        </nz-form-label>
+                                                        <nz-form-control nzErrorTip="Please Select Organization Type">
+                                                            <nz-select nzShowSearch nzAllowClear
+                                                                formControlName="organizationType"
+                                                                nzPlaceHolder="organizationType">
+                                                                <nz-option
+                                                                    *ngFor="let organizationType of organizationTypeList"
+                                                                    [nzLabel]="organizationType.longpullna"
+                                                                    [nzValue]="organizationType.longpullna">
+                                                                </nz-option>
+                                                            </nz-select>
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </div>
 
-                                <div class="col-md-12 display-flex">
-                                    <div class="form-group col-md-3">
-                                        <section class="example-section">
-                                            <mat-checkbox formControlName="orgSiteLocation" class="example-margin">
-                                                Site Location</mat-checkbox>
-                                        </section>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <section class="example-section">
-                                            <mat-checkbox formControlName="orgScript" class="example-margin">
-                                                Script</mat-checkbox>
-                                        </section>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <section class="example-section">
-                                            <mat-checkbox formControlName="orgTrioBlumenLab" class="example-margin">
-                                                Trio Blumen Lab</mat-checkbox>
-                                        </section>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <section class="example-section">
-                                            <mat-checkbox formControlName="orgPurge" class="example-margin">
-                                                Purge</mat-checkbox>
-                                        </section>
-                                    </div>
-                                </div>
+                                                <div nz-col [nzSpan]="8">
+                                                    <nz-form-item>
+                                                        <nz-form-label class="lable-style">Name:</nz-form-label>
+                                                        <nz-form-control nzErrorTip="Please Enter Name">
+                                                            <input nz-input type="text" formControlName="name"
+                                                                placeholder="Name" />
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </div>
 
-                                <div class="col-md-12 display-flex">
-                                    <div class="form-group col-md-3">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Expirty Time</mat-label>
-                                            <input matInput placeholder="" value="" formControlName="orgExpiryTime">
-                                        </mat-form-field>
+                                                <div nz-col [nzSpan]="8">
+                                                    <nz-form-item>
+                                                        <nz-form-label class="lable-style">Code:</nz-form-label>
+                                                        <nz-form-control nzErrorTip="Please Enter Code">
+                                                            <input nz-input type="text" formControlName="code"
+                                                                placeholder="Code" />
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </div>
+                                                <div nz-col [nzSpan]="8">
+                                                    <nz-form-item>
+                                                        <nz-form-label class="lable-style">Active:</nz-form-label>
+                                                        <nz-form-control nzErrorTip="Please Select Active">
+                                                            <nz-select nzShowSearch nzAllowClear
+                                                                formControlName="active" nzPlaceHolder="active">
+                                                                <nz-option *ngFor="let active of activeList"
+                                                                    [nzLabel]="active.longpullna"
+                                                                    [nzValue]="active.longpullna">
+                                                                </nz-option>
+                                                            </nz-select>
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </div>
+                                                <div nz-col [nzSpan]="8">
+                                                    <nz-form-item>
+                                                        <nz-form-label class="lable-style">Purge:</nz-form-label>
+                                                        <nz-form-control nzErrorTip="Please Select Purge">
+                                                            <nz-select nzShowSearch nzAllowClear formControlName="purge"
+                                                                nzPlaceHolder="purge">
+                                                                <nz-option *ngFor="let purge of purgeList"
+                                                                    [nzLabel]="purge.longpullna"
+                                                                    [nzValue]="purge.longpullna">
+                                                                </nz-option>
+                                                            </nz-select>
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </div>
+                                                <div nz-col [nzSpan]="8">
+                                                    <nz-form-item>
+                                                        <nz-form-label class="lable-style">City:</nz-form-label>
+                                                        <nz-form-control nzErrorTip="Please Select City">
+                                                            <nz-select nzShowSearch nzAllowClear formControlName="city"
+                                                                nzPlaceHolder="city">
+                                                                <nz-option *ngFor="let city of cityList"
+                                                                    [nzLabel]="city.longpullna"
+                                                                    [nzValue]="city.longpullna">
+                                                                </nz-option>
+                                                            </nz-select>
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </div>
+                                                <div nz-col [nzSpan]="8">
+                                                    <nz-form-item>
+                                                        <nz-form-label class="lable-style">State:</nz-form-label>
+                                                        <nz-form-control nzErrorTip="Please Select State">
+                                                            <nz-select nzShowSearch nzAllowClear formControlName="state"
+                                                                nzPlaceHolder="state">
+                                                                <nz-option *ngFor="let state of stateList"
+                                                                    [nzLabel]="state.longpullna"
+                                                                    [nzValue]="state.longpullna">
+                                                                </nz-option>
+                                                            </nz-select>
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </div>
+                                                <div nz-col [nzSpan]="8">
+                                                    <nz-form-item>
+                                                        <nz-form-label class="lable-style">Project Type:</nz-form-label>
+                                                        <nz-form-control nzErrorTip="Please Select Project Type">
+                                                            <nz-select nzShowSearch nzAllowClear
+                                                                formControlName="programType"
+                                                                nzPlaceHolder="Project Type">
+                                                                <nz-option *ngFor="let programType of programTypeList"
+                                                                    [nzLabel]="programType.longpullna"
+                                                                    [nzValue]="programType.longpullna">
+                                                                </nz-option>
+                                                            </nz-select>
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </div>
+                                                <div nz-col [nzSpan]="8">
+                                                    <nz-form-item>
+                                                        <nz-form-label class="lable-style">Deleted:</nz-form-label>
+                                                        <nz-form-control nzErrorTip="Please Select State">
+                                                            <nz-select nzShowSearch nzAllowClear
+                                                                formControlName="deleted" nzPlaceHolder="deleted">
+                                                                <nz-option *ngFor="let deleted of deletedList"
+                                                                    [nzLabel]="deleted.longpullna"
+                                                                    [nzValue]="deleted.longpullna">
+                                                                </nz-option>
+                                                            </nz-select>
+                                                        </nz-form-control>
+                                                    </nz-form-item>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="form-group col-md-3">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Days to Expire</mat-label>
-                                            <input matInput placeholder="" value="" formControlName="orgDaysToExpire">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Reminder 1</mat-label>
-                                            <input matInput placeholder="" value="" formControlName="orgRemindOne">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Reminder 2</mat-label>
-                                            <input matInput placeholder="" value="" formControlName="orgRemindTwo">
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 display-flex">
-                                    <div class="form-group col-md-4">
-                                        <mat-form-field appearance="fill" class="mb-m-6 example-full-width">
-                                            <mat-label>Good Till</mat-label>
-                                            <input matInput [matDatepicker]="picker1" formControlName="orgGoodTill">
-                                            <mat-datepicker-toggle matSuffix [for]="picker1">
-                                            </mat-datepicker-toggle>
-                                            <mat-datepicker #picker1></mat-datepicker>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <mat-form-field class="mb-m-6 example-full-width" appearance="fill">
-                                            <mat-label>Notes</mat-label>
-                                            <textarea matInput value="" formControlName="orgNotes" rows="1"></textarea>
-                                        </mat-form-field>
-                                    </div>
+                                    <!--Form Section End-->
                                 </div>
                             </div>
-                        </mat-expansion-panel>
-                    </mat-accordion>
-                    <div class="row marg-t1 marg-b1"></div>
-                </form>
+                            <div nz-row nzJustify="center">
+                                <div nz-col nzSpan="4">
+                                    <button nz-button nzType="primary" class="btn-color"
+                                        (click)="searchOragization()">SEARCH</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-v .primary" [disabled]="isDisabledBtn" *ngIf="orgId" (click)="openUserPopup()">Users</button>
-        <!-- <button type="button" class="btn btn-primary" *ngIf="orgId && !isEdit" [disabled]="isDisabledBtn" (click)="addOrganization()">Save</button> -->
-        <button type="button" class="btn btn-primary" *ngIf="orgId && isEdit" [disabled]="isDisabledBtn" (click)="updateOrganization()">Save</button>
-        <button type="button" class="btn btn-primary" *ngIf="!orgId" [disabled]="isDisabledBtn" (click)="addOrganization();">Save & Next</button>
-        <button type="button" class="btn btn-secondary" id="closePopup" [disabled]="isDisabledBtn"
-            (click)="isEdit = false; selectedRowIndex = null;isDisabledBtn = false; selectedRow=null; modalRef.hide(); formGroup?.markAsUntouched()">Cancel</button>
-        <button type="button" class="btn btn-primary">Purge Report</button>
-    </div>
-</ng-template>
-<!-- Modal End-->
-
-<ng-template #userComponentPopup>
-    <!-- Modal -->
-    <div class="modal-header popHeaderBG">
-        <span class="modal-title popHeader" id="exampleModalLabel">Users Information</span>
-        <button type="button" class="btn-close" (click)="userModalRef.hide();"></button>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-            <app-user-names-password [organizationId]="orgId" [organizationCode]="organizationCode"></app-user-names-password>
+</div>
+<!--Modal-->
+<nz-modal [(nzVisible)]="organizationModalVisible" nzTitle={{organizationModalHeader}} (nzOnCancel)="handleCancel()"
+    [nzFooter]="organizationModalFooter" nzWidth="75%" [nzOkLoading]="isConfirmOrgnizationLoading">
+    <ng-template #organizationModalFooter>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+            <!-- <button nz-button nzType="primary" (click)="openUserPopup()" [nzLoading]="isConfirmOrgnizationLoading">User</button> -->
+            <button nz-button nzType="primary" *ngIf="orgId && isEdit" [nzDisabled]="isDisabledBtn"
+                (click)="updateOrganization()" [nzLoading]="isConfirmOrgnizationLoading">Update</button>
+            <button nz-button nzType="primary" *ngIf="orgId && !isEdit" [nzDisabled]="isDisabledBtn"
+                (click)="updateOrganizationAfterSave()" [nzLoading]="isConfirmOrgnizationLoading">Update</button>
+            <button nz-button nzType="primary" *ngIf="!orgId" [nzDisabled]="isDisabledBtn" (click)="addOrganization();"
+                [nzLoading]="isConfirmOrgnizationLoading">Save & Next</button>
+            <!-- <button nz-button nzType="primary">Purge Report</button> -->
         </div>
-    </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <form nz-form class="staff-form" [formGroup]="formGroup"
+                    [nzLayout]="formGroup.get('formLayout')?.value">
+                    <div nz-row [nzGutter]="24" [nzSpan]="24" class="row box">
+                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                            <div class="form-group" nz-col [nzSpan]="12">
+                                <nz-form-item>
+                                    <nz-form-label [nzSpan]="24" class="lable-style" nzRequired>Organization Name
+                                    </nz-form-label>
+                                    <nz-form-control nzErrorTip="Please Enter Organization Name">
+                                        <input nz-input type="text" *ngIf="orgId" formControlName="orgName"
+                                            placeholder="Organization Name" readonly />
+                                        <input nz-input type="text" *ngIf="!orgId" formControlName="orgName"
+                                            placeholder="Organization Name" (blur)="checkOrgName($event)" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div class="form-group" nz-col [nzSpan]="12">
+                                <nz-form-item>
+                                    <nz-form-label [nzSpan]="24" class="lable-style" nzRequired>Organization Code
+                                    </nz-form-label>
+                                    <nz-form-control nzErrorTip="Please Enter Organization Code">
+                                        <input nz-input type="text" *ngIf="orgId" formControlName="orgCode"
+                                            placeholder="Organization Code" readonly />
+                                        <input nz-input type="text" *ngIf="!orgId" formControlName="orgCode"
+                                            placeholder="Organization Code" (blur)="checkOrgCode($event)" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div class="form-group" nz-col [nzSpan]="12">
+                                <nz-form-item>
+                                    <nz-form-label [nzSpan]="24" class="lable-style" nzRequired>Project Type
+                                    </nz-form-label>
+                                    <nz-form-control nzErrorTip="Please Select Project Type">
+                                        <nz-select nzShowSearch nzAllowClear formControlName="orgProgramType"
+                                            nzPlaceHolder="Project Type">
+                                            <nz-option *ngFor="let programType of programTypeList"
+                                                [nzLabel]="programType.longpullna" [nzValue]="programType.longpullna">
+                                            </nz-option>
+                                        </nz-select>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div class="form-group" nz-col [nzSpan]="12">
+                                <nz-form-item>
+                                    <nz-form-label [nzSpan]="24" class="lable-style">Organization Type</nz-form-label>
+                                    <nz-form-control>
+                                        <nz-select nzShowSearch nzAllowClear formControlName="orgOrganizationType"
+                                            nzPlaceHolder="organizationType">
+                                            <nz-option *ngFor="let organizationType of organizationTypeList"
+                                                [nzLabel]="organizationType.longpullna"
+                                                [nzValue]="organizationType.longpullna">
+                                            </nz-option>
+                                        </nz-select>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+                        <div nz-row [nzGutter]="28" [nzSpan]="14" *ngIf="orgId">
+                            <div class="form-group" nz-col [nzSpan]="24">
+                                <nz-collapse class="collapse-header-style">
+                                    <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name"
+                                        [nzActive]="panel.active" [nzDisabled]="panel.disabled">
+                                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                                            <div class="form-group" nz-col [nzSpan]="24">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Description
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <textarea nz-input placeholder="Enter Organization Description"
+                                                            formControlName="orgDescription"
+                                                            maxlength="2000"></textarea>
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div class="form-group" nz-col [nzSpan]="12">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Organization
+                                                        Address1</nz-form-label>
+                                                    <nz-form-control>
+                                                        <textarea nz-input placeholder="Enter Organization Address1"
+                                                            formControlName="orgAddress1" maxlength="2000"></textarea>
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div class="form-group" nz-col [nzSpan]="12">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Organization
+                                                        Address2</nz-form-label>
+                                                    <nz-form-control>
+                                                        <textarea nz-input placeholder="Enter Organization Address2"
+                                                            formControlName="orgAddress2" maxlength="2000"></textarea>
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                        </div>
+                                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">City
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <nz-select nzPlaceHolder="City" formControlName="orgCity"
+                                                            [nzMaxMultipleCount]="1">
+                                                            <nz-option *ngFor="let city of cityList"
+                                                                [nzLabel]="city?.longpullna"
+                                                                [nzValue]="city?.longpullna"></nz-option>
+                                                        </nz-select>
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">State
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <nz-select nzPlaceHolder="State" formControlName="orgState"
+                                                            [nzMaxMultipleCount]="1">
+                                                            <nz-option *ngFor="let state of stateList"
+                                                                [nzLabel]="state?.longpullna"
+                                                                [nzValue]="state?.longpullna"></nz-option>
+                                                        </nz-select>
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Zip Code
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input placeholder="Enter Zip Code" mask="00000-0000"
+                                                            value="" formControlName="orgZipCode" maxlength="20" />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                        </div>
+                                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">phone1
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input placeholder="Enter Phone1" mask="(000)000-0000"
+                                                            value="" formControlName="orgPhoneOne" />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">phone2
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input placeholder="Enter Phone2" mask="(000)000-0000"
+                                                            value="" formControlName="orgPhoneTwo" />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">phone3
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input placeholder="Enter Phone3" mask="(000)000-0000"
+                                                            value="" formControlName="orgPhoneThree" />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                        </div>
+                                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Fax</nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input placeholder="Enter Fax" mask="(000)000-0000"
+                                                            value="" formControlName="orgFax" maxlength="30" />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Email
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input placeholder="Enter Email" value=""
+                                                            formControlName="orgEmail" />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Web Site
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input placeholder="Enter Web Site" value=""
+                                                            formControlName="orgWebSite" />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                        </div>
+                                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Director
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input placeholder="Enter Director" value=""
+                                                            formControlName="orgDirector" />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Expiry Time
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input type="number" placeholder="Enter Expiry Time"
+                                                            value="" formControlName="orgExpiryTime" />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Days To Expire
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input type="number" placeholder="Enter Days To Expire"
+                                                            value="" formControlName="orgDaysToExpire" />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
 
-    <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-primary">Save</button> -->
-        <button type="button" class="btn btn-secondary" id="closePopup" (click)="userModalRef.hide();">Cancel</button>
-    </div>
-</ng-template>
+                                        </div>
+                                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                                            <div class="form-group" nz-col [nzSpan]="24">
+                                                <nz-form-item>
+                                                    <nz-form-control>
+                                                        <label class="lable-checkbox1" nz-checkbox
+                                                            formControlName="orgTwoFactor">Two Factor</label>
+                                                        <label class="lable-checkbox1" nz-checkbox
+                                                            formControlName="orgDeviceAuth">Device
+                                                            Authentication</label>
+                                                        <label class="lable-checkbox1" nz-checkbox
+                                                            formControlName="orgSendMail">Send Mail</label>
+                                                        <label class="lable-checkbox1" nz-checkbox
+                                                            formControlName="orgActive">Active</label>
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                        </div>
+                                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                                            <div class="form-group" nz-col [nzSpan]="24">
+                                                <nz-form-item>
+                                                    <nz-form-control>
+                                                        <label class="lable-checkbox1" nz-checkbox
+                                                            formControlName="orgSiteLocation">Site Location</label>
+                                                        <label class="lable-checkbox1" nz-checkbox
+                                                            formControlName="orgScript">Script</label>
+                                                        <label class="lable-checkbox1" nz-checkbox
+                                                            formControlName="orgTrioBlumenLab">Trio Blumen Lab</label>
+                                                        <label class="lable-checkbox1" nz-checkbox
+                                                            formControlName="orgPurge">Purge</label>
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                        </div>
+                                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Remind One
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input type="number" placeholder="Enter Remind One"
+                                                            value="" formControlName="orgRemindOne" />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Remind Two
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input type="number" placeholder="Enter Remind Two"
+                                                            value="" formControlName="orgRemindTwo" />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div class="form-group" nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Good Till
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <nz-date-picker class="filter_Datepicker"
+                                                            nzPlaceHolder="MM/DD/YYYY" formControlName="orgGoodTill">
+                                                        </nz-date-picker>
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                        </div>
+                                        <div nz-row [nzGutter]="28" [nzSpan]="14">
+                                            <div class="form-group" nz-col [nzSpan]="24">
+                                                <nz-form-item>
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">Notes
+                                                    </nz-form-label>
+                                                    <nz-form-control>
+                                                        <textarea nz-input placeholder="Enter Notes"
+                                                            formControlName="orgNotes" maxlength="2000"></textarea>
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                        </div>
+                                    </nz-collapse-panel>
+                                </nz-collapse>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-container>
+</nz-modal>
+<!-- Modal End-->

@@ -7,10 +7,18 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
-    MatDataTableComponent
+    MatDataTableComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -19,10 +27,16 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatProgressSpinnerModule,
     MatTableModule,
     MatSortModule,
-    MatDialogModule
+    MatDialogModule,
+    CommonModule,
+    NzSpinModule,
+    NzModalModule,
+    NzButtonModule,
+    NzAlertModule
   ],
   exports: [
-    MatDataTableComponent
+    MatDataTableComponent,
+    LoadingSpinnerComponent
   ]
 })
 export class SharedComponentModule { }

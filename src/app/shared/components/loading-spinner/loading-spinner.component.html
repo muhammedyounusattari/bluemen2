@@ -1,0 +1,5 @@
+<nz-modal [(nzVisible)]="isSpinning" [nzTitle]="pageTitle" nzCentered [nzFooter]=null [nzClosable]="isClosable">
+    <ng-container *nzModalContent>
+        <div class="spin-alignment"><nz-spin nzSimple [nzSpinning]="isSpinning" [nzSize]="'large'"> </nz-spin></div>
+    </ng-container>
+</nz-modal>
