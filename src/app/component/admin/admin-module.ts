@@ -75,6 +75,7 @@ import { GradeComponent } from './customize/grade-standing/grade/grade.component
 import { StandingComponent } from './customize/grade-standing/standing/standing.component';
 import { LabSettingPreferencesComponent } from './customize/lab-setting-preferences/lab-setting-preferences.component';
 import { OriginalPulldownListsComponent } from './home/original-pulldown-lists/original-pulldown-lists.component';
+import { PulldownListsComponent } from './customize/pulldown-lists/pulldown-lists.component';
 
 const maskConfigFunction: () => Partial<IConfig> = () => {
   return {
@@ -131,7 +132,8 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
     GradeComponent,
     StandingComponent,
     LabSettingPreferencesComponent,
-    OriginalPulldownListsComponent
+    OriginalPulldownListsComponent,
+    PulldownListsComponent
   ],
   imports: [
     AdminRoutingModule,

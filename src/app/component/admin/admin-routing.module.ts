@@ -34,10 +34,28 @@ import { SecurityQuestionsComponent } from '../super-admin/security-question/sec
 import { GradeStandingComponent } from './customize/grade-standing/grade-standing.component';
 import { LabSettingPreferencesComponent } from './customize/lab-setting-preferences/lab-setting-preferences.component';
 import { OriginalPulldownListsComponent } from './home/original-pulldown-lists/original-pulldown-lists.component';
+import { PulldownListsComponent } from './customize/pulldown-lists/pulldown-lists.component';
 const routes: Routes = [
   {
     path: 'admin/customize/pulldown-list',
     component: PulldownListComponent,
+    data: {
+      title: 'Pulldown List',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'Pulldown List',
+          url: ''
+        }
+      ]
+    }
+  },
+  {
+    path: 'admin/customize/pulldown-lists',
+    component: PulldownListsComponent,
     data: {
       title: 'Pulldown List',
       breadcrumb: [

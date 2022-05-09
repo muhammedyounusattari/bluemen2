@@ -1,6 +1,6 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { StaffMembersService } from 'src/app/services/staff/staff-members.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
@@ -31,9 +31,7 @@ import { ServiceUrls } from 'src/app/constants/serviceUrl';
 export class StaffMemberComponent {
 
   size: NzButtonSize = 'small';
-  @ViewChild('staffDataEntryPopup') staffDataEntryPopupRef: TemplateRef<any>;
   isVisible: boolean = false;
-  modalRef: BsModalRef;
   modalConfigSM = {
     backdrop: true,
     ignoreBackdropClick: true,
@@ -92,9 +90,12 @@ export class StaffMemberComponent {
   displayStaffName: any;
   uploadAction:any;
 
+  staffModalHeader = 'Staff Data Entry';
+  staffListPopupVisiblity = false;
+  isConfirmStaffLoading = false;
+
   constructor(
-    private modalService: BsModalService
-    , private formBuilder: FormBuilder
+      private formBuilder: FormBuilder
     , private staffMembersService: StaffMembersService
     , private dialog: MatDialog
     , private sharedService: SharedService,
@@ -271,41 +272,23 @@ export class StaffMemberComponent {
   }
 
   /**
-   * @method addNewDropdown
-   * @description Showing model
-   */
-  addNewDropdown() {
-    this.openModal(this.staffDataEntryPopupRef);
-  }
-
-  /**
-    * @method openModal
-    * @description Showing model
-    */
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, this.modalConfigSM);
-  }
-
-  /**
     * @method addStaffMembers
     * @description add the staff members
     */
   public addStaffMembers() {
     if (this.formGroup.valid) {
       this.isEdit = false;
-      this.isConfirmStaffNameLoading = true;
+      this.isConfirmStaffLoading = true;
       this.staffMembersService
         .addStaffMembers(this.requestPayload(), this.uploadfile)
         .subscribe((result: any) => {
           if (result) {
             this.notificationService.createNotificationBasic('success', "success", 'Saved Successfully!');
-            this.staffNameListPopupVisiblity = false;
+            this.staffListPopupVisiblity = false;
             this.getStaffMembers();
-            this.isConfirmStaffNameLoading = false;
-            this.modalRef.hide();
+            this.isConfirmStaffLoading = false;
           } else {
-            this.isConfirmStaffNameLoading = false;
-            this.modalRef.hide();
+            this.isConfirmStaffLoading = false;
           }
         });
     } else {
@@ -365,10 +348,12 @@ export class StaffMemberComponent {
         if (result) {
           this.selectedRow = null;
           this.notificationService.createNotificationBasic('success', "success", 'Updated Successfully!');
-          this.modalRef.hide();
+          this.isConfirmStaffLoading = false;
           this.getStaffMembers();
+          this.staffListPopupVisiblity = false;
           this.hideLoader();
         } else {
+          this.staffListPopupVisiblity = false;
           this.hideLoader();
         }
       });
@@ -514,13 +499,13 @@ export class StaffMemberComponent {
           this.bindAddressValueToFB();
           this.addressList = [];
         }
-        this.openModal(this.staffDataEntryPopupRef);
+        this.staffListPopupVisiblity = true;
         // this.staffMembersModalForm.updateValueAndValidity();
       } else {
         this.notificationService.createNotificationBasic('info', "info", 'Please select a row to update');
       }
     } else {
-      this.openModal(this.staffDataEntryPopupRef);
+      this.staffListPopupVisiblity = true;
     }
   }
 
@@ -553,7 +538,7 @@ export class StaffMemberComponent {
                 this.uploadAction = ServiceUrls.UPLOAD_FILE+"/"+jsonObj.id;
                 this.getStaffMembers();
                 this.isConfirmStaffNameLoading = false;
-                this.openModal(this.staffDataEntryPopupRef);
+                this.staffListPopupVisiblity = true;
               } else {
                 this.isConfirmStaffNameLoading = false;
               }
@@ -1259,6 +1244,15 @@ export class StaffMemberComponent {
     */
   handleCancel() {
     this.staffNameListPopupVisiblity = false;
+    this.getStaffMembers();
+  }
+
+  /**
+    * @method handleStaffCancel
+    * @description close for popup.
+    */
+   handleStaffCancel() {
+    this.staffListPopupVisiblity = false;
     this.getStaffMembers();
   }
 }

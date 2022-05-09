@@ -78,7 +78,7 @@ export class OriginalPulldownListsComponent implements OnInit {
 
   ngOnInit(): void {
     this.sharedService.setPageTitle('Original Pulldown Lists');
-    this.orgId = this.sharedService.getOrgId();
+    //this.orgId = this.sharedService.getOrgId();
     this.selectedProgram = this.programList[0].id;
   }
 
@@ -120,7 +120,7 @@ export class OriginalPulldownListsComponent implements OnInit {
     if (this.originalPullDownForm.valid) {
       this.dataLoading = true;
       const requestObj = {
-        "orgId": this.orgId,
+        "orgId": 0,
         "projType": frmValue.programType,
         "pullType": frmValue.pullType
       };
@@ -216,7 +216,7 @@ export class OriginalPulldownListsComponent implements OnInit {
         const requestObj = {
           "inoriginal": true,
           "longpullna": frmValue.pulldownName,
-          "organizationid": this.orgId,
+          "organizationid": 0,
           "projtype": this.selectedProgram,
           "pulltype": this.selectedPulltype,
           "pullId": frmValue.pulldownNumber,
@@ -242,8 +242,8 @@ export class OriginalPulldownListsComponent implements OnInit {
           this.addMode = false;
           this.editMode = false;
           this.clearAddFormValue();
-          if(error.status === 500 && JSON.parse(error.error).message === 'A pulldown already exists for this number.') {
-            this.notificationService.createNotificationBasic('error', "Original Pulldown Lists", "A pulldown already exists for this number.");
+          if(error.status === 500) {
+            this.notificationService.createNotificationBasic('error', "Original Pulldown Lists", JSON.parse(error.error).message);
           } else {
             this.notificationService.createNotificationBasic('error', "Original Pulldown Lists", "System error : " + error.message);
           }
@@ -259,7 +259,7 @@ export class OriginalPulldownListsComponent implements OnInit {
               "lastuser": "james10",
               "longpullna": frmValue.pulldownName,
               "numeric": pullDownData.numeric,
-              "organizationid": this.orgId,
+              "organizationid": 0,
               "projtype": pullDownData.projtype,
               "pullId": frmValue.pulldownNumber,
               "pullname": pullDownData.pullname,
@@ -286,8 +286,8 @@ export class OriginalPulldownListsComponent implements OnInit {
           this.addMode = false;
           this.editMode = false;
           this.clearAddFormValue();
-          if(error.status === 500 && JSON.parse(error.error).message === 'A pulldown already exists for this number.') {
-            this.notificationService.createNotificationBasic('error', "Original Pulldown Lists", "A pulldown already exists for this number.");
+          if(error.status === 500) {
+            this.notificationService.createNotificationBasic('error', "Original Pulldown Lists", JSON.parse(error.error).message);
           } else {
             this.notificationService.createNotificationBasic('error', "Original Pulldown Lists", "System error : " + error.message);
           }
