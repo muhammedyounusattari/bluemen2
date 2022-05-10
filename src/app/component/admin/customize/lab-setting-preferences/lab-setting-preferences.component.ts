@@ -177,7 +177,6 @@ export class LabSettingPreferencesComponent implements OnInit {
   }
 
   submitLabSettingForm(frmValue: any): void {
-    debugger;
     for (const i in this.labSettingForm.controls) {
       this.labSettingForm.controls[i].markAsDirty();
       this.labSettingForm.controls[i].updateValueAndValidity();

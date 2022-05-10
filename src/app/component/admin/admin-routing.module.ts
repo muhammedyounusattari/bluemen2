@@ -35,6 +35,7 @@ import { GradeStandingComponent } from './customize/grade-standing/grade-standin
 import { LabSettingPreferencesComponent } from './customize/lab-setting-preferences/lab-setting-preferences.component';
 import { OriginalPulldownListsComponent } from './home/original-pulldown-lists/original-pulldown-lists.component';
 import { PulldownListsComponent } from './customize/pulldown-lists/pulldown-lists.component';
+import { OrgadminPulldownListsComponent } from './customize/orgadmin-pulldown-lists/orgadmin-pulldown-lists.component';
 const routes: Routes = [
   {
     path: 'admin/customize/pulldown-list',
@@ -57,14 +58,31 @@ const routes: Routes = [
     path: 'admin/customize/pulldown-lists',
     component: PulldownListsComponent,
     data: {
-      title: 'Pulldown List',
+      title: 'Pulldown Lists',
       breadcrumb: [
         {
           label: 'Home',
           url: 'admin/customize'
         },
         {
-          label: 'Pulldown List',
+          label: 'Pulldown Lists',
+          url: ''
+        }
+      ]
+    }
+  },
+  {
+    path: 'admin/customize/orgadmin-pulldown-lists',
+    component: OrgadminPulldownListsComponent,
+    data: {
+      title: 'Pulldown Lists',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'Pulldown Lists',
           url: ''
         }
       ]

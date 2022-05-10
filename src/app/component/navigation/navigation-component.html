@@ -199,7 +199,10 @@
                                                         [routerLink]="['admin/customize/lab-settings-preferences']">Lab Setting Preferences</button>
                                                 <!-- <button mat-menu-item
                                                         [routerLink]="['admin/customize/pulldown-list']">Pulldown List</button> -->
-                                                <button mat-menu-item [routerLink]="['admin/customize/pulldown-lists']">Pulldown Lists</button>
+                                                <button mat-menu-item *ngIf="user.roleName === 'Super Admin'" 
+                                                        [routerLink]="['admin/customize/pulldown-lists']">Pulldown Lists</button>
+                                                <button mat-menu-item *ngIf="user.roleName !== 'Super Admin'" 
+                                                        [routerLink]="['admin/customize/orgadmin-pulldown-lists']">Pulldown Lists</button>
                                                 <button mat-menu-item
                                                         [routerLink]="['admin/customize/staff-members']">Staff Members</button>
                                         </mat-menu>

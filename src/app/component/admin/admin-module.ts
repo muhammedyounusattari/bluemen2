@@ -76,6 +76,7 @@ import { StandingComponent } from './customize/grade-standing/standing/standing.
 import { LabSettingPreferencesComponent } from './customize/lab-setting-preferences/lab-setting-preferences.component';
 import { OriginalPulldownListsComponent } from './home/original-pulldown-lists/original-pulldown-lists.component';
 import { PulldownListsComponent } from './customize/pulldown-lists/pulldown-lists.component';
+import { OrgadminPulldownListsComponent } from './customize/orgadmin-pulldown-lists/orgadmin-pulldown-lists.component';
 
 const maskConfigFunction: () => Partial<IConfig> = () => {
   return {
@@ -133,7 +134,8 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
     StandingComponent,
     LabSettingPreferencesComponent,
     OriginalPulldownListsComponent,
-    PulldownListsComponent
+    PulldownListsComponent,
+    OrgadminPulldownListsComponent
   ],
   imports: [
     AdminRoutingModule,

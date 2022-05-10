@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { PullDownListsService } from '../../../../services/admin/pulldown-lists.service';
+import { OrgAdminPullDownListsService } from '../../../../services/admin/orgAdmin-pulldownlists.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NotificationUtilities } from '../../../../shared/utilities/notificationUtilities';
 import { SharedService } from '../../../../shared/services/shared.service';
 import { ValidationClass } from '../../../../shared/validation/common-validation-class';
 
 @Component({
-    selector: 'app-pulldown-lists',
-    templateUrl: './pulldown-lists.component.html',
-    styleUrls: ['./pulldown-lists.component.css']
+  selector: 'app-orgadmin-pulldown-lists',
+  templateUrl: './orgadmin-pulldown-lists.component.html',
+  styleUrls: ['./orgadmin-pulldown-lists.component.css']
 })
-export class PulldownListsComponent implements OnInit {
-    public dataLoading: boolean = false;
+export class OrgadminPulldownListsComponent implements OnInit {
+
+  public dataLoading: boolean = false;
     public pullDownListForm!: FormGroup;
     public addPullDownListsForm!: FormGroup;
     public originalPullDownData: any;
@@ -22,7 +23,6 @@ export class PulldownListsComponent implements OnInit {
         pulldownNumber: null,
         pulldownName: null,
     }
-    public selectedOrganization: any = null;
     public selectedPulltype: any = null;
     public pullTypeList: any;
     public validationClass: ValidationClass = new ValidationClass();
@@ -39,7 +39,7 @@ export class PulldownListsComponent implements OnInit {
     constructor(
         private sharedService: SharedService,
         private fb: FormBuilder,
-        private _pullDownListsService: PullDownListsService,
+        private _pullDownListsService: OrgAdminPullDownListsService,
         private message: NzMessageService,
         private notificationService: NotificationUtilities
     ) {
@@ -50,37 +50,20 @@ export class PulldownListsComponent implements OnInit {
     ngOnInit(): void {
         this.sharedService.setPageTitle('Pulldown Lists');
         this.orgId = this.sharedService.getOrgId();
-        this.getOrganization();
+        this.getOrgAdminPullTypeList()
     }
 
     initForm(): void {
         this.pullDownListForm = this.fb.group({
             formLayout: ['horizontal'],
-            organizationType: [null, [Validators.required]],
             pullType: [null, [Validators.required]]
         });
     }
 
-    getOrganization(): void {
-        this.isSpinning = true;
-        this._pullDownListsService.getOrganizationList().subscribe((result: any) => {
-            if (result) {
-                this.organizationList = result;
-                this.selectedOrganization = this.organizationList[0].orgId;
-                this.isSpinning = false;
-            }
-        }, (error: any) => {
-            this.isSpinning = false;
-            this.notificationService.createNotificationBasic('error', 'Pulldown Lists', "System error : " + error.message);
-        });
-    }
-
-    organizationChange(value: number): void {
-        this.originalPullDownData = [];
+    getOrgAdminPullTypeList(): void {
         this.isSpinning = true;
         this.selectedPulltype = null;
-        if (!this.validationClass.isNullOrUndefined(value)) {
-            this._pullDownListsService.getPullTypeList(value).subscribe((result: any) => {
+            this._pullDownListsService.getPullTypeList(this.orgId).subscribe((result: any) => {
                 if (result) {
                     this.pullTypeList = result;
                     this.isSpinning = false;
@@ -88,9 +71,7 @@ export class PulldownListsComponent implements OnInit {
             }, (error: any) => {
                 this.notificationService.createNotificationBasic('error', 'Pulldown Lists', "System error : " + error.message);
             });
-        } else {
-            this.pullTypeList = [];
-        }
+        
     }
 
     searchPullDownLists(): void {
@@ -105,7 +86,7 @@ export class PulldownListsComponent implements OnInit {
         if (this.pullDownListForm.valid) {
             this.dataLoading = true;
             const requestObj = {
-                "orgId": frmValue.organizationType,
+                "orgId": this.orgId,
                 "pullType": frmValue.pullType
             };
             this.isSpinning = true;
@@ -197,18 +178,18 @@ export class PulldownListsComponent implements OnInit {
         if (this.addPullDownListsForm.valid) {
             this.addPullDownLoading = true;
             if (this.addMode) {
-                this._pullDownListsService.getProjType(this.selectedOrganization).subscribe((result: any) => {
+                this._pullDownListsService.getProjType(this.orgId).subscribe((result: any) => {
                     if (result) {
                         console.log('result', result);
                         const requestObj = {
                             "inoriginal": true,
                             "longpullna": frmValue.pulldownName,
-                            "organizationid": this.selectedOrganization,
+                            "organizationid": this.orgId,
                             "projtype": result.id,
                             "pulltype": this.selectedPulltype,
                             "pullId": frmValue.pulldownNumber,
                             "pullname": "",
-                            "userName": "james10"
+                            "userName": "Rafeeqk"
                         };
                         const ids = this.message.loading('Adding Pulldown Lists Data...', { nzDuration: 0 }).messageId;
                         this._pullDownListsService.saveOriginalPullDownListsData(requestObj).subscribe((result: any) => {
@@ -247,7 +228,7 @@ export class PulldownListsComponent implements OnInit {
                             "deleted": pullDownData.deleted,
                             "id": pullDownData.id,
                             "inoriginal": pullDownData.inoriginal,
-                            "lastuser": "james10",
+                            "lastuser": "Rafeeqk",
                             "longpullna": frmValue.pulldownName,
                             "numeric": pullDownData.numeric,
                             "organizationid": pullDownData.organizationid,
@@ -327,6 +308,5 @@ export class PulldownListsComponent implements OnInit {
     cancelDelete(): void {
 
     }
-
 
 }
