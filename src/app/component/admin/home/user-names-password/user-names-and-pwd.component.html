@@ -147,11 +147,11 @@
   
                     <div nz-col [nzSpan]="6">
                       <nz-form-item>
-                        <nz-form-label class="lable-style" nzRequired>Mobile</nz-form-label>
-                        <nz-form-control nzErrorTip="Please Enter Mobile">
+                        <nz-form-label class="lable-style">Mobile</nz-form-label>
+                        <nz-form-control>
                           <input nz-input type="text" minlength="3" maxlength="15" #mobile nz-input
                             placeholder="Enter Mobile Number" mask="(000)000-0000" [(ngModel)]="userDataObject.mobile"
-                            (keypress)="numericOnly($event)" formControlName="mobile" required />
+                            (keypress)="numericOnly($event)" formControlName="mobile"/>
                         </nz-form-control>
                       </nz-form-item>
                     </div>

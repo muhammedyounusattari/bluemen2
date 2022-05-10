@@ -33,6 +33,15 @@
                 </div>
             </div>
 
+            <div class="marg-top2 display-flex col-md-12" *ngIf="user.roleName === 'Super Admin'">
+                <div class="col-md-6">
+                    <a href="javascript:void(0)"  [routerLink]="['organization']"> ORGANIZATIONS </a>
+                </div>
+                <div class="col-md-6">
+                    Organizations Information
+                </div>
+            </div>
+
             <div class="marg-top2 display-flex col-md-12">
                 <div class="col-md-6">
                     <a href="javascript:void(0)"  [routerLink]="['roles']"> ROLES </a>

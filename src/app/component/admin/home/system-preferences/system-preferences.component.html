@@ -38,16 +38,14 @@
 
                                         <div nz-col [nzSpan]="8">
                                             <nz-form-item>
-                                                <nz-form-label class="lable-style">Semester Fall</nz-form-label>
+                                                <nz-form-label class="lable-style">Semester</nz-form-label>
                                                 <nz-form-control>
-                                                    <nz-select nzShowSearch nzAllowClear formControlName="semFall"
-                                                        nzPlaceHolder="Semister Fall"
-                                                        [(ngModel)]="defaultSetting.semester">
-                                                        <nz-option nzValue="Fall" nzLabel="Fall"></nz-option>
-                                                        <nz-option nzValue="1" nzLabel="1"></nz-option>
-                                                        <nz-option nzValue="2" nzLabel="2"></nz-option>
-                                                        <nz-option nzValue="3" nzLabel="3"></nz-option>
-                                                        <nz-option nzValue="4" nzLabel="4"></nz-option>
+                                                  <nz-select nzShowSearch nzAllowClear formControlName="semFall"
+                                                             nzPlaceHolder="Semister Fall"
+                                                             [(ngModel)]="defaultSetting.semester">
+
+                                                  <nz-option *ngFor="let sl of semesterList" [nzLabel]="sl.longpullna" [nzValue]="sl.longpullna">
+                                                  </nz-option>
                                                     </nz-select>
                                                 </nz-form-control>
                                             </nz-form-item>
@@ -57,14 +55,14 @@
                                             <nz-form-item>
                                                 <nz-form-label class="lable-style">Component</nz-form-label>
                                                 <nz-form-control>
-                                                    <nz-select nzShowSearch nzAllowClear formControlName="component"
-                                                        nzPlaceHolder="Component"
-                                                        [(ngModel)]="defaultSetting.component">
-                                                        <nz-option nzValue="Acadamic" nzLabel="Acadamic"></nz-option>
-                                                        <nz-option nzValue="1" nzLabel="1"></nz-option>
-                                                        <nz-option nzValue="2" nzLabel="2"></nz-option>
-                                                        <nz-option nzValue="3" nzLabel="3"></nz-option>
-                                                        <nz-option nzValue="4" nzLabel="4"></nz-option>
+
+                                                  <nz-select nzShowSearch nzAllowClear formControlName="component"
+                                                             nzPlaceHolder="Component"
+                                                             [(ngModel)]="defaultSetting.component">
+
+                                                    <nz-option *ngFor="let cl of componentList" [nzLabel]="cl.longpullna" [nzValue]="cl.longpullna">
+                                                    </nz-option>
+
                                                     </nz-select>
                                                 </nz-form-control>
                                             </nz-form-item>
@@ -185,13 +183,12 @@
                                             <nz-form-item>
                                                 <nz-form-label class="lable-style">City</nz-form-label>
                                                 <nz-form-control>
+
                                                     <nz-select nzShowSearch nzAllowClear formControlName="city"
                                                         nzPlaceHolder="City" [(ngModel)]="annualPerformance.city">
-                                                        <nz-option nzValue="Pune" nzLabel="Pune"></nz-option>
-                                                        <nz-option nzValue="Mumbai" nzLabel="Mumbai"></nz-option>
-                                                        <nz-option nzValue="Hyederabad" nzLabel="Hyederabad">
-                                                        </nz-option>
-                                                        <nz-option nzValue="Delhi" nzLabel="Delhi"></nz-option>
+                                                      <nz-option *ngFor="let cl of cityList" [nzLabel]="cl.longpullna" [nzValue]="cl.longpullna">
+                                                      </nz-option>
+
                                                     </nz-select>
                                                 </nz-form-control>
                                             </nz-form-item>
@@ -203,10 +200,8 @@
                                                 <nz-form-control>
                                                     <nz-select nzShowSearch nzAllowClear formControlName="state"
                                                         nzPlaceHolder="State" [(ngModel)]="annualPerformance.state">
-                                                        <nz-option nzValue="Maharashtra" nzLabel="Maharashtra"></nz-option>
-                                                        <nz-option nzValue="AP" nzLabel="AP"></nz-option>
-                                                        <nz-option nzValue="MP" nzLabel="MP"></nz-option>
-                                                        <nz-option nzValue="UP" nzLabel="UP"></nz-option>
+                                                      <nz-option *ngFor="let sl of stateList" [nzLabel]="sl.longpullna" [nzValue]="sl.longpullna">
+                                                      </nz-option>
                                                     </nz-select>
                                                 </nz-form-control>
                                             </nz-form-item>
@@ -277,15 +272,13 @@
 
                                         <div nz-col [nzSpan]="8">
                                             <nz-form-item>
-                                                <nz-form-label class="lable-style">Programme Type</nz-form-label>
+                                                <nz-form-label class="lable-style">Project Type</nz-form-label>
                                                 <nz-form-control>
                                                     <nz-select nzShowSearch nzAllowClear formControlName="programType"
-                                                        nzPlaceHolder="Programme Type"
+                                                        nzPlaceHolder="Project Type"
                                                         [(ngModel)]="annualPerformance.programType" nzDisabled>
-                                                        <nz-option nzValue="SSS" nzLabel="SSS"></nz-option>
-                                                        <nz-option nzValue="UB" nzLabel="UB"></nz-option>
-                                                        <nz-option nzValue="3" nzLabel="3"></nz-option>
-                                                        <nz-option nzValue="4" nzLabel="4"></nz-option>
+                                                      <nz-option *ngFor="let pt of programTypeList" [nzLabel]="pt.longpullna" [nzValue]="pt.longpullna">
+                                                      </nz-option>
                                                     </nz-select>
                                                 </nz-form-control>
                                             </nz-form-item>
@@ -449,11 +442,8 @@
                                                     <nz-select nzShowSearch nzAllowClear formControlName="gpaScale"
                                                         nzPlaceHolder="GPA Scale"
                                                         [(ngModel)]="defaultSettingTab.gpaScale">
-                                                        <nz-option nzValue="Select" nzLabel="Select"></nz-option>
-                                                        <nz-option nzValue="4 Point Scale | 1" nzLabel="4 Point Scale | 1"></nz-option>
-                                                        <nz-option nzValue="5 Point Scale | 2" nzLabel="5 Point Scale | 2"></nz-option>
-                                                        <nz-option nzValue="No Response/Unknown | 0" nzLabel="No Response/Unknown | 0"></nz-option>
-                                                        <nz-option nzValue="Other | 3" nzLabel="Other | 3"></nz-option>
+                                                      <nz-option *ngFor="let gpa of gpaScaleList" [nzLabel]="gpa.longpullna" [nzValue]="gpa.pullId">
+                                                      </nz-option>
                                                     </nz-select>
                                                 </nz-form-control>
                                             </nz-form-item>
@@ -487,11 +477,20 @@
                                         <div nz-col [nzSpan]="8">
                                             <nz-form-item>
                                                 <nz-form-label class="lable-style">Site Location:</nz-form-label>
-                                                <nz-form-control nzErrorTip="Please Enter Site Location">
-                                                    <input nz-input type="text" formControlName="siteLocation"
-                                                        placeholder="Site Location"
-                                                        [(ngModel)]="defaultSettingTab.siteLocation" class="disInputStyle" readonly />
+                                                <nz-form-control>
+                                                  <nz-select nzShowSearch nzAllowClear formControlName="siteLocation"
+                                                             nzPlaceHolder="Site Location"
+                                                             [(ngModel)]="defaultSettingTab.siteLocation">
+                                                    <nz-option *ngFor="let sll of siteLocationList" [nzLabel]="sll.longpullna" [nzValue]="sll.longpullna">
+                                                    </nz-option>
+                                                  </nz-select>
                                                 </nz-form-control>
+
+<!--                                                <nz-form-control nzErrorTip="Please Enter Site Location">-->
+<!--                                                    <input nz-input type="text" formControlName="siteLocation"-->
+<!--                                                        placeholder="Site Location"-->
+<!--                                                        [(ngModel)]="defaultSettingTab.siteLocation" class="disInputStyle" readonly />-->
+<!--                                                </nz-form-control>-->
                                             </nz-form-item>
                                         </div>
 

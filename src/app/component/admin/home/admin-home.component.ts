@@ -8,8 +8,11 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 })
 
 export class AdminHomeComponent implements OnInit {
+    user: any;
     constructor(private sharedService: SharedService) {}
     ngOnInit(): void {
         this.sharedService.setPageTitle('Home');
+        this.user = sessionStorage.getItem('state');
+        this.user = JSON.parse(this.user);
     }    
 }

@@ -2,6 +2,7 @@ import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AnnualPerformance, DefaultSetting, DefaultSettingTab, GeneralSettingTab, ReportSetting, SystemPreferencesEnum } from '../../../../constants/enums/system-preferences.enum';
 import { SystemPreferencesService } from '../../../../services/admin/system-preferences.service';
+import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -29,12 +30,21 @@ export class SystemPreferencesComponent implements OnInit {
     defaultSetting: DefaultSetting = new DefaultSetting();
     reportSetting: ReportSetting = new ReportSetting();
     defaultSettingTab: DefaultSettingTab = new DefaultSettingTab();
-    semisterList: [{'name': ''}];
+    systemPreferenceList: [{'name': ''}];
     componentsList: [{'name': ''}]
+    semesterList: any = [];
+    componentList:any = [];
+    cityList:any = [];
+    stateList:any = [];
+    gpaScaleList:any = [];
+    programTypeList:any = [];
+    siteLocationList:any = [];
+    dropDownBindingArray:any =[];
     constructor(private modalService: BsModalService
         , private _systemPreferencesService: SystemPreferencesService
-        , private sharedService: SharedService,
-        private fb: FormBuilder) {
+        , private sharedService: SharedService
+        , private pullDownService: PullDownListService
+        , private fb: FormBuilder) {
 
     }
 
@@ -97,31 +107,6 @@ export class SystemPreferencesComponent implements OnInit {
             siteLocation: [null]
 		});
 
-    }
-
-    bindDropDownValues() {
-        this._systemPreferencesService.getPullDownList().subscribe((result: any) => {
-            if (result) {
-                if (result.filter((item: any) => item.code === 'SemesterType')
-                    && result.filter((item: any) => item.code === 'SemesterType').length > 0) {
-                    this._systemPreferencesService.getPullDownItems(result.filter((item: any) => item.code === 'SemesterType')[0].id)
-                        .subscribe(data => {
-                            if (data) {
-                                this.semisterList = data;
-                            }
-                        });
-                }
-                if (result.filter((item: any) => item.code === 'ComponentType')
-                && result.filter((item: any) => item.code === 'ComponentType').length > 0) {
-                this._systemPreferencesService.getPullDownItems(result.filter((item: any) => item.code === 'ComponentType')[0].id)
-                    .subscribe(data => {
-                        if (data) {
-                            this.componentsList = data;
-                        }
-                    });
-            }
-            }
-        });
     }
 
     activeTab(tabName: string) {
@@ -316,4 +301,33 @@ export class SystemPreferencesComponent implements OnInit {
     openModal(template: TemplateRef<any>) {
         this.modalRef = this.modalService.show(template, this.modalConfigSM)
     }
+
+
+     bindDropDownValues() {
+             let data: any = ['SEMESTER','COMPONENT','CITY','STATE','GPASCALE','PROGRAMTYPE','SITELOCATION'];
+             this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
+                 if (result?.SEMESTER) {
+                     this.semesterList = result?.SEMESTER;
+                 }
+                 if (result?.COMPONENT) {
+                     this.componentList = result?.COMPONENT;
+                 }
+              if (result?.CITY) {
+                  this.cityList = result?.CITY;
+                }
+              if (result?.STATE) {
+                  this.stateList = result?.STATE;
+                }
+               if (result?.GPASCALE) {
+                  this.gpaScaleList = result?.GPASCALE;
+                }
+               if (result?.PROGRAMTYPE) {
+                  this.programTypeList = result?.PROGRAMTYPE;
+                }
+                if (result?.SITELOCATION) {
+                  this.siteLocationList = result?.SITELOCATION;
+                }
+
+              });
+     }
 }

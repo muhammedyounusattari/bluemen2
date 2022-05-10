@@ -113,7 +113,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
             formLayout: ['vertical'],
             'id': [null],
             'email': ['', Validators.required],
-            'mobile': ['', Validators.required],
+            'mobile': [''],
             'roleName': ['', Validators.required],
             'siteLocation': [''],
             'firstName': [''],
