@@ -30,7 +30,7 @@ export class NavigationComponent implements OnInit {
   }
 
   showMenu(element: String): boolean {
-    return this.menus.includes(element);
+    return this.menus != null && this.menus.includes(element);
   }
 
   validate() {

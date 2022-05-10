@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 import { UserManagementService } from 'src/app/services/admin/user-management.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
 import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
@@ -63,11 +63,9 @@ export class UserNamesAndPasswordComponent implements OnInit {
         , private router: Router
         , private sharedService: SharedService
         , private pullDownService: PullDownListService
-        , private notificationService: NotificationUtilities
-        , private route: ActivatedRoute) { }
+        , private notificationService: NotificationUtilities) { }
 
     ngOnInit(): void {
-        this.selectedOrgId = this.route.snapshot.params.orgId;
         this.isSuperAdmin = false;
         this.userDataObject = [];
         this.user = sessionStorage.getItem('state');
@@ -175,6 +173,8 @@ export class UserNamesAndPasswordComponent implements OnInit {
 
     addNewData(): void {
         this.createForm();
+        this.fillUserDataObject();
+        this.clearFormValue();
         this.selectedRow = null;
         this.selectedRowIndex = null;
         this.isEdit = false;
@@ -182,11 +182,11 @@ export class UserNamesAndPasswordComponent implements OnInit {
     }
 
     handleCancel(): void {
-        this.clearMoveFormValue();
+        this.clearFormValue();
         this.userModalVisible = false;
     }
 
-    clearMoveFormValue() {
+    clearFormValue() {
         for (let control in this.formGroup.controls) {
             this.formGroup.controls[control].markAsPristine();
             this.formGroup.controls[control].markAsUntouched();
@@ -213,24 +213,19 @@ export class UserNamesAndPasswordComponent implements OnInit {
         this._userManagementService.getOrganizationsList().subscribe(result => {
             this.hideLoader();
             if (result) {
-                this.organizationsList = result;//.filter((v: any, i: any, a: string | any[]) => a.indexOf(v) === i);
-                if(!this.selectedOrgId){
+                this.organizationsList = result.filter((item: any) => item.orgActive);//.filter((v: any, i: any, a: string | any[]) => a.indexOf(v) === i);
                 this.selectedOrgId = result[0].orgId;
-                }else{
-                    const result = this.organizationsList.filter((item: any) => item.orgId === Number(this.selectedOrgId));
-                    if(result[0]){
-                    this.selectedOrgId  = result[0].orgId;
-                    }
-                }
                 this.populateUserList();
-                
             }
         });
     }
 
-    populateUserList() {
+    populateUserList(event?: any) {
+        if (event) {
+            this.selectedOrgId = event;
+        }
         const result = this.organizationsList.filter((item: any) => item.orgId === Number(this.selectedOrgId));
-        if (result[0].users) {
+        if (result && result[0].users) {
             this.userList = result[0].users.filter((item: any) => item.active);
         }
         this.selectedRowIndex = null;
@@ -286,11 +281,12 @@ export class UserNamesAndPasswordComponent implements OnInit {
     setValuesToUpdate(data: any) {
         if (data) {
             this.isEdit = true;
+            this.userDataObject.id = data.id;
             this.userDataObject.active = data.active;
             this.userDataObject.address1 = data.address1;
             this.userDataObject.address2 = data.address2;
             this.userDataObject.city = data.city;
-            this.userDataObject.email = data.city;
+            this.userDataObject.email = data.email;
             this.userDataObject.fax = data.fax;
             this.userDataObject.firstName = data.firstName
             this.userDataObject.lastName = data.lastName;
@@ -385,9 +381,19 @@ export class UserNamesAndPasswordComponent implements OnInit {
     }
 
     resetPassword(test: any) {
+        this.isLoading = true;
         this._userManagementService.resetPassword(test.email, test.orgCode).subscribe(result => {
-            alert("Reset password link is sent");
+            if (result) {
+                this.isLoading = false;
+                this.notificationService.createNotificationBasic('success', "Reset Password", result.message);
+            }
+        }, (error:any) => {
+            this.notificationService.createNotificationBasic('error', "Reset Password","System error: " + error);
         });
+    }
+
+    cancelReset() {
+
     }
 
     navigateToBackScreen() {
@@ -414,7 +420,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     initMergeItemForm() {
     }
 
-    cancelDelete(): void {}
+    cancelDelete(): void { }
 
     //Print Function Start
     print() {

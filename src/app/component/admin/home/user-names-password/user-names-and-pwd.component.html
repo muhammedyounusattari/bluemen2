@@ -1,350 +1,380 @@
 <div class="custom-body">
-    <div nz-row>
-        <div nz-col [nzSpan]="11">
-            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-                <input type="text" nz-input placeholder="Search.." class="search-input" />
-            </nz-input-group>
-            <ng-template #suffixIconButton>
-                <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
-            </ng-template>
-        </div>
-        <div nz-col [nzSpan]="4" nzOffset="9">
-            <nz-form-item class="search-filter-item">
-                <nz-form-control>
-                    <button nz-button nzType="primary" class="search-filter-btn" (click)="addNewData()">
-                        <i nz-icon nzType="file-add" nzTheme="outline" class="search-filter-icon"></i>
-                        New
-                    </button> &nbsp;
-                    <button nz-button nzType="primary" class="search-filter-btn" (click)="print()">
-                        <i nz-icon nzType="printer" nzTheme="outline" class="search-filter-icon"></i>
-                        Print
-                    </button>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
+    <div nz-row class="display-flex" [nzSpan]="24">
+      <div nz-col [nzSpan]="8" *ngIf="user.roleName !== 'Super Admin' || this.organizationId">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+          <input type="text" nz-input placeholder="Search.." class="search-input" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+        </ng-template>
+      </div>
+      <div nz-col [nzSpan]="8" *ngIf="user.roleName === 'Super Admin' && !organizationId">
+        <nz-form-item>
+          <nz-form-label class="lable-style">Organization Type</nz-form-label>
+          <nz-form-control nzErrorTip="Please Select Organization Type">
+            <nz-select nzShowSearch nzAllowClear (ngModelChange)="populateUserList($event)" [(ngModel)]="selectedOrgId"
+              nzPlaceHolder="Select Organization">
+              <nz-option *ngFor="let org of organizationsList" [nzLabel]="org.orgName" [nzValue]="org.orgId">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+  
+      <div nz-col [nzSpan]="4" nzOffset="12" *ngIf="!organizationId">
+        <nz-form-item class="search-filter-item">
+          <nz-form-control>
+            <button nz-button nzType="primary" class="search-filter-btn" (click)="addNewData()">
+              <i nz-icon nzType="file-add" nzTheme="outline" class="search-filter-icon"></i>
+              New
+            </button> &nbsp;
+            <button nz-button nzType="primary" class="search-filter-btn" (click)="print()">
+              <i nz-icon nzType="printer" nzTheme="outline" class="search-filter-icon"></i>
+              Print
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
     </div>
-
+  
     <div nz-row>
-        <div nz-col [nzSpan]="24">
-            <nz-table #userDetails [nzNoResult]="noResultTemplate" [nzData]="userList" [nzPageSize]="10"
-                [nzLoading]="isLoading" style="margin-top: 15px;">
-                <ng-template #noResultTemplate>
-                    <nz-empty [nzNotFoundContent]="'No Data Found'">
-                    </nz-empty>
-                </ng-template>
-                <thead>
-                    <tr>
-                        <th>Organization Code</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Role Name</th>
-                        <th>Site Location</th>
-                        <th>Active</th>
-                        <th>Password Reset</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of userDetails.data">
-                        <td>{{ data.orgCode }}</td>
-                        <td>{{ data.firstName }}</td>
-                        <td>{{ data.lastName }}</td>
-                        <td>{{ data.email }}</td>
-                        <td>{{ data.roleName }}</td>
-                        <td>{{ data.siteLocation }}</td>
-                        <td>{{ data.active }}</td>
-                        <td (click)="resetPassword(data);">
-                            <a href="javascript:void(0)">Reset</a>
-                        </td>
-                        <td class="edit-icon-div">
-                            <i class="action-icon" nz-icon nzType="edit" nzTheme="outline" nz-tooltip
-                                nzTooltipTitle="Edit" nzTooltipPlacement="bottom" nz-button
-                                (click)="setValuesToUpdate(data)">
-                            </i>
-                            <!-- <i class="action-icon" nz-icon nzType="export" nzTheme="outline" nz-tooltip
-                                nzTooltipTitle="Move" nzTooltipPlacement="bottom" nz-button
-                                (click)="showMoveItemPopup(data)">
-                            </i>
-                            <i class="action-icon" nz-icon nzType="merge-cells" nzTheme="outline" nz-tooltip
-                                nzTooltipTitle="Merge" nzTooltipPlacement="bottom" nz-button
-                                (click)="showMergeItemPopup(data)">
-                            </i> -->
-                            <i class="action-icon" nz-icon nzType="delete" nzTheme="outline" nz-tooltip nz-popconfirm
-                                nzPopconfirmTitle="Are you sure, you want to remove this record."
-                                (nzOnConfirm)="removeUser(data)" (nzOnCancel)="cancelDelete()"
-                                nzPopconfirmPlacement="top" nzOkText="Confirm" nzCancelText="Cancel"
-                                nzTooltipTitle="Delete" nzTooltipPlacement="bottom" nz-button>
-                            </i>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
-        </div>
+      <div nz-col [nzSpan]="24">
+        <nz-table #userDetails [nzNoResult]="noResultTemplate" [nzData]="userList" [nzPageSize]="10"
+          [nzLoading]="isLoading" style="margin-top: 15px;">
+          <ng-template #noResultTemplate>
+            <nz-empty [nzNotFoundContent]="'No Data Found'">
+            </nz-empty>
+          </ng-template>
+          <thead>
+            <tr>
+              <th>Organization Code</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Role Name</th>
+              <th>Site Location</th>
+              <th>Active</th>
+              <th>Password Reset</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of userDetails.data">
+              <td>{{ data.orgCode }}</td>
+              <td>{{ data.firstName }}</td>
+              <td>{{ data.lastName }}</td>
+              <td>{{ data.email }}</td>
+              <td>{{ data.roleName }}</td>
+              <td>{{ data.siteLocation }}</td>
+              <td>{{ data.active }}</td>
+              <td>
+                <i class="action-icon" nz-icon href="javascript:void(0)" nzType="form" nzTheme="outline" nz-tooltip nz-popconfirm
+                nzPopconfirmTitle="Are you sure, you want to reset the password ?" (nzOnConfirm)="resetPassword(data)"
+                (nzOnCancel)="cancelReset()" nzPopconfirmPlacement="top" nzOkText="Confirm" nzCancelText="Cancel"
+                nzTooltipTitle="Reset" nzTooltipPlacement="bottom" nz-button></i>
+              </td>
+              <td class="edit-icon-div">
+                <i class="action-icon" nz-icon nzType="edit" nzTheme="outline" nz-tooltip nzTooltipTitle="Edit"
+                  nzTooltipPlacement="bottom" nz-button (click)="setValuesToUpdate(data)">
+                </i>
+                <!-- <i class="action-icon" nz-icon nzType="export" nzTheme="outline" nz-tooltip
+                                  nzTooltipTitle="Move" nzTooltipPlacement="bottom" nz-button
+                                  (click)="showMoveItemPopup(data)">
+                              </i>
+                              <i class="action-icon" nz-icon nzType="merge-cells" nzTheme="outline" nz-tooltip
+                                  nzTooltipTitle="Merge" nzTooltipPlacement="bottom" nz-button
+                                  (click)="showMergeItemPopup(data)">
+                              </i> -->
+                <i class="action-icon" nz-icon nzType="delete" nzTheme="outline" nz-tooltip nz-popconfirm
+                  nzPopconfirmTitle="Are you sure, you want to remove this record." (nzOnConfirm)="removeUser(data)"
+                  (nzOnCancel)="cancelDelete()" nzPopconfirmPlacement="top" nzOkText="Confirm" nzCancelText="Cancel"
+                  nzTooltipTitle="Delete" nzTooltipPlacement="bottom" nz-button>
+                </i>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
     </div>
-</div>
-
-<!--Modal-->
-<nz-modal [(nzVisible)]="userModalVisible" nzTitle={{userModalHeader}} (nzOnCancel)="handleCancel()"
+  
+    <div class="nz-row" [nzSpan]="24">
+      <div nz-col [nzSpan]="8" *ngIf="organizationId">
+        <nz-form-item class="search-filter-item">
+          <nz-form-control>
+            <button nz-button nzType="primary" class="search-filter-btn" (click)="addNewData()">
+              <i nz-icon nzType="file-add" nzTheme="outline" class="search-filter-icon"></i>
+              New
+            </button> &nbsp;
+            <button nz-button nzType="primary" class="search-filter-btn" (click)="print()">
+              <i nz-icon nzType="printer" nzTheme="outline" class="search-filter-icon"></i>
+              Print
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </div>
+  
+  <!--Modal-->
+  <nz-modal [(nzVisible)]="userModalVisible" nzTitle={{userModalHeader}} (nzOnCancel)="handleCancel()"
     [nzFooter]="userModalFooter" nzWidth="75%" [nzOkLoading]="isConfirmUserLoading">
     <ng-template #userModalFooter>
-        <div class="modal-footer-btn">
-            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
-            <button nz-button nzType="primary" *ngIf="!isEdit" (click)="createUser()"
-                [nzLoading]="isConfirmUserLoading">SAVE</button>
-            <button nz-button nzType="primary" *ngIf="isEdit" (click)="updateUser()"
-                [nzLoading]="isConfirmUserLoading">UPDATE</button>
-        </div>
+      <div class="modal-footer-btn">
+        <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+        <button nz-button nzType="primary" *ngIf="!isEdit" (click)="createUser()"
+          [nzLoading]="isConfirmUserLoading">SAVE</button>
+        <button nz-button nzType="primary" *ngIf="isEdit" (click)="updateUser()"
+          [nzLoading]="isConfirmUserLoading">UPDATE</button>
+      </div>
     </ng-template>
     <ng-container *nzModalContent>
-        <div nz-row>
-            <div nz-col [nzSpan]="24">
-                <form nz-form class="user-form" [nzLayout]="formGroup.get('formLayout')?.value" [formGroup]="formGroup">
-                    <div nz-row class="tabStyle">
-                        <div nz-col [nzSpan]="24">
-                            <div nz-row class="form_section">
-                                <div nz-row [nzGutter]="24" class="form-width-container">
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style" nzRequired>Email</nz-form-label>
-                                            <nz-form-control nzErrorTip="Please Enter Email">
-                                                <input nz-input type="text" formControlName="email"
-                                                    [(ngModel)]="userDataObject.email"
-                                                    pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
-                                                    placeholder="Email" required />
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style" nzRequired>Mobile</nz-form-label>
-                                            <nz-form-control nzErrorTip="Please Enter Mobile">
-                                                <input nz-input type="text" minlength="3" maxlength="15" #mobile
-                                                    nz-input placeholder="Enter Mobile Number" mask="(000)000-0000"
-                                                    [(ngModel)]="userDataObject.mobile" (keypress)="numericOnly($event)"
-                                                    formControlName="mobile" required />
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style" nzRequired>Role</nz-form-label>
-                                            <nz-form-control nzErrorTip="Please Select Role Name">
-                                                <nz-select nzShowSearch nzAllowClear formControlName="roleName"
-                                                    nzPlaceHolder="Role Name" [(ngModel)]="userDataObject.roleName">
-                                                    <nz-option *ngFor="let obj of roleList" [nzLabel]="obj.name"
-                                                        [nzValue]="obj.name">
-                                                    </nz-option>
-                                                </nz-select>
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style">Site Location</nz-form-label>
-                                            <nz-form-control>
-                                                <nz-select nzShowSearch nzAllowClear formControlName="siteLocation"
-                                                    nzPlaceHolder="Site Location"
-                                                    [(ngModel)]="userDataObject.siteLocation">
-                                                    [(ngModel)]="userDataObject.siteLocation" [nzMaxMultipleCount]="1">
-                                                    <nz-option *ngFor="let siteObj of siteLocationList"
-                                                        [nzLabel]="siteObj?.longpullna" [nzValue]="siteObj?.longpullna">
-                                                    </nz-option>
-                                                </nz-select>
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style">First Name</nz-form-label>
-                                            <nz-form-control>
-                                                <input nz-input type="text" nz-input placeholder="Enter First Name"
-                                                    [(ngModel)]="userDataObject.firstName"
-                                                    formControlName="firstName" />
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style">Last Name</nz-form-label>
-                                            <nz-form-control>
-                                                <input nz-input type="text" nz-input placeholder="Enter Last Name"
-                                                    [(ngModel)]="userDataObject.lastName" formControlName="lastName" />
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style">Fax</nz-form-label>
-                                            <nz-form-control>
-                                                <input nz-input type="text" nz-input placeholder="Enter Fax Number"
-                                                    [(ngModel)]="userDataObject.fax" formControlName="fax"
-                                                    mask="(000)000-0000" [(ngModel)]="userDataObject.fax" />
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-
-                                    <div nz-col [nzSpan]="6" class="paddTop3">
-                                        <nz-form-item>
-                                            <nz-form-control>
-                                                <label class="lable-checkbox" nz-checkbox
-                                                    [(ngModel)]="userDataObject.active"
-                                                    formControlName="active">Active</label>
-                                                <label class="lable-checkbox" nz-checkbox
-                                                    [(ngModel)]="userDataObject.sendMail"
-                                                    formControlName="sendMail">Send Mail</label>
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style">City</nz-form-label>
-                                            <nz-form-control>
-                                                <nz-select nzShowSearch nzAllowClear formControlName="city"
-                                                    nzPlaceHolder="City" [(ngModel)]="userDataObject.city">
-                                                    <nz-option *ngFor="let cityObj of cityList"
-                                                        [nzLabel]="cityObj?.longpullna" [nzValue]="cityObj?.longpullna">
-                                                    </nz-option>
-                                                </nz-select>
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style">State</nz-form-label>
-                                            <nz-form-control>
-                                                <nz-select nzShowSearch nzAllowClear formControlName="state"
-                                                    nzPlaceHolder="State" [(ngModel)]="userDataObject.state">
-                                                    <nz-option *ngFor="let stateObj of stateList"
-                                                        [nzLabel]="stateObj?.longpullna"
-                                                        [nzValue]="stateObj?.longpullna">
-                                                    </nz-option>
-                                                </nz-select>
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style">Zip Code</nz-form-label>
-                                            <nz-form-control>
-                                                <input nz-input type="text" nz-input placeholder="Enter Zip Code"
-                                                    [(ngModel)]="userDataObject.zipcode" formControlName="zipcode"
-                                                    mask="00000-0000" />
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style">Phone 2</nz-form-label>
-                                            <nz-form-control>
-                                                <input nz-input type="text" nz-input placeholder="Enter Number"
-                                                    [(ngModel)]="userDataObject.phone2" min="3" max="15" value=""
-                                                    #phone2 (keypress)="numericOnly($event)" formControlName="phone2"
-                                                    mask="(000)000-0000" />
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-
-                                    <div nz-col [nzSpan]="12">
-                                        <nz-form-item class="flexArr">
-                                            <nz-form-label class="lable-style">Address 1</nz-form-label>
-                                            <nz-form-control>
-                                                <textarea formControlName="address1" nz-input
-                                                    placeholder="Enter Address" [(ngModel)]="userDataObject.address1"
-                                                    [nzAutosize]="{ minRows: 2, maxRows: 2 }">
-                                                    </textarea>
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-                                    <div nz-col [nzSpan]="12">
-                                        <nz-form-item class="flexArr">
-                                            <nz-form-label class="lable-style">Address 2</nz-form-label>
-                                            <nz-form-control>
-                                                <textarea formControlName="address2" nz-input
-                                                    placeholder="Enter Address" [(ngModel)]="userDataObject.address2"
-                                                    [nzAutosize]="{ minRows: 2, maxRows: 2 }">
-                                                    </textarea>
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-                                    <div nz-col [nzSpan]="16">
-                                        <nz-form-item class="flexArr">
-                                            <nz-form-label class="lable-style">Notes</nz-form-label>
-                                            <nz-form-control>
-                                                <textarea formControlName="notes" nz-input placeholder="Enter Notes"
-                                                    [(ngModel)]="userDataObject.notes"
-                                                    [nzAutosize]="{ minRows: 3, maxRows: 3 }">
-                                                    </textarea>
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-                                </div>
-                                <div nz-row [nzGutter]="24" class="boltLink form-width-container">
-                                    <div nz-col [nzSpan]="24">
-                                        <nz-form-item class="flexArr">
-                                            <nz-form-label class="lable-style">BOLT Link</nz-form-label>
-                                            <nz-form-control>
-                                                <textarea formControlName="link" nz-input
-                                                    placeholder="Generate BOLT Link" [(ngModel)]="userDataObject.link"
-                                                    [nzAutosize]="{ minRows: 2, maxRows: 2 }" readonly>
-                                                </textarea>
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style">Start Date:</nz-form-label>
-                                            <nz-form-control>
-                                                <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY"
-                                                    formControlName="startDate" [(ngModel)]="userDataObject.startDate">
-                                                </nz-date-picker>
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style">End Date:</nz-form-label>
-                                            <nz-form-control>
-                                                <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY"
-                                                    formControlName="endDate" [(ngModel)]="userDataObject.endDate">
-                                                </nz-date-picker>
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-                                    <div nz-col [nzSpan]="6" class="paddTop3">
-                                        <nz-form-item>
-                                            <nz-form-control>
-                                                <label class="lable-checkbox" nz-checkbox
-                                                    formControlName="boltActive">Link
-                                                    Is Active</label>
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-                                    <div nz-col [nzSpan]="6">
-                                        <nz-form-item>
-                                            <nz-form-label class="lable-style">Last Generated</nz-form-label>
-                                            <nz-form-control>
-                                                <input nz-input type="text" nz-input placeholder="Last Generated"
-                                                    [(ngModel)]="userDataObject.lastGenerated"
-                                                    formControlName="lastGenerated" readonly />
-                                            </nz-form-control>
-                                        </nz-form-item>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+      <div nz-row>
+        <div nz-col [nzSpan]="24">
+          <form nz-form class="user-form" [nzLayout]="formGroup.get('formLayout')?.value" [formGroup]="formGroup">
+            <div nz-row class="tabStyle">
+              <div nz-col [nzSpan]="24">
+                <div nz-row class="form_section">
+                  <div nz-row [nzGutter]="24" class="form-width-container">
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style" nzRequired>Email</nz-form-label>
+                        <nz-form-control nzErrorTip="Please Enter Email">
+                          <input nz-input type="text" formControlName="email" [(ngModel)]="userDataObject.email"
+                            pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" placeholder="Email" required />
+                        </nz-form-control>
+                      </nz-form-item>
                     </div>
-                </form>
+  
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style" nzRequired>Mobile</nz-form-label>
+                        <nz-form-control nzErrorTip="Please Enter Mobile">
+                          <input nz-input type="text" minlength="3" maxlength="15" #mobile nz-input
+                            placeholder="Enter Mobile Number" mask="(000)000-0000" [(ngModel)]="userDataObject.mobile"
+                            (keypress)="numericOnly($event)" formControlName="mobile" required />
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+  
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style" nzRequired>Role</nz-form-label>
+                        <nz-form-control nzErrorTip="Please Select Role Name">
+                          <nz-select nzShowSearch nzAllowClear formControlName="roleName" nzPlaceHolder="Role Name"
+                            [(ngModel)]="userDataObject.roleName">
+                            <nz-option *ngFor="let obj of roleList" [nzLabel]="obj.name" [nzValue]="obj.name">
+                            </nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+  
+                    <div nz-col [nzSpan]="6" *ngIf="!user.orgSiteLocation">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style">Site Location</nz-form-label>
+                        <nz-form-control>
+                          <nz-select nzShowSearch nzAllowClear formControlName="siteLocation"
+                            nzPlaceHolder="Site Location" [(ngModel)]="userDataObject.siteLocation">
+                            [(ngModel)]="userDataObject.siteLocation" [nzMaxMultipleCount]="1">
+                            <nz-option *ngFor="let siteObj of siteLocationList" [nzLabel]="siteObj?.longpullna"
+                              [nzValue]="siteObj?.longpullna">
+                            </nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+  
+                    <div nz-col [nzSpan]="6" *ngIf="user.orgSiteLocation">
+                      <nz-form-item>
+                        <nz-form-label nzRequired class="lable-style">Site Location</nz-form-label>
+                        <nz-form-control>
+                          <nz-select nzShowSearch nzAllowClear nzErrorTip="Please Select Site Location"
+                           formControlName="siteLocation"
+                            nzPlaceHolder="Site Location" [(ngModel)]="userDataObject.siteLocation">
+                            [(ngModel)]="userDataObject.siteLocation" [nzMaxMultipleCount]="1">
+                            <nz-option *ngFor="let siteObj of siteLocationList" [nzLabel]="siteObj?.longpullna"
+                              [nzValue]="siteObj?.longpullna">
+                            </nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+  
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style">First Name</nz-form-label>
+                        <nz-form-control>
+                          <input nz-input type="text" nz-input placeholder="Enter First Name"
+                            [(ngModel)]="userDataObject.firstName" formControlName="firstName" />
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+  
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style">Last Name</nz-form-label>
+                        <nz-form-control>
+                          <input nz-input type="text" nz-input placeholder="Enter Last Name"
+                            [(ngModel)]="userDataObject.lastName" formControlName="lastName" />
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+  
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style">Fax</nz-form-label>
+                        <nz-form-control>
+                          <input nz-input type="text" nz-input placeholder="Enter Fax Number"
+                            [(ngModel)]="userDataObject.fax" formControlName="fax" mask="(000)000-0000"
+                            [(ngModel)]="userDataObject.fax" />
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+  
+                    <div nz-col [nzSpan]="6" class="paddTop3">
+                      <nz-form-item>
+                        <nz-form-control>
+                          <label class="lable-checkbox" nz-checkbox [(ngModel)]="userDataObject.active"
+                            formControlName="active">Active</label>
+                          <label class="lable-checkbox" nz-checkbox [(ngModel)]="userDataObject.sendMail"
+                            formControlName="sendMail">Send Mail</label>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+  
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style">City</nz-form-label>
+                        <nz-form-control>
+                          <nz-select nzShowSearch nzAllowClear formControlName="city" nzPlaceHolder="City"
+                            [(ngModel)]="userDataObject.city">
+                            <nz-option *ngFor="let cityObj of cityList" [nzLabel]="cityObj?.longpullna"
+                              [nzValue]="cityObj?.longpullna">
+                            </nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+  
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style">State</nz-form-label>
+                        <nz-form-control>
+                          <nz-select nzShowSearch nzAllowClear formControlName="state" nzPlaceHolder="State"
+                            [(ngModel)]="userDataObject.state">
+                            <nz-option *ngFor="let stateObj of stateList" [nzLabel]="stateObj?.longpullna"
+                              [nzValue]="stateObj?.longpullna">
+                            </nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style">Zip Code</nz-form-label>
+                        <nz-form-control>
+                          <input nz-input type="text" nz-input placeholder="Enter Zip Code"
+                            [(ngModel)]="userDataObject.zipcode" formControlName="zipcode" mask="00000-0000" />
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style">Phone 2</nz-form-label>
+                        <nz-form-control>
+                          <input nz-input type="text" nz-input placeholder="Enter Number"
+                            [(ngModel)]="userDataObject.phone2" min="3" max="15" value="" #phone2
+                            (keypress)="numericOnly($event)" formControlName="phone2" mask="(000)000-0000" />
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+  
+                    <div nz-col [nzSpan]="12">
+                      <nz-form-item class="flexArr">
+                        <nz-form-label class="lable-style">Address 1</nz-form-label>
+                        <nz-form-control>
+                          <textarea formControlName="address1" nz-input placeholder="Enter Address"
+                            [(ngModel)]="userDataObject.address1" [nzAutosize]="{ minRows: 2, maxRows: 2 }">
+                                                      </textarea>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="12">
+                      <nz-form-item class="flexArr">
+                        <nz-form-label class="lable-style">Address 2</nz-form-label>
+                        <nz-form-control>
+                          <textarea formControlName="address2" nz-input placeholder="Enter Address"
+                            [(ngModel)]="userDataObject.address2" [nzAutosize]="{ minRows: 2, maxRows: 2 }">
+                                                      </textarea>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="16">
+                      <nz-form-item class="flexArr">
+                        <nz-form-label class="lable-style">Notes</nz-form-label>
+                        <nz-form-control>
+                          <textarea formControlName="notes" nz-input placeholder="Enter Notes"
+                            [(ngModel)]="userDataObject.notes" [nzAutosize]="{ minRows: 3, maxRows: 3 }">
+                                                      </textarea>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                  </div>
+                  <div nz-row [nzGutter]="24" class="boltLink form-width-container">
+                    <div nz-col [nzSpan]="24">
+                      <nz-form-item class="flexArr">
+                        <nz-form-label class="lable-style">BOLT Link</nz-form-label>
+                        <nz-form-control>
+                          <textarea formControlName="link" nz-input placeholder="Generate BOLT Link"
+                            [(ngModel)]="userDataObject.link" [nzAutosize]="{ minRows: 2, maxRows: 2 }" readonly>
+                                                  </textarea>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style">Start Date:</nz-form-label>
+                        <nz-form-control>
+                          <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="startDate"
+                            [(ngModel)]="userDataObject.startDate">
+                          </nz-date-picker>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style">End Date:</nz-form-label>
+                        <nz-form-control>
+                          <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="endDate"
+                            [(ngModel)]="userDataObject.endDate">
+                          </nz-date-picker>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6" class="paddTop3">
+                      <nz-form-item>
+                        <nz-form-control>
+                          <label class="lable-checkbox" nz-checkbox formControlName="boltActive">Link
+                            Is Active</label>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style">Last Generated</nz-form-label>
+                        <nz-form-control>
+                          <input nz-input type="text" nz-input placeholder="Last Generated"
+                            [(ngModel)]="userDataObject.lastGenerated" formControlName="lastGenerated" readonly />
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </form>
         </div>
+      </div>
     </ng-container>
-</nz-modal>
-<!--Edit Modal End-->
+  </nz-modal>
+  <!--Edit Modal End-->

@@ -177,7 +177,7 @@ export class StaffMemberComponent {
    * @description Shwing pulldown list according parameters
    */
   bindDropDownValues() {
-    let data: any = 'CITY,STATE,CODES,CUSTOMFIELDONE,CUSTOMFIELDTWO,CUSTOMFIELDTHREE,CUSTOMFIELDFOUR,PHONETYPE';
+    let data: any = 'CITY,STATE,STAFF CODES,CUSTOM1,CUSTOM2,CUSTOM3,CUSTOM4,PHONE TYPE';
     this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
       if (result?.CITY) {
         this.cityList = result.CITY;
@@ -185,23 +185,23 @@ export class StaffMemberComponent {
       if (result?.STATE) {
         this.stateList = result.STATE;
       }
-      if (result?.CODES) {
-        this.codeListArray = result.CODES;
+      if (result['STAFF CODES']) {
+        this.codeListArray = result['STAFF CODES'];
       }
-      if (result?.CUSTOMFIELDONE) {
-        this.customFieldListArray1 = result.CUSTOMFIELDONE;
+      if (result?.CUSTOM1) {
+        this.customFieldListArray1 = result.CUSTOM1;
       }
-      if (result?.CUSTOMFIELDTWO) {
-        this.customFieldListArray2 = result.CUSTOMFIELDTWO;
+      if (result?.CUSTOM2) {
+        this.customFieldListArray2 = result.CUSTOM2;
       }
-      if (result?.CUSTOMFIELDTHREE) {
-        this.customFieldListArray3 = result.CUSTOMFIELDTHREE;
+      if (result?.CUSTOM3) {
+        this.customFieldListArray3 = result.CUSTOM3;
       }
-      if (result?.CUSTOMFIELDFOUR) {
-        this.customFieldListArray4 = result.CUSTOMFIELDFOUR;
+      if (result?.CUSTOM4) {
+        this.customFieldListArray4 = result.CUSTOM4;
       }
-      if (result?.PHONETYPE) {
-        this.phoneTypesList = result.PHONETYPE;
+      if (result['PHONE TYPE']) {
+        this.phoneTypesList = result['PHONE TYPE'];
       }
     });
   }

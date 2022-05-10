@@ -61,3 +61,7 @@
 .paddTop3{
     padding-top: 3%;
 }
+
+.display-flex{
+    display: flex;
+}
