@@ -374,6 +374,7 @@ export class OrganizationComponent implements OnInit {
         this.selectedRow = selectedRowItem;
         if (this.selectedRow) {
             this.orgId = this.selectedRow.orgId;
+            this.organizationCode = this.selectedRow.orgCode;
             this.isEdit = true;
             this.formGroup.get('orgId')?.setValue(this.selectedRow.orgId);
             this.formGroup.get('orgName')?.setValue(this.selectedRow.orgName);
