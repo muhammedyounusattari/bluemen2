@@ -57,10 +57,10 @@ export class OrganizationComponent implements OnInit {
     organizationSearchList: any = [];
     organizationActiveDeActiveList: any = [];
 
-    programTypeList: any = [{ 'longpullna': 'TS', 'value': 'Talent Search' }, 
-    { 'longpullna': 'EOC', 'Value': 'Educational Opportunity Center' }, 
-    { 'longpullna': 'UB', 'Value': 'Upward Bound'   }, { 'longpullna': 'VUB', 'Value': 'Veterans Upward Bound'  }, 
-    { 'longpullna': 'UBMS', 'Value': 'Upward Bound Math & Science'  }, { 'longpullna': 'SSS', 'Value': 'Student Support Services'  }, 
+    programTypeList: any = [{ 'longpullna': 'TS', 'value': 'Talent Search' },
+    { 'longpullna': 'EOC', 'Value': 'Educational Opportunity Center' },
+    { 'longpullna': 'UB', 'Value': 'Upward Bound'   }, { 'longpullna': 'VUB', 'Value': 'Veterans Upward Bound'  },
+    { 'longpullna': 'UBMS', 'Value': 'Upward Bound Math & Science'  }, { 'longpullna': 'SSS', 'Value': 'Student Support Services'  },
     { 'longpullna': 'MCN', 'Value': 'Ronald McNair'  }];
     organizationTypeList: any = [{ 'longpullna': 'Live Customer Data' }, { 'longpullna': 'Customer Demo' }, { 'longpullna': 'Tech Support Demo' }, { 'longpullna': 'Dev Team Demo' }, { 'longpullna': 'Testing Scenario Demo' }];
 
@@ -362,6 +362,7 @@ export class OrganizationComponent implements OnInit {
     * @description show the user popup for the add organization
     */
     openUserPopup() {
+        this.organizationCode = this.formGroup.get('orgCode')?.value;
         this.userModalVisible = true;
     }
 
@@ -734,7 +735,7 @@ export class OrganizationComponent implements OnInit {
         });
         window.open(doc.output('bloburl').toString(), '_blank');
         //doc.output('dataurlnewwindow', { filename: 'standingGroup.pdf' });
-        //doc.save('college.pdf');  
+        //doc.save('college.pdf');
     }
     //Print Function End
 
@@ -757,7 +758,7 @@ export class OrganizationComponent implements OnInit {
             this.organizationList = [...this.organizationList].sort((a, b) => (a[attr] < b[attr]) ? 1 : -1)
         }
     }
-    
+
     handleUserCancel() {
         this.userModalVisible = false;
     }
