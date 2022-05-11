@@ -38,12 +38,6 @@
                                             </nz-form-control>
                                         </nz-form-item>
                                     </div>
-                                    <!-- <div class="form-group first txtAlign">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>Organization  Code</mat-label>
-                                            <input matInput value="" formControlName="organization" [readOnly]="isValidUser" minlength="3" required>
-                                        </mat-form-field>
-                                    </div> -->
                                 </div>
                                 <div nz-row [nzGutter]="24" class="full-width-container">
                                     <div nz-col [nzSpan]="24">
@@ -56,21 +50,22 @@
                                             </nz-form-control>
                                         </nz-form-item>
                                     </div>
-                                    <!-- <div class="form-group first txtAlign">
-                                        <mat-form-field class="example-full-width" appearance="fill">
-                                            <mat-label>EmailId</mat-label>
-                                            <input matInput value="" required formControlName="email" [readOnly]="isValidUser">
-                                        </mat-form-field>
-                                    </div> -->
                                 </div>
                                 <div nz-row [nzGutter]="24" class="full-width-container">
                                     <div nz-col [nzSpan]="24" *ngIf="isValidUser">
                                         <nz-form-item class="space-between">
                                             <nz-form-label class="lable-style">Password</nz-form-label>
                                             <nz-form-control nzErrorTip="Please Enter Password">
-                                                <input nz-input [type]="hide ? 'password' : 'text'"
-                                                    formControlName="password" [(ngModel)]="loginModel.password"
-                                                    placeholder="Password" />
+                                                <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplate"
+                                                    >
+                                                    <input nz-input [type]="hide ? 'password' : 'text'"
+                                                        formControlName="password" [(ngModel)]="loginModel.password"
+                                                        placeholder="Password" />
+                                                </nz-input-group>
+                                                <ng-template #suffixTemplate>
+                                                    <i nz-icon [nzType]="hide ? 'eye-invisible' : 'eye'"
+                                                        (click)="hide = !hide"></i>
+                                                </ng-template>
                                             </nz-form-control>
                                             <!-- <ng-template #suffixIconShowHidePwd>
                                                 <i *ngIf="!hide" class="fa fa-eye" (window:mouseup)="hide = true;"
@@ -87,7 +82,8 @@
                                         style="width:40%" class="submit btn text-white btn-block btn-primary button"
                                         (click)="checkUserExist()">Proceed to Login</button>
                                     <button nz-button nzType="primary" type="submit" *ngIf="isValidUser"
-                                        class="submit btn text-white btn-block btn-primary button" (click)="validate()">LOGIN</button>&nbsp;&nbsp;
+                                        class="submit btn text-white btn-block btn-primary button"
+                                        (click)="validate()">LOGIN</button>&nbsp;&nbsp;
                                     <div class="mts-5" *ngIf="isInvalidCredentials">
                                         {{errorMessage}}
                                     </div>
@@ -207,14 +203,15 @@
     </ng-container>
 </nz-modal>
 <!-- Forgot Password Modal End-->
- 
+
 <!-- TFA Modal Start-->
 <nz-modal [(nzVisible)]="isTFAModalVisible" nzTitle={{tfaModalHeader}} (nzOnCancel)="handleCancel()"
     [nzFooter]="activityModalFooter1" nzWidth="40%" [nzOkLoading]="isConfirmTFALoading">
     <ng-template #activityModalFooter1>
         <div class="modal-footer-btn">
             <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
-            <button nz-button nzType="primary" [disabled]="isRunning" [nzLoading]="isConfirmTFALoading" (click)="getSecurityCode();">Submit</button>
+            <button nz-button nzType="primary" [disabled]="isRunning" [nzLoading]="isConfirmTFALoading"
+                (click)="getSecurityCode();">Submit</button>
         </div>
     </ng-template>
     <ng-container *nzModalContent>
@@ -245,7 +242,7 @@
         <div class="modal-footer-btn">
             <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
             <button nz-button nzType="primary" [nzLoading]="isConfirmVCLoading" (click)="validateCode();"
-            [disabled]="isRunning">Validate</button>
+                [disabled]="isRunning">Validate</button>
         </div>
     </ng-template>
     <ng-container *nzModalContent>

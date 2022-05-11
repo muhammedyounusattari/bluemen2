@@ -121,6 +121,7 @@ export class HomeComponent {
       this.formGroup.markAllAsTouched();
     }
   }
+  
   /**
    * @method openTimeClock
    */

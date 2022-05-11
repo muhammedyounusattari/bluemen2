@@ -21,6 +21,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
   pageTitle = '';
   subscription: Subscription;
   isSuperAdmin : boolean = false;
+  labelResetOrSet = '';
   showDdl() {
     this.avtarDdl = !this.avtarDdl;
   }
@@ -49,6 +50,12 @@ export class AppComponent implements OnInit, AfterContentChecked {
       this.isLoggedIn = false;
       this.resetHashCode = window.location.hash;
       this.isResetPassword = true;
+      this.labelResetOrSet = 'Reset';
+    } else if (window.location.pathname === '/set-password' || window.location.pathname === '/set-password/') {
+      this.isLoggedIn = false;
+      this.resetHashCode = window.location.hash;
+      this.isResetPassword = true;
+      this.labelResetOrSet = 'Set';
     } else {
       const data = sessionStorage.getItem('accessToken');
       if (data && data !== 'null') {

@@ -17,15 +17,10 @@ export class ResetPasswordComponent implements OnInit {
   formGroup: FormGroup;
   isLoading: boolean = false;
   hide: boolean = true;
-  public passwordLength: string = "fa fa-close";
-  public isUppercase: string = "fa fa-close";;
-  public isLowercase: string = "fa fa-close";;
-  public isNumber: string = "fa fa-close";;
-  public isSpecialChar: string = "fa fa-close";;
-  public passwordMatch: string = "fa fa-close";
   userName: any = '';
   securityId: any = '';
   @Input() hashcode = '';
+  @Input() label: any;
   newPasswordErrorMsg = 'Please Enter New Password';
   newPasswordError = false;
   conrirmPasswordMatch = false;

@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     formGroup3: FormGroup;
     isInvalidCredentials: boolean = false;
     isLoading: boolean = false;
-    hide: boolean = true;
+    hide: boolean = false;
     errorMessage: string = '';
     isLoginEnabled: boolean = true;
 
