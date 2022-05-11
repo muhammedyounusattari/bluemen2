@@ -56,7 +56,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     userModalVisible: boolean = false;
     userModalHeader: string = 'User Information';
     isConfirmUserLoading: boolean = false;
-
+    
     constructor(private dialog: MatDialog
         , private formBuilder: FormBuilder
         , private _userManagementService: UserManagementService
@@ -78,6 +78,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
         } else {
             this.isSuperAdmin = true;
             this.getOrganizationList();
+            this.selectedOrgId = this.organizationId;
         }
         this.createForm();
         this.bindDropDownValues();
@@ -216,7 +217,9 @@ export class UserNamesAndPasswordComponent implements OnInit {
             this.hideLoader();
             if (result) {
                 this.organizationsList = result.filter((item: any) => item.orgActive);//.filter((v: any, i: any, a: string | any[]) => a.indexOf(v) === i);
-                this.selectedOrgId = result[0].orgId;
+                if (!this.selectedOrgId) {
+                    this.selectedOrgId = result[0].orgId;
+                }
                 this.populateUserList(this.selectedOrgId);
             }
         });
@@ -268,14 +271,18 @@ export class UserNamesAndPasswordComponent implements OnInit {
                 if (result) {
                     this.isConfirmUserLoading = false;
                     this.userModalVisible = false;
-                    this.getUserList();
+                    if (this.isSuperAdmin) {
+                        this.getOrganizationList();
+                    } else {
+                        this.getUserList();
+                    }
                     this.notificationService.createNotificationBasic('success', "User Creation", 'User created successfully !');
                 }
             }, (error: any) => {
                 if (error) {
                     this.isConfirmUserLoading = false;
-                    let message = JSON.parse(error.error).message;
-                    this.notificationService.createNotificationBasic('error', "User Creation", "System error : " + message);
+                    let message = JSON.parse(error.error);
+                    this.notificationService.createNotificationBasic('error', "User Creation", "System error : " + message.message);
                 }
             });
         } else {
