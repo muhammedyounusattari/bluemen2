@@ -134,7 +134,7 @@
                                                     <i class="action-icon" nz-icon nzType="delete" nzTheme="outline"
                                                         nz-tooltip nz-popconfirm
                                                         nzPopconfirmTitle="Confirm Remove Record. Are you sure, you want to remove this record."
-                                                        (nzOnConfirm)="deleteSelectedOrg(data, idx)"
+                                                        (nzOnConfirm)="deleteSelectedOrg(data)"
                                                         nzPopconfirmPlacement="bottom" nzOkText="Confirm"
                                                         nzCancelText="Cancel" nzTooltipTitle="Delete"
                                                         nzTooltipPlacement="bottom" nz-button>
@@ -271,7 +271,7 @@
                                                                 nzPlaceHolder="Project Type">
                                                                 <nz-option *ngFor="let programType of programTypeList"
                                                                     [nzLabel]="programType.longpullna"
-                                                                    [nzValue]="programType.longpullna">
+                                                                    [nzValue]="programType.value">
                                                                 </nz-option>
                                                             </nz-select>
                                                         </nz-form-control>
@@ -301,6 +301,10 @@
                                 <div nz-col nzSpan="4">
                                     <button nz-button nzType="primary" class="btn-color"
                                         (click)="searchOragization()">SEARCH</button>
+                                </div>
+                                <div nz-col nzSpan="4">
+                                    <button nz-button nzType="primary" class="btn-color"
+                                    (click)="resetAllFilter()">RESET</button>
                                 </div>
                                 <div nz-col nzSpan="4">
                                     <button nz-button nzType="primary" class="btn-color"
@@ -369,7 +373,7 @@
                                         <nz-select nzShowSearch nzAllowClear formControlName="orgProgramType"
                                             nzPlaceHolder="Project Type">
                                             <nz-option *ngFor="let programType of programTypeList"
-                                                [nzLabel]="programType.longpullna" [nzValue]="programType.longpullna">
+                                                [nzLabel]="programType.longpullna" [nzValue]="programType.value">
                                             </nz-option>
                                         </nz-select>
                                     </nz-form-control>
@@ -377,10 +381,10 @@
                             </div>
                             <div class="form-group" nz-col [nzSpan]="12">
                                 <nz-form-item>
-                                    <nz-form-label [nzSpan]="24" class="lable-style" nzRequired>Organization Type</nz-form-label>
+                                    <nz-form-label [nzSpan]="24" class="lable-style">Organization Type</nz-form-label>
                                     <nz-form-control>
                                         <nz-select nzShowSearch nzAllowClear formControlName="orgOrganizationType"
-                                            nzPlaceHolder="organizationType" nzErrorTip="Please Select Organization Type">
+                                            nzPlaceHolder="organizationType">
                                             <nz-option *ngFor="let organizationType of organizationTypeList"
                                                 [nzLabel]="organizationType.longpullna"
                                                 [nzValue]="organizationType.longpullna">
@@ -544,10 +548,10 @@
                                             </div>
                                             <div class="form-group" nz-col [nzSpan]="8">
                                                 <nz-form-item>
-                                                    <nz-form-label [nzSpan]="24" class="lable-style">Expiry Time
+                                                    <nz-form-label [nzSpan]="24" class="lable-style">OTP Expiry Time
                                                     </nz-form-label>
                                                     <nz-form-control>
-                                                        <input nz-input type="number" placeholder="Enter Expiry Time"
+                                                        <input nz-input type="number" placeholder="Enter OTP Expiry Time"
                                                             value="" formControlName="orgExpiryTime" />
                                                     </nz-form-control>
                                                 </nz-form-item>

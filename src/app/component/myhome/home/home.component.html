@@ -78,73 +78,82 @@
                         other users</label>
                 </div>
             </div>
-            <button style="visibility: hidden;" id="hiddenBtn" (click)="openResetPwdPopup()"></button>
         </div>
     </div>
 </div>
 
-<!-- Modal Start-->
-<ng-template #resetPasswordPopup>
-    <!-- Modal -->
-    <div class="modal-header popHeaderBG">
-        <span class="modal-title popHeader" id="exampleModalLabel">Security Question</span>
-        <!-- <button type="button" class="btn-close" (click)="modalRef.hide()" aria-label="Close"></button> -->
-    </div>
-    <div class="modal-body">
-        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <form [formGroup]="formGroup" class="form">
-                    <div class="form-group last mb-login txtAlign">
-                        <mat-form-field appearance="fill" class="reset-password-textbox">
-                            <mat-label>Security Question 1</mat-label>
-                            <select matNativeControl formControlName="securityQuestion1">
-                                <option value="" selected></option>
-                                <option *ngFor="let secQ of question1List" [value]="secQ.id">
-                                    {{secQ.name}}
-                                </option>
-                            </select>
-                        </mat-form-field>
-                        <!-- <mat-form-field class="reset-password-textbox" appearance="fill">
-                            
-                            <mat-label>Security Question 1</mat-label>
-                            <input matInput value="" formControlName="securityQuestion1" minlength="3" required>
-                        </mat-form-field> -->
-                    </div>
-                    <div class="form-group last mb-login txtAlign">
-                        <mat-form-field class="reset-password-textbox" appearance="fill">
-                            <mat-label>Answer</mat-label>
-                            <input matInput value="" formControlName="securityAnswer1" minlength="3" required>
-                        </mat-form-field>
-                    </div>
-                    <div class="form-group last mb-login txtAlign">
-                        <mat-form-field appearance="fill" class="reset-password-textbox">
-                            <mat-label>Security Question 2</mat-label>
-                            <select matNativeControl formControlName="securityQuestion2">
-                                <option value="" selected></option>
-                                <option *ngFor="let secQ of question2List" [value]="secQ.id">
-                                    {{secQ.name}}
-                                </option>
-                            </select>
-                        </mat-form-field>
-                        <!-- <mat-form-field class="reset-password-textbox" appearance="fill">
-                            <mat-label>Security Question 2</mat-label>
-                            <input matInput value="" formControlName="securityQuestion2" minlength="3" required
-                                readonly>
-                        </mat-form-field> -->
-                    </div>
-                    <div class="form-group last mb-login txtAlign">
-                        <mat-form-field class="reset-password-textbox" appearance="fill">
-                            <mat-label>Answer</mat-label>
-                            <input matInput value="" formControlName="securityAnswer2" minlength="3" required>
-                        </mat-form-field>
+<!-- Security Questions Modal -->
+<nz-modal [(nzVisible)]="secQuestionModalVisible" nzTitle={{secQuestionModalHeader}} (nzOnCancel)="handleCancel()"
+    [nzFooter]="secQuestionModalFooter" nzWidth="75%">
+    <ng-template #secQuestionModalFooter>
+        <div class="modal-footer-btn">
+            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
+            <button nz-button nzType="primary" (click)="validateAnswer()"
+                [nzLoading]="isSubmitSecQuestions">Submit</button>
+        </div>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div nz-row>
+            <div nz-col [nzSpan]="24">
+                <form nz-form class="user-form" [nzLayout]="formGroup.get('formLayout')?.value" [formGroup]="formGroup">
+                    <div nz-row class="tabStyle">
+                        <div nz-col [nzSpan]="24">
+                            <div nz-row [nzGutter]="24" class="form-width-container">
+                                <div nz-col [nzSpan]="12">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style" nzRequired>Security Question 1
+                                        </nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Select Security Question 1">
+                                            <nz-select nzShowSearch nzAllowClear formControlName="securityQuestion1"
+                                                nzPlaceHolder="Security Question 1">
+                                                <nz-option *ngFor="let obj of question1List" [nzLabel]="obj.name"
+                                                    [nzValue]="obj.id">
+                                                </nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                                <div nz-col [nzSpan]="12">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style" nzRequired>Answer</nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Enter Answer">
+                                            <input nz-input type="text" formControlName="securityAnswer1"
+                                                placeholder="Enter Answer" />
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col [nzSpan]="12">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style" nzRequired>Security Question 2
+                                        </nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Select Security Question 2">
+                                            <nz-select nzShowSearch nzAllowClear formControlName="securityQuestion2"
+                                                nzPlaceHolder="Security Question 2">
+                                                <nz-option *ngFor="let obj of question2List" [nzLabel]="obj.name"
+                                                    [nzValue]="obj.id">
+                                                </nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col [nzSpan]="12">
+                                    <nz-form-item>
+                                        <nz-form-label class="lable-style" nzRequired>Answer</nz-form-label>
+                                        <nz-form-control nzErrorTip="Please Enter Answer">
+                                            <input nz-input type="text" formControlName="securityAnswer2"
+                                                placeholder="Enter Answer" />
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-v .primary" (click)="validateAnswer();">Submit</button>
-        <!-- <button type="button" class="btn btn-secondary" id="closePopup" (click)="modalRef.hide();">Cancel</button> -->
-    </div>
-</ng-template>
-<!-- Modal End-->
+
+    </ng-container>
+</nz-modal>
+<!-- Security Questions Modal-End -->

@@ -8,6 +8,7 @@ import { DialogBoxComponent } from 'src/app/shared/components/dialog-box/dialog-
 import { ActivatedRoute } from '@angular/router';
 import { TimeClockComponent } from './time-clock/time-clock.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,6 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 export class HomeComponent {
   public popup: string;
   formGroup: FormGroup;
-  @ViewChild('resetPasswordPopup') resetPasswordPopupRef: TemplateRef<any>;
   modalRef: BsModalRef;
   modalConfigSM = {
     backdrop: true,
@@ -29,13 +29,18 @@ export class HomeComponent {
   question2List: any = [];
   orgId : any;
   userInfo: any;
+  secQuestionModalVisible: boolean = false;
+  secQuestionModalHeader = 'Security Questions';
+  isSubmitSecQuestions: boolean = false;
+
   constructor(private route: ActivatedRoute
     , private _loginService: LoginService
     , private formBuilder: FormBuilder
     , private modalService: BsModalService
     , private dialog: MatDialog
     , private toastr: ToastrService
-    , private sharedService: SharedService) { }
+    , private sharedService: SharedService
+    , private notificationService: NotificationUtilities) { }
 
   ngOnInit() {
     this.sharedService.setPageTitle('Dashboard');
@@ -52,32 +57,27 @@ export class HomeComponent {
     this.orgId = this.userInfo.orgId;
     this.createForm();
     this.userData = sessionStorage.getItem('state');
+    this.userData = JSON.parse(this.userData)
     if (this.userData) {
-      this.userData = JSON.parse(this.userData);
-      if (this.userData.isFirstTime === 'true') {
+      if (this.userData.firstTime) {
         this._loginService.getSecurityQuestionList(this.orgId).subscribe((result: any) => {
           if (result) {
             this.question1List = result.body.question1;
             this.question2List = result.body.question2;
-            this.openResetPwdPopup();
+            this.secQuestionModalVisible = true;
           }
         },
         (error: any) => {
           const errorResponse = JSON.parse(error.error);
-          this.toastr.error(errorResponse.message, '', {
-            timeOut: 5000,
-            closeButton: true
-          });
+          this.notificationService.createNotificationBasic(errorResponse.message, 'Security questions','Loading Security questions failed');
         });
       }
     }
   }
-  openResetPwdPopup() {
-    this.openModal(this.resetPasswordPopupRef);
-  }
 
   createForm() {
     this.formGroup = this.formBuilder.group({
+      formLayout: ['vertical'],
       'securityQuestion1': ['', Validators.required],
       'securityQuestion2': ['', Validators.required],
       'securityAnswer1': ['', Validators.required],
@@ -91,6 +91,7 @@ export class HomeComponent {
 
   validateAnswer() {
     if (this.formGroup.valid) {
+      this.isSubmitSecQuestions = true;
       const question1Name = this.question1List.filter((item:any) => item.id === Number(this.formGroup?.get('securityQuestion1')?.value));
       const question2Name = this.question2List.filter((item:any) => item.id === Number(this.formGroup?.get('securityQuestion2')?.value));
       if (question1Name && question2Name) {
@@ -106,21 +107,14 @@ export class HomeComponent {
         };
         this._loginService.updateSecurityQuestions(data).subscribe((result: any) => {
           if (result) {
+            this.isSubmitSecQuestions = false;
             result = JSON.parse(result);
-            this.toastr.success(result.message, '', {
-              timeOut: 5000,
-              closeButton: true
-            });
-            this.modalRef.hide();
-            // sessionStorage.clear();
-            // window.location.reload();
+            this.notificationService.createNotificationBasic('success', 'Security Questions', result.message);
+            this.secQuestionModalVisible = false;
           }
         }, (error: any) => {
           const errorResponse = JSON.parse(error);
-          this.toastr.error(errorResponse.message, '', {
-            timeOut: 5000,
-            closeButton: true
-          });
+          this.notificationService.createNotificationBasic(errorResponse.message, 'Security questions','Loading Security questions failed');
         });
       }
     } else {
@@ -135,5 +129,10 @@ export class HomeComponent {
       width: '50%',
       panelClass: 'time-clock-container'
     });
+  }
+
+  handleCancel() {
+    this.isSubmitSecQuestions = false;
+    this.secQuestionModalVisible = false;
   }
 }

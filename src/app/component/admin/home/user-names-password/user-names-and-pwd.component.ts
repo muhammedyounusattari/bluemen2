@@ -87,6 +87,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     /**
     * @method bindDropDownValues
     * @description Get the all pull down item list
+    * 
     */
     bindDropDownValues() {
         let data: any = 'CITY,STATE,SITE LOCATION';
@@ -203,7 +204,8 @@ export class UserNamesAndPasswordComponent implements OnInit {
         this._userManagementService.getUserList(this.orgId).subscribe(result => {
             this.hideLoader();
             if (result) {
-                this.userList = result.users.filter((item: any) => item.active);
+                // this.userList = result.users.filter((item: any) => item.active);
+                this.userList = result;
                 this.selectedRowIndex = null;
             }
         });
@@ -215,22 +217,25 @@ export class UserNamesAndPasswordComponent implements OnInit {
             if (result) {
                 this.organizationsList = result.filter((item: any) => item.orgActive);//.filter((v: any, i: any, a: string | any[]) => a.indexOf(v) === i);
                 this.selectedOrgId = result[0].orgId;
-                this.populateUserList();
+                this.populateUserList(this.selectedOrgId);
             }
         });
     }
 
-    populateUserList(event?: any) {
-        if (event) {
+    populateUserList(event: any) {
+        if (event !== null) {
             this.selectedOrgId = event;
+            const result = this.organizationsList.filter((item: any) => item.orgId === Number(this.selectedOrgId));
+            if (result && result[0].users) {
+                // this.userList = result[0].users.filter((item: any) => item.active);
+                this.userList = result[0].users;
+            }
+            this.selectedRowIndex = null;
+            this.orgId = this.selectedOrgId;
+            this.organizationCode = result[0].orgCode;
+        } else {
+            this.userList = '';
         }
-        const result = this.organizationsList.filter((item: any) => item.orgId === Number(this.selectedOrgId));
-        if (result && result[0].users) {
-            this.userList = result[0].users.filter((item: any) => item.active);
-        }
-        this.selectedRowIndex = null;
-        this.orgId = this.selectedOrgId;
-        this.organizationCode = result[0].orgCode;
     }
 
     hideLoader() {

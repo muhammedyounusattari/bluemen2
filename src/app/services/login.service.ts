@@ -34,7 +34,7 @@ export class LoginService {
     }
 
     getSecurityQuestionList(orgCode: any) {
-        const URL = environment.apiUrl+'/blumen-api/admin/' + orgCode + '/securityQuestions';
+        const URL = environment.apiUrl+'/blumen-api/admin/securityQuestions';
         return this.dataService.callGetService(URL);
     }
 

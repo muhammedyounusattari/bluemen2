@@ -57,7 +57,11 @@ export class OrganizationComponent implements OnInit {
     organizationSearchList: any = [];
     organizationActiveDeActiveList: any = [];
 
-    programTypeList: any = [{ 'longpullna': 'TS' }, { 'longpullna': 'EOC' }, { 'longpullna': 'UB' }, { 'longpullna': 'VUB' }, { 'longpullna': 'UBMS' }, { 'longpullna': 'SSS' }, { 'longpullna': 'MCN' }];
+    programTypeList: any = [{ 'longpullna': 'TS', 'value': 'Talent Search' }, 
+    { 'longpullna': 'EOC', 'Value': 'Educational Opportunity Center' }, 
+    { 'longpullna': 'UB', 'Value': 'Upward Bound'   }, { 'longpullna': 'VUB', 'Value': 'Veterans Upward Bound'  }, 
+    { 'longpullna': 'UBMS', 'Value': 'Upward Bound Math & Science'  }, { 'longpullna': 'SSS', 'Value': 'Student Support Services'  }, 
+    { 'longpullna': 'MCN', 'Value': 'Ronald McNair'  }];
     organizationTypeList: any = [{ 'longpullna': 'Live Customer Data' }, { 'longpullna': 'Customer Demo' }, { 'longpullna': 'Tech Support Demo' }, { 'longpullna': 'Dev Team Demo' }, { 'longpullna': 'Testing Scenario Demo' }];
 
     userModalVisible: boolean = false;
@@ -109,7 +113,7 @@ export class OrganizationComponent implements OnInit {
             'orgName': ['', Validators.required],
             'orgCode': ['', Validators.required],
             'orgProgramType': ['', Validators.required],
-            'orgOrganizationType': ['', Validators.required],
+            'orgOrganizationType': [''],
             'orgDescription': [''],
             'orgBulkTemplate': [''],
             'orgAddress1': [''],
@@ -173,7 +177,7 @@ export class OrganizationComponent implements OnInit {
             this.hideLoader();
             if (result) {
                 this.organizationActiveDeActiveList = result;
-                // result = result.filter((item: any) => item.orgActive);
+                result = result.filter((item: any) => !item.deleted);
                 this.organizationList = result;
                 this.organizationSearchList = result;
                 this.selectedRowIndex = null;
@@ -417,34 +421,15 @@ export class OrganizationComponent implements OnInit {
     * @method deleteSelectedOrg
     * @description this method is used for deletd the selected organization
     */
-    deleteSelectedOrg(selectedRowItem: any, index: any) {
-        this.selectedRowIndex = index;
-        this.selectedRow = selectedRowItem;
-        if (this.selectedRow) {
-            this.selectedRow.orgActive = false;
-            this.showLoader();
-            const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
-                data: {
-                    title: 'Confirm remove record',
-                    message: 'Are you sure, you want to remove this record: ' + this.selectedRow.orgName
-                }
-            });
-            confirmDialog.afterClosed().subscribe(result => {
-                if (result === true) {
-                    this.organizationService.updateOrganization(this.selectedRow).subscribe(result => {
-                        if (result) {
-                            this.notificationService.createNotificationBasic('success', 'success', 'Deleted successfully.');
-                            this.getOrgList();
-                            this.hideLoader();
-                        }
-                    });
-                } else {
-                    this.hideLoader();
-                }
-            });
-        } else {
-            this.notificationService.createNotificationBasic('info', 'info', 'Please select a row to delete.');
-        }
+    deleteSelectedOrg(data: any) {
+        data.deleted = true;
+        this.organizationService.updateOrganization(data).subscribe(result => {
+            if (result) {
+                this.notificationService.createNotificationBasic('success', 'success', 'Deleted successfully.');
+                this.getOrgList();
+                this.hideLoader();
+            }
+        });
     }
 
     /**
@@ -566,6 +551,17 @@ export class OrganizationComponent implements OnInit {
     }
 
 
+    resetAllFilter() {
+        this.searchFormGroup.get('name')?.setValue('');
+        this.searchFormGroup.get('code')?.setValue('');
+        this.searchFormGroup.get('active')?.setValue('');
+        this.searchFormGroup.get('purge')?.setValue('');
+        this.searchFormGroup.get('city')?.setValue('');
+        this.searchFormGroup.get('state')?.setValue('');
+        this.searchFormGroup.get('programType')?.setValue('');
+        this.searchFormGroup.get('deleted')?.setValue('');
+        this.getOrgList();
+    }
     /**
     * @method searchOragization
     * @description this method is used for filter the data from organization list
@@ -590,7 +586,7 @@ export class OrganizationComponent implements OnInit {
                         query = (query && organizationType && item.orgOrganizationType.trim().toLowerCase() == organizationType.trim().toLowerCase());
                     }
                     if (name) {
-                        query = (query && name && item.orgName.trim().toLowerCase() == name.trim().toLowerCase());
+                        query = (query && name && item.orgName.trim().toLowerCase().includes(name.trim().toLowerCase()));
                     }
                     if (code) {
                         query = (query && code && item.orgCode.trim().toLowerCase() == code.trim().toLowerCase());
@@ -633,7 +629,7 @@ export class OrganizationComponent implements OnInit {
                     }
 
                     return query;
-                })
+                });
                 this.organizationList = list1;
             } else {
                 this.organizationList = this.organizationSearchList;
