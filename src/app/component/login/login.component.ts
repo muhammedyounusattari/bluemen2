@@ -151,7 +151,13 @@ export class LoginComponent implements OnInit {
                     }
                 });
         } else {
-            this.formGroup.markAllAsTouched();
+            Object.values(this.formGroup.controls).forEach(control => {
+                if (control.invalid) {
+                    control.markAsDirty();
+                    control.updateValueAndValidity({ onlySelf: true });
+                }
+            });
+            return;
         }
     }
 
@@ -168,7 +174,7 @@ export class LoginComponent implements OnInit {
             fpOrgCode: ['', Validators.required],
             fpEmail: ['', Validators.required],
             securityQuestion1: [{ disabled: true, value: '' }, Validators.required],
-            securityQuestion2: [{ disabled: true, value: '' } , Validators.required],
+            securityQuestion2: [{ disabled: true, value: '' }, Validators.required],
             securityAnswer1: ['', Validators.required],
             securityAnswer2: ['', Validators.required]
         });
@@ -211,10 +217,13 @@ export class LoginComponent implements OnInit {
                         this.notificationService.createNotificationBasic('error', "Get Security Questions", "System error : " + errorResponse.message);
                     });
         } else {
-            for (const i in this.formGroup1.controls) {
-                this.formGroup1.controls[i].markAsDirty();
-                this.formGroup1.controls[i].updateValueAndValidity();
-            }
+            Object.values(this.formGroup1.controls).forEach(control => {
+                if (control.invalid) {
+                    control.markAsDirty();
+                    control.updateValueAndValidity({ onlySelf: true });
+                }
+            });
+            return;
         }
     }
 
@@ -235,7 +244,7 @@ export class LoginComponent implements OnInit {
             this._loginService.forgotPassword(data).subscribe((result: any) => {
                 if (result) {
                     result = JSON.parse(result);
-                    if( result.status  >= 400) {
+                    if (result.status >= 400) {
                         this.notificationService.createNotificationBasic('error', "Validate Question & Answer", result.message);
                         this.isConfirmFPLoading = false;
                     } else {
@@ -243,7 +252,7 @@ export class LoginComponent implements OnInit {
                         this.isConfirmFPLoading = false;
                         this.isFPModalVisible = false;
                     }
-               
+
                 }
             },
                 (error: any) => {
@@ -256,14 +265,20 @@ export class LoginComponent implements OnInit {
                     this.isConfirmFPLoading = false;
                 });
         } else {
-            this.formGroup1.markAllAsTouched();
+            Object.values(this.formGroup1.controls).forEach(control => {
+                if (control.invalid) {
+                    control.markAsDirty();
+                    control.updateValueAndValidity({ onlySelf: true });
+                }
+            });
+            return;
         }
     }
 
     createValidateVC() {
         this.formGroup3 = this.formBuilder.group({
             formLayout: ['horizontal'],
-            otpCode: [null,Validators.required]    
+            otpCode: [null, Validators.required]
         });
     }
 

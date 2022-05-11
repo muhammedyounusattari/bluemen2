@@ -27,7 +27,7 @@ export class HomeComponent {
   userData: any;
   question1List: any = [];
   question2List: any = [];
-  orgId : any;
+  orgId: any;
   userInfo: any;
   secQuestionModalVisible: boolean = false;
   secQuestionModalHeader = 'Security Questions';
@@ -46,11 +46,11 @@ export class HomeComponent {
     this.sharedService.setPageTitle('Dashboard');
     this.route.queryParams
       .subscribe(params => {
-          this.popup = params?.popup;
-          if (this.popup == 'time-clock') {
-            this.openTimeClock();
-          }
+        this.popup = params?.popup;
+        if (this.popup == 'time-clock') {
+          this.openTimeClock();
         }
+      }
       );
     this.userInfo = sessionStorage.getItem('state');
     this.userInfo = JSON.parse(this.userInfo);
@@ -67,10 +67,10 @@ export class HomeComponent {
             this.secQuestionModalVisible = true;
           }
         },
-        (error: any) => {
-          const errorResponse = JSON.parse(error.error);
-          this.notificationService.createNotificationBasic(errorResponse.message, 'Security questions','Loading Security questions failed');
-        });
+          (error: any) => {
+            const errorResponse = JSON.parse(error.error);
+            this.notificationService.createNotificationBasic(errorResponse.message, 'Security questions', 'Loading Security questions failed');
+          });
       }
     }
   }
@@ -92,8 +92,8 @@ export class HomeComponent {
   validateAnswer() {
     if (this.formGroup.valid) {
       this.isSubmitSecQuestions = true;
-      const question1Name = this.question1List.filter((item:any) => item.id === Number(this.formGroup?.get('securityQuestion1')?.value));
-      const question2Name = this.question2List.filter((item:any) => item.id === Number(this.formGroup?.get('securityQuestion2')?.value));
+      const question1Name = this.question1List.filter((item: any) => item.id === Number(this.formGroup?.get('securityQuestion1')?.value));
+      const question2Name = this.question2List.filter((item: any) => item.id === Number(this.formGroup?.get('securityQuestion2')?.value));
       if (question1Name && question2Name) {
         const data = {
           'orgCode': sessionStorage.getItem('realmId'),
@@ -114,14 +114,20 @@ export class HomeComponent {
           }
         }, (error: any) => {
           const errorResponse = JSON.parse(error);
-          this.notificationService.createNotificationBasic(errorResponse.message, 'Security questions','Loading Security questions failed');
+          this.notificationService.createNotificationBasic(errorResponse.message, 'Security questions', 'Loading Security questions failed');
         });
       }
     } else {
-      this.formGroup.markAllAsTouched();
+      Object.values(this.formGroup.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+      return;
     }
   }
-  
+
   /**
    * @method openTimeClock
    */

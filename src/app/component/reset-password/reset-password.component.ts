@@ -109,10 +109,6 @@ export class ResetPasswordComponent implements OnInit {
     return true;
   }
   resetPassword() {
-    for (const i in this.formGroup.controls) {
-      this.formGroup.controls[i].markAsDirty();
-      this.formGroup.controls[i].updateValueAndValidity();
-    }
     if (this.formGroup.valid && !this.newPasswordError && !this.conrirmPasswordMatch) {
       const data = {
         'password': this.formGroup?.get('newPassword')?.value,
@@ -133,7 +129,13 @@ export class ResetPasswordComponent implements OnInit {
         console.log(error);
       });
     } else {
-      this.formGroup.markAllAsTouched();
+      Object.values(this.formGroup.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+      return;
     }
   }
 }

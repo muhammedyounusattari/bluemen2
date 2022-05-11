@@ -59,9 +59,9 @@ export class OrganizationComponent implements OnInit {
 
     programTypeList: any = [{ 'longpullna': 'TS', 'value': 'Talent Search' },
     { 'longpullna': 'EOC', 'Value': 'Educational Opportunity Center' },
-    { 'longpullna': 'UB', 'Value': 'Upward Bound'   }, { 'longpullna': 'VUB', 'Value': 'Veterans Upward Bound'  },
-    { 'longpullna': 'UBMS', 'Value': 'Upward Bound Math & Science'  }, { 'longpullna': 'SSS', 'Value': 'Student Support Services'  },
-    { 'longpullna': 'MCN', 'Value': 'Ronald McNair'  }];
+    { 'longpullna': 'UB', 'Value': 'Upward Bound' }, { 'longpullna': 'VUB', 'Value': 'Veterans Upward Bound' },
+    { 'longpullna': 'UBMS', 'Value': 'Upward Bound Math & Science' }, { 'longpullna': 'SSS', 'Value': 'Student Support Services' },
+    { 'longpullna': 'MCN', 'Value': 'Ronald McNair' }];
     organizationTypeList: any = [{ 'longpullna': 'Live Customer Data' }, { 'longpullna': 'Customer Demo' }, { 'longpullna': 'Tech Support Demo' }, { 'longpullna': 'Dev Team Demo' }, { 'longpullna': 'Testing Scenario Demo' }];
 
     userModalVisible: boolean = false;
@@ -735,7 +735,7 @@ export class OrganizationComponent implements OnInit {
         });
         window.open(doc.output('bloburl').toString(), '_blank');
         //doc.output('dataurlnewwindow', { filename: 'standingGroup.pdf' });
-        //doc.save('college.pdf');
+        //doc.save('college.pdf');  
     }
     //Print Function End
 

@@ -286,7 +286,13 @@ export class UserNamesAndPasswordComponent implements OnInit {
                 }
             });
         } else {
-            this.formGroup.markAllAsTouched();
+            Object.values(this.formGroup.controls).forEach(control => {
+                if (control.invalid) {
+                    control.markAsDirty();
+                    control.updateValueAndValidity({ onlySelf: true });
+                }
+            });
+            return;
         }
     }
 
@@ -353,7 +359,13 @@ export class UserNamesAndPasswordComponent implements OnInit {
                 }
             });
         } else {
-            this.formGroup.markAllAsTouched();
+            Object.values(this.formGroup.controls).forEach(control => {
+                if (control.invalid) {
+                    control.markAsDirty();
+                    control.updateValueAndValidity({ onlySelf: true });
+                }
+            });
+            return;
         }
     }
 
