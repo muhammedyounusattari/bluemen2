@@ -330,7 +330,7 @@
                 (click)="updateOrganizationAfterSave()" [nzLoading]="isConfirmOrgnizationLoading">Update</button>
             <button nz-button nzType="primary" *ngIf="!orgId" [nzDisabled]="isDisabledBtn" (click)="addOrganization();"
                 [nzLoading]="isConfirmOrgnizationLoading">Save & Next</button>
-            <button nz-button nzType="primary" *ngIf="orgId" (click)="openUserPopup()">User</button>
+            <button nz-button nzType="primary" *ngIf="orgId != null && orgId != undefined" (click)="openUserPopup()">User</button>
             <!-- <button nz-button nzType="primary">Purge Report</button> -->
         </div>
     </ng-template>

@@ -299,6 +299,11 @@ export class LoginComponent implements OnInit {
                     this.isVCModalVisible = true;
                     this.createValidateVC();
                 }
+            }, (error: any) => {
+                error = JSON.parse(error.error);
+                this.isRunning = false;
+                this.isConfirmTFALoading = false;
+                this.notificationService.createNotificationBasic('error', "Send Code", "System error : " + error.message);
             });
         }
     }
@@ -318,6 +323,11 @@ export class LoginComponent implements OnInit {
                     this.validateLogin.emit(this.authenticateResponse);
                     this.isVCModalVisible = false;
                 }
+            }, (error: any) => {
+                error = JSON.parse(error.error);
+                this.isConfirmVCLoading = false;
+                this.isRunning = false;
+                this.notificationService.createNotificationBasic('error', "Validate OTP", "System error : " + error.message);
             });
         }
     }

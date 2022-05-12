@@ -650,49 +650,14 @@ export class OrganizationComponent implements OnInit {
      */
     print() {
         var doc = new jsPDF('l', 'mm', 'a4');
-        const head = [['orgId', 'Organization Name', 'Code', 'Two Factor', 'Device Auth', 'Expiry Time', 'Active', 'Days To Expire'
-            , 'Remind One', 'Remind Two', 'Purge', 'Deleted']]
+        const head = [['Orgnization Id', 'Organization Name', 'Organization Code', 'Project Type']];
         let data: any = [];
         this.organizationList.forEach((e: any) => {
             var tempObj = [];
             tempObj.push(e.orgId);
             tempObj.push(e.orgName);
             tempObj.push(e.orgCode);
-            tempObj.push(e.orgExpiryTime);
-            tempObj.push(e.orgDaysToExpire);
-            tempObj.push(e.orgRemindOne);
-            tempObj.push(e.orgRemindTwo);
-
-            if (e.orgTwoFactor == true) {
-                tempObj.push("Yes");
-            } else {
-                tempObj.push("No");
-            }
-
-            if (e.orgDeviceAuth == true) {
-                tempObj.push("Yes");
-            } else {
-                tempObj.push("No");
-            }
-
-            if (e.deleted == true) {
-                tempObj.push("Yes");
-            } else {
-                tempObj.push("No");
-            }
-
-            if (e.orgPurge == true) {
-                tempObj.push("Yes");
-            } else {
-                tempObj.push("No");
-            }
-
-            if (e.orgActive == true) {
-                tempObj.push("Yes");
-            } else {
-                tempObj.push("No");
-            }
-
+            tempObj.push(e.orgProgramType);
             data.push(tempObj);
         });
         autoTable(doc, {
@@ -723,7 +688,7 @@ export class OrganizationComponent implements OnInit {
                 doc.setFontSize(20);
                 doc.setTextColor(40);
                 //doc.text("Compansol TRIO College Listing", data.settings.margin.left, 10);
-                doc.text("Compansol TRIO Organization Listing", 140, 15, {
+                doc.text("Compansol Blumen Online for TRiO (B.O.T.) Organization Information", 140, 15, {
                     align: 'center'
                 });
 
