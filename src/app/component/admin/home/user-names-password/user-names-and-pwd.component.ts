@@ -145,7 +145,8 @@ export class UserNamesAndPasswordComponent implements OnInit {
             'lastGenerated': [''],
             'orgId': [''],
             'emailVerified': [false],
-            'enabled': [false]
+            'enabled': [false],
+            'deleted': [false]
         });
     }
 
@@ -176,7 +177,8 @@ export class UserNamesAndPasswordComponent implements OnInit {
             lastGenerated: '',
             orgId: '',
             emailVerified: false,
-            enabled: false
+            enabled: false,
+            deleted: false
         }
     }
 
@@ -420,7 +422,8 @@ export class UserNamesAndPasswordComponent implements OnInit {
             'sendMail': this.userDataObject.sendMail,
             'siteLocation': this.userDataObject.siteLocation,
             'state': this.userDataObject.state,
-            'zipcode': this.userDataObject.zipcode
+            'zipcode': this.userDataObject.zipcode,
+            'deleted': this.userDataObject.deleted
         }
         return payload;
     }

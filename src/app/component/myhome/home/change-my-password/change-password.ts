@@ -42,6 +42,7 @@ export class ChangePasswordComponent implements OnInit {
   public passwordMatch: string = "fa fa-close";
 
   areSecurityQuestionsVisible = false;
+  userData: any;
 
   constructor(public homeService: HomeService,
     private sharedService: SharedService, private fb: FormBuilder,
@@ -136,6 +137,9 @@ export class ChangePasswordComponent implements OnInit {
         if (result.status === '200') {
           this.notificationService.createNotificationBasic('success', "Change Password", 'Password changed Successfully!');
           this.areSecurityQuestionsVisible = false;
+          this.userData = sessionStorage.getItem('state');
+          this.userData.firstTime= false;
+          sessionStorage.setItem("state",JSON.stringify(this.userData));
           window.location.assign('');
         } else {
           this.notificationService.createNotificationBasic('error', "Change Password", 'Password change failed!');

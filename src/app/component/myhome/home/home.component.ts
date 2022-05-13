@@ -111,6 +111,8 @@ export class HomeComponent {
             result = JSON.parse(result);
             this.notificationService.createNotificationBasic('success', 'Security Questions', result.message);
             this.secQuestionModalVisible = false;
+            this.userData.firstTime= false;
+            sessionStorage.setItem("state",JSON.stringify(this.userData));
           }
         }, (error: any) => {
           const errorResponse = JSON.parse(error);
