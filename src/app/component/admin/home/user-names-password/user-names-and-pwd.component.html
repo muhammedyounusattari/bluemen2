@@ -169,7 +169,7 @@
                       </nz-form-item>
                     </div>
   
-                    <div nz-col [nzSpan]="6" *ngIf="user.orgSiteLocation == null || user.orgSiteLocation == undefined">
+                    <div nz-col [nzSpan]="6" *ngIf="!user.orgSiteLocation">
                       <nz-form-item>
                         <nz-form-label class="lable-style">Site Location</nz-form-label>
                         <nz-form-control>
