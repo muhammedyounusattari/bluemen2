@@ -60,9 +60,6 @@ export class LoginComponent implements OnInit {
     isVCModalVisible: boolean = false;
     vcModalHeader = 'Validate Code';
     isConfirmVCLoading: boolean = false;
-    countDownTime : any;
-    expiryDate: Date = new Date();
-    isCoundDownUp: boolean = false;
 
     constructor(private _loginService: LoginService
         , private formBuilder: FormBuilder
@@ -286,7 +283,6 @@ export class LoginComponent implements OnInit {
     }
 
     getSecurityCode() {
-        this.isCoundDownUp = false;
         this.isRunning = true;
         this.isConfirmTFALoading = true;
         for (const i in this.formGroup2.controls) {
@@ -301,8 +297,6 @@ export class LoginComponent implements OnInit {
                     this.isConfirmTFALoading = false;
                     this.isTFAModalVisible = false;
                     this.isVCModalVisible = true;
-                    this.expiryDate = new Date(result.codeExpiryTime);
-                    this.countDownTime = this.expiryDate.getTime();
                     this.createValidateVC();
                 }
             }, (error: any) => {
@@ -314,35 +308,27 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    coundDownFinish() {
-        this.isCoundDownUp = true;
-    }
-
     validateCode() {
-        if(this.isCoundDownUp) {
-           return this.notificationService.createNotificationBasic('info', "OTP Expirty Time", "OTP expiry time count is finished, please re-generate the code.");
-        } else {
-            this.isRunning = true;
-            this.isConfirmVCLoading = true;
-            for (const i in this.formGroup3.controls) {
-                this.formGroup3.controls[i].markAsDirty();
-                this.formGroup3.controls[i].updateValueAndValidity();
-            }
-            if (this.formGroup3.valid) {
-                this._loginService.validateCode(this.otpCode).subscribe((result: any) => {
-                    if (result) {
-                        this.isConfirmVCLoading = false;
-                        this.isRunning = false;
-                        this.validateLogin.emit(this.authenticateResponse);
-                        this.isVCModalVisible = false;
-                    }
-                }, (error: any) => {
-                    error = JSON.parse(error.error);
+        this.isRunning = true;
+        this.isConfirmVCLoading = true;
+        for (const i in this.formGroup3.controls) {
+            this.formGroup3.controls[i].markAsDirty();
+            this.formGroup3.controls[i].updateValueAndValidity();
+        }
+        if (this.formGroup3.valid) {
+            this._loginService.validateCode(this.otpCode).subscribe((result: any) => {
+                if (result) {
                     this.isConfirmVCLoading = false;
                     this.isRunning = false;
-                    this.notificationService.createNotificationBasic('error', "Validate OTP", "System error : " + error.message);
-                });
-            }
+                    this.validateLogin.emit(this.authenticateResponse);
+                    this.isVCModalVisible = false;
+                }
+            }, (error: any) => {
+                error = JSON.parse(error.error);
+                this.isConfirmVCLoading = false;
+                this.isRunning = false;
+                this.notificationService.createNotificationBasic('error', "Validate OTP", "System error : " + error.message);
+            });
         }
     }
 
