@@ -59,11 +59,11 @@ export class OrganizationComponent implements OnInit {
     organizationSearchList: any = [];
     organizationActiveDeActiveList: any = [];
 
-    programTypeList: any = [{ 'longpullna': 'TS', 'value': 'Talent Search' },
-    { 'longpullna': 'EOC', 'Value': 'Educational Opportunity Center' },
-    { 'longpullna': 'UB', 'Value': 'Upward Bound' }, { 'longpullna': 'VUB', 'Value': 'Veterans Upward Bound' },
-    { 'longpullna': 'UBMS', 'Value': 'Upward Bound Math & Science' }, { 'longpullna': 'SSS', 'Value': 'Student Support Services' },
-    { 'longpullna': 'MCN', 'Value': 'Ronald McNair' }];
+    programTypeList: any = [{ 'longpullna': '(TS) - Talent Search', 'value': 'Talent Search' },
+    { 'longpullna': '(EOC) - Educational Opportunity Center', 'Value': 'Educational Opportunity Center' },
+    { 'longpullna': '(UB) - Upward Bound', 'Value': 'Upward Bound' }, { 'longpullna': '(VUB) - Veterans Upward Bound', 'Value': 'Veterans Upward Bound' },
+    { 'longpullna': '(UBMS) - Upward Bound Math & Science', 'Value': 'Upward Bound Math & Science' }, { 'longpullna': '(SSS) - Student Support Services', 'Value': 'Student Support Services' },
+    { 'longpullna': '(MCN) - Ronald McNair', 'Value': 'Ronald McNair' }];
     organizationTypeList: any = [{ 'longpullna': 'Live Customer Data' }, { 'longpullna': 'Customer Demo' }, { 'longpullna': 'Tech Support Demo' }, { 'longpullna': 'Dev Team Demo' }, { 'longpullna': 'Testing Scenario Demo' }];
     organizationTypeFilterList: any = [{ 'longpullna': 'All' }, { 'longpullna': 'Not Entered' }, { 'longpullna': 'Live Customer Data' }, { 'longpullna': 'Customer Demo' }, { 'longpullna': 'Tech Support Demo' }, { 'longpullna': 'Dev Team Demo' }, { 'longpullna': 'Testing Scenario Demo' }];
 

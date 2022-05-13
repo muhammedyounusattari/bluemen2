@@ -362,8 +362,7 @@ export class LoginComponent implements OnInit {
                     this.isFirstTime = result.isFirstTime;
                 } else {
                     this.isLoading = false;
-                    // this.sharedService.sendErrorMessage(result.message);
-                    // this.sharedService.showErrorMessage();
+                    this.isValidUser = true;
                     this.notificationService.createNotificationBasic('error', "Validate Org Code and Email id", "System error : " + result.message);
                     if (result.status === '403') {
                         this.isLoginEnabled = false;
@@ -372,8 +371,7 @@ export class LoginComponent implements OnInit {
             }, (error: any) => {
                 error = error.error;
                 this.isLoading = false;
-                // this.sharedService.sendErrorMessage(error.message);
-                // this.sharedService.showErrorMessage();
+                this.isValidUser = true;
                 this.notificationService.createNotificationBasic('error', "Validate Org Code and Email id", "System error : " + error.message);
                 if (error.status === '403') {
                     this.isLoginEnabled = false;
