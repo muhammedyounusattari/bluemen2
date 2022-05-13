@@ -1,14 +1,14 @@
 <div class="custom-body">
     <div nz-row class="display-flex" [nzSpan]="24">
-      <div nz-col [nzSpan]="8" *ngIf="user.roleName !== 'Super Admin' || this.organizationId">
+      <div nz-col [nzSpan]="8" *ngIf="user.roleName !== 'Super Admin' || (organizationId != null && organizationId != undefined)">
         <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-          <input type="text" nz-input placeholder="Search.." class="search-input" />
+          <input type="text" #searchText (keyup)="applyFilter(searchText.value)" nz-input placeholder="Search.." class="search-input" />
         </nz-input-group>
         <ng-template #suffixIconButton>
-          <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+          <button nz-button nzType="primary" (click)="applyFilter(searchText.value)" nzSearch><i nz-icon nzType="search"></i></button>
         </ng-template>
       </div>
-      <div nz-col [nzSpan]="8" *ngIf="user.roleName === 'Super Admin' && !organizationId">
+      <div nz-col [nzSpan]="8" *ngIf="user.roleName === 'Super Admin' && (organizationId == null || organizationId == undefined)">
         <nz-form-item>
           <nz-form-label class="lable-style">Organization Type</nz-form-label>
           <nz-form-control nzErrorTip="Please Select Organization Type">
@@ -21,7 +21,7 @@
         </nz-form-item>
       </div>
   
-      <div nz-col [nzSpan]="4" nzOffset="12" *ngIf="!organizationId">
+      <div nz-col [nzSpan]="4" nzOffset="12" *ngIf="organizationId == null || organizationId == undefined">
         <nz-form-item class="search-filter-item">
           <nz-form-control>
             <button nz-button nzType="primary" class="search-filter-btn" (click)="addNewData()">
@@ -96,9 +96,9 @@
         </nz-table>
       </div>
     </div>
-  
+    <div class="nz-row"></div>
     <div class="nz-row" [nzSpan]="24">
-      <div nz-col [nzSpan]="8" *ngIf="organizationId">
+      <div nz-col [nzSpan]="8" *ngIf="organizationId != null && organizationId != undefined">
         <nz-form-item class="search-filter-item">
           <nz-form-control>
             <button nz-button nzType="primary" class="search-filter-btn" (click)="addNewData()">

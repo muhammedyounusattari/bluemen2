@@ -155,7 +155,7 @@ export class ChangePasswordComponent implements OnInit {
         if (!this.validatePassword()) {
           // you have to return `{error: true}` to mark it as an error event
           if(control.value == this.changePasswordForm.controls.password.value) {
-            observer.next({ error: true, weak: true, duplicate: true });
+            observer.next({ error: true, weak: false, duplicate: true });
           } else {
             observer.next({ error: true, weak: true, duplicate: false });
           }
@@ -174,7 +174,7 @@ export class ChangePasswordComponent implements OnInit {
       }
       return {};
     };
-  
+
     validateConfirmPassword(): void {
       setTimeout(() => this.changePasswordForm.controls.confPassword.updateValueAndValidity());
     }
@@ -186,6 +186,12 @@ export class ChangePasswordComponent implements OnInit {
       return false;
     }
     let valid = true;
+
+    if(this.password.length == value.length && this.password === value){
+      valid = false;
+      return valid;
+    }
+
     if (value.length >= 12 && value.length <= 50) {
       this.passwordLength = "fa fa-check";
     } else {

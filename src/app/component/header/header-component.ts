@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import {Router} from '@angular/router';
 import { LoginService } from '../../services/login.service';
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +14,7 @@ export class HeaderComponent implements OnInit {
   user : any;
   fiscalYear = '-';
   semester = '-';
-  constructor(private sharedService: SharedService
+  constructor(private notificationService: NotificationUtilities
             , private router: Router
             , private loginService: LoginService) {}
 
@@ -26,15 +27,16 @@ export class HeaderComponent implements OnInit {
     this.user = JSON.parse(this.user);
   }
   logout() {
-    sessionStorage.clear();
-    localStorage.clear();
-    window.location.reload();
     this.loginService.logoutUser().subscribe((result)=>{
       if(result){
         sessionStorage.clear();
         localStorage.clear();
+        this.notificationService.createNotificationBasic('success', "User Logout", 'User loggged out successfully !');
+        this.router.navigate(['/']);
         window.location.reload();
       }
+    }, (error: any) => {
+      this.notificationService.createNotificationBasic('error', "User Logout", 'User loggged out failed!');
     });
 
   }

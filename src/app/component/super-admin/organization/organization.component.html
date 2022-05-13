@@ -178,7 +178,7 @@
                                                                 formControlName="organizationType"
                                                                 nzPlaceHolder="organizationType">
                                                                 <nz-option
-                                                                    *ngFor="let organizationType of organizationTypeList"
+                                                                    *ngFor="let organizationType of organizationTypeFilterList"
                                                                     [nzLabel]="organizationType.longpullna"
                                                                     [nzValue]="organizationType.longpullna">
                                                                 </nz-option>
@@ -239,8 +239,8 @@
                                                         <nz-form-label class="lable-style">City:</nz-form-label>
                                                         <nz-form-control nzErrorTip="Please Select City">
                                                             <nz-select nzShowSearch nzAllowClear formControlName="city"
-                                                                nzPlaceHolder="city">
-                                                                <nz-option *ngFor="let city of cityList"
+                                                                nzPlaceHolder="City">
+                                                                <nz-option *ngFor="let city of cityFilterList"
                                                                     [nzLabel]="city.longpullna"
                                                                     [nzValue]="city.longpullna">
                                                                 </nz-option>
@@ -253,8 +253,8 @@
                                                         <nz-form-label class="lable-style">State:</nz-form-label>
                                                         <nz-form-control nzErrorTip="Please Select State">
                                                             <nz-select nzShowSearch nzAllowClear formControlName="state"
-                                                                nzPlaceHolder="state">
-                                                                <nz-option *ngFor="let state of stateList"
+                                                                nzPlaceHolder="State">
+                                                                <nz-option *ngFor="let state of stateFilterList"
                                                                     [nzLabel]="state.longpullna"
                                                                     [nzValue]="state.longpullna">
                                                                 </nz-option>
@@ -269,7 +269,7 @@
                                                             <nz-select nzShowSearch nzAllowClear
                                                                 formControlName="programType"
                                                                 nzPlaceHolder="Project Type">
-                                                                <nz-option *ngFor="let programType of programTypeList"
+                                                                <nz-option *ngFor="let programType of programTypeFilterList"
                                                                     [nzLabel]="programType.longpullna"
                                                                     [nzValue]="programType.Value">
                                                                 </nz-option>
@@ -330,7 +330,7 @@
                 (click)="updateOrganizationAfterSave()" [nzLoading]="isConfirmOrgnizationLoading">Update</button>
             <button nz-button nzType="primary" *ngIf="!orgId" [nzDisabled]="isDisabledBtn" (click)="addOrganization();"
                 [nzLoading]="isConfirmOrgnizationLoading">Save & Next</button>
-            <button nz-button nzType="primary" *ngIf="orgId" (click)="openUserPopup()">User</button>
+            <button nz-button nzType="primary" *ngIf="orgId != null && orgId != undefined" (click)="openUserPopup()">User</button>
             <!-- <button nz-button nzType="primary">Purge Report</button> -->
         </div>
     </ng-template>

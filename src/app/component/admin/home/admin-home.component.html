@@ -18,53 +18,76 @@
             </div>
             <div class="marg-top2 display-flex col-md-12">
                 <div class="col-md-6">
-                    <a href="javascript:void(0)" [routerLink]="['config-settings']"> CONFIG SETTINGS </a>
+                    <a href="javascript:void(0)"> E-Mail Setup </a>
                 </div>
                 <div class="col-md-6">
-                    Config Settings description
-                </div>
-            </div>
-            <div class="marg-top2 display-flex col-md-12">
-                <div class="col-md-6">
-                    <a href="javascript:void(0)"> E-MAIL SETUP </a>
-                </div>
-                <div class="col-md-6">
-                    Config Settings description
+                    E-Mail Setup Information
                 </div>
             </div>
 
+
             <div class="marg-top2 display-flex col-md-12" *ngIf="user.roleName === 'Super Admin'">
                 <div class="col-md-6">
-                    <a href="javascript:void(0)"  [routerLink]="['organization']"> ORGANIZATIONS </a>
+                    <a href="javascript:void(0)" [routerLink]="['organization']"> Organizations </a>
                 </div>
                 <div class="col-md-6">
                     Organizations Information
                 </div>
             </div>
 
-            <div class="marg-top2 display-flex col-md-12">
+            <div class="marg-top2 display-flex col-md-12" *ngIf="user.roleName === 'Super Admin'">
                 <div class="col-md-6">
-                    <a href="javascript:void(0)"  [routerLink]="['roles']"> ROLES </a>
+                    <a href="javascript:void(0)" [routerLink]="['original-pulldown-lists']"> Original Pulldown Lists
+                    </a>
                 </div>
                 <div class="col-md-6">
-                    ROLES description
+                    Original Pulldown Lists Information
+                </div>
+            </div>
+
+            <div class="marg-top2 display-flex col-md-12" *ngIf="user.roleName === 'Super Admin'">
+                <div class="col-md-6">
+                    <a href="javascript:void(0)" [routerLink]="['pull-type']"> Pull Type
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    Pull Type Information
                 </div>
             </div>
 
             <div class="marg-top2 display-flex col-md-12">
                 <div class="col-md-6">
-                    <a href="javascript:void(0)"  [routerLink]="['system-preferences']"> SYSTEM PREFERENCES </a>
+                    <a href="javascript:void(0)" [routerLink]="['roles']"> Roles </a>
                 </div>
                 <div class="col-md-6">
-                    SYSTEM PREFERENCES description
+                    Roles Description
                 </div>
             </div>
+
             <div class="marg-top2 display-flex col-md-12">
                 <div class="col-md-6">
-                    <a href="javascript:void(0)"  [routerLink]="['user-names-pwd']"> USER NAMES AND PASSWORDS </a>
+                    <a href="javascript:void(0)" [routerLink]="['securityQuestions']"> Security Questions </a>
                 </div>
                 <div class="col-md-6">
-                    USER NAMES AND PASSWORDS description
+                    Security Questions Information
+                </div>
+            </div>
+
+            <div class="marg-top2 display-flex col-md-12">
+                <div class="col-md-6">
+                    <a href="javascript:void(0)" [routerLink]="['system-preferences']"> System Preferences </a>
+                </div>
+                <div class="col-md-6">
+                    System Preferences Information
+                </div>
+            </div>
+
+            <div class="marg-top2 display-flex col-md-12">
+                <div class="col-md-6">
+                    <a href="javascript:void(0)" [routerLink]="['user-names-pwd']"> User Names And Passwords </a>
+                </div>
+                <div class="col-md-6">
+                    User Names And Passwords Information
                 </div>
             </div>
         </div>

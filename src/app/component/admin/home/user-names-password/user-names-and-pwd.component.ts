@@ -40,6 +40,8 @@ export class UserNamesAndPasswordComponent implements OnInit {
     userId = null;
     boltId = 0;
     userList: any;
+    userSearchList: any = [];
+    userActiveDeActiveList: any = [];
 
     @Input() organizationId: any;
     @Input() organizationCode: any;
@@ -56,7 +58,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
     userModalVisible: boolean = false;
     userModalHeader: string = 'User Information';
     isConfirmUserLoading: boolean = false;
-    
+
     constructor(private dialog: MatDialog
         , private formBuilder: FormBuilder
         , private _userManagementService: UserManagementService
@@ -70,15 +72,20 @@ export class UserNamesAndPasswordComponent implements OnInit {
         this.userDataObject = [];
         this.user = sessionStorage.getItem('state');
         this.user = JSON.parse(this.user);
+        if (!this.validationClass.isNullOrUndefined(this.organizationId)) {
+            this.sharedService.setPageTitle('User Information');
+        }
         if (this.user.roleName !== 'Super Admin' || this.organizationId) {
             this.getUserList();
-            if (!this.organizationId) {
-                this.sharedService.setPageTitle('User Information');
-            }
         } else {
+            if (!this.validationClass.isEmpty(window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1)) &&
+                !this.validationClass.isNullOrUndefined(window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1))) {
+                this.selectedOrgId = Number(window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1));
+            } else {
+                this.selectedOrgId = this.organizationId;
+            }
             this.isSuperAdmin = true;
             this.getOrganizationList();
-            this.selectedOrgId = this.organizationId;
         }
         this.createForm();
         this.bindDropDownValues();
@@ -99,13 +106,13 @@ export class UserNamesAndPasswordComponent implements OnInit {
             if (result?.STATE) {
                 this.stateList = result.STATE;
             }
-            if (result?.SITELOCATION) {
-                this.siteLocationList = result.SITELOCATION;
+            if (result['SITE LOCATION']) {
+                this.siteLocationList = result['SITE LOCATION'];
             }
         });
         this._userManagementService.getRoleNamesList().subscribe(result => {
             if (result) {
-                this.roleList = result;
+                this.roleList = result.filter((item: any) => item.name != 'Super Admin');
             }
         });
     }
@@ -202,11 +209,14 @@ export class UserNamesAndPasswordComponent implements OnInit {
         } else {
             this.orgId = this.organizationId ? this.organizationId : this.user.orgId;
         }
+        this.selectedOrgId = this.orgId;
         this._userManagementService.getUserList(this.orgId).subscribe(result => {
             this.hideLoader();
             if (result) {
                 // this.userList = result.users.filter((item: any) => item.active);
-                this.userList = result;
+                this.userList = result.users.filter((item: any) => !item.deleted);
+                this.userSearchList = result.users.filter((item: any) => !item.deleted);
+                this.userActiveDeActiveList = result.users;
                 this.selectedRowIndex = null;
             }
         });
@@ -231,13 +241,17 @@ export class UserNamesAndPasswordComponent implements OnInit {
             const result = this.organizationsList.filter((item: any) => item.orgId === Number(this.selectedOrgId));
             if (result && result[0].users) {
                 // this.userList = result[0].users.filter((item: any) => item.active);
-                this.userList = result[0].users;
+                this.userList = result[0].users.filter((item: any) => !item.deleted);
+                this.userSearchList = result[0].users.filter((item: any) => !item.deleted);
+                this.userActiveDeActiveList = result[0].users;
             }
             this.selectedRowIndex = null;
             this.orgId = this.selectedOrgId;
             this.organizationCode = result[0].orgCode;
         } else {
             this.userList = '';
+            this.userSearchList = '';
+            this.userActiveDeActiveList = '';
         }
     }
 
@@ -264,6 +278,11 @@ export class UserNamesAndPasswordComponent implements OnInit {
     }
 
     createUser() {
+        if (this.user.orgSiteLocation && (this.validationClass.isEmpty(this.userDataObject.siteLocation)
+            || this.validationClass.isNullOrUndefined(this.userDataObject.siteLocation))) {
+            this.notificationService.createNotificationBasic('info', "User Creation", 'Please select site location !');
+            return;
+        }
         if (this.formGroup.valid) {
             this.isConfirmUserLoading = true;
             const request = this.getRequestPayload();
@@ -326,6 +345,7 @@ export class UserNamesAndPasswordComponent implements OnInit {
         if (data) {
             this.showLoader();
             data.active = false;
+            data.deleted = true;
             this._userManagementService.updateUser(data).subscribe(res => {
                 if (res) {
                     this.hideLoader();
@@ -354,7 +374,8 @@ export class UserNamesAndPasswordComponent implements OnInit {
                 }
             }, (error: any) => {
                 if (error) {
-                    const errorResponse = JSON.parse(error);
+                    this.isConfirmUserLoading = false;
+                    const errorResponse = JSON.parse(error.error);
                     this.notificationService.createNotificationBasic('error', "User Updation", "System error : " + errorResponse.message);
                 }
             });
@@ -411,8 +432,8 @@ export class UserNamesAndPasswordComponent implements OnInit {
                 this.isLoading = false;
                 this.notificationService.createNotificationBasic('success', "Reset Password", result.message);
             }
-        }, (error:any) => {
-            this.notificationService.createNotificationBasic('error', "Reset Password","System error: " + error);
+        }, (error: any) => {
+            this.notificationService.createNotificationBasic('error', "Reset Password", "System error: " + error);
         });
     }
 
@@ -505,4 +526,24 @@ export class UserNamesAndPasswordComponent implements OnInit {
         //doc.save('college.pdf');  
     }
     //Print Function End
-}  
+
+    /**
+     * @method applyFilter
+     * @description apply the content search from list
+     */
+    applyFilter(filterValue: any) {
+        this.isLoading = true;
+        const targetValue: any[] = [];
+        this.userSearchList.forEach((value: any) => {
+            let keys = ["orgCode", "email", "firstName", "lastName", "roleName", "siteLocation", "active"];
+            for (let i = 0; i < keys.length; i++) {
+                if (value[keys[i]] && value[keys[i]].toString().toLocaleLowerCase().includes(filterValue)) {
+                    targetValue.push(value);
+                    break;
+                }
+            }
+        });
+        this.userList = targetValue;
+        this.isLoading = false;
+    }
+}

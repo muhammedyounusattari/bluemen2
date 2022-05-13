@@ -957,6 +957,7 @@ nz-select-item.ant-select-selection-item .ant-select-arrow {
     /* background: #EFF4F9;
     padding: 3rem 2rem 0 2rem; */
     padding-bottom: 0px;
+    padding-top: 0px;
 }
 
 i.anticon.ant-modal-close-icon.anticon-close { 
@@ -1030,4 +1031,8 @@ a.ant-btn.ant-btn-link {
 
 .ant-collapse > .ant-collapse-item > .ant-collapse-header {
     color: white !important;
+}
+
+.ant-collapse-content > .ant-collapse-content-box {
+    padding: 0px;
 }

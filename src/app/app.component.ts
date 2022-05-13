@@ -36,7 +36,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
     this.isResetPassword = false;
     this.subscription = this.sharedService.getErrorMessage().subscribe(message => {
       this.errorMessage = message.text;
-    });
+    }); 
     this.subscription = this.sharedService.getSuccessMessage().subscribe(message => {
       this.successMessage = message.text;
     });

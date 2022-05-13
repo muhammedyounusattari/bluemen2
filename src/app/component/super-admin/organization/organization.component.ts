@@ -37,12 +37,14 @@ export class OrganizationComponent implements OnInit {
 
     siteLocationList: any = [];
     cityList: any = [];
+    cityFilterList: any = [];
+    stateFilterList: any = [];
     stateList: any = [];
     //organizationTypeList: any = [];
-    activeList: any = [{ 'longpullna': 'Yes' }, { 'longpullna': 'No' }];
-    purgeList: any = [{ 'longpullna': 'Yes' }, { 'longpullna': 'No' }];
+    activeList: any = [{ 'longpullna': 'All' }, { 'longpullna': 'Yes' }, { 'longpullna': 'No' }];
+    purgeList: any = [{ 'longpullna': 'All' }, { 'longpullna': 'Yes' }, { 'longpullna': 'No' }];
     //programTypeList: any = [];
-    deletedList: any = [{ 'longpullna': 'Yes' }, { 'longpullna': 'No' }];
+    deletedList: any = [{ 'longpullna': 'All' }, { 'longpullna': 'Yes' }, { 'longpullna': 'No' }];
     panels = [
         {
             active: false,
@@ -63,6 +65,13 @@ export class OrganizationComponent implements OnInit {
     { 'longpullna': 'UBMS', 'Value': 'Upward Bound Math & Science' }, { 'longpullna': 'SSS', 'Value': 'Student Support Services' },
     { 'longpullna': 'MCN', 'Value': 'Ronald McNair' }];
     organizationTypeList: any = [{ 'longpullna': 'Live Customer Data' }, { 'longpullna': 'Customer Demo' }, { 'longpullna': 'Tech Support Demo' }, { 'longpullna': 'Dev Team Demo' }, { 'longpullna': 'Testing Scenario Demo' }];
+    organizationTypeFilterList: any = [{ 'longpullna': 'All' }, { 'longpullna': 'Not Entered' }, { 'longpullna': 'Live Customer Data' }, { 'longpullna': 'Customer Demo' }, { 'longpullna': 'Tech Support Demo' }, { 'longpullna': 'Dev Team Demo' }, { 'longpullna': 'Testing Scenario Demo' }];
+
+    programTypeFilterList: any = [{ 'longpullna': 'All', 'Value': 'All' }, { 'longpullna': 'TS', 'value': 'Talent Search' },
+    { 'longpullna': 'EOC', 'Value': 'Educational Opportunity Center' },
+    { 'longpullna': 'UB', 'Value': 'Upward Bound' }, { 'longpullna': 'VUB', 'Value': 'Veterans Upward Bound' },
+    { 'longpullna': 'UBMS', 'Value': 'Upward Bound Math & Science' }, { 'longpullna': 'SSS', 'Value': 'Student Support Services' },
+    { 'longpullna': 'MCN', 'Value': 'Ronald McNair' }];
 
     userModalVisible: boolean = false;
     userModalHeader = 'User Information';
@@ -94,9 +103,19 @@ export class OrganizationComponent implements OnInit {
         this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
             if (result?.CITY) {
                 this.cityList = result?.CITY;
+                const data = { 'longpullna': 'All' };
+                this.cityFilterList.push(data);
+                result?.CITY.forEach((element: any) => {
+                    this.cityFilterList.push(element);
+                });
             }
             if (result?.STATE) {
                 this.stateList = result?.STATE;
+                const data = { 'longpullna': 'All' };
+                this.stateFilterList.push(data);
+                result?.STATE.forEach((element: any) => {
+                    this.stateFilterList.push(element);
+                });
             }
             // if (result?.ORGANIZATIONTYPE) {
             //     this.organizationTypeList = result?.ORGANIZATIONTYPE;
@@ -177,12 +196,17 @@ export class OrganizationComponent implements OnInit {
             this.hideLoader();
             if (result) {
                 this.organizationActiveDeActiveList = result;
-                result = result.filter((item: any) => !item.deleted);
                 this.organizationList = result;
                 this.organizationSearchList = result;
                 this.selectedRowIndex = null;
+                this.setDefaultSelectionForFilterDDL();
             }
         });
+    }
+
+    setDefaultSelectionForFilterDDL() {
+        this.resetAllFilter();
+        this.searchOragization();
     }
 
     /**
@@ -191,6 +215,7 @@ export class OrganizationComponent implements OnInit {
      */
     applyFilter(filterValue: any) {
         const targetValue: any[] = [];
+        this.organizationSearchList = this.organizationList;
         this.organizationSearchList.forEach((value: any) => {
             let keys = ["orgId", "orgName", "orgCode", "orgTwoFactor", "orgDeviceAuth", "orgExpiryTime", "orgActive", "orgDaysToExpire", "orgRemindOne", "orgRemindTwo", "orgPurge", "deleted"];
             for (let i = 0; i < keys.length; i++) {
@@ -522,7 +547,8 @@ export class OrganizationComponent implements OnInit {
                 } else {
                     const data = this.organizationActiveDeActiveList.filter((item: any) => item && item.orgCode.trim().toLowerCase() === checkOrgCode.trim().toLowerCase());
                     if (data && data.length > 0) {
-                        this.notificationService.createNotificationBasic('info', "info", 'Oragnization code is already exist!');
+                        const message = 'Organization code "' + data[0].orgCode + '" is already in the system. Please provide different organization code.'
+                        this.notificationService.createNotificationBasic('info', "info", message);
                         this.formGroup.get('orgCode')?.setValue('');
                     }
                 }
@@ -554,15 +580,16 @@ export class OrganizationComponent implements OnInit {
 
 
     resetAllFilter() {
+        this.searchFormGroup.get('organizationType')?.setValue('All');
         this.searchFormGroup.get('name')?.setValue('');
         this.searchFormGroup.get('code')?.setValue('');
-        this.searchFormGroup.get('active')?.setValue('');
-        this.searchFormGroup.get('purge')?.setValue('');
-        this.searchFormGroup.get('city')?.setValue('');
-        this.searchFormGroup.get('state')?.setValue('');
-        this.searchFormGroup.get('programType')?.setValue('');
-        this.searchFormGroup.get('deleted')?.setValue('');
-        this.getOrgList();
+        this.searchFormGroup.get('active')?.setValue('Yes');
+        this.searchFormGroup.get('purge')?.setValue('No');
+        this.searchFormGroup.get('city')?.setValue('All');
+        this.searchFormGroup.get('state')?.setValue('All');
+        this.searchFormGroup.get('programType')?.setValue('All');
+        this.searchFormGroup.get('deleted')?.setValue('No');
+        this.organizationList = this.organizationActiveDeActiveList;
     }
     /**
     * @method searchOragization
@@ -584,8 +611,14 @@ export class OrganizationComponent implements OnInit {
             if (organizationType || name || code || active || purge || city || state || programType || deleted) {
                 list1 = list.filter((item: any) => {
                     let query: any = 'true';
-                    if (organizationType) {
+                    if (organizationType && organizationType != 'All' && organizationType != 'Not Entered') {
                         query = (query && organizationType && item.orgOrganizationType.trim().toLowerCase() == organizationType.trim().toLowerCase());
+                    } else {
+                        if (organizationType == 'All') {
+                            query = true;
+                        } else if (organizationType == 'Not Entered') {
+                            query = (query && organizationType && (item.orgOrganizationType.trim() == '' || item.orgOrganizationType == null || item.orgOrganizationType == undefined));
+                        }
                     }
                     if (name) {
                         query = (query && name && item.orgName.trim().toLowerCase().includes(name.trim().toLowerCase()));
@@ -609,15 +642,24 @@ export class OrganizationComponent implements OnInit {
                         } else {
                             purgeVal = false;
                         }
+                        if (!item.orgPurge) {
+                            item.orgPurge = false;
+                        }
                         query = (query && purge && item.orgPurge == purgeVal);
                     }
-                    if (city) {
+                    if (city === 'All') {
+                        query = query;
+                    } else {
                         query = (query && city && item.orgCity.trim().toLowerCase() == city.trim().toLowerCase());
                     }
-                    if (state) {
+                    if (state === 'All') {
+                        query = query;
+                    } else {
                         query = (query && state && item.orgState.trim().toLowerCase() == state.trim().toLowerCase());
                     }
-                    if (programType) {
+                    if (programType === 'All') {
+                        query = query;
+                    } else {
                         query = (query && programType && item.orgProgramType.trim().toLowerCase() == programType.trim().toLowerCase());
                     }
                     if (deleted) {
@@ -626,6 +668,9 @@ export class OrganizationComponent implements OnInit {
                             deletedVal = true;
                         } else {
                             deletedVal = false;
+                        }
+                        if (!item.deleted) {
+                            item.deleted = false;
                         }
                         query = (query && deleted && item.deleted == deletedVal);
                     }
@@ -650,49 +695,14 @@ export class OrganizationComponent implements OnInit {
      */
     print() {
         var doc = new jsPDF('l', 'mm', 'a4');
-        const head = [['orgId', 'Organization Name', 'Code', 'Two Factor', 'Device Auth', 'Expiry Time', 'Active', 'Days To Expire'
-            , 'Remind One', 'Remind Two', 'Purge', 'Deleted']]
+        const head = [['Orgnization Id', 'Organization Name', 'Organization Code', 'Project Type']];
         let data: any = [];
         this.organizationList.forEach((e: any) => {
             var tempObj = [];
             tempObj.push(e.orgId);
             tempObj.push(e.orgName);
             tempObj.push(e.orgCode);
-            tempObj.push(e.orgExpiryTime);
-            tempObj.push(e.orgDaysToExpire);
-            tempObj.push(e.orgRemindOne);
-            tempObj.push(e.orgRemindTwo);
-
-            if (e.orgTwoFactor == true) {
-                tempObj.push("Yes");
-            } else {
-                tempObj.push("No");
-            }
-
-            if (e.orgDeviceAuth == true) {
-                tempObj.push("Yes");
-            } else {
-                tempObj.push("No");
-            }
-
-            if (e.deleted == true) {
-                tempObj.push("Yes");
-            } else {
-                tempObj.push("No");
-            }
-
-            if (e.orgPurge == true) {
-                tempObj.push("Yes");
-            } else {
-                tempObj.push("No");
-            }
-
-            if (e.orgActive == true) {
-                tempObj.push("Yes");
-            } else {
-                tempObj.push("No");
-            }
-
+            tempObj.push(e.orgProgramType);
             data.push(tempObj);
         });
         autoTable(doc, {
@@ -723,7 +733,7 @@ export class OrganizationComponent implements OnInit {
                 doc.setFontSize(20);
                 doc.setTextColor(40);
                 //doc.text("Compansol TRIO College Listing", data.settings.margin.left, 10);
-                doc.text("Compansol TRIO Organization Listing", 140, 15, {
+                doc.text("Compansol Blumen Online for TRiO (B.O.T.) Organization Information", 140, 15, {
                     align: 'center'
                 });
 
