@@ -814,7 +814,7 @@ export class StaffMemberComponent {
       staffCustomFieldThree: this.formGroup?.get('customField3')?.value,
       staffCustomFieldFour: this.formGroup?.get('customField4')?.value,
       staffNotes: this.formGroup?.get('notes')?.value,
-      staffPicture: this.formGroup?.get('picture')?.value,
+      staffPicture: this.imageSrc,
       staffBolt: this.formGroup?.get('staffBolt')?.value,
       staffPhoneNumber: this.formGroup?.get('staffPhoneNumber')?.value,
       staff: this.formGroup?.get('staff')?.value,

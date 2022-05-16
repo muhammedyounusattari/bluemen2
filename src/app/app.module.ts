@@ -39,6 +39,7 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { HttpClientModule } from '@angular/common/http';
 import { DemoNgZorroAntdModule } from 'src/app/ng-zorro-antd.module';
+import { CookieService } from 'ngx-cookie-service';
 
 registerLocaleData(en);
 
@@ -80,7 +81,7 @@ registerLocaleData(en);
     DemoNgZorroAntdModule
   ],
   entryComponents: [ConfirmationComponent],
-  providers: [ToastrService, PendingChangesGuard, { provide: NZ_I18N, useValue: en_US }],
+  providers: [CookieService, ToastrService, PendingChangesGuard, { provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent],
   schemas: [ NO_ERRORS_SCHEMA ]
 })

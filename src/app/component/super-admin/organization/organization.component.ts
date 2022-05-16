@@ -624,7 +624,7 @@ export class OrganizationComponent implements OnInit {
                         query = (query && name && item.orgName.trim().toLowerCase().includes(name.trim().toLowerCase()));
                     }
                     if (code) {
-                        query = (query && code && item.orgCode.trim().toLowerCase() == code.trim().toLowerCase());
+                        query = (query && code && item.orgCode.trim().toLowerCase().includes(code.trim().toLowerCase()));
                     }
                     if (active) {
                         let activeVal = false;

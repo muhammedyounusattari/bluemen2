@@ -8,6 +8,7 @@ import { DialogBoxComponent } from 'src/app/shared/components/dialog-box/dialog-
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
     selector: 'app-login',
@@ -63,16 +64,23 @@ export class LoginComponent implements OnInit {
     countDownTime : any;
     expiryDate: Date = new Date();
     isCoundDownUp: boolean = false;
+    isRememberMyDevice: any;
 
     constructor(private _loginService: LoginService
         , private formBuilder: FormBuilder
-        , private notificationService: NotificationUtilities) { }
+        , private notificationService: NotificationUtilities
+        , private cookieService: CookieService) { }
 
     ngOnInit(): void {
         this.isValidUser = false;
         this.hide = true;
         this.createForm();
         this.createForgotPasswordForm();
+        const cookieExists: boolean = this.cookieService.check('RememberMyDevice');
+        if(cookieExists) {
+          const value = this.cookieService.get('RememberMyDevice');
+          this.isRememberMyDevice = value;
+        }
     }
 
     createForm() {
@@ -131,7 +139,7 @@ export class LoginComponent implements OnInit {
                         sessionStorage.setItem('state', JSON.stringify(result));
                         sessionStorage.setItem('orgId', result.orgId);
                         this.authenticateResponse = result;
-                        if (result.twoFactorEnabled) {
+                        if (result.twoFactorEnabled && this.isRememberMyDevice != 'true') {
                             this.isTwoFactorEnabled = result.twoFactorEnabled;
                             this.createTFAFB();
                             this.tfaValue = '1';
@@ -281,7 +289,8 @@ export class LoginComponent implements OnInit {
     createValidateVC() {
         this.formGroup3 = this.formBuilder.group({
             formLayout: ['horizontal'],
-            otpCode: [null, Validators.required]
+            otpCode: [null, Validators.required],
+            rememberDevice: [false]
         });
     }
 
@@ -333,6 +342,7 @@ export class LoginComponent implements OnInit {
                     if (result) {
                         this.isConfirmVCLoading = false;
                         this.isRunning = false;
+                        this.cookieService.set('RememberMyDevice', this.formGroup3?.get('rememberDevice')?.value);
                         this.validateLogin.emit(this.authenticateResponse);
                         this.isVCModalVisible = false;
                     }
