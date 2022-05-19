@@ -149,8 +149,9 @@ export class LabSettingPreferencesComponent implements OnInit {
   }
 
   handleCancel(): void {
-    this.clearLabSettingFormValue();
-    this.isDisabled = false;
+    //this.clearLabSettingFormValue();
+    window.location.assign('');
+    //this.isDisabled = false;
   }
 
   clearLabSettingFormValue() {
@@ -213,6 +214,7 @@ export class LabSettingPreferencesComponent implements OnInit {
       const ids = this.message.loading('Adding Lab Settings Data...', { nzDuration: 0 }).messageId;
       this._labSettingsPreferencesService.postLabSettingsPreferences(requestObj).subscribe((res: any) => {
         if (res) {
+          window.location.assign('');
           this.notificationService.createNotificationBasic('success', "Lab Settings", 'Lab Settings Data Added Successfully!');
           //this.clearLabSettingFormValue();
           this.message.remove(ids);

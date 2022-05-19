@@ -218,11 +218,11 @@ export class StandingComponent implements OnInit {
       const requestObj = {
         "id": frmValue.id,
         "gradingId": this.addMode ? frmValue.gradingId : this.selectedRow.gradingId,
-        "gradingName": frmValue.gradingName.trim(),
-        "gradingGroupName": frmValue.gradingGroupName[0].trim(),
-        "gradingParticipantStatus": frmValue.gradingParticipantStatus[0].trim(),
-        "gradingYearEnbStatus": frmValue.gradingYearEnbStatus[0].trim(),
-        "gradingFiscalYear": frmValue.gradingFiscalYear[0].trim(),
+        "gradingName": frmValue.gradingName,
+        "gradingGroupName": frmValue.gradingGroupName[0],
+        "gradingParticipantStatus": frmValue.gradingParticipantStatus[0],
+        "gradingYearEnbStatus": frmValue.gradingYearEnbStatus[0],
+        "gradingFiscalYear": frmValue.gradingFiscalYear[0],
       };
       if (this.addMode) {
         const ids = this.message.loading('Adding Grade/Standing List Data...', { nzDuration: 0 }).messageId;

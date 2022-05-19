@@ -182,9 +182,9 @@ export class GradeComponent implements OnInit {
       const requestObj = {
         "id": frmValue.id,
         "gradeGroupId": this.addMode ? frmValue.gradeGroupId : this.selectedRow.gradeGroupId,
-        "gradeGroupName": frmValue.gradeGroupName.trim(),
-        "gradeGroupGradeType": frmValue.gradeGroupGradeType[0].trim(),
-        "gradeGroupAprColumn": frmValue.gradeGroupGradeType[0].trim()
+        "gradeGroupName": frmValue.gradeGroupName,
+        "gradeGroupGradeType": frmValue.gradeGroupGradeType[0],
+        "gradeGroupAprColumn": frmValue.gradeGroupGradeType[0]
       };
       if (this.addMode) {
         const ids = this.message.loading('Adding Grade/Standing List Data...', { nzDuration: 0 }).messageId;
