@@ -1,7 +1,7 @@
 <div nz-row>
     <div nz-col [nzSpan]="11">
         <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-            <input type="text" nz-input placeholder="Search.." class="search-input" />
+            <input type="text" #searchText nz-input placeholder="Search.." class="search-input" (keyup)="applyFilter(searchText.value)"/>
         </nz-input-group>
         <ng-template #suffixIconButton>
             <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>

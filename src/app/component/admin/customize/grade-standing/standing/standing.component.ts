@@ -28,6 +28,7 @@ export class StandingComponent implements OnInit {
   public participantList: any = [];
   public yearEndFYList: any = [];
   public ddlGroupList: any = [];
+  public gradeStandingListSearchData: any = [];
   public existingStandingData: any = {
     "id": null,
     "gradingId": null,
@@ -110,6 +111,7 @@ export class StandingComponent implements OnInit {
         this.standingData = result;
         this.standingDataList = result;
         this.gradeStandingListData = result;
+        this.gradeStandingListSearchData= result;
         this.dataLoading = false;
       }
     }, (error: any) => {
@@ -240,6 +242,7 @@ export class StandingComponent implements OnInit {
                     this.standingData = result;
                     this.standingDataList = result;
                     this.gradeStandingListData = result;
+                    this.gradeStandingListSearchData= result;
                     this.notificationService.createNotificationBasic('success', "Grade/Standing List", 'Grade/Standing List Data Added Successfully!');
                     this.clearStandingFormValue();
                     this.message.remove(ids);
@@ -292,6 +295,7 @@ export class StandingComponent implements OnInit {
           this.standingData = result;
           this.standingDataList = result;
           this.gradeStandingListData = result;
+          this.gradeStandingListSearchData= result;
           this.notificationService.createNotificationBasic('success', "Grade/Standing List", 'Grade/Standing List Data Updated Successfully!');
           this.clearStandingFormValue();
           this.message.remove(ids);
@@ -329,6 +333,7 @@ export class StandingComponent implements OnInit {
           this.standingData = result;
           this.standingDataList = result;
           this.gradeStandingListData = result;
+          this.gradeStandingListSearchData= result;
           this.dataLoading = false;
           this.selectedRow = null;
           this.message.remove(ids);
@@ -626,6 +631,25 @@ export class StandingComponent implements OnInit {
     //doc.save('college.pdf');  
   }
   //Print Function End
+
+   /**
+   * @method applyFilter
+   * @description search the text from list
+   */
+    applyFilter(search: any) {
+      const targetValue: any[] = [];
+      this.gradeStandingListSearchData.forEach((value: any) => {
+          //let keys = Object.keys(value);
+          let keys = ['id', 'gradingName', 'gradingGroupName', 'gradingFiscalYear'];
+          for (let i = 0; i < keys.length; i++) {
+              if (value[keys[i]] && value[keys[i]].toString().toLocaleLowerCase().includes(search)) {
+                  targetValue.push(value);
+                  break;
+              }
+          }
+      });
+      this.standingData = targetValue;
+  }
 
 }
 

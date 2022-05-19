@@ -21,6 +21,7 @@ export class GradeComponent implements OnInit {
   public dataLoading: boolean = false;
   public gradeGroupListData: any = [];
   public gradeGroupGradeTypeList: any = [];
+  public gradeGroupListSearchData: any = [];
   public gradeForm!: FormGroup;
   public gradeModalVisible: boolean = false;
   public gradeModalHeader: string = 'Customize Grade/Standing Group';
@@ -90,6 +91,7 @@ export class GradeComponent implements OnInit {
         this.gradeDataList = result;
         this.dataLoading = false;
         this.gradeGroupListData = result;
+        this.gradeGroupListSearchData = result;
       }
 
     }, (error: any) => {
@@ -202,6 +204,7 @@ export class GradeComponent implements OnInit {
                     this.gradeData = result;
                     this.gradeDataList = result;
                     this.gradeGroupListData = result;
+                    this.gradeGroupListSearchData = result;
                     this.notificationService.createNotificationBasic('success', "Grade/Standing List", 'Grade/Standing List Data Added Successfully!');
                     this.clearGradeFormValue();
                     this.message.remove(ids);
@@ -265,6 +268,7 @@ export class GradeComponent implements OnInit {
           this.gradeData = result;
           this.gradeDataList = result;
           this.gradeGroupListData = result;
+          this.gradeGroupListSearchData = result;
           this.notificationService.createNotificationBasic('success', "Grade/Standing List", 'Grade/Standing List Data Updated Successfully!');
           this.clearGradeFormValue();
           this.message.remove(ids);
@@ -293,6 +297,7 @@ export class GradeComponent implements OnInit {
           this.gradeDataList = result;
           this.dataLoading = false;
           this.gradeGroupListData = result;
+          this.gradeGroupListSearchData = result;
           this.message.remove(ids);
           this.selectedRow = null;
           this.notificationService.createNotificationBasic('success', "Grade/Standing List", 'Deleted successfully!');
@@ -583,6 +588,23 @@ export class GradeComponent implements OnInit {
   }
   //Print Function End
 
-
+  /**
+    * @method applyFilter
+    * @description search the text from list
+    */
+   applyFilter(search: any) {
+    const targetValue: any[] = [];
+   this.gradeGroupListSearchData.forEach((value: any) => {
+     //let keys = Object.keys(value);
+     let keys = ["id","gradeGroupName","gradeGroupGradeType"];
+     for (let i = 0; i < keys.length; i++) {
+       if (value[keys[i]] && value[keys[i]].toString().toLocaleLowerCase().includes(search)) {
+         targetValue.push(value);
+         break;
+       }
+     }
+   });
+   this.gradeData = targetValue;
+}
 
 }
