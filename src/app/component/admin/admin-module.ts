@@ -77,6 +77,7 @@ import { LabSettingPreferencesComponent } from './customize/lab-setting-preferen
 import { OriginalPulldownListsComponent } from './home/original-pulldown-lists/original-pulldown-lists.component';
 import { PulldownListsComponent } from './customize/pulldown-lists/pulldown-lists.component';
 import { OrgadminPulldownListsComponent } from './customize/orgadmin-pulldown-lists/orgadmin-pulldown-lists.component';
+import { CollegeSchoolListComponent } from './customize/college-school-list/college-school-list.component';
 
 const maskConfigFunction: () => Partial<IConfig> = () => {
   return {
@@ -135,7 +136,8 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
     LabSettingPreferencesComponent,
     OriginalPulldownListsComponent,
     PulldownListsComponent,
-    OrgadminPulldownListsComponent
+    OrgadminPulldownListsComponent,
+    CollegeSchoolListComponent
   ],
   imports: [
     AdminRoutingModule,

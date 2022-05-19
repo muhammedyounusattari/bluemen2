@@ -36,6 +36,7 @@ import { LabSettingPreferencesComponent } from './customize/lab-setting-preferen
 import { OriginalPulldownListsComponent } from './home/original-pulldown-lists/original-pulldown-lists.component';
 import { PulldownListsComponent } from './customize/pulldown-lists/pulldown-lists.component';
 import { OrgadminPulldownListsComponent } from './customize/orgadmin-pulldown-lists/orgadmin-pulldown-lists.component';
+import { CollegeSchoolListComponent } from './customize/college-school-list/college-school-list.component';
 const routes: Routes = [
   {
     path: 'admin/customize/pulldown-list',
@@ -184,6 +185,27 @@ const routes: Routes = [
         },
         {
           label: 'School List',
+          url: ''
+        }
+      ]
+    }
+  },
+  {
+    path: 'admin/customize/college-school-list',
+    component: CollegeSchoolListComponent,
+    data: {
+      title: 'College School List',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'College School List',
+          url: 'admin/customize/college-school-list'
+        },
+        {
+          label: 'College School List',
           url: ''
         }
       ]

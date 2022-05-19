@@ -18,29 +18,8 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 
 export class SchoolListComponent implements OnInit {
 
-    public schoolDataList: any[] = [];
-    public schoolNamePopupVisiblity:boolean = false;
-    public schoolNameMovePopupVisiblity:boolean = false;
-    public schoolNamePopupTitle: string = 'School Name';
-    public schoolNameMovePopupTitle: string = 'School Name';
-    public schoolNameMergePopupTitle:string = 'School Name';
-    public schoolNameMergePopupVisiblity:boolean = false;
-    schoolDataSearchList: any = [];
-    currentValId: any;
-    @ViewChild('schoolNamePopup') schoolNamePopupRef: TemplateRef<any>;
-    schoolNamePopupLoading = false;
-    schoolNameMovePopupLoading = false;
-    schoolNameMergePopupLoading = false;
-    modalConfigSM = {
-        backdrop: true,
-        ignoreBackdropClick: true,
-        class: 'modal-lg'
-    }
-    selectedRow: any = '';
-    isDisabled: boolean = false;
-    isEdit: boolean = false;
     requestData: any = {
-        id: '',
+        collegeSchoolId: '',
         orgName: '',
         orgType: '',
         name: '',
@@ -63,57 +42,95 @@ export class SchoolListComponent implements OnInit {
         ncesId: '',
         inPullDown: false
     };
-    myElement: any = null;
+    requestMoveMergeData: any = {
+        collegeSchoolId: '',
+        orgName: '',
+        orgType: '',
+        name: '',
+        codes: '',
+        address: '',
+        city: '',
+        country: '',
+        email: '',
+        fax: '',
+        notes: '',
+        phone1: '',
+        phone2: '',
+        phone3: '',
+        states: '',
+        title: '',
+        website: '',
+        zipcode: '',
+        fafsaId: '',
+        fiscalYear: '',
+        ncesId: null,
+        inPullDown: false
+    };
+
+    schoolDataList: any = [];
+    schoolDataSearchList: any = [];
+    schoolDataMergeDropDownList: any = [];
+    isDisabled: boolean = false;
+    isEdit: boolean = false;
+    selectedRow: any = '';
     selectedRowIndex: any;
     formGroup: FormGroup;
-    moveFormGroup: FormGroup;
-    mergeFormGroup: FormGroup;
     isLoading: boolean = true;
     emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
     countryList: any = [];
     cityList: any = [];
     stateList: any = [];
-
     validationClass: ValidationClass = new ValidationClass();
-    constructor(
-        private router: Router
-        , private modal: NzModalService
-        , private _collegeAndSchoolService: CollegeAndSchoolService
+
+    public schoolModalVisible: boolean = false;
+    public schoolModalHeader: string = 'School List';
+    public isConfirmSchoolLoading: boolean = false;
+    currentValId: any;
+    currentMergeValId: any;
+    selectedCollegeSchoolId: any;
+    selectedCollegeSchoolName: any;
+    message: any;
+
+    public moveModalVisible: boolean = false;
+    public ismoveItemLoading: boolean = false;
+    moveItemForm: FormGroup;
+    mergeFormGroup: FormGroup;
+    public mergeModalVisible: boolean = false;
+    public ismergeItemLoading: boolean = false;
+    selectedCollegeSchoolMergeName: any;
+    selectedCollegeSchoolMergeId: any;
+
+    constructor(private _collegeAndSchoolService: CollegeAndSchoolService
         , private _pullDownListService: PullDownListService
         , private sharedService: SharedService
         , private formBuilder: FormBuilder
-        , private notificationService: NotificationUtilities) { }
+        , private notificationService: NotificationUtilities
+        , private modal: NzModalService) { }
 
     ngOnInit() {
         this.sharedService.setPageTitle('College/School List');
-        this.createForm();
         this.bindDropDownValues();
-        this.navigateToComponent('school-list');
+        this.createForm();
+        this.createMoveForm();
+        this.createMergeForm();
+        this.getSchoolList();
+    }
+
+    /**
+     * @method getSchoolList
+     * @description get the school list
+     */
+    getSchoolList() {
+        this.showLoader();
         this._collegeAndSchoolService.getSchoolNames('').subscribe(result => {
-            this.isLoading = false;
             this.hideLoader();
-            let domElement = window.document.getElementById('SCHOOL_LIST');
-            if (domElement) {
-                domElement.style.borderBottom = "2px solid #1672B7";
-            }
             if (result) {
                 this.selectedRowIndex = null;
                 this.schoolDataList = result;
                 this.schoolDataSearchList = result;
+                this.schoolDataMergeDropDownList = result;
             }
         });
-    }
-
-    /**
-    * @method navigateToComponent
-    * @description navigate the college and school list companant
-    */
-    navigateToComponent(componentName: string) {
-        if (componentName === 'college-list') {
-            this.router.navigate(['admin/customize/college-list']);
-        } else if (componentName === 'school-list') {
-            this.router.navigate(['admin/customize/school-list']);
-        }
     }
 
     /**
@@ -123,6 +140,7 @@ export class SchoolListComponent implements OnInit {
     applyFilter(search: any) {
         const targetValue: any[] = [];
         this.schoolDataSearchList.forEach((value: any) => {
+            //let keys = Object.keys(value);
             let keys = ["name", "inPullDown", "ncesId", "country", "phone1", "phone2", "phone3", "fax"];
             for (let i = 0; i < keys.length; i++) {
                 if (value[keys[i]] && value[keys[i]].toString().toLocaleLowerCase().includes(search)) {
@@ -160,12 +178,6 @@ export class SchoolListComponent implements OnInit {
             'email': ['', [Validators.pattern(this.emailPattern)]],
             'notes': ['']
         });
-        this.moveFormGroup = this.formBuilder.group({
-            'collegeSchoolName': ['', Validators.required]
-        });
-        this.mergeFormGroup = this.formBuilder.group({
-            'collegeSchoolName': ['', Validators.required]
-        });
     }
 
     /**
@@ -197,10 +209,26 @@ export class SchoolListComponent implements OnInit {
             this.formGroup.get('website')?.setValue(this.selectedRow.website);
             this.formGroup.get('email')?.setValue(this.selectedRow.email);
             this.formGroup.get('notes')?.setValue(this.selectedRow.notes);
-            this.schoolNamePopupVisiblity = true;
+            this.openModal();
         } else {
             this.notificationService.createNotificationBasic('info', "info", 'Please select a row to update');
         }
+    }
+
+    /**
+    * @method openModal
+    * @description open model
+    */
+    openModal() {
+        this.schoolModalVisible = true;
+    }
+
+    /**
+    * @method hideModal
+    * @description open model
+    */
+    hideModal() {
+        this.schoolModalVisible = false;
     }
 
     /**
@@ -212,7 +240,7 @@ export class SchoolListComponent implements OnInit {
         this.isEdit = false;
         this.isDisabled = false;
         this.selectedRowIndex = null;
-        this.schoolNamePopupVisiblity = true;
+        this.openModal();
     }
 
     /**
@@ -221,9 +249,6 @@ export class SchoolListComponent implements OnInit {
     */
     hideLoader() {
         this.isLoading = false;
-        this.schoolNamePopupLoading = false;
-        this.schoolNameMovePopupLoading =false;
-        this.schoolNameMergePopupLoading = false;
     }
 
     /**
@@ -244,30 +269,27 @@ export class SchoolListComponent implements OnInit {
     }
 
     /**
-    * @method addNewCollegeName
-    * @description Add the college record
+    * @method addNewSchoolName
+    * @description Add the school record
     */
     addNewSchoolName() {
         if (this.formGroup.valid) {
-            this.schoolNamePopupLoading = true;
             let val = this.formGroup.get('name')?.value;
-            this.requestData.name = val.toLowerCase().trim();
             this.requestData.orgName = 'School';
+            this.requestData.name = val.toLowerCase().trim();
             this._collegeAndSchoolService.getCollegeSchoolByName(this.requestData).subscribe(result => {
                 if (result && result != null) {
-                    this.notificationService.createNotificationBasic('info', "info", 'School name is already exist');
+                    this.notificationService.createNotificationBasic('info', "info", 'School name is already exist!');
                     let val = this.formGroup.get('name')?.setValue('');
-                    this.schoolNamePopupLoading = false;
                     return;
                 } else {
                     let val = this.formGroup.get('ncesId')?.value;
-                    this.requestData.codes = val;
                     this.requestData.orgName = 'School';
+                    this.requestData.codes = val.toLowerCase().trim();
                     this._collegeAndSchoolService.getCollegeSchoolByCode(this.requestData).subscribe(result => {
                         if (result && result != null) {
-                            this.notificationService.createNotificationBasic('info', "info", 'Entered NCESID is alreay exist, to add this organization name please change entered NCESID.');
-                            this.formGroup.get('ncesId')?.setValue('');
-                            this.schoolNamePopupLoading = false;
+                            this.notificationService.createNotificationBasic('info', "info", 'Entered NCESID is alreay exist, to add this organization name please change entered NCESID!');
+                            let val = this.formGroup.get('ncesId')?.setValue('');
                             return;
                         } else {
                             this.requestData.collegeSchoolId = this.formGroup?.get('collegeSchoolId')?.value;
@@ -282,7 +304,7 @@ export class SchoolListComponent implements OnInit {
                             this.requestData.city = this.formGroup?.get('city')?.value;
                             this.requestData.states = this.formGroup?.get('states')?.value;
                             this.requestData.zipcode = this.formGroup?.get('zipcode')?.value;
-                            this.requestData.fiscalYear = this.formGroup?.get('ifiscalYeard')?.value.trim();
+                            this.requestData.fiscalYear = this.formGroup?.get('fiscalYear')?.value.trim();
                             this.requestData.phone1 = this.formGroup?.get('phone1')?.value;
                             this.requestData.phone2 = this.formGroup?.get('phone2')?.value;
                             this.requestData.phone3 = this.formGroup?.get('phone3')?.value;
@@ -292,10 +314,11 @@ export class SchoolListComponent implements OnInit {
                             this.requestData.notes = this.formGroup?.get('notes')?.value;
                             this.requestData.fafsaId = null;
                             this.showLoader();
+                            this.isConfirmSchoolLoading = true;
                             this._collegeAndSchoolService.postStudentName(this.requestData).subscribe(result => {
                                 if (result) {
-                                    this.schoolNamePopupLoading = false;
-                                    this.handleCancel();
+                                    this.hideModal();
+                                    this.isConfirmSchoolLoading = false;
                                     this._collegeAndSchoolService.getSchoolNames('').subscribe(result => {
                                         this.hideLoader();
                                         this.selectedRowIndex = null;
@@ -303,7 +326,8 @@ export class SchoolListComponent implements OnInit {
                                             this.selectedRowIndex = null;
                                             this.schoolDataList = result;
                                             this.schoolDataSearchList = result;
-                                            this.notificationService.createNotificationBasic('success', "Success", 'Saved successfully.');
+                                            this.schoolDataMergeDropDownList = result;
+                                            this.notificationService.createNotificationBasic('success', "success", 'Saved successfully!');
                                         }
                                     });
                                 }
@@ -335,35 +359,22 @@ export class SchoolListComponent implements OnInit {
     */
     deleteSelectedRow(selectedRowItem: any, index: any) {
         this.setSelectedRow(selectedRowItem, index);
-        if (this.selectedRow) {
-            const data = {
-                collegeSchoolId: this.selectedRow.collegeSchoolId
-            }
-            this.modal.confirm({
-                nzTitle: 'Confirm Remove Record',
-                nzContent: 'Are you sure, you want to remove this School: ' + this.selectedRow.orgName,
-                nzOkText: 'OK',
-                nzOkType: 'primary',
-                nzOkDanger: true,
-                nzOnOk: () => {
-                    this.showLoader();
-                    this._collegeAndSchoolService.deleteCollegeSchoolName(data).subscribe(result => {
-                        this._collegeAndSchoolService.getSchoolNames('').subscribe(result => {
-                            this.hideLoader();
-                            this.selectedRowIndex = null;
-                            if (result) {
-                                this.selectedRow = null;
-                                this.schoolDataList = result;
-                                this.schoolDataSearchList = result;
-                                this.notificationService.createNotificationBasic('success', "Success", 'Deleted successfully!');
-                            }
-                        });
-                    });
-                },
-                nzCancelText: 'Cancel',
-                nzOnCancel: () => { this.hideLoader(); }
-            });
+        const data = {
+            collegeSchoolId: this.selectedRow.collegeSchoolId
         }
+        this._collegeAndSchoolService.deleteCollegeSchoolName(data).subscribe(result => {
+            this._collegeAndSchoolService.getSchoolNames('').subscribe(result => {
+                this.hideLoader();
+                this.selectedRowIndex = null;
+                if (result) {
+                    this.selectedRow = null;
+                    this.schoolDataList = result;
+                    this.schoolDataSearchList = result;
+                    this.schoolDataMergeDropDownList = result;
+                    this.notificationService.createNotificationBasic('success', "success", 'Deleted successfully!');
+                }
+            });
+        });
     }
 
     /**
@@ -373,7 +384,7 @@ export class SchoolListComponent implements OnInit {
     updateSelectedRow() {
         if (this.formGroup.valid) {
             if (this.selectedRow) {
-                this.schoolNamePopupLoading = true;
+                this.showLoader();
                 this.requestData.collegeSchoolId = this.formGroup?.get('collegeSchoolId')?.value;
                 this.requestData.orgName = this.formGroup?.get('name')?.value.trim();
                 this.requestData.inPullDown = this.formGroup?.get('inPullDown')?.value;
@@ -386,7 +397,7 @@ export class SchoolListComponent implements OnInit {
                 this.requestData.city = this.formGroup?.get('city')?.value;
                 this.requestData.states = this.formGroup?.get('states')?.value;
                 this.requestData.zipcode = this.formGroup?.get('zipcode')?.value;
-                this.requestData.fiscalYear = this.formGroup?.get('ifiscalYeard')?.value;
+                this.requestData.fiscalYear = this.formGroup?.get('fiscalYear')?.value;
                 this.requestData.phone1 = this.formGroup?.get('phone1')?.value;
                 this.requestData.phone2 = this.formGroup?.get('phone2')?.value;
                 this.requestData.phone3 = this.formGroup?.get('phone3')?.value;
@@ -395,9 +406,10 @@ export class SchoolListComponent implements OnInit {
                 this.requestData.email = this.formGroup?.get('email')?.value;
                 this.requestData.notes = this.formGroup?.get('notes')?.value;
                 this.requestData.fafsaId = null;
+                this.isConfirmSchoolLoading = true;
                 this._collegeAndSchoolService.updateCollegeSchoolName(this.requestData).subscribe(response => {
-                    this.showLoader();
-                    this.handleCancel();
+                    this.hideModal();
+                    this.isConfirmSchoolLoading = false;
                     this._collegeAndSchoolService.getSchoolNames('').subscribe(result => {
                         this.hideLoader();
                         this.selectedRowIndex = null;
@@ -405,8 +417,9 @@ export class SchoolListComponent implements OnInit {
                             this.selectedRow = null;
                             this.schoolDataList = result;
                             this.schoolDataSearchList = result;
+                            this.schoolDataMergeDropDownList = result;
                             this.isEdit = false;
-                            this.notificationService.createNotificationBasic('success', "Success", 'Updated successfully!');
+                            this.notificationService.createNotificationBasic('success', "success", 'Updated successfully!');
                         }
                     });
                 });
@@ -414,7 +427,7 @@ export class SchoolListComponent implements OnInit {
         } else {
             if (this.formGroup?.get('email')?.value) {
                 if (!this.formGroup?.get('email')?.valid) {
-                    this.notificationService.createNotificationBasic('success', "Success", 'Please enter the correct email, this email is not valid!');
+                    this.notificationService.createNotificationBasic('info', "info", 'Please enter the correct email, this email is not valid!');
                     return;
                 }
             }
@@ -428,9 +441,9 @@ export class SchoolListComponent implements OnInit {
     }
 
     /**
-     * @method bindDropDownValues
-     * @description Get the all pull down item list
-     */
+    * @method bindDropDownValues
+    * @description Get the all pull down item list
+    */
     bindDropDownValues() {
         let data: any = 'CITY,STATE,COUNTRY';
         this._pullDownListService.getMultiPullDownMaster(data).subscribe((result: any) => {
@@ -443,17 +456,14 @@ export class SchoolListComponent implements OnInit {
             if (result?.COUNTRY) {
                 this.countryList = result.COUNTRY;
             }
+            console.log(this.countryList);
         });
     }
 
-    handleCancel() {
-        this.schoolNamePopupVisiblity = false;
-        this.schoolNameMovePopupVisiblity = false;
-        this.schoolNameMergePopupVisiblity = false;
-    }
+
     /**
      * @method checkName
-     * @description Check college Name is exist or not
+     * @description Check school Name is exist or not
      */
     checkName(event: any) {
         if (!this.isDisabled) {
@@ -474,15 +484,14 @@ export class SchoolListComponent implements OnInit {
         }
     }
 
-
     /**
     * @method schoolCodeVerification
-    * @description NcesId code is exist or not
+    * @description ncesId code is exist or not
     */
     schoolCodeVerification() {
         let val = this.formGroup.get('ncesId')?.value;
-        this.requestData.codes = val;
         this.requestData.orgName = 'School';
+        this.requestData.codes = val.toLowerCase().trim();
         this._collegeAndSchoolService.getCollegeSchoolByCode(this.requestData).subscribe(result => {
             if (result && result != null) {
                 this.notificationService.createNotificationBasic('info', "info", 'Entered NCESID is alreay exist, to add this organization name please change entered NCESID!');
@@ -497,8 +506,8 @@ export class SchoolListComponent implements OnInit {
     */
     schoolNameVerification() {
         let val = this.formGroup.get('name')?.value;
-        this.requestData.name = val.toLowerCase().trim();
         this.requestData.orgName = 'School';
+        this.requestData.name = val.toLowerCase().trim();
         this._collegeAndSchoolService.getCollegeSchoolByName(this.requestData).subscribe(result => {
             if (result && result != null) {
                 this.notificationService.createNotificationBasic('info', "info", 'School name is already exist!');
@@ -513,123 +522,10 @@ export class SchoolListComponent implements OnInit {
     */
     showMoveItemPopup(selectedRowItem: any, index: any) {
         this.setSelectedRow(selectedRowItem, index);
-        if (this.selectedRow) {
-            this.schoolNameMovePopupVisiblity =true;
-        } 
-    }
-     /**
-   * @method onConfirm
-   * @description this method is used for move the records.
-   */
-    onConfirmMove(): void {
-        // Close the dialog, return true
-        if (this.moveFormGroup.valid) {
-        this.currentValId = this.moveFormGroup?.get('collegeSchoolName')?.value;
-        let status = this.verifyCollegeSchoolNameMove(this.currentValId);
-        if (!status) {
-            this.getDeletedItemByIdMove(this.currentValId);
-        }
-        } else {
-        this.moveFormGroup.markAllAsTouched();
-        }
-    }
-    /**
-     * @method getDeletedItemByIdMove
-     * @description This method is used for recover record and get deleted recodes.
-     */
-    getDeletedItemByIdMove(name: any) {
-        const verifyData = {
-            collegeSchoolId: this.selectedRow.collegeSchoolId,
-            name: name
-        }
-        this.requestData.orgName = 'School';
-        this.requestData.name = name.toLowerCase().trim();
-        this.schoolNameMovePopupLoading = true;
-        this._collegeAndSchoolService.getDeletedCollegeAndSchoolByNameAndOrgId(this.requestData).subscribe(result => {
-            if (result && result != null && result > 0) {
-                let message = "School name was deleted. Do you want to recall the old name?";
-                this.modal.confirm({
-                    nzTitle: 'Recall Old Name!',
-                    nzContent: message,
-                    nzOkText: 'OK',
-                    nzOkType: 'primary',
-                    nzOkDanger: true,
-                    nzOnOk: () => {
-                        this.showLoader();
-                        this._collegeAndSchoolService.recoverCollegeAndSchoolList(this.requestData).subscribe(result2 => {
-                            if (result2) {
-                                this.hideLoader();
-                                this.selectedRowIndex = null;
-                                this._collegeAndSchoolService.getSchoolNames('').subscribe(result => {
-                                    this.hideLoader();
-                                    this.selectedRowIndex = null;
-                                    if (result) {
-                                        this.selectedRow = null;
-                                        this.schoolDataList = result;
-                                        this.schoolDataSearchList = result;
-                                        this.handleCancel();
-                                        this.notificationService.createNotificationBasic('success', "Success", 'Successfully Recalled the Old Name');
-                                    }
-                                });
-                            }
-                        });
-                    },
-                    nzCancelText: 'Cancel',
-                    nzOnCancel: () => { this.hideLoader(); }
-                });
-            } else {
-                let message = "Do you want to Rename College Name from " + this.selectedRow.name + " to  " + name + "?";
-                this.modal.confirm({
-                    nzTitle: 'Confirm Rename Record',
-                    nzContent: message,
-                    nzOkText: 'OK',
-                    nzOkType: 'primary',
-                    nzOkDanger: true,
-                    nzOnOk: () => {
-                        this._collegeAndSchoolService.updateCollegeAndSchoolNameById(verifyData).subscribe(result3 => {
-                            if (result3) {
-                                this._collegeAndSchoolService.getSchoolNames('').subscribe(result => {
-                                    this.hideLoader();
-                                    this.selectedRowIndex = null;
-                                    if (result) {
-                                        this.selectedRow = null;
-                                        this.schoolDataList = result;
-                                        this.schoolDataSearchList = result;
-                                        this.handleCancel();
-                                        this.notificationService.createNotificationBasic('success', "Success", 'Successfully Renammed Record');
-                                    }
-                                });
-                            }
-                        });
-                    },
-                    nzCancelText: 'Cancel',
-                    nzOnCancel: () => { this.hideLoader(); }
-                });
-            }
-        });
-    }
-
-    /**
-     * @method verifyCollegeSchoolNameMove
-     * @description Verify the college and school name.
-     */
-    verifyCollegeSchoolNameMove(currentName: any) {
-        let status = true;
-        const data = this.schoolDataList.filter((item: any) => ((item.name.toLowerCase().trim()) === (currentName.toLowerCase().trim())));
-        if (data && data.length > 0) {
-            let message = "Enter a different name as the name is already in use or To combine to lists use the merge option instead";
-            const modal = this.modal.warning({
-                nzTitle: message,
-                nzContent: '',
-                nzOnOk: () => {  modal.destroy();this.moveFormGroup.get("collegeSchoolName")?.setValue(''); status = true; this.hideLoader(); }
-            });
-            
-            setTimeout(() => { this.moveFormGroup.get("collegeSchoolName")?.setValue(''); status = true; this.hideLoader(); modal.destroy(); }, 5000);
-        } else {
-            status = false;
-        }
-        return status;
-
+        this.createMoveForm();
+        this.selectedCollegeSchoolId = this.selectedRow.collegeSchoolId,
+            this.selectedCollegeSchoolName = this.selectedRow.name
+        this.moveModalVisible = true;
     }
 
     /**
@@ -637,90 +533,34 @@ export class SchoolListComponent implements OnInit {
      * @description Open the popup for merge the record
      */
     showMergeItemPopup(selectedRowItem: any, index: any) {
-        this.mergeFormGroup.get("collegeSchoolName")?.setValue(null);
-        this.mergeFormGroup.reset();
         this.setSelectedRow(selectedRowItem, index);
-        if (this.selectedRow) {
-            this.schoolNameMergePopupVisiblity = true;
-        } 
-    }
-    onConfirmMerge () {
-        if (this.mergeFormGroup.valid) {
-            let val = this.mergeFormGroup?.get('collegeSchoolName')?.value;
-            if (this.selectedRow.name.trim() == val.trim()) {
-              this.notificationService.createNotificationBasic('info', "info", 'Same Name can not be merge!');
-              this.mergeFormGroup.get("collegeSchoolName")?.setValue('');
-              return;
-            } else {
-              this.currentValId = val.trim();
-            }
-            this.getDeletedItemByIdMerge(this.currentValId);
-          } else {
-            this.mergeFormGroup.markAllAsTouched();
-          }
-    }
-    getDeletedItemByIdMerge (currentName: any) {
-        const verifyData = {
-            collegeSchoolId: this.selectedRow.collegeSchoolId
-          }
-          let status = this.verifyCollegeSchoolNameMerge(this.currentValId);
-          if (!status) {
-            let message = "Do you want to merge from name " + this.selectedRow.name + " to name " + currentName + " ?";
-            this.modal.confirm({
-                nzTitle: 'Confirm Merge!',
-                nzContent: message,
-                nzOkText: 'OK',
-                nzOkType: 'primary',
-                nzOkDanger: true,
-                nzOnOk: () => {
-                    this.showLoader();
-                    this.schoolNameMergePopupLoading = true;
-                    this._collegeAndSchoolService.mergeCollegeSchoolByName(verifyData).subscribe(result => {
-                        this.schoolNameMergePopupVisiblity = false;
-                        this._collegeAndSchoolService.getSchoolNames('').subscribe(result => {
-                            this.hideLoader();
-                            this.selectedRowIndex = null;
-                            if (result) {
-                                this.selectedRow = null;
-                                this.schoolDataList = result;
-                                this.schoolDataSearchList = result;
-                                this.notificationService.createNotificationBasic('success', "Success", 'Merge Successfully Done!');
-                            }
-                        });
-                    });
-                },
-                nzCancelText: 'Cancel',
-                nzOnCancel: () => { this.hideLoader();}
-            });
-          }
-    }
-    verifyCollegeSchoolNameMerge(currentName: any) {
-        let status = false;
-        const data = this.schoolDataList.filter((item: any) => ((item.name.trim()) === (currentName.trim())));
-        if (data && data.length > 0) {
-          status = false;
-        } else {
-          this.notificationService.createNotificationBasic('info', "info", 'This record does not exist!');
-          this.mergeFormGroup.get("collegeSchoolName")?.setValue('');
-          status = true;
+        this.selectedCollegeSchoolMergeId = this.selectedRow.collegeSchoolId,
+        this.selectedCollegeSchoolMergeName = this.selectedRow.name
+        if(this.selectedCollegeSchoolMergeName){
+            const data = this.schoolDataSearchList.filter((item: any) => ((item.name.toLowerCase().trim()) != (this.selectedCollegeSchoolMergeName.toLowerCase().trim())));
+            this.schoolDataMergeDropDownList = data;
         }
-        return status;
+        this.createMergeForm();
+        this.mergeModalVisible = true;
     }
+
     /**
-     * Show the email message
-     */
+    * @method getEmailMessage
+    * @description show the email message
+    */
     getEmailMessage() {
         this.notificationService.createNotificationBasic('info', "info", 'Please enter the correct email, this email is not valid!');
         return;
     }
 
     /**
-   * @method print
-   * @description show print and download the data.
-   */
+    * @method print
+    * @description show print and download the data.
+    */
     print() {
-        var doc = new jsPDF('l', 'mm', 'a4');
-        const head = [['School Name', 'NCESID', 'County Name', 'In Pulldown List', 'Phone1', 'Phone2', 'Phone3', 'Fax']]
+        //const doc = new jsPDF('l', 'mm', 'a4'); 
+        const doc = new jsPDF('l', 'mm', 'a4');
+        const head = [['School Name', 'NCES ID', 'County Name', 'In Pulldown List', 'Phone1', 'Phone2', 'Phone3', 'Fax']]
         let data: any = [];
         this.schoolDataList.forEach((e: any) => {
             var tempObj = [];
@@ -782,17 +622,17 @@ export class SchoolListComponent implements OnInit {
             didDrawCell: (data) => { },
         });
         doc.setProperties({
-            title: "School List"
+            title: "School list"
         });
         window.open(doc.output('bloburl').toString(), '_blank');
-        //doc.output('dataurlnewwindow', { filename: 'school.pdf' });
+        //doc.output('dataurlnewwindow', {filename: 'college.pdf'});
         //doc.save('college.pdf');  
     }
 
     /**
- * @method sorting
- * @description this method is used for asc sorting
- */
+    * @method sorting
+    * @description this method is used for asc sorting
+    */
     sorting(attr: string) {
         if (this.schoolDataList.length > 0) {
             this.schoolDataList = [...this.schoolDataList].sort((a, b) => (a[attr] > b[attr]) ? 1 : -1)
@@ -806,6 +646,249 @@ export class SchoolListComponent implements OnInit {
     sorting2(attr: string) {
         if (this.schoolDataList.length > 0) {
             this.schoolDataList = [...this.schoolDataList].sort((a, b) => (a[attr] < b[attr]) ? 1 : -1)
+        }
+    }
+
+    /**
+    * @method handleCancel
+    * @description this method is used for reset the form
+    */
+    handleCancel(): void {
+        this.createForm();
+        this.schoolModalVisible = false;
+    }
+
+    /**
+    * @method cancelDelete
+    * @description this method is used for cancel Delete popup
+    */
+    cancelDelete(): void {
+
+    }
+
+    //start move
+    /**
+    * @method onConfirm
+    * @description this method is used for move the records.
+    */
+    onConfirm(): void {
+        // Close the dialog, return true
+        if (this.moveItemForm.valid) {
+            this.currentValId = this.moveItemForm?.get('collegeSchoolName')?.value;
+            let status = this.verifyCollegeSchoolName(this.currentValId);
+            if (!status) {
+                this.getDeletedItemById(this.currentValId);
+            }
+        } else {
+            this.moveItemForm.markAllAsTouched();
+            Object.values(this.moveItemForm.controls).forEach(control => {
+                if (control.invalid) {
+                    control.markAsDirty();
+                    control.updateValueAndValidity({ onlySelf: true });
+                }
+            });
+        }
+    }
+
+    /**
+    * @method createForm
+    * @description Form group create
+    */
+    createMoveForm() {
+        this.moveItemForm = this.formBuilder.group({
+            'collegeSchoolName': ['', Validators.required]
+        });
+    }
+
+    /**
+     * @method getDeletedItemById
+     * @description This method is used for recover record and get deleted recodes.
+     */
+    getDeletedItemById(name: any) {
+        this.message = "School";
+        const verifyData = {
+            collegeSchoolId: this.selectedCollegeSchoolId,
+            name: name
+        }
+        this.requestMoveMergeData.orgName = this.message.trim();
+        this.requestMoveMergeData.name = name.toLowerCase().trim();
+        this._collegeAndSchoolService.getDeletedCollegeAndSchoolByNameAndOrgId(this.requestMoveMergeData).subscribe(result => {
+            if (result && result != null && result > 0) {
+                let message = this.message + " name was deleted. Do you want to recall the old name?";
+                this.modal.confirm({
+                    nzTitle: message,
+                    nzContent: '',
+                    nzOnOk: () => {
+                        this.requestMoveMergeData.collegeSchoolId = result;
+                        this._collegeAndSchoolService.recoverCollegeAndSchoolList(this.requestMoveMergeData).subscribe(result2 => {
+                            if (result2) {
+                                this.moveModalVisible = false;
+                                this.getSchoolList();
+                            }
+                        });
+                    }
+                });
+            } else {
+                let message = "Do you want to Rename School Name from : " + this.selectedCollegeSchoolName + " to:  " + name + "?";
+                this.modal.confirm({
+                    nzTitle: message,
+                    nzContent: '',
+                    nzOnOk: () => {
+                        this._collegeAndSchoolService.updateCollegeAndSchoolNameById(verifyData).subscribe(result3 => {
+                            if (result3) {
+                                this.moveModalVisible = false;
+                                this.getSchoolList();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * @method verifyCollegeSchoolName
+     * @description Verify the college and school name.
+     */
+    verifyCollegeSchoolName(currentName: any) {
+        let status = true;
+        const data = this.schoolDataList.filter((item: any) => ((item.name.toLowerCase().trim()) === (currentName.toLowerCase().trim())));
+        if (data && data.length > 0) {
+            let message = "Enter a different name as the name is already in use or To combine to lists use the merge option instead";
+            this.notificationService.createNotificationBasic('info', "School Name", message);
+            this.moveItemForm.get("collegeSchoolName")?.setValue('');
+            status = true;
+        } else {
+            status = false;
+        }
+        return status;
+
+    }
+
+    /**
+     * @method moveHandleCancel
+     * @description cancel the popup
+     */
+    moveHandleCancel(): void {
+        this.clearMoveFormValue();
+        this.moveModalVisible = false;
+    }
+
+    /**
+     * @method clearMoveFormValue
+     * @description validate the all fields
+     */
+    clearMoveFormValue() {
+        for (let control in this.moveItemForm.controls) {
+            // this.moveItemForm.controls[control].setErrors(null);
+            this.moveItemForm.controls[control].markAsPristine();
+            this.moveItemForm.controls[control].markAsUntouched();
+            this.moveItemForm.controls[control].updateValueAndValidity();
+        }
+    }
+
+    //End move
+
+    //Start Merge
+    /**
+    * @method onMergeConfirm
+    * @description For merging the record
+    */
+    onMergeConfirm(): void {
+        // Close the dialog, return true
+        if (this.mergeFormGroup.valid) {
+            let val = this.mergeFormGroup?.get('collegeSchoolName')?.value;
+            if (this.selectedCollegeSchoolMergeName.trim() == val.trim()) {
+                this.notificationService.createNotificationBasic('info', "info", 'Same Name can not be merge!');
+                this.mergeFormGroup.get("collegeSchoolName")?.setValue('');
+                return;
+            } else {
+                this.currentMergeValId = val.trim();
+            }
+            this.getDeletedMergeItemById(this.currentMergeValId);
+        } else {
+            Object.values(this.mergeFormGroup.controls).forEach(control => {
+                if (control.invalid) {
+                    control.markAsDirty();
+                    control.updateValueAndValidity({ onlySelf: true });
+                }
+            });
+        }
+    }
+
+
+    /**
+    * @method createMergeForm
+    * @description Form group create
+    */
+    createMergeForm() {
+        this.mergeFormGroup = this.formBuilder.group({
+            'collegeSchoolName': ['', Validators.required]
+        });
+    }
+
+    /**
+     * @method getDeletedMergeItemById
+     * @description This method is used for Deleted Merge Item by id.
+     */
+    getDeletedMergeItemById(currentName: any) {
+        const verifyData = {
+            collegeSchoolId: this.selectedCollegeSchoolMergeId
+        }
+        let status = this.verifyMergeCollegeSchoolName(this.currentMergeValId);
+        if (!status) {
+            let message = "Do you want to merge from name " + this.selectedCollegeSchoolMergeName + " to name " + currentName + " ?";
+            this.modal.confirm({
+                nzTitle: message,
+                nzContent: '',
+                nzOnOk: () => {
+                    this._collegeAndSchoolService.mergeCollegeSchoolByName(verifyData).subscribe(result3 => {
+                        if (result3) {
+                            this.mergeModalVisible = false;
+                            this.getSchoolList();
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    /**
+    * @method verifyMergeCollegeSchoolName
+    * @description This method is used for verify the merge college school name.
+    */
+    verifyMergeCollegeSchoolName(currentName: any) {
+        let status = false;
+        const data = this.schoolDataSearchList.filter((item: any) => ((item.name.trim()) === (currentName.trim())));
+        if (data && data.length > 0) {
+            status = false;
+        } else {
+            this.notificationService.createNotificationBasic('info', "info", 'This record does not exist!');
+            this.formGroup.get("collegeSchoolName")?.setValue('');
+            status = true;
+        }
+        return status;
+    }
+
+    /**
+    * @method mergeHandleCancel
+    * @description reset the fileds.
+    */
+    mergeHandleCancel(): void {
+        this.clearMergeFormValue();
+        this.mergeModalVisible = false;
+    }
+
+    /**
+    * @method clearMergeFormValue
+    * @description validate the fields.
+    */
+    clearMergeFormValue() {
+        for (let control in this.mergeFormGroup.controls) {
+            // this.moveItemForm.controls[control].setErrors(null);
+            this.mergeFormGroup.controls[control].markAsPristine();
+            this.mergeFormGroup.controls[control].markAsUntouched();
+            this.mergeFormGroup.controls[control].updateValueAndValidity();
         }
     }
 }
