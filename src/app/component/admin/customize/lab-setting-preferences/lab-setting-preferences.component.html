@@ -11,9 +11,9 @@
                                     <nz-form-item>
                                         <nz-form-label class="lable-style" nzRequired>Search Priority</nz-form-label>
                                         <nz-form-control nzErrorTip="Please Enter Search Priority">
-                                            <nz-select nzMode="tags" nzPlaceHolder="Search Priority" formControlName="lapSearchPriority"
+                                            <nz-select nzAllowClear nzShowSearch nzMode="tags" nzPlaceHolder="Search Priority" formControlName="lapSearchPriority"
                                                  [nzMaxMultipleCount]="1" [(ngModel)]="labSettingData.lapSearchPriority">
-                                                <nz-option *ngFor="let lap of lapSearchPriorityList" [nzLabel]="lap.longpullna" [nzValue]="lap.longpullna"></nz-option>
+                                                <nz-option *ngFor="let lap of lapSearchPriorityList" [nzLabel]="lap.value" [nzValue]="lap.value"></nz-option>
                                             </nz-select>
                                         </nz-form-control>
                                     </nz-form-item>
@@ -23,9 +23,9 @@
                                     <nz-form-item>
                                         <nz-form-label class="lable-style" nzRequired>Component</nz-form-label>
                                         <nz-form-control nzErrorTip="Please Enter Component">
-                                            <nz-select nzMode="tags" nzPlaceHolder="Component" formControlName="labComponents"
+                                            <nz-select nzAllowClear nzShowSearch nzMode="tags" nzPlaceHolder="Component" formControlName="labComponents"
                                                  [nzMaxMultipleCount]="1" [(ngModel)]="labSettingData.labComponents">
-                                                <nz-option *ngFor="let lab of labComponentsList" [nzLabel]="lab.longpullna" [nzValue]="lab.longpullna"></nz-option>
+                                                <nz-option *ngFor="let lab of labComponentsList" [nzLabel]="lab.longpullna +' | '+lab?.pullId" [nzValue]="lab.longpullna"></nz-option>
                                             </nz-select>
                                         </nz-form-control>
                                     </nz-form-item>
@@ -44,7 +44,7 @@
 
                                 <div nz-col [nzSpan]="8">
                                     <nz-form-item>
-                                        <nz-form-label class="lable-style" nzRequired>Wait Window Time</nz-form-label>
+                                        <nz-form-label class="lable-style">Wait Window Time</nz-form-label>
                                         <nz-form-control nzErrorTip="Please Enter Wait Window Time">
                                             <input nz-input type="text" formControlName="labWaitWindowTime"
                                                 [(ngModel)]="labSettingData.labWaitWindowTime"
@@ -157,7 +157,7 @@
                                     <nz-form-item>
                                         <nz-form-label class="lable-style">Default Lab Service</nz-form-label>
                                         <nz-form-control nzErrorTip="Please Select Default Lab Service">
-                                            <nz-select nzMode="tags" nzPlaceHolder="Default Lab Service" formControlName="labDefaultService"
+                                            <nz-select nzAllowClear nzShowSearch nzMode="tags" nzPlaceHolder="Default Lab Service" formControlName="labDefaultService"
                                                  [nzMaxMultipleCount]="1" [(ngModel)]="labSettingData.labDefaultService" [nzDisabled]="isDisabled">
                                                 <nz-option *ngFor="let defLab of labServiceList" [nzLabel]="defLab.longpullna" [nzValue]="defLab.longpullna"></nz-option>
                                             </nz-select>

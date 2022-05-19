@@ -304,7 +304,7 @@ export class SchoolListComponent implements OnInit {
                             this.requestData.city = this.formGroup?.get('city')?.value;
                             this.requestData.states = this.formGroup?.get('states')?.value;
                             this.requestData.zipcode = this.formGroup?.get('zipcode')?.value;
-                            this.requestData.fiscalYear = this.formGroup?.get('fiscalYear')?.value.trim();
+                            this.requestData.fiscalYear = this.formGroup?.get('fiscalYear')?.value;
                             this.requestData.phone1 = this.formGroup?.get('phone1')?.value;
                             this.requestData.phone2 = this.formGroup?.get('phone2')?.value;
                             this.requestData.phone3 = this.formGroup?.get('phone3')?.value;
@@ -393,7 +393,7 @@ export class SchoolListComponent implements OnInit {
                 this.requestData.title = this.formGroup?.get('title')?.value;
                 this.requestData.country = this.formGroup?.get('country')?.value;
                 this.requestData.address = this.formGroup?.get('address')?.value;
-                this.requestData.ncesId = this.formGroup?.get('ncesId')?.value.trim();
+                this.requestData.ncesId = this.formGroup?.get('ncesId')?.value;
                 this.requestData.city = this.formGroup?.get('city')?.value;
                 this.requestData.states = this.formGroup?.get('states')?.value;
                 this.requestData.zipcode = this.formGroup?.get('zipcode')?.value;

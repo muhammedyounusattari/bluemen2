@@ -39,7 +39,15 @@ export class LabSettingPreferencesComponent implements OnInit {
 
   public isDisabled: boolean = false;
   public labComponentsList: any = [];
-  public lapSearchPriorityList: any = [];
+  // public lapSearchPriorityList: any = [];
+  public lapSearchPriorityList = [
+    { value: 'Student ID, Scan ID, System Serial Number'},
+    { value: 'Student ID, System Serial Number, Scan ID'},
+    { value: 'Scan ID, Student ID, System Serial Number'},
+    { value: 'Scan ID, System Serial Number, Student ID'},
+    { value: 'System Serial Number, Student ID, Scan ID'},
+    { value: 'System Serial Number, Scan ID, Student ID'}
+  ];
   public labServiceList: any = [];
   public myElement: any = null;
   public isConfirmFormLoading: boolean = false;
@@ -68,7 +76,7 @@ export class LabSettingPreferencesComponent implements OnInit {
       lapSearchPriority: [null, Validators.required],
       labComponents: [null, Validators.required],
       labFiscalYear: ['', Validators.required],
-      labWaitWindowTime: ['', [Validators.required, Validators.minLength(1)]],
+      labWaitWindowTime: ['', [Validators.minLength(1)]],
       labHideStudentList: [false],
       labHideCheckOutList: [false],
       labMaxCheckoutTime: [''],
@@ -76,7 +84,7 @@ export class LabSettingPreferencesComponent implements OnInit {
       labAutomaticallyCheckInCheckOut: [false],
       labServicesVisibile: [false],
       labServicerRequired: [false],
-      labDefaultService: [null],
+      labDefaultService: [''],
       labStudentsCanChooseMultipleService: [false],
       labReasonForVisitOptionVisible: [false],
       labStaffMemberOptionVisible: [false],
@@ -125,9 +133,9 @@ export class LabSettingPreferencesComponent implements OnInit {
       if (result?.LABSERVICE) {
         this.labServiceList = result.LABSERVICE;
       }
-      if (result?.SEARCHPRIORITY) {
-        this.lapSearchPriorityList = result.SEARCHPRIORITY;
-      }
+      // if (result?.SEARCHPRIORITY) {
+      //   this.lapSearchPriorityList = result.SEARCHPRIORITY;
+      // }
 
     });
   }
