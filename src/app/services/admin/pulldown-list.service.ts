@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from '../data-service';
 import { ServiceUrls } from '../../constants/serviceUrl';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PullDownListService {
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService, private sharedService: SharedService) {}
 
   /**
    * @method getPullDownList
@@ -97,9 +98,9 @@ export class PullDownListService {
   }
 
   public getMultiPullDownMaster(pullType: any): Observable<any> {
-    let orgId= 0;
-    let projType= 7;
-    return this.dataService.callGetService(ServiceUrls.GET_MULTIPLE_PULL_DOWN_MASTER_LIST+"?orgId="+orgId+"&projType="+projType+"&pullType="+pullType);
+    let orgId= this.sharedService.getOrgId();
+    //program type id derived from orgid
+    return this.dataService.callGetService(ServiceUrls.GET_MULTIPLE_PULL_DOWN_MASTER_LIST+"?orgId="+orgId+"&pullType="+pullType);
   }
 
   

@@ -20,6 +20,7 @@ export class NavigationComponent implements OnInit {
     this.roleService.getMenuList().subscribe((result: any) => {
       if (result) {
         this.menus = result;
+        this.menus.forEach(a => a = a.toLowerCase());
       }
     }, (error: any) => {
       console.log(error);
@@ -158,6 +159,14 @@ export class NavigationComponent implements OnInit {
       
     } else if (componentName === 'global-filter' && subComponent != '') {
       this.router.navigate(['utilities/global-filter'], { queryParams: { page: subComponent } });
+    }else if (componentName === 'annual-performance-report-section-1') {
+      this.router.navigate(['apr/apr-section/annual-performance-report-section-1'])
+    }else if (componentName === 'annual-performance-report-section-1-part-2') {
+      this.router.navigate(['apr/apr-section/annual-performance-report-section-1-part-2/contacts'])
+    }else if (componentName === 'annual-performance-report-section-2') {
+      this.router.navigate(['apr/apr-section/annual-performance-report-section-1-part-2/student-profile'])
+    }else if (componentName === 'annual-performance-report-section-2-edit') {
+      this.router.navigate(['apr/apr-section/annual-performance-report-section-1-part-2/student-profile'])
     }
   }
 

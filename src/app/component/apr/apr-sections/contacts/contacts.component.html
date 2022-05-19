@@ -1,0 +1,164 @@
+<form nz-form class="apr-form" [nzLayout]="annualPerformanceReportSectionOnePartTwoForm.get('formLayout')?.value" [formGroup]="annualPerformanceReportSectionOnePartTwoForm">
+    <div nz-row class="tabStyle">
+        <div nz-col [nzSpan]="24">
+            <div nz-row class="form_section">
+              <div nz-row [nzGutter]="8" class="full-width-container">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label class="lable-style">&nbsp;</nz-form-label>
+                    <nz-form-control nzErrorTip="">
+                      <label class="lable-checkbox" nz-checkbox formControlName="useFiltersFromThisPage">Use filters from this page</label>
+                     
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Contact Date From:</nz-form-label>
+                            <nz-form-control>
+                              <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="contactDateFrom">
+                              </nz-date-picker>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                          <nz-form-item>
+                            <nz-form-label class="lable-style">To:</nz-form-label>
+                            <nz-form-control>
+                              <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="contactDateTo">
+                              </nz-date-picker>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+
+                    <div nz-col [nzSpan]="4">
+                      <nz-form-item>
+                          <nz-form-label class="lable-style">Re-Contact Date From:</nz-form-label>
+                          <nz-form-control>
+                            <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="reContactDateFrom">
+                            </nz-date-picker>
+                          </nz-form-control>
+                        </nz-form-item>
+                  </div>
+                  <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">To:</nz-form-label>
+                          <nz-form-control>
+                            <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="reContactDateTo">
+                            </nz-date-picker>
+                          </nz-form-control>
+                        </nz-form-item>
+                  </div>
+                  <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                      <nz-form-label class="lable-style">Re-contacted:</nz-form-label>
+                      <nz-radio-group formControlName="reContacted">
+                        <label nz-radio nzValue="true">YES</label>
+                        <label nz-radio nzValue="false">NO</label>
+                        <label nz-radio nzValue="all">ALL</label>
+                      </nz-radio-group>
+                    </nz-form-item>
+                  </div>
+                </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Contact By:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="contactBy" nzPlaceHolder="Contact Byy">
+                                <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Contact Type:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="contactType" nzPlaceHolder="Contact Type">
+                                <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                      <nz-form-item>
+                          <nz-form-label class="lable-style">Contact Count:</nz-form-label>
+                          <nz-form-control>
+                            <nz-select nzShowSearch nzAllowClear formControlName="contactCount" nzPlaceHolder="Contact Count">
+                              <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                [nzValue]="obj.longpullna">
+                              </nz-option>
+                            </nz-select>
+                          </nz-form-control>
+                        </nz-form-item>
+                     </div>
+                      <div nz-col [nzSpan]="4">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style"></nz-form-label>
+                              <nz-form-control>
+                                  <input nz-input type="number" formControlName="contactCount1"
+                                    placeholder="Contact Count 1" />
+                                </nz-form-control>
+                          </nz-form-item>
+                      </div>
+                </div>
+                     <div nz-row [nzGutter]="24" class="full-width-container">
+                      <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Reason for Visit</nz-form-label> 
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="reasonForVisit" nzPlaceHolder="Reason for Visit">
+                                <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                       </div>
+                       <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">Forced Checked Out:</nz-form-label>
+                          <nz-radio-group formControlName="forcedCheckedOut">
+                            <label nz-radio nzValue="true">YES</label>
+                            <label nz-radio nzValue="false">NO</label>
+                            <label nz-radio nzValue="all">ALL</label>
+                          </nz-radio-group>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                    <div nz-row class="marginTop30 full-width-container">
+                      <h6 class="section-head">Include Contacts by:</h6>
+                  </div>
+                  
+                   <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="16">
+                      <nz-form-item>
+                        <nz-form-label class="lable-style">&nbsp;</nz-form-label>
+                        <nz-form-control nzErrorTip="">
+                          <label class="lable-checkbox" nz-checkbox formControlName="staffCounselor">Counselor</label>
+                          <label class="lable-checkbox" nz-checkbox formControlName="staffTeacher">Teacher</label>
+                          <label class="lable-checkbox" nz-checkbox formControlName="staffTutor">Tutor</label>
+                          <label class="lable-checkbox" nz-checkbox formControlName="staff">Staff</label>
+                          <label class="lable-checkbox" nz-checkbox formControlName="staffLab">Lab</label>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</form>
+ <!--new-->
+ <div nz-row class="tabStyle-btn">
+    <div nz-col nzSpan="4" nzOffset="20">
+        <a nz-button nzType="link" (click)="cancelClick()">Cancel</a>
+        <button nz-button nzType="primary" class="btn-color" (click)="addAnnualPerformance()">SAVE</button>
+    </div>
+</div>

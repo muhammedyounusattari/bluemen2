@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NotificationUtilities } from '../../../../shared/utilities/notificationUtilities';
 import * as FileSaver from 'file-saver';
+import { PullDownListsService } from 'src/app/services/admin/pulldown-lists.service';
+import { OrganizationsService } from 'src/app/services/super-admin/organizations.service';
 
 @Component({
   selector: 'app-pull-type',
@@ -22,40 +24,7 @@ export class PullTypeComponent implements OnInit {
   public isConfirmPullTypeLoading: boolean = false;
   public isSearchPullTypeLoading: boolean = false;
   public isDownloadingPullType: boolean = false;
-  public programList: any = [
-    {
-      id: 1,
-      value: '1'
-    },
-    {
-      id: 2,
-      value: '2'
-    },
-    {
-      id: 3,
-      value: '3'
-    },
-    {
-      id: 4,
-      value: '4'
-    },
-    {
-      id: 5,
-      value: '5'
-    },
-    {
-      id: 6,
-      value: '6'
-    },
-    {
-      id: 7,
-      value: '7'
-    },
-    {
-      id: 8,
-      value: '8'
-    }
-  ]
+  public programList: any;
   public existingPullTypeData: any = {
     "pullType": null,
     "numeric": null,
@@ -79,7 +48,8 @@ export class PullTypeComponent implements OnInit {
     private _pullTypeServicesService: PullTypeServicesService,
     private fb: FormBuilder,
     private message: NzMessageService,
-    private notificationService: NotificationUtilities
+    private notificationService: NotificationUtilities,
+    private organizationService: OrganizationsService
   ) { }
 
   ngOnInit(): void {
@@ -119,7 +89,19 @@ export class PullTypeComponent implements OnInit {
     }, (error: any) => {
       this.notificationService.createNotificationBasic('error', 'Pull Type Information', "System error : " + error.message);
     });
+
+    this.organizationService.getProgTypeList().subscribe((result: any) => {
+      this.dataLoading = true;
+      if (result) {
+          this.programList = result;
+          this.dataLoading = false;
+      }
+  });
+
+
+
   }
+
 
   updatePullType(pullTypeId: number): void {
     this.pullTypeDataList.forEach((pullTypeData: any, i: number) => {

@@ -5,6 +5,7 @@ import { SystemPreferencesService } from '../../../../services/admin/system-pref
 import { PullDownListService } from 'src/app/services/admin/pulldown-list.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { OrganizationsService } from 'src/app/services/super-admin/organizations.service';
 
 @Component({
     selector: 'app-system-preferences',
@@ -40,11 +41,13 @@ export class SystemPreferencesComponent implements OnInit {
     programTypeList:any = [];
     siteLocationList:any = [];
     dropDownBindingArray:any =[];
+    organizationService: any;
     constructor(private modalService: BsModalService
         , private _systemPreferencesService: SystemPreferencesService
         , private sharedService: SharedService
         , private pullDownService: PullDownListService
-        , private fb: FormBuilder) {
+        , private fb: FormBuilder
+        , private organizationsService: OrganizationsService) {
 
     }
 
@@ -304,7 +307,7 @@ export class SystemPreferencesComponent implements OnInit {
 
 
      bindDropDownValues() {
-             let data: any = ['SEMESTER','COMPONENT','CITY','STATE','GPASCALE','PROGRAMTYPE','SITELOCATION'];
+             let data: any = ['SEMESTER','COMPONENT','CITY','STATE','GPASCALE','SITE LOCATION'];
              this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
                  if (result?.SEMESTER) {
                      this.semesterList = result?.SEMESTER;
@@ -321,13 +324,20 @@ export class SystemPreferencesComponent implements OnInit {
                if (result?.GPASCALE) {
                   this.gpaScaleList = result?.GPASCALE;
                 }
-               if (result?.PROGRAMTYPE) {
-                  this.programTypeList = result?.PROGRAMTYPE;
-                }
-                if (result?.SITELOCATION) {
-                  this.siteLocationList = result?.SITELOCATION;
+                if (result['SITE LOCATION']) {
+                  this.siteLocationList = result['SITE LOCATION'];
                 }
 
               });
+              
+              this.organizationsService.getProgTypeList().subscribe((result: any) => {
+                if (result) {
+                    this.programTypeList = result;
+                    this.programTypeList.forEach((element: any) => {
+                        element.descriptions = '(' + element.orgType + ') ' + element.descriptions;    
+                    });
+                }
+            });
+
      }
 }

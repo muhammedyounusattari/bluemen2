@@ -1,14 +1,12 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomFieldService } from 'src/app/services/admin/custom-fields.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog-box/confirm-dialog-box.component';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable';
+import { NotificationUtilities } from 'src/app/shared/utilities/notificationUtilities';
+import { ValidationClass } from 'src/app/shared/validation/common-validation-class';
 
 @Component({
   selector: 'app-custom-fields',
@@ -16,52 +14,42 @@ import { SharedService } from 'src/app/shared/services/shared.service';
   styleUrls: ['./custom-fields.component.css']
 })
 export class CustomFieldsComponent implements OnInit {
-  @ViewChild('customFieldValuePopup') customFieldValuePopupRef: TemplateRef<any>;
-  modalRef: BsModalRef;
-  modalConfigSM = {
-    backdrop: true,
-    ignoreBackdropClick: true,
-    // class: 'modal-sm',
-    class: 'modal-dialog-centered'
-  };
+
   public customFieldsForm: FormGroup;
+  public customFieldsSearchForm: FormGroup;
   public customFields: any;
-  public selectedOption: any;
-  public selectedRow: any = null;
   public customID: any = 1;
-  public spinner: boolean = true;
   public selectedRowData: any;
-  public selectedRowIndex: any;
-  myElement: any = null;
-  isLoading: boolean = true;
-  public customFieldList: any = [];
-  public id: string;
-  public pullDownName: string;
+  public selectedRow: any = null;
   public isEdit: boolean;
+  public customFieldSearchList: any = [];
+  public customFieldList: any = [];
+  public customFieldsModalVisible: boolean = false;
+  public customFieldsModalHeader: string = 'Custom Fields';
+  public isConfirmCustomFieldsLoading: boolean = false;
+  public dataLoading: boolean = false;
+  public customFieldParentSearchList: any = [];
+  public customFieldChildSearchList: any = [];
 
-  columnsToDisplay: string[] = ['customId', 'pullDownName'];
-  dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  customFieldsNameTypeList = [
+    { key: '1 - Best time to call', value: '1', isSelected: true },
+    { key: 'T-shirt size', value: '2', isSelected: false }
+  ];
 
-  @ViewChild(MatSort) set matSort(sort: MatSort) {
-    if (this.dataSource && !this.dataSource.sort) {
-      this.dataSource.sort = sort;
-    }
-  }
-  // customFieldListArray = [{'name': '1 - Best time to call', 'value': 1}, {'name': 'T-shirt size', 'value': 2}]
-  constructor(private modalService: BsModalService
-    , private fb: FormBuilder
+  validationClass: ValidationClass = new ValidationClass();
+  constructor(private fb: FormBuilder
     , private customFieldService: CustomFieldService
-    , private dialog: MatDialog
-    , private toastr: ToastrService
-    , private sharedService: SharedService) { }
+    , private sharedService: SharedService,
+    private notificationService: NotificationUtilities) { }
 
   ngOnInit(): void {
     this.sharedService.setPageTitle('Custom Fields');
-    this.myElement = window.document.getElementById('loading');
+    // this.customID = this.customFieldsNameTypeList[0].value;
+    // this.customFieldsNameTypeList[0].isSelected = true;
     this.getCustomFieldNameType();
     this.initialiseForm();
+    this.searchValue();
+    
   }
 
   /**
@@ -70,164 +58,176 @@ export class CustomFieldsComponent implements OnInit {
   public initialiseForm() {
     this.customFieldsForm = this.fb.group({
       customId: [''],
-      pullDownName: [''],
+      pullDownName: ['', [Validators.required, Validators.minLength(3)]]
     });
   }
 
-  addNewDropdown() {
-    this.openModal(this.customFieldValuePopupRef);
-  }
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, this.modalConfigSM);
+  /**
+   * @method searchValue
+   */
+  public searchValue() {
+    this.customFieldsSearchForm = this.fb.group({
+      name: ['']
+    });
   }
 
   /**
-   * @method addCustomFieldNameType
-   */
+  * @method addCustomFieldNameType
+  * @description this method is used for show the custome field name type popup
+  */
+  openModal() {
+    this.customFieldsModalVisible = true;
+  }
+
+  /**
+  * @method addCustomFieldNameType
+  * @description this method is used for hide the custome field name type popup
+  */
+
+  hideModel() {
+    this.customFieldsModalVisible = false;
+
+  }
+
+  /**
+ * @method addCustomFieldNameType
+ * @description this method is used for add the custome field name type
+ */
   public addCustomFieldNameType() {
     if (this.customFieldsForm.valid) {
+      this.isConfirmCustomFieldsLoading = true;
       this.customFieldService.addToCustomFieldsNameType(this.requestPayload()).subscribe((result) => {
         if (result) {
-          this.modalRef.hide();
+          this.hideModel();
+          this.isConfirmCustomFieldsLoading = false;
           this.selectedRow = null;
-          this.toastr.success('Saved Successfully !', '', {
-            timeOut: 5000,
-            closeButton: true
-          });
+          this.selectedRowData = null;
+          this.notificationService.createNotificationBasic('success', "Custom Fields", 'Custom Fields Data Added Successfully!');
           this.getCustomFieldNameType();
         }
       });
     } else {
       this.customFieldsForm.markAllAsTouched();
-    }
-  }
-
-  /**
-   * @method editCustomFieldNameType
-   */
-  public editCustomFieldNameType() {
-    if (this.selectedRow && this.customFieldsForm.valid) {
-      let request: any = this.requestPayload();
-      if (request['id'] == undefined) {
-        request['id'] = this.selectedRow.customId
-      }
-      this.customFieldService.editCustomFieldsNameType(request).subscribe((result) => {
-        if (result) {
-          this.modalRef.hide();
-          this.selectedRow = null;
-          this.toastr.success('Updated Successfully !', '', {
-            timeOut: 5000,
-            closeButton: true
-          });
-          this.getCustomFieldNameType();
+      Object.values(this.customFieldsForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
         }
       });
     }
   }
 
   /**
-   * @method getCustomFieldNameType
-   */
-  public getCustomFieldNameType() {
-    this.spinner = true;
-    this.customFieldService.getCustomFieldsNameType().subscribe((result) => {
+  * @method showCustomFieldsModel
+  * @description this method is used for show the model
+  */
+  showCustomFieldsModel(): void {
+    this.isEdit = false;
+    this.initialiseForm();
+    this.customFieldsModalVisible = true;
+  }
 
+  /**
+  * @method editCustomFieldNameType
+  * @description this method is used for edit the custome field name type data
+  */
+  public editCustomFieldNameType() {
+    if (this.selectedRowData && this.customFieldsForm.valid) {
+      let request: any = this.requestPayload();
+      if (request['id'] == undefined) {
+        request['id'] = this.selectedRowData.customId
+      }
+      this.isConfirmCustomFieldsLoading = true;
+      this.customFieldService.editCustomFieldsNameType(request).subscribe((result) => {
+        if (result) {
+          this.hideModel();
+          this.isConfirmCustomFieldsLoading = false;
+          this.selectedRow = null;
+          this.selectedRowData = null;
+          this.notificationService.createNotificationBasic('success', "Custom Fields", 'Custom Fields Data Updated Successfully!');
+          this.getCustomFieldNameType();
+        }
+      });
+    } else {
+      this.customFieldsForm.markAllAsTouched();
+      Object.values(this.customFieldsForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
+
+  /**
+ * @method getCustomFieldNameType
+ * @description this method is used for get the custome field name type list
+ */
+  public getCustomFieldNameType() {
+    this.showLoader();
+    this.customFieldService.getCustomFieldsNameType().subscribe((result) => {
       this.hideLoader();
       if (result) {
         this.customFieldList = result;
-        this.dataSource = new MatTableDataSource(result);
-        this.dataSource.paginator = this.paginator;
-        this.selectedRowIndex = null;
-        this.dataSource.sort = this.sort;
+        this.customFieldSearchList = result;
+        this.customFieldParentSearchList = result;
+        this.customFieldChildSearchList = result;
+        this.customFieldsSearchForm.get('name')?.setValue('all');
       }
 
     });
   }
 
+  /**
+  * @method hideLoader
+  * @description this method is used for hide the loading process
+  */
   hideLoader() {
-    this.myElement = window.document.getElementById('loading');
-    if (this.myElement !== null) {
-      this.spinner = false;
-      this.isLoading = false;
-      this.myElement.style.display = 'none';
-    }
+    this.dataLoading = false;
   }
 
+  /**
+    * @method showLoader
+    * @description this method is used for show the loading process
+    */
   showLoader() {
-    if (this.myElement !== null) {
-      this.spinner = true;
-      this.isLoading = true;
-      this.myElement.style.display = 'block';
-    }
+    this.dataLoading = true;
+
   }
 
   /**
-   * @method deleteCustomFieldNameType
-   */
-  public deleteCustomFieldNameType() {
-    if (this.selectedRow) {
-      this.showLoader();
-      const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
-        data: {
-          title: 'Confirm remove record',
-          message: 'Are you sure, you want to remove this record: ' + this.customFieldsForm.get('pullDownName')?.value
-        }
-      });
-      confirmDialog.afterClosed().subscribe(result => {
-        if (result === true) {
-          this.customFieldService.deleteCustomFieldsNameType({ customId: this.selectedRow.customId }).subscribe((result) => {
-            if (result) {
-              this.selectedRow = null;
-              this.getCustomFieldNameType();
-            }
-          });
-
-        } else {
-          this.hideLoader();
-        }
-      });
-    } else {
-      this.toastr.info('Please select a row to delete', '', {
-        timeOut: 5000,
-        closeButton: true
-      });
-    }
-  }
-
-  /**
-   * @method filterCustomFieldNameType
-   */
-  public filterCustomFieldNameType() {
-    this.customFieldService.filterCustomFieldsNameType(this.requestPayload()).subscribe((result) => {
+  * @method deleteCustomFieldNameType
+  * @description this method is used for delete the records
+  */
+  public deleteCustomFieldNameType(data: any, index: number) {
+    this.getSelectedRow(data, index);
+    this.customFieldService.deleteCustomFieldsNameType({ customId: this.selectedRowData.customId }).subscribe((result) => {
       if (result) {
+        this.selectedRow = null;
+        this.selectedRowData = null;
+        this.notificationService.createNotificationBasic('success', "Custom Fields", 'Custom Fields Data Deleted Successfully!');
         this.getCustomFieldNameType();
       }
     });
   }
 
   /**
+  * @method cancelDelete
+  * @description this method is used for cancel the delted popup
+  */
+  cancelDelete(): void {
+  }
+
+  /**
    * @method getSelectedOption
    * @description get the requested modal type
    */
-  public getSelectedOption(selectedOption: string) {
-    this.selectedOption = selectedOption;
-    if (selectedOption === 'Edit') {
-      if (this.selectedRow) {
-        this.customFieldsForm.get('customId')?.setValue(this.selectedRow.customId);
-        this.customFieldsForm.get('pullDownName')?.setValue(this.selectedRow.pullDownName);
-        this.openModal(this.customFieldValuePopupRef);
-      } else {
-        this.toastr.info('Please select a row to update ', '', {
-          timeOut: 5000,
-          closeButton: true
-        });
-      }
-    } else {
-      this.customFieldsForm.reset();
-      this.selectedRow = null;
-      this.customFieldsForm.updateValueAndValidity();
-      this.openModal(this.customFieldValuePopupRef);
-    }
+  public editCustomFields(data: any, index: number) {
+    this.isEdit = true;
+    this.getSelectedRow(data, index);
+    this.customFieldsForm.get('customId')?.setValue(this.selectedRowData.customId);
+    this.customFieldsForm.get('pullDownName')?.setValue(this.selectedRowData.pullDownName);
+    this.openModal();
 
   }
 
@@ -240,34 +240,6 @@ export class CustomFieldsComponent implements OnInit {
     this.selectedRowData = data;
   }
 
-  /**
-   * @method handleMethodToCall
-   */
-  public handleMethodToCall() {
-    switch (this.selectedOption) {
-      case 'New':
-        this.addCustomFieldNameType();
-        break;
-      case 'Edit':
-        this.editCustomFieldNameType()
-        break;
-      case 'Rename':
-        break;
-      case 'Move':
-        break;
-      case 'Merge':
-        break;
-      case 'Delete':
-        this.deleteCustomFieldNameType();
-        break;
-      case 'Print':
-        break;
-      case 'Submit':
-        break;
-      default:
-        break;
-    }
-  }
 
   /**
    * @method requestPayload
@@ -275,33 +247,146 @@ export class CustomFieldsComponent implements OnInit {
    */
   public requestPayload() {
     return {
-      customId: (this.selectedRow && this.selectedRow.customId) ? this.selectedRow.customId : 0,
+      customId: (this.selectedRowData && this.selectedRowData.customId) ? this.selectedRowData.customId : 0,
       pullDownName: this.customFieldsForm.get('pullDownName')?.value
     }
   }
 
-  applyFilter(filterValue: any) {
-    this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+  /**
+   * @method filterCustomFieldsNameType
+   * @description serching according parameters
+   */
+  filterCustomFieldsNameType() {
+    let name = this.customFieldsSearchForm?.get('name')?.value;
+    if (name && name != 'all') {
+      const data = this.customFieldChildSearchList.filter((item: any) => item && (item.pullDownName.trim().toLowerCase() === name.trim().toLowerCase()));
+      if (data && data.length > 0) {
+        this.customFieldList = data;
+      } else {
+        this.customFieldList = this.customFieldParentSearchList;
+      }
+      return;
+    } else {
+      this.customFieldList = this.customFieldParentSearchList;
     }
   }
 
-  setSelectedRow(selectedRowItem: any, index: number) {
-    this.selectedRowIndex = index;
-    const data = this.customFieldList.filter((item: any) => item.staffId === selectedRowItem.id);
-    if (data && data.length > 0) {
-      this.selectedRow = selectedRowItem;
+  /**
+    * @method verifyCustomeFiledsNameType
+    * @description verifying custome fileds name type already exist or not.
+    */
+   verifyCustomeFiledsNameType(event: any) {
+    if (!this.validationClass.isNullOrUndefined(event)) {
+      let pullDownName = this.customFieldsForm.get('pullDownName')?.value;
+      const data = this.customFieldParentSearchList.filter((item: any) => (item.pullDownName).toLowerCase().trim() === pullDownName.toLowerCase().trim());
+      if (data && data.length > 0) {
+        this.notificationService.createNotificationBasic('info', "info", 'Pull down name is already exist!');
+        this.customFieldsForm.get('pullDownName')?.setValue('');
+        return;
+      } else {
+        this.customFieldsForm.get('staffMaillingName')?.setValue(pullDownName);
+        return;
+      }
     }
   }
 
-  setSelectedRowToUpdate() {
-    this.isEdit = true;
-    if (this.dataSource.data[0]) {
-      this.id = this.dataSource.data[0].id
-      this.pullDownName = this.dataSource.data[0].pullDownName;
+  /**
+   * @method applyFilter
+   * @description search the text from list
+   */
+  applyFilter(search: any) {
+    const targetValue: any[] = [];
+    this.customFieldSearchList.forEach((value: any) => {
+      let keys = ["customId", "pullDownName"];
+      for (let i = 0; i < keys.length; i++) {
+        if (value[keys[i]] && value[keys[i]].toString().toLocaleLowerCase().includes(search)) {
+          targetValue.push(value);
+          break;
+        }
+      }
+    });
+    this.customFieldList = targetValue;
+  }
 
+  /**
+  * @method print
+  * @description print the list
+  */
+  print() {
+    var doc = new jsPDF('l', 'mm', 'a4');
+    const head = [['Id', 'Pull Down Name']]
+    let data: any = [];
+    this.customFieldList.forEach((e: any) => {
+      var tempObj = [];
+      tempObj.push(e.customId);
+      tempObj.push(e.pullDownName);
+      data.push(tempObj);
+    });
+    autoTable(doc, {
+      head: head,
+      body: data,
+      theme: "grid",
+      showHead: "everyPage",
+      margin: { left: 20, right: 20, top: 30, bottom: 40 },
+      startY: 25,
+      headStyles: {
+        fillColor: [0, 57, 107]
+      },
+      alternateRowStyles: {
+        fillColor: [240, 240, 240]
+      },
+      tableLineColor: [208, 208, 208],
+      tableLineWidth: 0.1,
+      bodyStyles: {
+        fontSize: 12
+      },
+      styles: {
+        cellPadding: 3
+      },
+      didDrawPage: function (data) {
+
+        // Header
+        doc.setFontSize(20);
+        doc.setTextColor(40);
+        doc.text("Compansol TRIO Custom Fields Listing", 140, 15, {
+          align: 'center'
+        });
+
+      },
+      didDrawCell: (data) => { },
+    });
+    doc.setProperties({
+      title: "Custom Fields"
+    });
+    window.open(doc.output('bloburl').toString(), '_blank');
+  }
+
+  /**
+  * @method handleCancel
+  * @description reset the object and hide the model
+  */
+  handleCancel(): void {
+    this.initialiseForm();
+    this.customFieldsModalVisible = false;
+  }
+
+  /**
+ * @method sorting
+ * @description this method is used for asc sorting
+ */
+  sorting(attr: string) {
+    if (this.customFieldList.length > 0) {
+      this.customFieldList = [...this.customFieldList].sort((a, b) => (a[attr] > b[attr]) ? 1 : -1)
     }
+  }
 
+  /**
+  * @method sorting
+  * @description this method is used for desc sorting
+  */
+  sorting2(attr: string) {
+    if (this.customFieldList.length > 0) {
+      this.customFieldList = [...this.customFieldList].sort((a, b) => (a[attr] < b[attr]) ? 1 : -1)
+    }
   }
 }

@@ -111,4 +111,13 @@ export class SharedService {
         } 
         return undefined;
     }
+
+    getEmail(): string|undefined {
+        let user: any = '';
+        user = sessionStorage.getItem('username');
+        if(user) { 
+            return user;
+        } 
+        return undefined;
+    }
 }

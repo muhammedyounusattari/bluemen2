@@ -90,7 +90,7 @@
                                                     [(ngModel)]="existingPullTypeData.programType"
                                                     nzPlaceHolder="Program Type">
                                                     <nz-option *ngFor="let program of programList"
-                                                        [nzLabel]="program.value" [nzValue]="program.id">
+                                                        [nzLabel]="program.descriptions" [nzValue]="program.id">
                                                     </nz-option>
                                                 </nz-select>
                                             </nz-form-control>
@@ -190,7 +190,7 @@
                                     <nz-form-label class="lable-style">Program Type</nz-form-label>
                                     <nz-form-control>
                                         <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Program Type" [(ngModel)]="filterProgramType" formControlName="programType">
-                                            <nz-option *ngFor="let program of programList" [nzLabel]="program.value"
+                                            <nz-option *ngFor="let program of programList" [nzLabel]="program.descriptions"
                                                 [nzValue]="program.id">
                                             </nz-option>
                                         </nz-select>

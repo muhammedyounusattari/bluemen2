@@ -189,7 +189,7 @@ export class OrgadminPulldownListsComponent implements OnInit {
                             "pulltype": this.selectedPulltype,
                             "pullId": frmValue.pulldownNumber,
                             "pullname": "",
-                            "userName": "Rafeeqk"
+                            "userName": this.sharedService.getEmail()
                         };
                         const ids = this.message.loading('Adding Pulldown Lists Data...', { nzDuration: 0 }).messageId;
                         this._pullDownListsService.saveOriginalPullDownListsData(requestObj).subscribe((result: any) => {
@@ -228,7 +228,7 @@ export class OrgadminPulldownListsComponent implements OnInit {
                             "deleted": pullDownData.deleted,
                             "id": pullDownData.id,
                             "inoriginal": pullDownData.inoriginal,
-                            "lastuser": "Rafeeqk",
+                            "lastuser":  this.sharedService.getEmail(),
                             "longpullna": frmValue.pulldownName,
                             "numeric": pullDownData.numeric,
                             "organizationid": pullDownData.organizationid,

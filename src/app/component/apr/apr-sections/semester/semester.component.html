@@ -1,0 +1,150 @@
+<form nz-form class="apr-form" [nzLayout]="annualPerformanceReportSectionOnePartTwoForm.get('formLayout')?.value" [formGroup]="annualPerformanceReportSectionOnePartTwoForm">
+    <div nz-row class="tabStyle">
+        <div nz-col [nzSpan]="24">
+            <div nz-row class="form_section">
+              <div nz-row [nzGutter]="8" class="full-width-container">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label class="lable-style">&nbsp;</nz-form-label>
+                    <nz-form-control nzErrorTip="">
+                      <label class="lable-checkbox" nz-checkbox formControlName="useFiltersFromThisPage">Use filters from this page</label>
+                     
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">Semester Current year:</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input type="number" formControlName="currentyear"
+                              placeholder="Semester Current year" />
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Semester:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="semester" nzPlaceHolder="Semester">
+                                <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                      <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">Semester Fiscal Year:</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input type="number" formControlName="fiscalYear"
+                              placeholder="Semester Fiscal Year" />
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">Active:</nz-form-label>
+                          <nz-radio-group formControlName="active">
+                            <label nz-radio nzValue="true">YES</label>
+                            <label nz-radio nzValue="false">NO</label>
+                            <label nz-radio nzValue="all">ALL</label>
+                          </nz-radio-group>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">Served:</nz-form-label>
+                          <nz-radio-group formControlName="served">
+                            <label nz-radio nzValue="true">YES</label>
+                            <label nz-radio nzValue="false">NO</label>
+                            <label nz-radio nzValue="all">ALL</label>
+                          </nz-radio-group>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">Reported:</nz-form-label>
+                          <nz-radio-group formControlName="reported">
+                            <label nz-radio nzValue="true">YES</label>
+                            <label nz-radio nzValue="false">NO</label>
+                            <label nz-radio nzValue="all">ALL</label>
+                          </nz-radio-group>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                    <div nz-row class="marginTop30 full-width-container">
+                      <h6 class="section-head">Semester GPA Filter Information:</h6>
+                  </div>
+                  
+                   <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Semester GPA:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="gpa1" nzPlaceHolder="Semester GPA">
+                                <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style"></nz-form-label>
+                          <nz-form-control>
+                            <input nz-input type="number" formControlName="gpa2"
+                              placeholder="gpa 2" />
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Cummulative GPA:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="cummulativeGpa1" nzPlaceHolder="Semester Cummulative GPA">
+                                <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style"></nz-form-label>
+                          <nz-form-control>
+                            <input nz-input type="number" formControlName="cummulativeGpa2"
+                              placeholder="Cummulative GPA2" />
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Semester Standing:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="standing" nzPlaceHolder="Semester Standing">
+                                <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</form>
+ <!--new-->
+ <div nz-row class="tabStyle-btn">
+    <div nz-col nzSpan="4" nzOffset="20">
+        <a nz-button nzType="link" (click)="cancelClick()">Cancel</a>
+        <button nz-button nzType="primary" class="btn-color" (click)="addAnnualPerformance()">SAVE</button>
+    </div>
+</div>

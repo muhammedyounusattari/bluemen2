@@ -1,0 +1,492 @@
+<form nz-form class="apr-form" [nzLayout]="studentProfileForm.get('formLayout')?.value" [formGroup]="studentProfileForm">
+    <div nz-row class="tabStyle">
+        <div nz-col [nzSpan]="24">
+            <div nz-row class="form_section">
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Report Header:</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input type="text" formControlName="reportHeader"
+                                      placeholder="Report Header" />
+                                  </nz-form-control>
+                            </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Fiscal Year:</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input type="number" formControlName="fiscalYear"
+                                  placeholder="Fiscal Year" />
+                              </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">Active:</nz-form-label>
+                          <nz-radio-group formControlName="active">
+                            <label nz-radio nzValue="true">YES</label>
+                            <label nz-radio nzValue="false">NO</label>
+                            <label nz-radio nzValue="all">ALL</label>
+                          </nz-radio-group>
+                        </nz-form-item>
+                      </div>
+                </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Served:</nz-form-label>
+                            <nz-radio-group formControlName="served">
+                              <label nz-radio nzValue="true">YES</label>
+                              <label nz-radio nzValue="false">NO</label>
+                              <label nz-radio nzValue="all">ALL</label>
+                            </nz-radio-group>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Reported:</nz-form-label>
+                            <nz-radio-group formControlName="reported">
+                              <label nz-radio nzValue="true">YES</label>
+                              <label nz-radio nzValue="false">NO</label>
+                              <label nz-radio nzValue="all">ALL</label>
+                            </nz-radio-group>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Ethnicity</nz-form-label> 
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="ethnicity" nzPlaceHolder="Ethnicity">
+                                <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                     </div>
+                </div>
+                     <div nz-row [nzGutter]="24" class="full-width-container">
+                      <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Eligibility</nz-form-label> 
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="eligibility" nzPlaceHolder="Eligibility">
+                                <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                       </div>
+                       <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Gender</nz-form-label> 
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="gender" nzPlaceHolder="Gender">
+                                <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">Zip Code</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input type="text" formControlName="zipCode" mask="00000-0000"
+                              placeholder="Zip Code" />
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    </div>
+                    <div nz-row [nzGutter]="24" class="full-width-container">
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Income Source</nz-form-label> 
+                              <nz-form-control>
+                                <nz-select nzShowSearch nzAllowClear formControlName="incomeSource" nzPlaceHolder="Income Source">
+                                  <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                    [nzValue]="obj.longpullna">
+                                  </nz-option>
+                                </nz-select>
+                              </nz-form-control>
+                            </nz-form-item>
+                         </div>
+                         <div nz-col [nzSpan]="4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Entry Date From:</nz-form-label>
+                                <nz-form-control>
+                                  <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="entryDateFrom">
+                                  </nz-date-picker>
+                                </nz-form-control>
+                              </nz-form-item>
+                        </div>
+                        <div nz-col [nzSpan]="4">
+                              <nz-form-item>
+                                <nz-form-label class="lable-style">Entry Date To:</nz-form-label>
+                                <nz-form-control>
+                                  <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="entryDateTo">
+                                  </nz-date-picker>
+                                </nz-form-control>
+                              </nz-form-item>
+                        </div>
+    
+                        <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Month (Dob):</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="dob" nzPlaceHolder="Month (Dob)">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                        </div>
+                      </div>
+                      <div nz-row [nzGutter]="24" class="full-width-container">
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Referred By:</nz-form-label> 
+                              <nz-form-control>
+                                <nz-select nzShowSearch nzAllowClear formControlName="referredBy" nzPlaceHolder="Referred By">
+                                  <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                    [nzValue]="obj.longpullna">
+                                  </nz-option>
+                                </nz-select>
+                              </nz-form-control>
+                            </nz-form-item>
+                         </div>
+                         <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                              <nz-form-label class="lable-style">Cohort Year:</nz-form-label>
+                              <nz-form-control>
+                                <input nz-input type="number" formControlName="cohortYear"
+                                  placeholder="Cohort Year" />
+                              </nz-form-control>
+                            </nz-form-item>
+                          </div>
+                         <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">School</nz-form-label> 
+                              <nz-form-control>
+                                <nz-select nzShowSearch nzAllowClear formControlName="school" nzPlaceHolder="School">
+                                  <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                    [nzValue]="obj.longpullna">
+                                  </nz-option>
+                                </nz-select>
+                              </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        
+                      </div>
+
+                      <div nz-row [nzGutter]="24" class="full-width-container">
+                        <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Counselor:</nz-form-label> 
+                              <nz-form-control>
+                                <nz-select nzShowSearch nzAllowClear formControlName="counselor" nzPlaceHolder="Counselor">
+                                  <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                    [nzValue]="obj.longpullna">
+                                  </nz-option>
+                                </nz-select>
+                              </nz-form-control>
+                            </nz-form-item>
+                         </div>
+                         <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">Standing:</nz-form-label> 
+                              <nz-form-control>
+                                <nz-select nzShowSearch nzAllowClear formControlName="standing" nzPlaceHolder="Standing">
+                                  <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                    [nzValue]="obj.longpullna">
+                                  </nz-option>
+                                </nz-select>
+                              </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Entry School:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="entrySchool" nzPlaceHolder="Entry School">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                      </div>
+                      <div nz-row [nzGutter]="24" class="full-width-container">
+                      <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Entry College:</nz-form-label> 
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="entryCollege" nzPlaceHolder="Entry College">
+                                <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">College Type:</nz-form-label> 
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="collegeType" nzPlaceHolder="College Type">
+                                <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">College Name:</nz-form-label> 
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="collegeName" nzPlaceHolder="College Name">
+                                <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                      </div>
+                    </div> 
+                    <div nz-row [nzGutter]="24" class="full-width-container">
+                        <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Major:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="major" nzPlaceHolder="Major">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                          <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Site Location:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="siteLocation" nzPlaceHolder="Site Location">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                          <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">College Ready:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="collegeReady" nzPlaceHolder="College Ready">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                    </div>
+                    <div nz-row [nzGutter]="24" class="full-width-container">
+                        <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Participant Status:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="participantStatus" nzPlaceHolder="Participant Status">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                          <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Codes:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="codes" nzPlaceHolder="Codes">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                          <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Advisor:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="advisor" nzPlaceHolder="Advisor">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                    </div> 
+                    <div nz-row [nzGutter]="24" class="full-width-container">
+                        <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Tutor:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="tutor" nzPlaceHolder="Tutor">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                          <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Custom 1:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="custom1" nzPlaceHolder="Custom 1">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                          <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Custom 2:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="custom2" nzPlaceHolder="Custom 2">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                    </div> 
+                    <div nz-row [nzGutter]="24" class="full-width-container">
+                          <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Custom 3:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="custom3" nzPlaceHolder="Custom 3">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                          <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Custom 4:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="custom4" nzPlaceHolder="Custom 4">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                          <div nz-col [nzSpan]="8">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">Graduation Cohort Year:</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="graduationCohortYear" nzPlaceHolder="Graduation Cohort Year">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                    </div>
+                    <div nz-row class="marginTop30 full-width-container">
+                        <h6 class="section-head">GPA:</h6>
+                    </div>
+                    <div nz-row [nzGutter]="24" class="full-width-container">
+                        <div nz-col [nzSpan]="4">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style">GPA (entry):</nz-form-label> 
+                              <nz-form-control>
+                                <nz-select nzShowSearch nzAllowClear formControlName="gpaEntry1" nzPlaceHolder="GPA (entry)">
+                                  <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                    [nzValue]="obj.longpullna">
+                                  </nz-option>
+                                </nz-select>
+                              </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzSpan]="4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style"></nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input type="number" formControlName="gpaEntry2"
+                                      placeholder="GPA (entry)" />
+                                  </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzSpan]="4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">GPA (start):</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="gpaStart1" nzPlaceHolder="GPA (start)">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                          <div nz-col [nzSpan]="4">
+                              <nz-form-item>
+                                  <nz-form-label class="lable-style"></nz-form-label>
+                                  <nz-form-control>
+                                      <input nz-input type="number" formControlName="gpaStart2"
+                                        placeholder="GPA (start)" />
+                                    </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                          <div nz-col [nzSpan]="4">
+                            <nz-form-item>
+                                <nz-form-label class="lable-style">GPA (end):</nz-form-label> 
+                                <nz-form-control>
+                                  <nz-select nzShowSearch nzAllowClear formControlName="gpaEnd1" nzPlaceHolder="GPA (end)">
+                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                      [nzValue]="obj.longpullna">
+                                    </nz-option>
+                                  </nz-select>
+                                </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                          <div nz-col [nzSpan]="4">
+                              <nz-form-item>
+                                  <nz-form-label class="lable-style"></nz-form-label>
+                                  <nz-form-control>
+                                      <input nz-input type="number" formControlName="gpaEnd2"
+                                        placeholder=">GPA (end)" />
+                                    </nz-form-control>
+                              </nz-form-item>
+                          </div>
+                  </div>        
+            </div>
+        </div>
+    </div>
+</form>
+ <!--new-->
+ <div nz-row class="tabStyle-btn">
+    <div nz-col nzSpan="4" nzOffset="20">
+        <a nz-button nzType="link" (click)="cancelClick()">Cancel</a>
+        <button nz-button nzType="primary" class="btn-color" (click)="addAnnualPerformance()">SAVE</button>
+    </div>
+</div>

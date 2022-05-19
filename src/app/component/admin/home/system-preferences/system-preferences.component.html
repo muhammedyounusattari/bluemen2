@@ -277,7 +277,7 @@
                                                     <nz-select nzShowSearch nzAllowClear formControlName="programType"
                                                         nzPlaceHolder="Project Type"
                                                         [(ngModel)]="annualPerformance.programType" nzDisabled>
-                                                      <nz-option *ngFor="let pt of programTypeList" [nzLabel]="pt.longpullna" [nzValue]="pt.longpullna">
+                                                      <nz-option *ngFor="let pt of programTypeList" [nzLabel]="pt.descriptions" [nzValue]="pt.orgType">
                                                       </nz-option>
                                                     </nz-select>
                                                 </nz-form-control>

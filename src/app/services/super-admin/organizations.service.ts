@@ -22,4 +22,13 @@ export class OrganizationsService {
     updateOrganization(request: any): Observable<any> {
         return this.dataService.callPutService(ServiceUrls.UPDATE_ORGANIZATION, request);
     }
+
+    getProgTypeList(): Observable<any> {
+        return this.dataService.callGetService(ServiceUrls.GET_ORG_PROG_TYPE_LIST);
+    }
+
+    getSubScriptionList(): Observable<any> {
+        return this.dataService.callGetService(ServiceUrls.GET_ORG_SUBSCRIPTION_TYPE_LIST);
+    }
+
 }

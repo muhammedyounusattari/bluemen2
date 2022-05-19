@@ -1,0 +1,102 @@
+<form nz-form class="apr-form" [nzLayout]="notesForm.get('formLayout')?.value" [formGroup]="notesForm">
+    <div nz-row class="tabStyle">
+        <div nz-col [nzSpan]="24">
+            <div nz-row class="form_section">
+              <div nz-row [nzGutter]="8" class="full-width-container">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label class="lable-style">&nbsp;</nz-form-label>
+                    <nz-form-control nzErrorTip="">
+                      <label class="lable-checkbox" nz-checkbox formControlName="useFiltersFromThisPage">Use filters from this page</label>
+                     
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Exam Date from:</nz-form-label>
+                            <nz-form-control>
+                              <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="dateFrom">
+                              </nz-date-picker>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                          <nz-form-item>
+                            <nz-form-label class="lable-style">Exam Date To:</nz-form-label>
+                            <nz-form-control>
+                              <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="dateTo">
+                              </nz-date-picker>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Marks:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="marks1" nzPlaceHolder="Marks">
+                                <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style"></nz-form-label>
+                          <nz-form-control>
+                            <input nz-input type="number" formControlName="marks2"
+                              placeholder="Marks2" />
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Exam Name:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="examName" nzPlaceHolder="Exam Name">
+                                <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Exam Count:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="examCount1" nzPlaceHolder="Exam Count">
+                                <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style"></nz-form-label>
+                          <nz-form-control>
+                            <input nz-input type="number" formControlName="examCount2"
+                              placeholder="Exam Count 2" />
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+ <!--new-->
+ <div nz-row class="tabStyle-btn">
+    <div nz-col nzSpan="4" nzOffset="20">
+        <a nz-button nzType="link" (click)="cancelClick()">Cancel</a>
+        <button nz-button nzType="primary" class="btn-color" (click)="addAnnualPerformance()">SAVE</button>
+    </div>
+</div>

@@ -1,0 +1,407 @@
+<div class="custom-body">
+    <div nz-row>
+        <div nz-col [nzSpan]="24">
+            <form nz-form class="apr-form" [nzLayout]="annualPerformanceReportSectionOneFormForm.get('formLayout')?.value"
+                [formGroup]="annualPerformanceReportSectionOneFormForm">
+                <nz-tabset>
+                    <nz-tab nzTitle="A.Identification,B.Project Director Information,C.Project Characteristics">
+                        <div nz-row class="tabStyle">
+                            <div nz-col [nzSpan]="24">
+                                <div nz-row class="form_section">
+                                    <div nz-row [nzGutter]="24" class="full-width-container">
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style" >1. PR/ Award Number:</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter PR/ Award Number">
+                                                    <input nz-input type="text" formControlName="awardNumber"
+                                                        placeholder="PR/ Award Number"/>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">2. Type of Institution:</nz-form-label>
+                                                    <nz-radio-group formControlName="typeofInstitution">
+                                                      <label nz-radio nzValue="2">2-year institution</label><br/>
+                                                      <label nz-radio nzValue="4">4-year institution</label><br/>
+                                                      <label nz-radio nzValue="6">4-year institution approved for both 2-year and 4-year programs</label>
+                                                    </nz-radio-group>
+                                            </nz-form-item>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">3. Project Type:</nz-form-label>
+                                                <nz-form-control>
+                                                    <nz-select nzShowSearch nzAllowClear formControlName="projectType"
+                                                        nzPlaceHolder="Project Type">
+                                                        <nz-option *ngFor="let sl of semesterList"
+                                                            [nzLabel]="sl.longpullna" [nzValue]="sl.longpullna">
+                                                        </nz-option>
+                                                    </nz-select>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="4">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">4. Reporting Period From:</nz-form-label>
+                                                <nz-form-control>
+                                                  <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="reportingPeriodFrom">
+                                                  </nz-date-picker>
+                                                </nz-form-control>
+                                              </nz-form-item>
+                                        </div>
+                                        <div nz-col [nzSpan]="4">
+                                              <nz-form-item>
+                                                <nz-form-label class="lable-style">To:</nz-form-label>
+                                                <nz-form-control>
+                                                  <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="reportingPeriodTo">
+                                                  </nz-date-picker>
+                                                </nz-form-control>
+                                              </nz-form-item>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">5. GPA Scale:</nz-form-label>
+                                                <nz-form-control>
+                                                    <nz-select nzShowSearch nzAllowClear formControlName="gpaScale"
+                                                        nzPlaceHolder="Please Enter GPA Scale">
+                                                        <nz-option *ngFor="let sl of semesterList"
+                                                            [nzLabel]="sl.longpullna" [nzValue]="sl.longpullna">
+                                                        </nz-option>
+                                                    </nz-select>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">6. Name of Grantee Institution:</nz-form-label>
+                                                <nz-form-control>
+                                                    <input nz-input type="text" formControlName="nameOfGranteeInstitution"
+                                                        placeholder="Name of Grantee Institution"/>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                    </div>
+                                    <div nz-row [nzGutter]="24" class="full-width-container">
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">7. Address:</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter Address">
+                                                  <textarea class="notes-style" formControlName="address" nz-input placeholder="Enter Notes"
+                                                    [nzAutosize]="{ minRows: 2, maxRows: 2 }">
+                                                          </textarea>
+                                                </nz-form-control>
+                                              </nz-form-item>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="4">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">City</nz-form-label>
+                                                <nz-form-control>
+                                                  <nz-select nzShowSearch nzAllowClear formControlName="city" nzPlaceHolder="City">
+                                                    <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                                      [nzValue]="obj.longpullna">
+                                                    </nz-option>
+                                                  </nz-select>
+                                                </nz-form-control>
+                                              </nz-form-item>
+                                        </div>
+                                        <div nz-col [nzSpan]="4">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">State</nz-form-label>
+                                                <nz-form-control>
+                                                  <nz-select nzShowSearch nzAllowClear formControlName="state" nzPlaceHolder="State">
+                                                    <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                                      [nzValue]="obj.longpullna">
+                                                    </nz-option>
+                                                  </nz-select>
+                                                </nz-form-control>
+                                              </nz-form-item>
+                                        </div>
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                              <nz-form-label class="lable-style">Zip Code</nz-form-label>
+                                              <nz-form-control nzErrorTip="Please Enter Valid Zip Code">
+                                                <input nz-input type="text" formControlName="zipCode" mask="00000-0000"
+                                                  placeholder="Zip Code" />
+                                              </nz-form-control>
+                                            </nz-form-item>
+                                          </div>
+
+                                    </div>
+
+                                    <div nz-row [nzGutter]="24" class="full-width-container">
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">8a. Project Director:</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter Project Director">
+                                                    <input nz-input type="text" formControlName="projectDirector1"
+                                                        placeholder="Project Director"/>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="4">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">8b. Telephone Number:</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter Valid Telephone Number">
+                                                    <input nz-input type="text" formControlName="telephoneNumber" mask="00000-0000"
+                                                      placeholder="Telephone Number" />
+                                                  </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                        <div nz-col [nzSpan]="4">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">Extn:</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter Valid Extn">
+                                                    <input nz-input type="text" formControlName="extn" mask="00000-0000"
+                                                      placeholder="Extn"/>
+                                                  </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">8c. Fax #:</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter Valid Fax">
+                                                    <input nz-input type="text" formControlName="fax" mask="00000-0000"
+                                                      placeholder="Fax" />
+                                                  </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                        </div>
+                                        <div nz-row [nzGutter]="24" class="full-width-container">
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">8d. E-mail Address:</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter Valid Email">
+                                                  <input nz-input type="text" formControlName="mailAddress1" placeholder="Email"/>
+                                                </nz-form-control>
+                                              </nz-form-item>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">9a. Name of Data Entry Person:</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter Name of Data Entry Person">
+                                                  <input nz-input type="text" formControlName="nameOfDataEntryPerson" placeholder="Name of Data Entry Person"/>
+                                                </nz-form-control>
+                                              </nz-form-item>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">9b. Phone Number:</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter Valid Phone Number">
+                                                  <input nz-input type="text" formControlName="phoneNumber" mask="(000)000-0000" placeholder="Phone Number"/>
+                                                </nz-form-control>
+                                              </nz-form-item>
+                                        </div>
+                                        </div>
+                                        <div nz-row [nzGutter]="24" class="full-width-container">
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">9c. E-mail Address:</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter Valid Email">
+                                                  <input nz-input type="text" formControlName="mailAddress2" placeholder="Email"/>
+                                                </nz-form-control>
+                                              </nz-form-item>
+                                        </div>
+
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">OMB Approval No:</nz-form-label>
+                                                <nz-form-control nzErrorTip="Please Enter OMB Approval No">
+                                                    <input nz-input type="text" formControlName="ombApprovalNo"
+                                                        placeholder="OMB Approval No"/>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">Expiration Date</nz-form-label>
+                                                <nz-form-control>
+                                                    <nz-date-picker class="filter_Datepicker"
+                                                        nzPlaceHolder="MM/DD/YYYY" formControlName="expirationDate" placeholder="Expiration Date">
+                                                    </nz-date-picker>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                        <div nz-row class="marginTop30 full-width-container">
+                                            <h6 class="section-head">C. Project Characteristics:</h6>
+                                        </div>
+                                        <div nz-row [nzGutter]="24" class="full-width-container">
+                                        <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-control nzErrorTip="">
+                                                <nz-form-label class="lable-style">10a.&nbsp;&nbsp;</nz-form-label> 
+                                                <label class="lable-checkbox" nz-checkbox formControlName="summerBridgeProgram" ></label>
+                                                <nz-form-label class="lable-style">Has a Summer Bridge Program?</nz-form-label>
+                                            </nz-form-control>
+                                           
+                                          </nz-form-item>
+                                          </div>
+                                          <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-label class="lable-style">	10b. If yes, in field #10a, number of summer bridge participants served:</nz-form-label>
+                                                <nz-form-control>
+                                                    <input nz-input type="number" formControlName="summerBridgeParticipantsServed"
+                                                        placeholder="Number of summer bridge participants served"/>
+                                                </nz-form-control>
+                                            </nz-form-item>
+                                        </div>
+                                        <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-control nzErrorTip="">
+                                                    <nz-form-label class="lable-style">10c.&nbsp;&nbsp;</nz-form-label> 
+                                                    <label class="lable-checkbox" nz-checkbox formControlName="usesFederalGrantFundsToProvideGrantAid"></label>
+                                                    <nz-form-label class="lable-style">Uses Federal Grant Funds to Provide Grant Aid</nz-form-label>
+                                                </nz-form-control>
+                                               
+                                              </nz-form-item>
+                                         </div>
+                                         <div nz-row [nzGutter]="24" class="full-width-container">
+                                          <div nz-col [nzSpan]="8">
+                                            <nz-form-item>
+                                                <nz-form-control nzErrorTip="">
+                                                    <nz-form-label class="lable-style">10d.&nbsp;&nbsp;</nz-form-label> 
+                                                    <label class="lable-checkbox" nz-checkbox formControlName="requiredToProvideMatchingFundsForGrantAid"></label>
+                                                    <nz-form-label class="lable-style">required to provide matching funds for Grant Aid?</nz-form-label>
+                                                </nz-form-control>
+                                              </nz-form-item>
+                                            </div>
+                                            <div nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label class="lable-style">	10e. If yes in field#10d, please enter the dollar amount for the reporting period:$</nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input type="text" formControlName="dollarAmount1"
+                                                            placeholder="number of summer bridge participants served period:$"/>
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-control nzErrorTip="">
+                                                        <nz-form-label class="lable-style">10f.&nbsp;&nbsp;</nz-form-label> 
+                                                        <label class="lable-checkbox" nz-checkbox formControlName="receivesInstitutional"></label>
+                                                        <nz-form-label class="lable-style">Receives institutional or other non-federal funds</nz-form-label>
+                                                    </nz-form-control>
+                                                   
+                                                  </nz-form-item>
+                                             </div>
+                                        </div>
+                                        <div nz-row [nzGutter]="24" class="full-width-container">
+                                              <div nz-col [nzSpan]="8">
+                                                  <nz-form-item>
+                                                      <nz-form-label class="lable-style">10g. If yes in field#10f, please enter the dollar amount for the reporting period:$</nz-form-label>
+                                                      <nz-form-control>
+                                                          <input nz-input type="text" formControlName="dollarAmoun2"
+                                                              placeholder="The dollar amount for the reporting period:$"/>
+                                                      </nz-form-control>
+                                                  </nz-form-item>
+                                              </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="D.Certification,E.Warning">
+                        <div nz-row class="tabStyle">
+                            <div nz-col [nzSpan]="24">
+                                <div nz-row class="form_section">
+                                    <div nz-row [nzGutter]="24" class="full-width-container">
+                                             <div nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                  <nz-form-label class="lable-style">Report electronically submitted on:</nz-form-label>
+                                                  <nz-form-control>
+                                                    <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="reportElectronicallySubmittedOn">
+                                                    </nz-date-picker>
+                                                  </nz-form-control>
+                                                </nz-form-item>
+                                             </div>
+                                              <div nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label class="lable-style">Name of Project Director:</nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input type="text" formControlName="projectDirector2"
+                                                            placeholder="Name of Project Director"
+                                                            />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                            <div nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                    <nz-form-label class="lable-style">Name of Certifying Official:</nz-form-label>
+                                                    <nz-form-control>
+                                                        <input nz-input type="text" formControlName="certifyingOfficial"
+                                                            placeholder="Name of Certifying Official"
+                                                            />
+                                                    </nz-form-control>
+                                                </nz-form-item>
+                                            </div>
+                                        </div>
+                                        <div nz-row [nzGutter]="24" class="full-width-container">
+                                            <div nz-col [nzSpan]="8">
+                                               <nz-form-item>
+                                                 <nz-form-label class="lable-style">Date1:</nz-form-label>
+                                                 <nz-form-control>
+                                                   <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="date1">
+                                                   </nz-date-picker>
+                                                 </nz-form-control>
+                                               </nz-form-item>
+                                            </div>
+                                            <div nz-col [nzSpan]="8">
+                                                <nz-form-item>
+                                                  <nz-form-label class="lable-style">Date2:</nz-form-label>
+                                                  <nz-form-control>
+                                                    <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="date2">
+                                                    </nz-date-picker>
+                                                  </nz-form-control>
+                                                </nz-form-item>
+                                             </div>
+                                       </div>  
+                                       <div nz-row [nzGutter]="24" class="full-width-container">
+                                        <div nz-col [nzSpan]="12">
+                                        <nz-form-item class="flexArr">
+                                            <nz-form-label class="lable-style">Authority: Public Law 102-325, as amended</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter Authority">
+                                              <textarea class="notes-style" formControlName="authority" nz-input placeholder="Enter Authority"
+                                                [nzAutosize]="{ minRows: 3, maxRows: 3 }">
+                                                      </textarea>
+                                            </nz-form-control>
+                                          </nz-form-item>
+                                    </div>
+                                    <div nz-col [nzSpan]="12">
+                                        <nz-form-item class="flexArr">
+                                            <nz-form-label class="lable-style">C. Warning:</nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter Warning">
+                                              <textarea class="notes-style" formControlName="warning" nz-input placeholder="Enter Warning"
+                                                [nzAutosize]="{ minRows: 3, maxRows: 3 }">
+                                                      </textarea>
+                                            </nz-form-control>
+                                          </nz-form-item>
+                                     </div>    
+                                    </div>
+                                </div>
+                                </div>
+                        </div>
+                    </nz-tab>
+                </nz-tabset>
+            </form>
+            <!--new-->
+            <div nz-row class="tabStyle-btn">
+                <div nz-col nzSpan="4" nzOffset="20">
+                    <a nz-button nzType="link" (click)="cancelClick()">Cancel</a>
+                    <button nz-button nzType="primary" class="btn-color" (click)="addAnnualPerformance()">SAVE</button>
+                </div>
+            </div>
+            <!--end-->
+        </div>
+    </div>
+</div>

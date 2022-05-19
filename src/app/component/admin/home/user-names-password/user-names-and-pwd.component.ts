@@ -69,12 +69,10 @@ export class UserNamesAndPasswordComponent implements OnInit {
 
     ngOnInit(): void {
         this.isSuperAdmin = false;
+        this.sharedService.setPageTitle('User Information');
         this.userDataObject = [];
         this.user = sessionStorage.getItem('state');
         this.user = JSON.parse(this.user);
-        if (!this.validationClass.isNullOrUndefined(this.organizationId)) {
-            this.sharedService.setPageTitle('User Information');
-        }
         if (this.user.roleName !== 'Super Admin' || this.organizationId) {
             this.getUserList();
         } else {

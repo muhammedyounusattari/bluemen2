@@ -167,44 +167,44 @@
                                                 <button mat-menu-item [matMenuTriggerFor]="systemToolList">System Tool</button>
                                         </mat-menu>
                                         <mat-menu #homeMenuList="matMenu">
-                                                <button mat-menu-item>Bot Form Management</button>
-                                                <button mat-menu-item>E-Mail Setup</button>
+                                                <button mat-menu-item  *ngIf="showMenu('Bot Form Management')">Bot Form Management</button>
+                                                <button mat-menu-item  *ngIf="showMenu('E-Mail Setup')">E-Mail Setup</button>
+                                                <button mat-menu-item  *ngIf="showMenu('Original Pulldown Lists')" [routerLink]="['admin/home/original-pulldown-lists']">Original Pulldown Lists</button>
+                                                <button mat-menu-item  *ngIf="showMenu('Pull Type')" [routerLink]="['admin/home/pull-type']">Pull Type</button>
+                                                <button mat-menu-item  *ngIf="showMenu('Roles')" [routerLink]="['admin/home/roles']">Roles</button>
+                                                <button mat-menu-item  *ngIf="showMenu('User Names And Password')" [routerLink]="['admin/home/user-names-pwd']">User Names And Password</button>
                                                 <button *ngIf="user.roleName === 'Super Admin'" mat-menu-item [routerLink]="['admin/home/organization']">
                                                         Organizations</button>
-                                                <button mat-menu-item [routerLink]="['admin/home/original-pulldown-lists']">Original Pulldown Lists</button>
-                                                <button mat-menu-item [routerLink]="['admin/home/pull-type']">Pull Type</button>
-                                                <button mat-menu-item [routerLink]="['admin/home/roles']">Roles</button>
                                                 <button *ngIf="user.roleName === 'Super Admin'" mat-menu-item [routerLink]="['admin/home/securityQuestions']">
                                                         Security Questions</button>
                                                 <button mat-menu-item *ngIf="showMenu('System Preferences')"
                                                         [routerLink]="['admin/home/system-preferences']">System Preferences</button>
-                                                <button mat-menu-item [routerLink]="['admin/home/user-names-pwd']">User Names And Password</button>
                                         </mat-menu>
                                         <mat-menu #customizeMenuList="matMenu">
                                                 <button mat-menu-item
-                                                        [routerLink]="['admin/customize/service-group-list']">Activity/Service List</button>
-                                                <button mat-menu-item [matMenuTriggerFor]="classes">Classes</button>
+                                                *ngIf="showMenu('Activity/Service List')" [routerLink]="['admin/customize/service-group-list']">Activity/Service List</button>
+                                                <button mat-menu-item  *ngIf="showMenu('Classes')" [matMenuTriggerFor]="classes">Classes</button>
                                                 <button mat-menu-item
-                                                        [routerLink]="['admin/customize/college-list']">College/School List</button>
-                                                <button mat-menu-item [matMenuTriggerFor]="contacts">Contacts</button>
+                                                        *ngIf="showMenu('College/School List')" [routerLink]="['admin/customize/college-list']">College/School List</button>
+                                                <button mat-menu-item  *ngIf="showMenu('Contacts')" [matMenuTriggerFor]="contacts">Contacts</button>
                                                 <button mat-menu-item
-                                                        [routerLink]="['admin/customize/custom-fields']">Custome Field Values</button>
+                                                *ngIf="showMenu('Custome Field Values')" [routerLink]="['admin/customize/custom-fields']">Custome Field Values</button>
                                                 <!-- <button mat-menu-item
                                                         [routerLink]="['admin/customize/grade-group-list']">Grade/Standing List</button> -->
                                                 <button mat-menu-item
-                                                        [routerLink]="['admin/customize/grade-standing']">Grade/Standing List</button>
+                                                         *ngIf="showMenu('Grade/Standing List')" [routerLink]="['admin/customize/grade-standing']">Grade/Standing List</button>
                                                 <!-- <button mat-menu-item
                                                         [routerLink]="['admin/customize/lab-settings']">Lab Setting Preferences</button> -->
                                                 <button mat-menu-item
-                                                        [routerLink]="['admin/customize/lab-settings-preferences']">Lab Setting Preferences</button>
+                                                        *ngIf="showMenu('Lab Setting Preferences')" [routerLink]="['admin/customize/lab-settings-preferences']">Lab Setting Preferences</button>
                                                 <!-- <button mat-menu-item
                                                         [routerLink]="['admin/customize/pulldown-list']">Pulldown List</button> -->
                                                 <button mat-menu-item *ngIf="user.roleName === 'Super Admin'" 
                                                         [routerLink]="['admin/customize/pulldown-lists']">Pulldown Lists</button>
                                                 <button mat-menu-item *ngIf="user.roleName !== 'Super Admin'" 
-                                                        [routerLink]="['admin/customize/orgadmin-pulldown-lists']">Pulldown Lists</button>
+                                                       [routerLink]="['admin/customize/orgadmin-pulldown-lists']">Pulldown Lists</button>
                                                 <button mat-menu-item
-                                                        [routerLink]="['admin/customize/staff-members']">Staff Members</button>
+                                                       *ngIf="showMenu('Staff Members')"  [routerLink]="['admin/customize/staff-members']">Staff Members</button>
                                         </mat-menu>
                                         <mat-menu #classes="matMenu">
                                                 <button mat-menu-item [matMenuTriggerFor]="manageClasses">Manage Classes
@@ -259,10 +259,47 @@
                                         </mat-menu>
                                 </li>
 
-                                <li class="nav-item">
-                                        <a class="nav-link" href="#">APR</a>
+                                <li class="nav-item dropdown" id="aprDDL">
+                                        <button class="nav-link dropdown-toggle" mat-button
+                                                [matMenuTriggerFor]="aprModule">APR</button>
+                                        <mat-menu #aprModule="matMenu">
+                                                <button mat-menu-item [matMenuTriggerFor]="aprHomeMenuList"
+                                                        [routerLink]="['admin/home']">Home</button>
+                                                <button mat-menu-item [matMenuTriggerFor]="aprSectionMenuList"
+                                                        [routerLink]="['apr/apr-section']">APR Sections</button>
+                                                        <button mat-menu-item [matMenuTriggerFor]="clearProfilesMenuList"
+                                                        [routerLink]="['admin/customize']">Clear Profiles</button>
+                                                        <button mat-menu-item [matMenuTriggerFor]="updateProfilesMenuList"
+                                                        [routerLink]="['admin/customize']">Update Profiles</button>                                        </mat-menu>
+                                        <mat-menu #aprHomeMenuList="matMenu">
+                                                <button mat-menu-item >Copy APR data from previous year</button>
+                                                <button mat-menu-item>Program Objectives</button>
+                                                <button mat-menu-item >Project Identification</button>
+                                                <button mat-menu-item>Provision of Services</button>
+                                                <button mat-menu-item>Program Objectives</button>
+                                                <button mat-menu-item >Update APR fields from Tarcking information</button>
+                                                
+                                        </mat-menu>
+                                        <mat-menu #aprSectionMenuList="matMenu">
+                                                <button mat-menu-item (click)="navigateToComponent('annual-performance-report-section-1')">Annual Performance Report Section 1</button>
+                                                <button mat-menu-item (click)="navigateToComponent('annual-performance-report-section-1-part-2')">Annual Performance Report Section 1-Part ||</button>
+                                                <button mat-menu-item (click)="navigateToComponent('annual-performance-report-section-2')">Annual Performance Report Section 2</button>
+                                                <button mat-menu-item (click)="navigateToComponent('annual-performance-report-section-2-edit')">Annual Performance Report Section 2 (Quick Edit Only)</button>
+                                        </mat-menu>
+                                        <mat-menu #clearProfilesMenuList="matMenu">
+                                                <button mat-menu-item>Clear Yearly Information (Activity/Services)</button>
+                                                <button mat-menu-item>Clear Yearly Information (Wallet)</button>
+                                        </mat-menu>
+                                        <mat-menu #updateProfilesMenuList="matMenu">
+                                                <button mat-menu-item>Update Student Profile from Counselor Contacts</button>
+                                                <button mat-menu-item>Update Student Profile from Lab Contacts</button>
+                                                <button mat-menu-item >Update Student Profile from Staff Contacts</button>
+                                                <button mat-menu-item>Update Student Profile from Teacher Contacts</button>
+                                                <button mat-menu-item >Update Student Profile from Tutor Contacts</button>
+                                                <button mat-menu-item>Update Student Profile from Wallet Log</button>
+                                        </mat-menu>
+                                       
                                 </li>
-
                                 <li class="nav-item">
                                         <a class="nav-link" href="#">PE Points</a>
                                 </li>

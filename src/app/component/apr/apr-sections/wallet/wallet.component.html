@@ -1,0 +1,124 @@
+<form nz-form class="apr-form" [nzLayout]="walletForm.get('formLayout')?.value" [formGroup]="walletForm">
+    <div nz-row class="tabStyle">
+        <div nz-col [nzSpan]="24">
+            <div nz-row class="form_section">
+              <div nz-row [nzGutter]="8" class="full-width-container">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label class="lable-style">&nbsp;</nz-form-label>
+                    <nz-form-control nzErrorTip="">
+                      <label class="lable-checkbox" nz-checkbox formControlName="useFiltersFromThisPage">Use filters from this page</label>
+                     
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Wallet Date From:</nz-form-label>
+                            <nz-form-control>
+                              <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="walletDateFrom">
+                              </nz-date-picker>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                          <nz-form-item>
+                            <nz-form-label class="lable-style">Wallet Date To:</nz-form-label>
+                            <nz-form-control>
+                              <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="walletDateTo">
+                              </nz-date-picker>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+
+                    <div nz-col [nzSpan]="4">
+                      <nz-form-item>
+                          <nz-form-label class="lable-style">Uploaded Date From:</nz-form-label>
+                          <nz-form-control>
+                            <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="uploadedDateFrom">
+                            </nz-date-picker>
+                          </nz-form-control>
+                        </nz-form-item>
+                  </div>
+                  <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">Uploaded Date To:</nz-form-label>
+                          <nz-form-control>
+                            <nz-date-picker class="filter_Datepicker" nzPlaceHolder="MM/DD/YYYY" formControlName="uploadedDateTo">
+                            </nz-date-picker>
+                          </nz-form-control>
+                        </nz-form-item>
+                  </div>
+                  <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label class="lable-style">Wallet Type:</nz-form-label>
+                        <nz-form-control>
+                          <nz-select nzShowSearch nzAllowClear formControlName="walletType" nzPlaceHolder="Wallet Type">
+                            <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                              [nzValue]="obj.longpullna">
+                            </nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+                </div>
+                </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Wallet Name:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="walletName" nzPlaceHolder="Wallet Name">
+                                <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">File Count:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="fileCount1" nzPlaceHolder="File Count1">
+                                <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                      <div nz-col [nzSpan]="4">
+                          <nz-form-item>
+                              <nz-form-label class="lable-style"></nz-form-label>
+                              <nz-form-control>
+                                  <input nz-input type="number" formControlName="fileCount2"
+                                    placeholder="File Count 2" />
+                                </nz-form-control>
+                          </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Uploaded by User:</nz-form-label> 
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="uploadedByUser" nzPlaceHolder="Uploaded by User">
+                                <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+ <!--new-->
+ <div nz-row class="tabStyle-btn">
+    <div nz-col nzSpan="4" nzOffset="20">
+        <a nz-button nzType="link" (click)="cancelClick()">Cancel</a>
+        <button nz-button nzType="primary" class="btn-color" (click)="addAnnualPerformance()">SAVE</button>
+    </div>
+</div>

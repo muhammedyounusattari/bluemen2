@@ -176,11 +176,11 @@
                                                         <nz-form-control nzErrorTip="Please Select Subscription Type">
                                                             <nz-select nzShowSearch nzAllowClear
                                                                 formControlName="organizationType"
-                                                                nzPlaceHolder="organizationType">
+                                                                nzPlaceHolder="Subscription Type">
                                                                 <nz-option
-                                                                    *ngFor="let organizationType of organizationTypeFilterList"
-                                                                    [nzLabel]="organizationType.longpullna"
-                                                                    [nzValue]="organizationType.longpullna">
+                                                                    *ngFor="let subscriptionType of subscriptionTypeFilterList"
+                                                                    [nzLabel]="subscriptionType.description"
+                                                                    [nzValue]="subscriptionType.subscriptionType">
                                                                 </nz-option>
                                                             </nz-select>
                                                         </nz-form-control>
@@ -270,8 +270,8 @@
                                                                 formControlName="programType"
                                                                 nzPlaceHolder="Project Type">
                                                                 <nz-option *ngFor="let programType of programTypeFilterList"
-                                                                    [nzLabel]="programType.longpullna"
-                                                                    [nzValue]="programType.Value">
+                                                                    [nzLabel]="programType.descriptions"
+                                                                    [nzValue]="programType.orgType">
                                                                 </nz-option>
                                                             </nz-select>
                                                         </nz-form-control>
@@ -373,7 +373,7 @@
                                         <nz-select nzShowSearch nzAllowClear formControlName="orgProgramType"
                                             nzPlaceHolder="Project Type">
                                             <nz-option *ngFor="let programType of programTypeList"
-                                                [nzLabel]="programType.longpullna" [nzValue]="programType.Value">
+                                                [nzLabel]="programType.descriptions" [nzValue]="programType.orgType">
                                             </nz-option>
                                         </nz-select>
                                     </nz-form-control>
@@ -385,9 +385,9 @@
                                     <nz-form-control>
                                         <nz-select nzShowSearch nzAllowClear formControlName="orgOrganizationType"
                                             nzPlaceHolder="organizationType">
-                                            <nz-option *ngFor="let organizationType of organizationTypeList"
-                                                [nzLabel]="organizationType.longpullna"
-                                                [nzValue]="organizationType.longpullna">
+                                            <nz-option *ngFor="let subscriptionType of subscriptionTypeList"
+                                                [nzLabel]="subscriptionType.description"
+                                                [nzValue]="subscriptionType.subscriptionType">
                                             </nz-option>
                                         </nz-select>
                                     </nz-form-control>

@@ -39,6 +39,7 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { HttpClientModule } from '@angular/common/http';
 import { DemoNgZorroAntdModule } from 'src/app/ng-zorro-antd.module';
+import { AprModule } from './component/apr/apr-sections/apr.module';
 import { CookieService } from 'ngx-cookie-service';
 
 registerLocaleData(en);
@@ -78,7 +79,8 @@ registerLocaleData(en);
     MatSelectModule,
     NgDynamicBreadcrumbModule,
     HttpClientModule,
-    DemoNgZorroAntdModule
+    DemoNgZorroAntdModule,
+    AprModule
   ],
   entryComponents: [ConfirmationComponent],
   providers: [CookieService, ToastrService, PendingChangesGuard, { provide: NZ_I18N, useValue: en_US }],

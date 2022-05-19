@@ -40,10 +40,10 @@ export class OrganizationComponent implements OnInit {
     cityFilterList: any = [];
     stateFilterList: any = [];
     stateList: any = [];
-    //organizationTypeList: any = [];
+    subscriptionTypeList: any = [];
+    programTypeList: any = [];
     activeList: any = [{ 'longpullna': 'All' }, { 'longpullna': 'Yes' }, { 'longpullna': 'No' }];
     purgeList: any = [{ 'longpullna': 'All' }, { 'longpullna': 'Yes' }, { 'longpullna': 'No' }];
-    //programTypeList: any = [];
     deletedList: any = [{ 'longpullna': 'All' }, { 'longpullna': 'Yes' }, { 'longpullna': 'No' }];
     panels = [
         {
@@ -59,19 +59,16 @@ export class OrganizationComponent implements OnInit {
     organizationSearchList: any = [];
     organizationActiveDeActiveList: any = [];
 
-    programTypeList: any = [{ 'longpullna': '(TS) - Talent Search', 'value': 'Talent Search' },
-    { 'longpullna': '(EOC) - Educational Opportunity Center', 'Value': 'Educational Opportunity Center' },
-    { 'longpullna': '(UB) - Upward Bound', 'Value': 'Upward Bound' }, { 'longpullna': '(VUB) - Veterans Upward Bound', 'Value': 'Veterans Upward Bound' },
-    { 'longpullna': '(UBMS) - Upward Bound Math & Science', 'Value': 'Upward Bound Math & Science' }, { 'longpullna': '(SSS) - Student Support Services', 'Value': 'Student Support Services' },
-    { 'longpullna': '(MCN) - Ronald McNair', 'Value': 'Ronald McNair' }];
-    organizationTypeList: any = [{ 'longpullna': 'Live Customer Data' }, { 'longpullna': 'Customer Demo' }, { 'longpullna': 'Tech Support Demo' }, { 'longpullna': 'Dev Team Demo' }, { 'longpullna': 'Testing Scenario Demo' }];
-    organizationTypeFilterList: any = [{ 'longpullna': 'All' }, { 'longpullna': 'Not Entered' }, { 'longpullna': 'Live Customer Data' }, { 'longpullna': 'Customer Demo' }, { 'longpullna': 'Tech Support Demo' }, { 'longpullna': 'Dev Team Demo' }, { 'longpullna': 'Testing Scenario Demo' }];
+    // programTypeList: any = [{ 'longpullna': '(TS) - Talent Search', 'value': 'Talent Search' },
+    // { 'longpullna': '(EOC) - Educational Opportunity Center', 'Value': 'Educational Opportunity Center' },
+    // { 'longpullna': '(UB) - Upward Bound', 'Value': 'Upward Bound' }, { 'longpullna': '(VUB) - Veterans Upward Bound', 'Value': 'Veterans Upward Bound' },
+    // { 'longpullna': '(UBMS) - Upward Bound Math & Science', 'Value': 'Upward Bound Math & Science' }, { 'longpullna': '(SSS) - Student Support Services', 'Value': 'Student Support Services' },
+    // { 'longpullna': '(MCN) - Ronald McNair', 'Value': 'Ronald McNair' }];
+    // organizationTypeList: any = [{ 'longpullna': 'Live Customer Data' }, { 'longpullna': 'Customer Demo' }, { 'longpullna': 'Tech Support Demo' }, { 'longpullna': 'Dev Team Demo' }, { 'longpullna': 'Testing Scenario Demo' }];
+    
+    subscriptionTypeFilterList: any = [{ 'subscriptionType': 'All', 'description': 'All' }, { 'subscriptionType': 'Not Entered', 'description': 'Not Entered' }];
 
-    programTypeFilterList: any = [{ 'longpullna': 'All', 'Value': 'All' }, { 'longpullna': 'TS', 'value': 'Talent Search' },
-    { 'longpullna': 'EOC', 'Value': 'Educational Opportunity Center' },
-    { 'longpullna': 'UB', 'Value': 'Upward Bound' }, { 'longpullna': 'VUB', 'Value': 'Veterans Upward Bound' },
-    { 'longpullna': 'UBMS', 'Value': 'Upward Bound Math & Science' }, { 'longpullna': 'SSS', 'Value': 'Student Support Services' },
-    { 'longpullna': 'MCN', 'Value': 'Ronald McNair' }];
+    programTypeFilterList: any = [{ 'orgType': 'All', 'descriptions': 'All' }];
 
     userModalVisible: boolean = false;
     userModalHeader = 'User Information';
@@ -99,7 +96,7 @@ export class OrganizationComponent implements OnInit {
     * @description Get the all pull down item list
     */
     bindDropDownValues() {
-        let data: any = 'CITY,STATE, ORGANIZATIONTYPE, PROGRAMTYPE';
+        let data: any = 'CITY,STATE';
         this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
             if (result?.CITY) {
                 this.cityList = result?.CITY;
@@ -117,13 +114,33 @@ export class OrganizationComponent implements OnInit {
                     this.stateFilterList.push(element);
                 });
             }
-            // if (result?.ORGANIZATIONTYPE) {
-            //     this.organizationTypeList = result?.ORGANIZATIONTYPE;
-            // }
-            // if (result?.PROGRAMTYPE) {
-            //     this.programTypeList = result?.PROGRAMTYPE;
-            // }
+          
         });
+
+        this.dataLoading = true;
+        this.organizationService.getProgTypeList().subscribe((result: any) => {
+            this.hideLoader();
+            if (result) {
+                this.programTypeList = result;
+                this.programTypeList.forEach((element: any) => {
+                    element.descriptions = '(' + element.orgType + ') ' + element.descriptions;
+                    this.programTypeFilterList.push(element);
+
+                });
+            }
+        });
+
+        this.organizationService.getSubScriptionList().subscribe((result: any) => {
+            this.hideLoader();
+            if (result) {
+                this.subscriptionTypeList = result;
+                this.subscriptionTypeList.forEach((element: any) => {
+                    this.subscriptionTypeFilterList.push(element);
+                });
+            }
+        });
+
+
     }
 
     createForm() {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from '../data-service';
-import { ServiceUrls } from '../../constants/serviceUrl';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -12,32 +12,32 @@ export class OriginalPullDownListsService {
     }
 
     public getPullTypeList(val: number): Observable<any> {
-        const URL = `https://blumen-api.azurewebsites.net/api/blumen-api/admin/home/getPullTypesList/v1?programType=${val}`;
+        const URL = environment.apiUrl + `/blumen-api/admin/home/getPullTypesList/v1?programType=${val}`;
         return this.dataService.callGetService(URL);
     }
 
     public searchOriginalPullDownLists(payload: any): Observable<any> {
-        const URL = `https://blumen-api.azurewebsites.net/api/blumen-api/customize/getPullDownMaster/v1?orgId=${payload.orgId}&projType=${payload.projType}&pullType=${payload.pullType}`;
+        const URL = environment.apiUrl + `/blumen-api/customize/getPullDownMaster/v1?orgId=${payload.orgId}&projType=${payload.projType}&pullType=${payload.pullType}`;
         return this.dataService.callGetService(URL);
     }
 
     public saveOriginalPullDownListsData(requestObj: any):  Observable<any> {
-        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/customize/savePullDownMaster/v1'
+        const URL = environment.apiUrl + '/blumen-api/customize/savePullDownMaster/v1'
         return this.dataService.callPostService(URL, requestObj);
     }
 
     public deleteOriginalPullDownListsData(request: any): Observable<any> {
-        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/customize/deletePullDownMaster/v1'
+        const URL = environment.apiUrl + '/blumen-api/customize/deletePullDownMaster/v1'
         return this.dataService.callDeleteService(URL, request);
     }
 
     public updateOriginalPullDownListsData(request: any): Observable<any> {
-        const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/customize/updatePullDownMaster/v1'
+        const URL = environment.apiUrl + '/blumen-api/customize/updatePullDownMaster/v1'
         return this.dataService.callPutService(URL, request);
     }
     
     // public updatePullType(request: any): Observable<any> {
-    //     const URL = 'https://blumen-api.azurewebsites.net/api/blumen-api/admin/home/updatePullType/v1'
+    //     const URL = 'http://localhost:8080/api/blumen-api/admin/home/updatePullType/v1'
     //     return this.dataService.callPutService(
     //         URL,
     //         JSON.stringify(request)
@@ -45,7 +45,7 @@ export class OriginalPullDownListsService {
     // }
 
     // downloadPullTypeList(payload: any): Observable<any> {
-    //     const URL = `https://blumen-api.azurewebsites.net/api/blumen-api/admin/home/downloadPullType/v1?description=${payload.filterDescription}&programType=${payload.filterProgramType}&pullType=${payload.filterPullType}`;
+    //     const URL = `http://localhost:8080/api/blumen-api/admin/home/downloadPullType/v1?description=${payload.filterDescription}&programType=${payload.filterProgramType}&pullType=${payload.filterPullType}`;
     //     return this.dataService.callGetService(URL);
     // }
 }

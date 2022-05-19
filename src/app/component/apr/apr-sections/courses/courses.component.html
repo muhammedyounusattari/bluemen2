@@ -1,0 +1,118 @@
+<form nz-form class="apr-form" [nzLayout]="coursesForm.get('formLayout')?.value" [formGroup]="coursesForm">
+    <div nz-row class="tabStyle">
+        <div nz-col [nzSpan]="24">
+            <div nz-row class="form_section">
+              <div nz-row [nzGutter]="8" class="full-width-container">
+                <div nz-col [nzSpan]="8">
+                  <nz-form-item>
+                    <nz-form-label class="lable-style">&nbsp;</nz-form-label>
+                    <nz-form-control nzErrorTip="">
+                      <label class="lable-checkbox" nz-checkbox formControlName="useFiltersFromThisPage">Use filters from this page</label>
+                     
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Semester:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="semester" nzPlaceHolder="Semester">
+                                <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">Year:</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input type="number" formControlName="year"
+                              placeholder="Year" />
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Course Name:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="courseName" nzPlaceHolder="Course Name">
+                                <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                  
+                </div>
+                <div nz-row [nzGutter]="24" class="full-width-container">
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Course GPA:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="courseGpa1" nzPlaceHolder="Course GPA">
+                                <nz-option *ngFor="let obj of cityList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style"></nz-form-label>
+                          <nz-form-control>
+                            <input nz-input type="number" formControlName="courseGpa2"
+                              placeholder="Course Gpa 2" />
+                          </nz-form-control>
+                        </nz-form-item>
+                      </div>
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label class="lable-style">Course Number:</nz-form-label>
+                            <nz-form-control>
+                              <nz-select nzShowSearch nzAllowClear formControlName="courseNumber" nzPlaceHolder="Course Number">
+                                <nz-option *ngFor="let obj of stateList" [nzLabel]="obj.longpullna"
+                                  [nzValue]="obj.longpullna">
+                                </nz-option>
+                              </nz-select>
+                            </nz-form-control>
+                          </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">Course Completed:</nz-form-label>
+                          <nz-radio-group formControlName="courseCompleted">
+                            <label nz-radio nzValue="true">YES</label>
+                            <label nz-radio nzValue="false">NO</label>
+                            <label nz-radio nzValue="all">ALL</label>
+                          </nz-radio-group>
+                        </nz-form-item>
+                      </div>
+                      <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                          <nz-form-label class="lable-style">Dropped Courses:</nz-form-label>
+                          <nz-radio-group formControlName="droppedCourses">
+                            <label nz-radio nzValue="true">YES</label>
+                            <label nz-radio nzValue="false">NO</label>
+                            <label nz-radio nzValue="all">ALL</label>
+                          </nz-radio-group>
+                        </nz-form-item>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+ <!--new-->
+ <div nz-row class="tabStyle-btn">
+    <div nz-col nzSpan="4" nzOffset="20">
+        <a nz-button nzType="link" (click)="cancelClick()">Cancel</a>
+        <button nz-button nzType="primary" class="btn-color" (click)="addAnnualPerformance()">SAVE</button>
+    </div>
+</div>
