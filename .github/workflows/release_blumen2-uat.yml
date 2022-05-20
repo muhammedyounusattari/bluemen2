@@ -37,6 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
+      AZURE_WEBAPP_NAME: blumen2-uat
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
@@ -50,7 +51,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          app-name: ${{ environment.AZURE_WEBAPP_NAME }}
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4A19C6A741824E7E983BBAB9DF95B90F }}
           package: ./Blumen
