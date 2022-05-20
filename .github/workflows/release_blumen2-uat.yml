@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '14.x'
 
-      - name: npm install, build
+      - name: npm install, build, and test
         run: |
           npm install
           npm run build --if-present
@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: ./dist
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'blumen2-uat'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_77F86843564443A49E120782CB2C4D71 }}
-          package: ./Blumen
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8C66CB89F3D5429CBA057C739A583688 }}
+          package: .
