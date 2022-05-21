@@ -50,7 +50,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'blumen2-uat'
-          slot-name: 'uat'
+          app-name: 'blumen-uat'
+          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_521180EBFCF14436B93379077EC75115 }}
           package: ./Blumen
