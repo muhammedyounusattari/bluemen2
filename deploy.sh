@@ -110,8 +110,8 @@ selectNodeVersion
 # 3. Install npm packages
 if [ -e "$DEPLOYMENT_SOURCE/package.json" ]; then
   cd "$DEPLOYMENT_SOURCE" || exit
-  echo "Running $NPM_CMD install --force --production"
-  eval $NPM_CMD install --production
+  echo "Running $NPM_CMD install --production"
+  eval $NPM_CMD install --production --force
   exitWithMessageOnError "npm failed"
   cd - > /dev/null || exit
 fi
