@@ -53,4 +53,4 @@ jobs:
           app-name: 'blumen-uat'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F31275B380CA4BCCAAFEE68B52464F0B }}
-          package: .
+          package: ./Blumen
