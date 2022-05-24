@@ -43,11 +43,11 @@
                         <i class="sort" (click)="sorting2('inPullDown')" nz-icon nzType="caret-down"
                             nzTheme="outline"></i>
                     </th>
-                    <th>NCES ID <i class="sort" (click)="sorting('ncesId')" nz-icon nzType="caret-up"
+                    <th>NCES ID <i class="sort" (click)="sorting('ncsIdFafsaId')" nz-icon nzType="caret-up"
                             nzTheme="outline"></i>
-                        <i class="sort" (click)="sorting2('ncesId')" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('ncsIdFafsaId')" nz-icon nzType="caret-down" nzTheme="outline"></i>
                     </th>
-                    <th>Country Name <i class="sort" (click)="sorting('country')" nz-icon nzType="caret-up"
+                    <th>County Name <i class="sort" (click)="sorting('country')" nz-icon nzType="caret-up"
                             nzTheme="outline"></i>
                         <i class="sort" (click)="sorting2('country')" nz-icon nzType="caret-down" nzTheme="outline"></i>
                     </th>
@@ -73,7 +73,7 @@
                 <tr *ngFor="let data of schoolDataListTable.data;let idx = index;">
                     <td>{{ data.name }}</td>
                     <td>{{ data.inPullDown ? 'YES' : 'NO'}}</td>
-                    <td>{{ data.ncesId}}</td>
+                    <td>{{ data.ncsIdFafsaId}}</td>
                     <td> {{data.country}} </td>
                     <td> {{data.phone1 | phoneMask: '(000) 000-0000'}}</td>
                     <td> {{data.phone2 | phoneMask: '(000) 000-0000'}}</td>
@@ -94,7 +94,7 @@
                         <i class="action-icon" nz-icon nzType="delete" nzTheme="outline" nz-tooltip nz-popconfirm
                             nzPopconfirmTitle="Confirm Remove Record. Are you sure, you want to remove this record."
                             (nzOnConfirm)="deleteSelectedRow(data, idx)" (nzOnCancel)="cancelDelete()"
-                            nzPopconfirmPlacement="bottom" nzOkText="Confirm" nzCancelText="Cancel"
+                            nzPopconfirmPlacement="bottom" nzOkText="Yes" nzCancelText="No"
                             nzTooltipTitle="Delete" nzTooltipPlacement="bottom" nz-button>
                         </i>
                     </td>
@@ -162,13 +162,10 @@
                                 <div nz-row [nzGutter]="24" class="form-width-container">
                                     <div nz-col [nzSpan]="8">
                                         <nz-form-item>
-                                            <nz-form-label [nzSpan]="24" class="lable-style">Country</nz-form-label>
+                                            <nz-form-label [nzSpan]="24" class="lable-style">County</nz-form-label>
                                             <nz-form-control>
-                                                <nz-select nzPlaceHolder="Country" formControlName="country">
-                                                    <nz-option *ngFor="let countryObj of countryList"
-                                                        [nzLabel]="countryObj?.longpullna"
-                                                        [nzValue]="countryObj?.longpullna"></nz-option>
-                                                </nz-select>
+                                                <input nz-input placeholder="County" value=""
+                                                    formControlName="country" maxlength="50" />
                                             </nz-form-control>
                                         </nz-form-item>
                                     </div>
@@ -212,14 +209,10 @@
                                 <div nz-row [nzGutter]="24" class="form-width-container">
                                     <div nz-col [nzSpan]="8">
                                         <nz-form-item>
-                                            <nz-form-label [nzSpan]="24" class="lable-style" nzRequired>NCES ID
+                                            <nz-form-label [nzSpan]="24" class="lable-style">NCES ID
                                             </nz-form-label>
-                                            <nz-form-control nzErrorTip="Please Enter NCES ID">
-                                            <input nz-input *ngIf="isDisabled" placeholder="Enter NCES ID" value=""
-                                                formControlName="ncesId" maxlength="30" readonly="{{isDisabled}}"
-                                                required />
-                                            <input nz-input *ngIf="!isDisabled" placeholder="Enter NCES ID" value=""
-                                                formControlName="ncesId" maxlength="30" required />
+                                            <nz-form-control>
+                                            <input nz-input placeholder="Enter NCES ID" value="" formControlName="ncsIdFafsaId" maxlength="30"/>
                                             </nz-form-control>
                                         </nz-form-item>
                                     </div>

@@ -37,6 +37,7 @@ import { OriginalPulldownListsComponent } from './home/original-pulldown-lists/o
 import { PulldownListsComponent } from './customize/pulldown-lists/pulldown-lists.component';
 import { OrgadminPulldownListsComponent } from './customize/orgadmin-pulldown-lists/orgadmin-pulldown-lists.component';
 import { CollegeSchoolListComponent } from './customize/college-school-list/college-school-list.component';
+import { ActivityServiceComponent } from './activity/activity-service/activity-service.component';
 const routes: Routes = [
   {
     path: 'admin/customize/pulldown-list',
@@ -206,6 +207,27 @@ const routes: Routes = [
         },
         {
           label: 'College School List',
+          url: ''
+        }
+      ]
+    }
+  },
+  {
+    path: 'admin/customize/activity-service',
+    component: ActivityServiceComponent,
+    data: {
+      title: 'Activity Service List',
+      breadcrumb: [
+        {
+          label: 'Home',
+          url: 'admin/customize'
+        },
+        {
+          label: 'Activity Service List',
+          url: 'admin/customize/activity-service'
+        },
+        {
+          label: 'Activity Service List',
           url: ''
         }
       ]

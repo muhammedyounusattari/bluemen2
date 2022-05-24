@@ -33,10 +33,10 @@ export class StandingComponent implements OnInit {
     "id": null,
     "gradingId": null,
     "gradingName": null,
-    "gradingGroupName": [],
-    "gradingParticipantStatus": [],
-    "gradingYearEnbStatus": [],
-    "gradingFiscalYear": []
+    "gradingGroupName": null,
+    "gradingParticipantStatus": null,
+    "gradingYearEnbStatus": null,
+    "gradingFiscalYear": null
   }
   public addMode: boolean = false;
   public editMode: boolean = false;
@@ -78,19 +78,6 @@ export class StandingComponent implements OnInit {
     });
   }
 
-  // applyFilter(filterValue: any) {
-  //   if (filterValue.target.value.trim().toLowerCase() == 'no') {
-  //     this.dataSource.filter = 'false';
-  //   } else if (filterValue.target.value.trim().toLowerCase() == 'yes') {
-  //     this.dataSource.filter = 'true';
-  //   } else {
-  //     this.dataSource.filter = filterValue.target.value.trim().toLowerCase();
-  //   }
-  //   if (this.dataSource.paginator) {
-  //     this.dataSource.paginator.firstPage();
-  //   }
-  // }
-
   initStandingForm(): void {
     this.standingForm = this.fb.group({
       formLayout: ['vertical'],
@@ -120,16 +107,16 @@ export class StandingComponent implements OnInit {
   }
 
   bindDropDownValues() {
-    let data: any = 'FISCALYEAR,PARTICIPANT,YEAREND';
+    let data: any = 'STANDING,PARTSTATUS,PARTSTATUSEND';
     this.pullDownService.getMultiPullDownMaster(data).subscribe((result: any) => {
-      if (result?.FISCALYEAR) {
-        this.gradingFiscalYearList = result.FISCALYEAR;
+      if (result?.STANDING) {
+        this.gradingFiscalYearList = result.STANDING;
       }
-      if (result?.PARTICIPANT) {
-        this.participantList = result.PARTICIPANT;
+      if (result?.PARTSTATUS) {
+        this.participantList = result.PARTSTATUS;
       }
-      if (result?.YEAREND) {
-        this.yearEndFYList = result.YEAREND;
+      if (result?.PARTSTATUSEND) {
+        this.yearEndFYList = result.PARTSTATUSEND;
       }
     });
   }
@@ -150,10 +137,10 @@ export class StandingComponent implements OnInit {
       id: null,
       gradingId: null,
       gradingName: null,
-      gradingGroupName: [],
-      gradingParticipantStatus: [],
-      gradingYearEnbStatus: [],
-      gradingFiscalYear: []
+      gradingGroupName: null,
+      gradingParticipantStatus: null,
+      gradingYearEnbStatus: null,
+      gradingFiscalYear: null
     }
     this.selectedRow = null;
   }
@@ -166,10 +153,10 @@ export class StandingComponent implements OnInit {
       id: null,
       gradingId: null,
       gradingName: null,
-      gradingGroupName: [],
-      gradingParticipantStatus: [],
-      gradingYearEnbStatus: [],
-      gradingFiscalYear: []
+      gradingGroupName: null,
+      gradingParticipantStatus: null,
+      gradingYearEnbStatus: null,
+      gradingFiscalYear: null
     }
     this._gradingGroupStandingService.getGradingStandingMaxId().subscribe(result => {
       if (!this.validationClass.isNullOrUndefined(result)) {
@@ -197,10 +184,10 @@ export class StandingComponent implements OnInit {
           id: standingData.id,
           gradingId: standingData.gradingId,
           gradingName: standingData.gradingName,
-          gradingGroupName: [standingData.gradingGroupName],
-          gradingParticipantStatus: [standingData.gradingParticipantStatus],
-          gradingYearEnbStatus: [standingData.gradingYearEnbStatus],
-          gradingFiscalYear: [standingData.gradingFiscalYear],
+          gradingGroupName: standingData.gradingGroupName,
+          gradingParticipantStatus: standingData.gradingParticipantStatus,
+          gradingYearEnbStatus: standingData.gradingYearEnbStatus,
+          gradingFiscalYear: standingData.gradingFiscalYear,
         }
       }
     });
@@ -219,10 +206,10 @@ export class StandingComponent implements OnInit {
         "id": frmValue.id,
         "gradingId": this.addMode ? frmValue.gradingId : this.selectedRow.gradingId,
         "gradingName": frmValue.gradingName,
-        "gradingGroupName": frmValue.gradingGroupName[0],
-        "gradingParticipantStatus": frmValue.gradingParticipantStatus[0],
-        "gradingYearEnbStatus": frmValue.gradingYearEnbStatus[0],
-        "gradingFiscalYear": frmValue.gradingFiscalYear[0],
+        "gradingGroupName": frmValue.gradingGroupName,
+        "gradingParticipantStatus": frmValue.gradingParticipantStatus,
+        "gradingYearEnbStatus": frmValue.gradingYearEnbStatus,
+        "gradingFiscalYear": frmValue.gradingFiscalYear,
       };
       if (this.addMode) {
         const ids = this.message.loading('Adding Grade/Standing List Data...', { nzDuration: 0 }).messageId;

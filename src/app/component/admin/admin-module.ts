@@ -78,6 +78,7 @@ import { OriginalPulldownListsComponent } from './home/original-pulldown-lists/o
 import { PulldownListsComponent } from './customize/pulldown-lists/pulldown-lists.component';
 import { OrgadminPulldownListsComponent } from './customize/orgadmin-pulldown-lists/orgadmin-pulldown-lists.component';
 import { CollegeSchoolListComponent } from './customize/college-school-list/college-school-list.component';
+import { ActivityServiceComponent } from './activity/activity-service/activity-service.component';
 
 const maskConfigFunction: () => Partial<IConfig> = () => {
   return {
@@ -137,7 +138,8 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
     OriginalPulldownListsComponent,
     PulldownListsComponent,
     OrgadminPulldownListsComponent,
-    CollegeSchoolListComponent
+    CollegeSchoolListComponent,
+    ActivityServiceComponent
   ],
   imports: [
     AdminRoutingModule,
