@@ -37,9 +37,9 @@ export class SchoolListComponent implements OnInit {
         title: '',
         website: '',
         zipcode: '',
-        fafsaId: null,
+        ncsIdFafsaId: '',
+        isSchool: true,
         fiscalYear: '',
-        ncesId: '',
         inPullDown: false
     };
     requestMoveMergeData: any = {
@@ -61,9 +61,9 @@ export class SchoolListComponent implements OnInit {
         title: '',
         website: '',
         zipcode: '',
-        fafsaId: '',
         fiscalYear: '',
-        ncesId: null,
+        ncsIdFafsaId: '',
+        isSchool: true,
         inPullDown: false
     };
 
@@ -141,11 +141,11 @@ export class SchoolListComponent implements OnInit {
         const targetValue: any[] = [];
         this.schoolDataSearchList.forEach((value: any) => {
             //let keys = Object.keys(value);
-            let keys = ["name", "inPullDown", "ncesId", "country", "phone1", "phone2", "phone3", "fax"];
+            let keys = ["name", "inPullDown", "ncsIdFafsaId", "country", "phone1", "phone2", "phone3", "fax"];
             for (let i = 0; i < keys.length; i++) {
                 if (value[keys[i]] && value[keys[i]].toString().toLocaleLowerCase().includes(search)) {
                     targetValue.push(value);
-                    break;
+                    break;``
                 }
             }
         });
@@ -165,7 +165,8 @@ export class SchoolListComponent implements OnInit {
             'title': [''],
             'country': [''],
             'address': [''],
-            'ncesId': [''],
+            'ncsIdFafsaId': [''],
+            'isSchool': [true],
             'city': [''],
             'states': [''],
             'zipcode': [''],
@@ -197,7 +198,7 @@ export class SchoolListComponent implements OnInit {
             this.formGroup.get('title')?.setValue(this.selectedRow.title);
             this.formGroup.get('country')?.setValue(this.selectedRow.country);
             this.formGroup.get('address')?.setValue(this.selectedRow.address);
-            this.formGroup.get('ncesId')?.setValue(this.selectedRow.ncesId);
+            this.formGroup.get('ncsIdFafsaId')?.setValue(this.selectedRow.ncsIdFafsaId);
             this.formGroup.get('city')?.setValue(this.selectedRow.city);
             this.formGroup.get('states')?.setValue(this.selectedRow.states);
             this.formGroup.get('zipcode')?.setValue(this.selectedRow.zipcode);
@@ -209,6 +210,7 @@ export class SchoolListComponent implements OnInit {
             this.formGroup.get('website')?.setValue(this.selectedRow.website);
             this.formGroup.get('email')?.setValue(this.selectedRow.email);
             this.formGroup.get('notes')?.setValue(this.selectedRow.notes);
+            this.formGroup.get('isSchool')?.setValue(true);
             this.openModal();
         } else {
             this.notificationService.createNotificationBasic('info', "info", 'Please select a row to update');
@@ -283,16 +285,7 @@ export class SchoolListComponent implements OnInit {
                     let val = this.formGroup.get('name')?.setValue('');
                     return;
                 } else {
-                    let val = this.formGroup.get('ncesId')?.value;
-                    this.requestData.orgName = 'School';
-                    this.requestData.codes = val.toLowerCase().trim();
-                    this._collegeAndSchoolService.getCollegeSchoolByCode(this.requestData).subscribe(result => {
-                        if (result && result != null) {
-                            this.notificationService.createNotificationBasic('info', "info", 'Entered NCESID is alreay exist, to add this organization name please change entered NCESID!');
-                            let val = this.formGroup.get('ncesId')?.setValue('');
-                            return;
-                        } else {
-                            this.requestData.collegeSchoolId = this.formGroup?.get('collegeSchoolId')?.value;
+                    this.requestData.collegeSchoolId = this.formGroup?.get('collegeSchoolId')?.value;
                             this.requestData.orgName = this.formGroup?.get('name')?.value.trim();
                             this.requestData.inPullDown = this.formGroup?.get('inPullDown')?.value;
                             this.requestData.name = this.formGroup?.get('name')?.value.trim();
@@ -300,7 +293,7 @@ export class SchoolListComponent implements OnInit {
                             this.requestData.title = this.formGroup?.get('title')?.value;
                             this.requestData.country = this.formGroup?.get('country')?.value;
                             this.requestData.address = this.formGroup?.get('address')?.value;
-                            this.requestData.ncesId = this.formGroup?.get('ncesId')?.value;
+                            this.requestData.ncsIdFafsaId = this.formGroup?.get('ncsIdFafsaId')?.value;
                             this.requestData.city = this.formGroup?.get('city')?.value;
                             this.requestData.states = this.formGroup?.get('states')?.value;
                             this.requestData.zipcode = this.formGroup?.get('zipcode')?.value;
@@ -312,7 +305,7 @@ export class SchoolListComponent implements OnInit {
                             this.requestData.website = this.formGroup?.get('website')?.value;
                             this.requestData.email = this.formGroup?.get('email')?.value;
                             this.requestData.notes = this.formGroup?.get('notes')?.value;
-                            this.requestData.fafsaId = null;
+                            this.requestData.isSchool = this.formGroup.get('isSchool')?.setValue(true);
                             this.showLoader();
                             this.isConfirmSchoolLoading = true;
                             this._collegeAndSchoolService.postStudentName(this.requestData).subscribe(result => {
@@ -332,9 +325,6 @@ export class SchoolListComponent implements OnInit {
                                     });
                                 }
                             });
-
-                        }
-                    });
                 }
             });
         } else {
@@ -393,7 +383,7 @@ export class SchoolListComponent implements OnInit {
                 this.requestData.title = this.formGroup?.get('title')?.value;
                 this.requestData.country = this.formGroup?.get('country')?.value;
                 this.requestData.address = this.formGroup?.get('address')?.value;
-                this.requestData.ncesId = this.formGroup?.get('ncesId')?.value;
+                this.requestData.ncsIdFafsaId = this.formGroup?.get('ncsIdFafsaId')?.value;
                 this.requestData.city = this.formGroup?.get('city')?.value;
                 this.requestData.states = this.formGroup?.get('states')?.value;
                 this.requestData.zipcode = this.formGroup?.get('zipcode')?.value;
@@ -405,7 +395,7 @@ export class SchoolListComponent implements OnInit {
                 this.requestData.website = this.formGroup?.get('website')?.value;
                 this.requestData.email = this.formGroup?.get('email')?.value;
                 this.requestData.notes = this.formGroup?.get('notes')?.value;
-                this.requestData.fafsaId = null;
+                this.requestData.isSchool = this.formGroup.get('isSchool')?.setValue(true);
                 this.isConfirmSchoolLoading = true;
                 this._collegeAndSchoolService.updateCollegeSchoolName(this.requestData).subscribe(response => {
                     this.hideModal();
@@ -486,10 +476,10 @@ export class SchoolListComponent implements OnInit {
 
     /**
     * @method schoolCodeVerification
-    * @description ncesId code is exist or not
+    * @description ncsIdFafsaId code is exist or not
     */
     schoolCodeVerification() {
-        let val = this.formGroup.get('ncesId')?.value;
+        let val = this.formGroup.get('ncsIdFafsaId')?.value;
         this.requestData.orgName = 'School';
         this.requestData.codes = val.toLowerCase().trim();
         this._collegeAndSchoolService.getCollegeSchoolByCode(this.requestData).subscribe(result => {
@@ -565,7 +555,7 @@ export class SchoolListComponent implements OnInit {
         this.schoolDataList.forEach((e: any) => {
             var tempObj = [];
             tempObj.push(e.name);
-            tempObj.push(e.ncesId);
+            tempObj.push(e.ncsIdFafsaId);
             tempObj.push(e.country);
             if (e.inPullDown == true) {
                 tempObj.push("Yes");

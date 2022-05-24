@@ -30,7 +30,7 @@ export class GradeComponent implements OnInit {
     "id": null,
     "gradeGroupId": null,
     "gradeGroupName": null,
-    "gradeGroupGradeType": []
+    "gradeGroupGradeType": null
   }
   public addMode: boolean = false;
   public editMode: boolean = false;
@@ -124,7 +124,7 @@ export class GradeComponent implements OnInit {
       id: null,
       gradeGroupId: null,
       gradeGroupName: null,
-      gradeGroupGradeType: []
+      gradeGroupGradeType: null
     }
     this.selectedRow = null;
   }
@@ -137,7 +137,7 @@ export class GradeComponent implements OnInit {
       id: null,
       gradeGroupName: null,
       gradeGroupId: null,
-      gradeGroupGradeType: []
+      gradeGroupGradeType: null
     }
     this._gradingGroupStandingService.getGradingGroupMaxId().subscribe(result => {
       if (!this.validationClass.isNullOrUndefined(result)) {
@@ -165,7 +165,7 @@ export class GradeComponent implements OnInit {
           id: gradeData.id,
           gradeGroupId: gradeData.gradeGroupId,
           gradeGroupName: gradeData.gradeGroupName,
-          gradeGroupGradeType: [gradeData.gradeGroupGradeType]
+          gradeGroupGradeType: gradeData.gradeGroupGradeType
         }
       }
     });
@@ -183,8 +183,8 @@ export class GradeComponent implements OnInit {
         "id": frmValue.id,
         "gradeGroupId": this.addMode ? frmValue.gradeGroupId : this.selectedRow.gradeGroupId,
         "gradeGroupName": frmValue.gradeGroupName,
-        "gradeGroupGradeType": frmValue.gradeGroupGradeType[0],
-        "gradeGroupAprColumn": frmValue.gradeGroupGradeType[0]
+        "gradeGroupGradeType": frmValue.gradeGroupGradeType,
+        "gradeGroupAprColumn": frmValue.gradeGroupGradeType
       };
       if (this.addMode) {
         const ids = this.message.loading('Adding Grade/Standing List Data...', { nzDuration: 0 }).messageId;
@@ -230,7 +230,7 @@ export class GradeComponent implements OnInit {
             this.updateGradeData(requestObj, ids);
           } else {
             if ((this.selectedRow.gradeGroupName.toLowerCase() == frmValue.gradeGroupName.toLowerCase()) &&
-              (this.selectedRow.gradeGroupGradeType.toLowerCase() == frmValue.gradeGroupGradeType[0].toLowerCase())
+              (this.selectedRow.gradeGroupGradeType.toLowerCase() == frmValue.gradeGroupGradeType.toLowerCase())
             ) {
               this.updateGradeData(requestObj, ids);
             } else {

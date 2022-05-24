@@ -62,8 +62,8 @@
                             (nzOnConfirm)="deleteStandingData(data.gradingId, data.gradingName)"
                             (nzOnCancel)="cancelDelete()"
                             nzPopconfirmPlacement="bottom"
-                            nzOkText="Confirm"
-                            nzCancelText="Cancel"
+                            nzOkText="Yes"
+                            nzCancelText="No"
                             nzTooltipTitle="Delete" nzTooltipPlacement="bottom" nz-button>
                         </i>
                     </td>
@@ -118,8 +118,8 @@
                                         <nz-form-item>
                                             <nz-form-label class="lable-style" nzRequired>Group Name</nz-form-label>
                                             <nz-form-control nzErrorTip="Please Select Group Name">
-                                                <nz-select nzMode="tags" nzPlaceHolder="Group Name" formControlName="gradingGroupName"
-                                                    [(ngModel)]="existingStandingData.gradingGroupName" [nzMaxMultipleCount]="1">
+                                                <nz-select nzPlaceHolder="Group Name" formControlName="gradingGroupName"
+                                                    [(ngModel)]="existingStandingData.gradingGroupName">
                                                     <nz-option *ngFor="let groupObj of ddlGroupList" [nzLabel]="groupObj.gradeGroupName" [nzValue]="groupObj.gradeGroupName"></nz-option>
                                                 </nz-select>
                                             </nz-form-control>
@@ -130,8 +130,8 @@
                                         <nz-form-item>
                                             <nz-form-label class="lable-style">New Grade/Standing for next Fiscal Year</nz-form-label>
                                             <nz-form-control nzErrorTip="Please Select New Grade/Standing for next Fiscal Year">
-                                                <nz-select nzMode="tags" nzPlaceHolder="New Grade/Standing for next Fiscal Year" formControlName="gradingFiscalYear"
-                                                    [(ngModel)]="existingStandingData.gradingFiscalYear" [nzMaxMultipleCount]="1">
+                                                <nz-select nzPlaceHolder="New Grade/Standing for next Fiscal Year" formControlName="gradingFiscalYear"
+                                                    [(ngModel)]="existingStandingData.gradingFiscalYear">
                                                     <nz-option *ngFor="let fyObj of gradingFiscalYearList" [nzLabel]="fyObj?.longpullna" [nzValue]="fyObj?.longpullna"></nz-option>
                                                 </nz-select>
                                             </nz-form-control>
@@ -142,8 +142,8 @@
                                         <nz-form-item>
                                             <nz-form-label class="lable-style">Participant Status for next Fiscal Year</nz-form-label>
                                             <nz-form-control nzErrorTip="Please Select Participant Status for next Fiscal Year">
-                                                <nz-select nzMode="tags" nzPlaceHolder="Participant Status for next Fiscal Year" formControlName="gradingParticipantStatus"
-                                                    [(ngModel)]="existingStandingData.gradingParticipantStatus" [nzMaxMultipleCount]="1">
+                                                <nz-select nzPlaceHolder="Participant Status for next Fiscal Year" formControlName="gradingParticipantStatus"
+                                                    [(ngModel)]="existingStandingData.gradingParticipantStatus">
                                                     <nz-option *ngFor="let part of participantList" [nzLabel]="part?.longpullna" [nzValue]="part?.longpullna"></nz-option>
                                                 </nz-select>
                                             </nz-form-control>
@@ -154,8 +154,8 @@
                                         <nz-form-item>
                                             <nz-form-label class="lable-style">End Status for current Fiscal Year</nz-form-label>
                                             <nz-form-control nzErrorTip="Please Select End Status for current Fiscal Year">
-                                                <nz-select nzMode="tags" nzPlaceHolder="End Status for current Fiscal Year" formControlName="gradingYearEnbStatus"
-                                                    [(ngModel)]="existingStandingData.gradingYearEnbStatus" [nzMaxMultipleCount]="1">
+                                                <nz-select nzPlaceHolder="End Status for current Fiscal Year" formControlName="gradingYearEnbStatus"
+                                                    [(ngModel)]="existingStandingData.gradingYearEnbStatus" >
                                                     <nz-option *ngFor="let esfy of yearEndFYList" [nzLabel]="esfy?.longpullna" [nzValue]="esfy?.longpullna"></nz-option>
                                                 </nz-select>
                                             </nz-form-control>

@@ -60,8 +60,8 @@
                             (nzOnConfirm)="deleteGradeData(data.gradeGroupId, data.gradeGroupName)"
                             (nzOnCancel)="cancelDelete()"
                             nzPopconfirmPlacement="bottom"
-                            nzOkText="Confirm"
-                            nzCancelText="Cancel"
+                            nzOkText="Yes"
+                            nzCancelText="No"
                             nzTooltipTitle="Delete" nzTooltipPlacement="bottom" nz-button>
                         </i>
                     </td>
@@ -116,8 +116,8 @@
                                         <nz-form-item>
                                             <nz-form-label class="lable-style" nzRequired>Group Type</nz-form-label>
                                             <nz-form-control nzErrorTip="Please Select Group Type">
-                                                <nz-select nzMode="tags" nzPlaceHolder="Group Type" formControlName="gradeGroupGradeType"
-                                                    [(ngModel)]="existingGradeData.gradeGroupGradeType" [nzMaxMultipleCount]="1">
+                                                <nz-select nzPlaceHolder="Group Type" formControlName="gradeGroupGradeType"
+                                                    [(ngModel)]="existingGradeData.gradeGroupGradeType">
                                                     <nz-option *ngFor="let gType of gradeGroupGradeTypeList" [nzLabel]="gType?.longpullna" [nzValue]="gType?.longpullna"></nz-option>
                                                 </nz-select>
                                                 

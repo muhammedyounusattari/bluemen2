@@ -1,187 +1,189 @@
+<div nz-row>
+    <div nz-col [nzSpan]="11">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" #searchText nz-input placeholder="Search.." class="search-input"
+                (keyup)="applyFilter(searchText.value)" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+        </ng-template>
+    </div>
+    <div nz-col [nzSpan]="4" nzOffset="9">
+        <nz-form-item class="search-filter-item">
+            <nz-form-control>
+                <button nz-button nzType="primary" class="search-filter-btn" (click)="resetFields()">
+                    <i nz-icon nzType="file-add" nzTheme="outline" class="search-filter-icon"></i>
+                    New
+                </button>
+                <button nz-button nzType="primary" class="search-filter-btn" (click)="print()">
+                    <i nz-icon nzType="printer" nzTheme="outline" class="search-filter-icon"></i>
+                    Print
+                </button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</div>
 
-<div class="main-container">
-    <div id="main-section" class="container-fluid ">
-        <!-- Two Tabs Start-->
-       
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" id="Group_Name" role="presentation">
-                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="javascript:void(0)"
-                (click)="navigateToComponent('services-list')" role="tab" aria-controls="home"
-                    aria-selected="true">Activity/Service Group List</a>
-            </li>
-            <li class="nav-item active" role="presentation">
-                <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="javascript:void(0)"
-                    (click)="navigateToComponent('services-list')" role="tab" aria-controls="profile"
-                    aria-selected="false">Activity/Service List</a>
-            </li>
-        </ul>
-
-        <!-- Two Tabs Start-->
-        <!-- Search Box Start-->
-        <div class="row">
-            <div class="col-md-6 mt-3 mb-3 ">
-                <form class="example">
-                    <input class="search-input" type="text" placeholder="Search.." (keyup)="applyFilter($event)">
-                    <i class="fa fa-search search"></i>
-                </form>
-            </div>
-            <div nz-row nzJustify="end" class="col-md-6 mt-3 mb-3 ">
-                <nz-form-item class="search-filter-item">
-                    <nz-form-control>
-                        <button (click)="resetFields()" nz-button nzType="primary" class="search-filter-btn">
-                           <span> New</span>
-                        </button>
-                    </nz-form-control>
-                </nz-form-item>
-                <nz-form-item class="search-filter-item print">
-                    <nz-form-control>
-                        <button (click)="print()" nz-button nzType="primary" class="search-filter-btn">
-                            <i nz-icon nzType="printer" nzTheme="fill"></i>
-                           <span> Print </span>
-                        </button>
-                    </nz-form-control>
-                </nz-form-item>
-             </div>
-        </div>
-       
-           
-        <div class="mat-elevation-z8 data-table-height dt-max-height">
-            <nz-table #activityGroupDataTable [nzNoResult]="noResultTemplate" [nzLoading]="isLoading" [nzData]="activityGroupData">
-                <ng-template #noResultTemplate>
-                    <nz-empty [nzNotFoundContent]="'No Data Found'">
-                    </nz-empty> 
-                </ng-template>
-                <thead>
+<div nz-row>
+    <div nz-col [nzSpan]="24">
+        <nz-table #activityGroupDataTable [nzNoResult]="noResultTemplate" [nzData]="activityGroupData" [nzPageSize]="8"
+            [nzLoading]="isLoading " style="margin-top: 15px;">
+            <ng-template #noResultTemplate>
+                <nz-empty [nzNotFoundContent]="'No Data Found'">
+                </nz-empty>
+            </ng-template>
+            <thead>
                 <tr>
-                    <th>Group Id <i  class="sort" (click)="sorting('id')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                        <i  class="sort" (click)="sorting2('id')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
-                    <th>Group Name <i  class="sort" (click)="sorting('activityGroupName')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                        <i  class="sort" (click)="sorting2('activityGroupName')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
-                    <th>Report Activity <i  class="sort" (click)="sorting('activityReportActivityGroup')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                        <i  class="sort" (click)="sorting2('activityReportActivityGroup')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
-                    <th>Calculate Hours <i  class="sort" (click)="sorting('activityCalculateHoursforActivityGroup')" nz-icon nzType="caret-up" nzTheme="outline"></i>
-                        <i  class="sort" (click)="sorting2('activityCalculateHoursforActivityGroup')" nz-icon nzType="caret-down" nzTheme="outline"></i></th>
+                    <th>Group Id <i class="sort" (click)="sorting('id')" nz-icon nzType="caret-up"
+                            nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('id')" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                    </th>
+                    <th>Group Name <i class="sort" (click)="sorting('activityGroupName')" nz-icon nzType="caret-up"
+                            nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('activityGroupName')" nz-icon nzType="caret-down"
+                            nzTheme="outline"></i>
+                    </th>
+                    <th>Report Activity <i class="sort" (click)="sorting('activityReportActivityGroup')" nz-icon
+                            nzType="caret-up" nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('activityReportActivityGroup')" nz-icon nzType="caret-down"
+                            nzTheme="outline"></i>
+                    </th>
+                    <th>Calculate Hours <i class="sort" (click)="sorting('activityCalculateHoursforActivityGroup')"
+                            nz-icon nzType="caret-up" nzTheme="outline"></i>
+                        <i class="sort" (click)="sorting2('activityCalculateHoursforActivityGroup')" nz-icon
+                            nzType="caret-down" nzTheme="outline"></i>
+                    </th>
                     <th>Action</th>
                 </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let data of activityGroupDataTable.data">
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of activityGroupDataTable.data;let idx = index;">
                     <td>{{ data.id }}</td>
                     <td>{{ data.activityGroupName }}</td>
                     <td>{{ data.activityReportActivityGroup ? 'YES' : 'NO'}}</td>
                     <td> {{data.activityCalculateHoursforActivityGroup ? 'YES' : 'NO'}} </td>
-                    <td class="edit-icon-div"> 
-                        <i class="icon-pt" nz-icon nzType="edit" (click)="setValuesToUpdate(data)" 
-                            nzTheme="outline" nz-tooltip
-                            nzTooltipTitle="Edit"
-                            nzTooltipPlacement="bottom" nz-button>
+                    <td class="edit-icon-div">
+                        <i class="action-icon" nz-icon nzType="edit" nzTheme="outline" nz-tooltip nzTooltipTitle="Edit"
+                            nzTooltipPlacement="bottom" nz-button (click)="setValuesToUpdate(data, idx)">
                         </i>
-                        <i class="icon-pt" nz-icon nzType="export" nzTheme="outline" (click)="showMoveItemPopup(data)" 
-                            nz-tooltip
-                            nzTooltipTitle="Move"
-                            nzTooltipPlacement="bottom" nz-button>
+                        <i class="action-icon" nz-icon nzType="export" nzTheme="outline" nz-tooltip
+                            nzTooltipTitle="Move" nzTooltipPlacement="bottom" nz-button
+                            (click)="showMoveItemPopup(data, idx)">
                         </i>
-                        <i class="icon-pt" nz-icon nzType="merge-cells" nzTheme="outline"
-                            (click)="showMergeItemPopup(data)"
-                            nz-tooltip
-                            nzTooltipTitle="Merge"
-                            nzTooltipPlacement="bottom" nz-button>
+                        <i class="action-icon" nz-icon nzType="merge-cells" nzTheme="outline" nz-tooltip
+                            nzTooltipTitle="Merge" nzTooltipPlacement="bottom" nz-button
+                            (click)="showMergeItemPopup(data, idx)">
                         </i>
-                        <i class="icon-pt" nz-icon nzType="delete" nzTheme="outline"
-                            (click)="deleteSelectedRow(data)"
-                            nz-tooltip
-                            nzTooltipTitle="Delete"
+                        <i class="action-icon" nz-icon nzType="delete" nzTheme="outline" nz-tooltip nz-popconfirm
+                            nzPopconfirmTitle="Confirm Remove Record. Are you sure, you want to remove this record."
+                            (nzOnConfirm)="deleteSelectedRow(data, idx)" (nzOnCancel)="cancelDelete()"
+                            nzPopconfirmPlacement="bottom" nzOkText="Yes" nzCancelText="No" nzTooltipTitle="Delete"
                             nzTooltipPlacement="bottom" nz-button>
                         </i>
                     </td>
                 </tr>
-                </tbody>
-            </nz-table>
-        </div>
+            </tbody>
+        </nz-table>
     </div>
-    <!-- Buttons Start-->
-  
 </div>
-<!-- Buttons End-->
-<!-- Modal Start-->
-<!-- <ng-template #activityServiceGroupListPopup> -->
-<nz-modal [(nzVisible)]="activityServiceGroupListPopupVisiblity" nzTitle={{activityServiceGroupModalHeader}} (nzOnCancel)="handleCancel()"
-    [nzFooter]="activityModalFooter" nzWidth="75%" [nzOkLoading]="isConfirmActivityGroupLoading">
-    <!-- Modal -->
+
+<!--Modal-->
+<nz-modal [(nzVisible)]="activityGroupListPopupVisiblity" nzTitle="Customize Activity/Service"
+    (nzOnCancel)="handleCancel()" [nzFooter]="activityModalFooter" nzWidth="75%"
+    [nzOkLoading]="isConfirmActivityGroupLoading">
     <ng-template #activityModalFooter>
         <div class="modal-footer-btn">
             <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
-            <button nz-button nzType="primary" *ngIf="!isEdit" (click)="addNewGroupName();" [nzLoading]="isConfirmActivityGroupLoading">Save &
-                Close</button>
-            <button nz-button nzType="primary" *ngIf="isEdit" (click)="addNewGroupName();" [nzLoading]="isConfirmActivityGroupLoading">Update &
-                Close</button>
+            <button nz-button nzType="primary" *ngIf="!isEdit" (click)="addNewGroupName()"
+                [nzLoading]="isConfirmActivityGroupLoading">SAVE</button>
+            <button nz-button nzType="primary" *ngIf="isEdit" (click)="updateSelectedRow()"
+                [nzLoading]="isConfirmActivityGroupLoading">UPDATE</button>
         </div>
     </ng-template>
     <ng-container *nzModalContent>
-        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <form [formGroup]="formGroup" class="form">
-                    <div class="row">
-                        <div nz-row [nzGutter]="16" [nzSpan]="24">
-                            <div class="form-group" nz-col [nzSpan]="8">
-                                <div>
-                                    <nz-form-item>
-                                        <nz-form-label class="lable-style">Service Activity Group ID*</nz-form-label>
-                                        <nz-form-control>
-                                            <input nz-input type="text" placeholder="" value="" [(ngModel)]="existingAccountData.id" formControlName="id" readonly/>
-                                        </nz-form-control>
-                                    </nz-form-item>
-                                </div>
-                            </div>
-                            <div class="form-group" nz-col [nzSpan]="8">
-                                <div>
-                                    <nz-form-item>
-                                        <nz-form-label class="lable-style">Service or Activity Group Name*</nz-form-label>
-                                        <nz-form-control>
-                                            <input nz-input value="" [(ngModel)]="existingAccountData.activityGroupName" formControlName="activityGroupName" minlength="3" maxlength="100" required/>
-                                        </nz-form-control>
-                                    </nz-form-item>
-                                </div>
-                            </div>
-                            <div class="form-group" nz-col [nzSpan]="8">
-                                <div>
-                                    <nz-form-item>
-                                        <nz-form-label class="lable-style">Activity Group Type*</nz-form-label>
-                                        <nz-form-control>
-                                            <input nz-input value="" [(ngModel)]="existingAccountData.activityGroupType" formControlName="activityGroupType" minlength="3" maxlength="100" required/>
-                                        </nz-form-control>
-                                    </nz-form-item>
-                                </div>
-                                <datalist id="groups">
-                                    <option *ngFor="let actGroup of activityGroupTypes" [ngValue]="actGroup.longpullna">
-                                        {{actGroup.longpullna}}</option>
-                                </datalist>
-                            </div>
-                            <div class="form-group" nz-col [nzSpan]="8">
-                                <div nz-col [nzSpan]="24">
-                                    <nz-form-item>
-                                        <nz-form-label class="lable-style">Activity Group Type Name*</nz-form-label>
-                                        <nz-form-control>
-                                            <input nz-input value="" [(ngModel)]="existingAccountData.activityGroupTypeName"  formControlName="activityGroupTypeName" minlength="3" maxlength="100" required/>
-                                        </nz-form-control>
-                                    </nz-form-item>
-                                </div>
-                            </div>
-                            <div class="form-group check-bx" nz-col [nzSpan]="8">
-                                <div>
-                                    <div>
-                                        <section class="example-section">
-                                            <label nz-checkbox [(ngModel)]="existingAccountData.activityCalculateHoursforActivityGroup"  formControlName="activityCalculateHoursforActivityGroup">Calculate Hours for Active Group</label> 
-                                        </section>
+        <div nz-row>
+            <div nz-col [nzSpan]="24">
+                <form nz-form class="staff-form" [nzLayout]="formGroup.get('formLayout')?.value"
+                    [formGroup]="formGroup">
+                    <div nz-row class="tabStyle">
+                        <div nz-col [nzSpan]="24">
+                            <div nz-row class="form_section">
+                                <div nz-row [nzGutter]="24" class="form-width-container">
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="24" class="lable-style">Service Activity Group ID
+                                            </nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter Service or Activity ID">
+                                                <input nz-input type="text" formControlName="id"
+                                                    placeholder="Service Activity Group ID" readonly
+                                                    class="disInputStyle" />
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
-                                    <div >
-                                        <section class="example-section">
-                                                <label nz-checkbox [(ngModel)]="existingAccountData.activityReportActivityGroup"  formControlName="activityReportActivityGroup"> Report Activity Group</label> 
-                                        </section>
+
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="24" class="lable-style" nzRequired>Service or
+                                                Activity Group Name
+                                            </nz-form-label>
+                                            <nz-form-control
+                                                nzErrorTip="Please Enter Service or Activity Group Name (size must be minimum 3 character )">
+                                                <input nz-input type="text" formControlName="activityGroupName"
+                                                    placeholder="Service or Activity Group Name" minlength="3" />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="24" class="lable-style" nzRequired>Activity Group
+                                                Type
+                                            </nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Select Activity Group Type">
+                                                <nz-select nzPlaceHolder="Activity Group Type"
+                                                    formControlName="activityGroupType">
+                                                    <nz-option *ngFor="let actGroup of activityGroupTypes"
+                                                        [nzLabel]="actGroup.longpullna" [nzValue]="actGroup.longpullna">
+                                                    </nz-option>
+                                                </nz-select>
+                                            </nz-form-control>
+                                        </nz-form-item>
                                     </div>
                                 </div>
+                                <div nz-row [nzGutter]="24" class="form-width-container">
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-label [nzSpan]="24" class="lable-style">Activity Group Type Name
+                                            </nz-form-label>
+                                            <nz-form-control>
+                                                <input nz-input type="text" formControlName="activityGroupTypeName"
+                                                    placeholder="Activity Group Type Name"/>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+                                <div nz-row [nzGutter]="24" class="full-width-container">
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-control nzErrorTip="">
+                                                <label class="lable-checkbox" nz-checkbox
+                                                    formControlName="activityCalculateHoursforActivityGroup">Calculate
+                                                    Hours for Active Group</label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                    <div nz-col [nzSpan]="8">
+                                        <nz-form-item>
+                                            <nz-form-control nzErrorTip="">
+                                                <label class="lable-checkbox" nz-checkbox
+                                                    formControlName="activityReportActivityGroup">Report Activity
+                                                    Group</label>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
+                                </div>
+
                             </div>
-                         
                         </div>
                     </div>
                 </form>
@@ -189,32 +191,36 @@
         </div>
     </ng-container>
 </nz-modal>
-<!-- Modal End-->
-<!-- Modal Move Start -->
-<nz-modal [(nzVisible)]="activityGroupServiceListMovePopupVisiblity" nzTitle={{activityGroupMovePopupTitle}}
-(nzOnCancel)="handleCancel()" [nzFooter]="activityServiceListMoveModalFooters" nzWidth="75%"
-[nzOkLoading]="isActivityGroupServiceListMoveLoading"> 
-    <ng-template #activityServiceListMoveModalFooters>
+<!--Edit Modal End-->
+
+<!--MoveItem Modal Start-->
+<nz-modal [(nzVisible)]="moveModalVisible" nzTitle="Customize Service and Activity Name"
+    (nzOnCancel)="moveHandleCancel()" [nzFooter]="moveItemModalFooter" nzWidth="30%" [nzOkLoading]="ismoveItemLoading">
+    <ng-template #moveItemModalFooter>
         <div class="modal-footer-btn">
-            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
-            <button nz-button nzType="primary"(click)="onConfirmMove();"
-                [nzLoading]="isActivityGroupServiceListMoveLoading">Move</button>
+            <a nz-button nzType="link" (click)="moveHandleCancel()">Cancel</a>
+            <button nz-button nzType="primary" (click)="onMoveConfirm()" [nzLoading]="ismoveItemLoading">Move</button>
         </div>
     </ng-template>
-    <ng-container *nzModalContent>  
-        <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <form [formGroup]="moveFormGroup" class="form">
-                    <div class="row">
-                        <div nz-row class="row">
-                            <div nz-row [nzGutter]="16" [nzSpan]="14">
-                                <div nz-col [nzSpan]="8">
-                                    <nz-form-item>
-                                        <nz-form-label class="lable-style">New Service or Activity ID*</nz-form-label>
-                                        <nz-form-control nzErrorTip="Please Enter New Service or Activity Id">
-                                            <input nz-input type="number" formControlName="id" placeholder="" value="" />
-                                        </nz-form-control>
-                                    </nz-form-item>
+    <ng-container *nzModalContent>
+        <div nz-row>
+            <div nz-col [nzSpan]="24">
+                <form nz-form class="staff-form" [nzLayout]="moveItemForm.get('formLayout')?.value"
+                    [formGroup]="moveItemForm">
+                    <div nz-row class="tabStyle">
+                        <div nz-col [nzSpan]="24">
+                            <div nz-row class="form_section">
+                                <div nz-row [nzGutter]="24" class="form-width-container">
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style" nzRequired>New Service or Activity ID
+                                            </nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Enter New Service or Activity Id">
+                                                <input nz-input type="number" formControlName="id"
+                                                    placeholder="New Service or Activity Id" required />
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -225,48 +231,53 @@
 
     </ng-container>
 </nz-modal>
-<!-- Modal Move End -->
-<!-- Modal Merge Start -->
-<nz-modal [(nzVisible)]="activityGroupServiceListMergePopupVisiblity" nzTitle={{activityGroupMergePopupTitle}}
-(nzOnCancel)="handleCancel()" [nzFooter]="activityServiceListMergeModalFooters" nzWidth="75%"
-[nzOkLoading]="isActivityGroupServiceListMergeLoading">
-     <ng-template #activityServiceListMergeModalFooters>
+<!--MoveItem MOdal End-->
+
+
+<!--MergeItem Modal Start-->
+<nz-modal [(nzVisible)]="mergeModalVisible" nzTitle="Customize Service and Activity Name"
+    (nzOnCancel)="mergeHandleCancel()" [nzFooter]="mergeItemModalFooter" nzWidth="30%"
+    [nzOkLoading]="ismergeItemLoading">
+    <ng-template #mergeItemModalFooter>
         <div class="modal-footer-btn">
-            <a nz-button nzType="link" (click)="handleCancel()">Cancel</a>
-            <button nz-button nzType="primary"(click)="onConfirmMerge();"
-                [nzLoading]="isActivityGroupServiceListMergeLoading">Move</button>
+            <a nz-button nzType="link" (click)="mergeHandleCancel()">Cancel</a>
+            <button nz-button nzType="primary" (click)="onMergeConfirm()"
+                [nzLoading]="ismergeItemLoading">Merge</button>
         </div>
-     </ng-template>
-     <ng-container *nzModalContent>
-        <!-- <div class="modal-body"> -->
-            <div class="tab-content bg-white" id="myTabContent" style="padding: 20px;">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <form [formGroup]="mergeFormGroup" class="form">
-                        <div class="row">
-                            <div nz-row class="row">
-                                <div nz-row [nzGutter]="16" [nzSpan]="14">
-                                    <div nz-col [nzSpan]="8">
-                                                <nz-form-item>
-                                                    <nz-form-label class="lable-style">Service Activity Group ID*</nz-form-label>
-                                                    <nz-form-control nzErrorTip="Please Enter Service Activity Group ID">
-                                                        <input nz-input type="text" list="groups" placeholder="" value="" formControlName="id" />
-                                                    </nz-form-control>
-                                                </nz-form-item>
-                                            </div>
-                                            <datalist id="groups">
-                                                <option value="">Select</option>
-                                                <option *ngFor="let actGroup of activityGroupData" [ngValue]="actGroup.id">
-                                                    <span *ngIf="selectedRow.id != actGroup?.id">{{actGroup.activityGroupName }} | {{actGroup.id}}</span></option>
-                                            </datalist>
+    </ng-template>
+    <ng-container *nzModalContent>
+        <div nz-row>
+            <div nz-col [nzSpan]="24">
+                <form nz-form class="staff-form" [nzLayout]="mergeFormGroup.get('formLayout')?.value"
+                    [formGroup]="mergeFormGroup">
+                    <div nz-row class="tabStyle">
+                        <div nz-col [nzSpan]="24">
+                            <div nz-row class="form_section">
+                                <div nz-row [nzGutter]="24" class="form-width-container">
+                                    <div nz-col [nzSpan]="24">
+                                        <nz-form-item>
+                                            <nz-form-label class="lable-style" nzRequired>Service Activity Group ID
+                                            </nz-form-label>
+                                            <nz-form-control nzErrorTip="Please Select Service Activity Group ID">
+                                                <nz-select nzShowSearch formControlName="id" nzAllowClear
+                                                    nzPlaceHolder="Service Activity Group ID">
+                                                    <nz-option *ngFor="let act of activityGroupDataMergeDropDownList"
+                                                        [nzLabel]="act?.activityGroupName+' | '+act?.id"
+                                                        [nzValue]="act?.activityGroupName+' | '+act?.id">
+                                                    </nz-option>
+
+                                                </nz-select>
+                                            </nz-form-control>
+                                        </nz-form-item>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
-        <!-- </div> -->
-     </ng-container>
+        </div>
+
+    </ng-container>
 </nz-modal>
-<!-- Modal Merge End -->
-
-
+<!--MoveItem MOdal End-->
